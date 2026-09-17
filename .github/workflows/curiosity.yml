@@ -1,10 +1,11 @@
 name: curiosity (own interests — learns what IT finds worth knowing)
-# Daily on GitHub's runners: scans HN + trending repos + open issues, scores
-# against what the agent is FOR, learns the top interests, pushes skills.
+# Every 5 minutes on GitHub's runners: scans HN + trending repos + open issues,
+# scores against what the agent is FOR, learns the top new interests, pushes.
+# No-op when nothing new qualifies (existing skills are skipped, not relearned).
 # No human queue, no PC. Manual: Actions -> curiosity -> Run workflow.
 on:
   schedule:
-    - cron: '0 9 * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 concurrency:
   group: curiosity

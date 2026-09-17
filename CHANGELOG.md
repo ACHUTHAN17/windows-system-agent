@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.11.0 — 2026-09-17
+- Keyless online chat: free cloud models default (Pollinations, verified live),
+  paid providers optional; PAT-gated DO buttons with Test + inline diagnostics.
+- Teach fixed two ways: PAT dispatch + no-token issue fallback link.
+- Curiosity now every 5 min (`*/5 * * * *`); no-op when nothing new qualifies.
+- Race-safe bot pushes on all 4 cloud workflows (rebase + docs-regen + retry).
+
 ## 1.10.0 — 2026-09-17
 - Curiosity engine: agent picks its OWN interests (HN + trending + issues,
   relevance-scored) and self-teaches daily on GitHub (`curiosity.yml`).
