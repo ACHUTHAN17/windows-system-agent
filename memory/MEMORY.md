@@ -12,3 +12,8 @@
 - Screenshots over guesses; verify after acting; one fix attempt, then report.
 - GitHub: ACHUTHAN17/windows-system-agent (private). Saved PC login is a
   different user (MohanaAchuthan30) — pushes need collaborator rights/token.
+- [2026-09-17] Learned (goal round 1): push-denied diagnosis (wrong identity vs
+  no access), gh device-flow pattern for agents, both-layers verify
+  (gh auth status + setup-git + ls-remote). Stored in skills/github.md.
+- [2026-09-17] Learned (goal round 1): six run modes + parallel discipline in
+  skills/agent-modes.md. gh CLI installing via winget for device-flow auth.

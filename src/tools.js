@@ -1011,6 +1011,49 @@ public class WinDbl { [DllImport("user32.dll")] public static extern bool SetCur
         } catch (e) { return fail(e.message); }
       },
     },
+    {
+      name: 'github_push', description: 'Commit + push the project to GitHub (the push-itself routine). Classifies auth failures with fixes.',
+      args: { message: 'commit message (required)', branch: 'default main (opt)', remote: 'default origin (opt)' },
+      async run(a, ctx) {
+        try {
+          const msg = String(a.message || '').trim();
+          if (!msg) return fail('message is required');
+          let git = null;
+          try {
+            const probe = process.platform === 'win32' ? 'where.exe' : 'which';
+            git = (await execFileAsync(probe, ['git'], { windowsHide: true })).stdout.trim().split('\n')[0].trim();
+          } catch {}
+          if (!git && process.platform === 'win32') {
+            for (const c of ['C:/Program Files/Git/cmd/git.exe', 'C:/Program Files (x86)/Git/cmd/git.exe']) {
+              try { await fsp.access(c); git = c; break; } catch {}
+            }
+          }
+          if (!git) return fail('git not found', 'Install git (winget install Git.Git), then retry.');
+          const env = { ...process.env, GIT_TERMINAL_PROMPT: '0' };
+          const run = (args) => execFileAsync(git, args, { cwd: ctx.cfg.root, env, windowsHide: true, timeout: 120000 });
+          await run(['add', '-A']);
+          const st = await run(['status', '--porcelain']);
+          let committed = false, hash = '';
+          if (st.stdout.trim()) {
+            await run(['commit', '-m', msg]);
+            hash = (await run(['rev-parse', '--short', 'HEAD'])).stdout.trim();
+            committed = true;
+          } else {
+            hash = (await run(['rev-parse', '--short', 'HEAD'])).stdout.trim();
+          }
+          const branch = a.branch || 'main', remote = a.remote || 'origin';
+          try {
+            const out = await run(['push', '-u', remote, branch]);
+            return ok({ pushed: true, committed, hash, output: (out.stdout + out.stderr).slice(0, 500) });
+          } catch (e) {
+            const m2 = e.message || String(e);
+            if (/not found|404/i.test(m2)) return fail('remote repo not found (missing or no access)', 'Owner adds you as collaborator, or check the URL. See skills/github.md.');
+            if (/denied|403|permission/i.test(m2)) return fail('push denied: wrong identity or no write access', 'Check git credential fill; fix per skills/github.md.');
+            return fail(m2.slice(0, 400));
+          }
+        } catch (e) { return fail(e.message); }
+      },
+    },
   ];
   // Linux/macOS override layer: routes each call through tools-linux.js first.
   // On Windows it always falls through, so Windows behavior is unchanged.
