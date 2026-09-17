@@ -221,15 +221,20 @@ what the agent is FOR (Windows, automation, Office, documents, agents…),
 learns the top 2 itself, pushes, and moves on. Skills it already has get
 refreshed instead of duplicated. Manual: Actions → curiosity → Run workflow.
 
-### Online chat (full-fledged, phone-friendly, no PC/app)
+### Online chat (full-fledged, phone-friendly, no PC/app, no key needed)
 👉 https://achuthan17.github.io/windows-system-agent/chat.html
-Talk = your model key called **directly from your browser** (OpenAI, DeepSeek,
-OpenRouter, any OpenAI-compatible URL — stored in your browser only, nowhere
-else). DO buttons dispatch real cloud runs and poll them to completion:
-🧠 Teach skill · ⚙️ Run task in cloud (result file fetched + shown in chat) ·
+Talk = **free cloud models, zero setup** — the model dropdown fills itself from
+`docs/models.json`, which the agent's scout refreshes every 30 min (probes +
+discovers new free endpoints all by itself, benign prompt only). Paid backends
+optional in ⚙. DO buttons dispatch real cloud runs and poll them to completion:
+🧠 Teach skill (or no-token issue link) · ⚙️ Run task (result fetched into chat) ·
 🧪 Selftest cloud. Doing needs a GitHub PAT (repo + workflow scopes, also
 browser-only). Full task runs need repo secrets `LLM_API_URL/KEY/MODEL` once —
 without them the cloud writes an honest triage note instead of pretending.
+
+### Framework (start here before changing anything)
+`ARCHITECTURE.md` — layers, contracts, conventions, 5-minute recipes for
+adding tools/skills/channels/models/cloud jobs. The repo's constitution.
 
 ### Computer-Use parity (mirrors OpenAI's model exactly)
 

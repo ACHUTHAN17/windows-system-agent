@@ -1,3 +1,3 @@
-1.11.0
+1.12.0
 2026-09-17
-Keyless chat (free cloud models), teach fixed 2 ways, curiosity every 5 min, race-safe pushes
+Self-adding free models (scout + live registry), clear framework doc

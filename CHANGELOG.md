@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.12.0 — 2026-09-17
+- Self-adding free models: `model-scout` probes + discovers keyless endpoints
+  and writes `docs/models.json`; chat dropdown fills itself live (30-min loop).
+- Clear framework: `ARCHITECTURE.md` (layers, contracts, conventions, recipes).
+
 ## 1.11.0 — 2026-09-17
 - Keyless online chat: free cloud models default (Pollinations, verified live),
   paid providers optional; PAT-gated DO buttons with Test + inline diagnostics.

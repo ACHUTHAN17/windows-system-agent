@@ -41,11 +41,30 @@ const FREE_URL='https://text.pollinations.ai/openai';
 if(!store.get('preset'))store.set('preset','free');
 if(!store.get('repo'))store.set('repo','ACHUTHAN17/windows-system-agent');
 ['apiurl','apikey','model','repo','pat'].forEach(k=>{$(k).value=store.get(k);$(k).onchange=()=>{store.set(k,$(k).value);gate();pill();};});
-$('preset').value=store.get('preset');$('freemodel').value=store.get('freemodel')||'openai';
-$('preset').onchange=()=>{store.set('preset',$('preset').value);pill();};
+$('preset').value=store.get('preset');
 $('freemodel').onchange=()=>{store.set('freemodel',$('freemodel').value);pill();};
+let MODELS=null;  // live registry from docs/models.json (bot-updated every 30 min)
+async function loadModels(){
+  try{
+    const r=await fetch('./models.json'); if(!r.ok)throw 0;
+    const j=await r.json();
+    if(j.live&&j.live.length){
+      MODELS=j.live;
+      const sel=$('freemodel'); sel.innerHTML='';
+      j.live.forEach((e,i)=>{const o=document.createElement('option');o.value=String(i);o.textContent=e.label+' ('+(Math.round(e.latencyMs/100)/10)+'s)';sel.appendChild(o);});
+      const sv=store.get('freemodel'); sel.value=(sv!==''&&j.live[sv])?sv:'0'; pill();
+    }
+  }catch(e){ /* static fallback options stay */ }
+  if(!$('freemodel').value)$('freemodel').value=store.get('freemodel')||'openai';
+}
+function curEntry(){
+  const mi=store.get('freemodel');
+  if(MODELS&&mi!==''&&MODELS[mi])return MODELS[mi];
+  return {url:FREE_URL,kind:'openai-post',model:'openai',label:'Pollinations · openai'};
+}
+loadModels();
 $('freereset').onclick=()=>{['apiurl','apikey','model'].forEach(k=>{store.set(k,'');$(k).value='';});store.set('preset','free');$('preset').value='free';pill();bubble('agent','☆ Free mode on — type anything, no key needed.');};
-function pill(){const f=store.get('preset')==='free';$('backend').textContent='using: '+(f?('free · '+(store.get('freemodel')||'openai')):'custom backend');}
+function pill(){const f=store.get('preset')==='free';let lbl='custom backend';if(f){try{lbl='free · '+curEntry().label;}catch(e){lbl='free';}}$('backend').textContent='using: '+lbl;}
 $('cfgbtn').onclick=()=>{const c=$('cfg');c.style.display=c.style.display==='grid'?'none':'grid';};
 const hist=[{role:'system',content:'You are WinAgent, a Windows/Linux system agent (60+ tools: files, apps, browser CDP, Office docs, MCP, memory, self-learning skills). Repo: ACHUTHAN17/windows-system-agent. Be concise, practical, copy-paste-first. Never ask for secrets in chat.'}];
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
@@ -70,11 +89,13 @@ async function talk(){
   try{
     let a;
     if(free){
-      const m=store.get('freemodel')||'openai';
-      try{a=await postChat(FREE_URL,m,'',hist);}
-      catch(e){a=await getChat(m,hist);}  // GET fallback: proven endpoint, no preflight
+      const entry=curEntry();
+      try{
+        if(entry.kind==='openai-post')a=await postChat(entry.url.replace(/\/+$/,''),entry.model,'',hist);
+        else a=await getChat(entry.model,hist);
+      }catch(e){a=await getChat(entry.model,hist);}  // GET fallback: proven endpoint, no preflight
       hist.push({role:'assistant',content:a});
-      b.innerHTML='<div class="who">agent · free · '+esc(m)+'</div>'+esc(a).replace(/`([^`]+)`/g,'<code>$1</code>');
+      b.innerHTML='<div class="who">agent · free · '+esc(entry.label||entry.model)+'</div>'+esc(a).replace(/`([^`]+)`/g,'<code>$1</code>');
     }else{
       const k=store.get('apikey');
       if(!k)throw {status:401,why:'custom backend needs its API key — paste it in ⚙, or tap ☆ Free mode'};

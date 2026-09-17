@@ -1,0 +1,30 @@
+name: model-scout (finds free models by itself — no human, no keys)
+# Every 30 min on GitHub's runners: probes curated free endpoints, rotates one
+# discovery search, writes docs/models.json which docs/chat.html loads live.
+# Only ever sends "reply with exactly: scout-ok" — never user data.
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+concurrency:
+  group: model-scout
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  scout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: probe free endpoints
+        id: scout
+        run: node src/model-scout.js
+      - name: commit registry if changed
+        run: |
+          git config user.name "winagent-bot"
+          git config user.email "winagent-bot@users.noreply.github.com"
+          git add docs/models.json
+          git diff --cached --quiet && echo "models unchanged" || { git commit -m "scout: free-model registry refresh"; for i in 1 2 3; do git pull --rebase --autostash && break; sleep 5; done; git push; }
