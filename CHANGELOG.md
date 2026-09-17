@@ -1,5 +1,12 @@
 ﻿# Changelog
 
+## 1.19.0 — 2026-09-17
+- Real date-times: cards show added/updated with hour:minute;
+  Newest/Oldest sort by true added time (proven monotonic in tests).
+- Fixed invisible root cause: git missing from PATH broke all date lookups
+  (silent mtime fallback) — resolver now finds Git on Windows.
+- Owner-first crawl: your skills repo outranks every seed (4/round proven).
+
 ## 1.18.0 — 2026-09-17
 - Fixed date sorting (full timestamps — same-day skills now order correctly).
 - 24/7 crawling (every 5 min + rate-limit guard); models stay on 3h cycle.
@@ -117,6 +124,7 @@
 
 ## 1.0.0
 - Core agent: files, apps, shell, sysinfo + pluggable API/local/custom LLM.
+
 
 
 

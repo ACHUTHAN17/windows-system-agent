@@ -12,6 +12,21 @@ const SOURCES = path.join(SKILLS, 'sources.json');
 const MAX = Math.min(Number(process.env.MAX_IMPORT || 10), 20);
 
 const SEEDS = (process.env.SEED_REPOS || 'anthropics/skills,obra/superpowers,travisvn/awesome-claude-skills').split(',').map(s => s.trim()).filter(Boolean);
+const OWNER = process.env.CRAWL_OWNER || 'ACHUTHAN17';
+
+// Owner's own repos FIRST — the user's `skills` repo is a curated Agent Skills
+// collection, so it outranks every seed. Skips archived and the agent repo itself.
+async function ownerRepos() {
+  const out = [];
+  try {
+    const repos = await gh(`/users/${OWNER}/repos?per_page=30&sort=updated`);
+    for (const r of repos || []) {
+      if (r.archived || r.full_name === 'ACHUTHAN17/windows-system-agent') continue;
+      out.push(r.full_name);
+    }
+  } catch (e) { console.log('[crawl] owner repos skipped: ' + e.message); }
+  return out;
+}
 
 const gh = async (p) => {
   const r = await fetch(`https://api.github.com${p}`, { headers: { 'User-Agent': 'WinAgent-crawler/1.0' } });
@@ -77,7 +92,7 @@ async function main() {
   let done = [];
   // Rescan rounds: fresh discovery query each round until nothing new or cap.
   for (let round = 0; round < 3 && done.length < MAX; round++) {
-    const repos = round === 0 ? [...SEEDS, ...await discoverRepos(0)] : await discoverRepos(round);
+    const repos = round === 0 ? [...await ownerRepos(), ...SEEDS, ...await discoverRepos(0)] : await discoverRepos(round);
     console.log(`[crawl] round ${round + 1}: scanning ${repos.length} repos`);
     let roundNew = 0;
     for (const repo of repos.slice(0, 5)) {

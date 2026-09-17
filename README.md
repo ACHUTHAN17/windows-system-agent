@@ -230,9 +230,10 @@ pushes are the heartbeat now): scans Hacker News top stories + trending repos
 periods converge to no-ops instead of loops. Schedules remain as backup.
 
 ### Crawl: learns other repos' skills freely — 24/7, every 5 min
-`skill-crawler` imports EVERYTHING new it finds (up to 10/run), then scans
-AGAIN with a fresh discovery query until dry. Rate-limit guard backs off
-quietly when the keyless API budget runs low. Provenance in `skills/sources.json`.
+`skill-crawler` scans YOUR repos first (`ACHUTHAN17/skills` outranks everything),
+then seeds + discovery — imports EVERYTHING new (up to 10/run), rescans until
+dry. Rate-limit guard backs off quietly on low budget. Proven: 4 skills in one
+round from your own collection. Provenance in `skills/sources.json`.
 
 ### Think + act hourly (`agent-act.yml`)
 Every hour the agent: bulk-crawls, refreshes free models, AUDITS every skill

@@ -22,5 +22,29 @@
     "repo": "https://github.com/anthropics/skills",
     "file": "skills/canvas-design/SKILL.md",
     "at": "2026-09-17"
+  },
+  "claude-api.md": {
+    "origin": "imported",
+    "repo": "https://github.com/ACHUTHAN17/skills",
+    "file": "skills/claude-api/SKILL.md",
+    "at": "2026-09-17"
+  },
+  "discernment-nudge.md": {
+    "origin": "imported",
+    "repo": "https://github.com/ACHUTHAN17/skills",
+    "file": "skills/discernment-nudge/SKILL.md",
+    "at": "2026-09-17"
+  },
+  "doc-coauthoring.md": {
+    "origin": "imported",
+    "repo": "https://github.com/ACHUTHAN17/skills",
+    "file": "skills/doc-coauthoring/SKILL.md",
+    "at": "2026-09-17"
+  },
+  "docx.md": {
+    "origin": "imported",
+    "repo": "https://github.com/ACHUTHAN17/skills",
+    "file": "skills/docx/SKILL.md",
+    "at": "2026-09-17"
   }
 }

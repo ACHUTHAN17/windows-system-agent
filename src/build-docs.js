@@ -8,6 +8,24 @@ const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace
 const SKILLS = path.join(ROOT, 'skills');
 const OUT = path.join(ROOT, 'docs', 'index.html');
 
+// git is often missing from PATH on Windows (Git's bin dir isn't added by the
+// installer) — resolve it once, then reuse. Without this, every dates lookup
+// silently falls back to identical clone-time mtimes and date sorting LOOKS broken.
+let GIT = 'git';
+function gitSync(args) {
+  const run = (cmd) => {
+    try { return spawnSync(cmd, args, { cwd: ROOT, encoding: 'utf8', timeout: 60000 }); }
+    catch (e) { return { error: e, stdout: '' }; }
+  };
+  let r = run(GIT);
+  if (r && r.error && r.error.code === 'ENOENT' && GIT === 'git' && process.platform === 'win32') {
+    for (const c of ['C:/Program Files/Git/cmd/git.exe', 'C:/Program Files (x86)/Git/cmd/git.exe']) {
+      try { fs.accessSync(c); GIT = c; r = run(GIT); break; } catch {}
+    }
+  }
+  return r || { stdout: '' };
+}
+
 // Where each skill came from (shown as badges on the live page).
 const LEARNED = {
   'computer-use.md': 'auto-learned from OpenAI Computer Use docs (live web research)',
@@ -41,10 +59,11 @@ function miniMd(src) {
 // to file mtime when git is unavailable.
 function gitDates(f) {
   try {
-    const added = spawnSync('git', ['log', '--diff-filter=A', '--format=%ci', '-1', '--', 'skills/' + f], { cwd: ROOT, encoding: 'utf8' }).stdout.trim().slice(0, 10);
-    const updated = spawnSync('git', ['log', '--format=%ct', '-1', '--', 'skills/' + f], { cwd: ROOT, encoding: 'utf8' });
-    const upd = updated.stdout ? new Date(Number(updated.stdout.trim()) * 1000).toISOString() : '';
-    if (/^\d{4}-\d\d-\d\d$/.test(added) && /^\d{4}-\d\d-\d\dT/.test(upd)) return { added, updated: upd };
+    const addedRaw = (gitSync(['log', '--diff-filter=A', '--format=%ci', '-1', '--', 'skills/' + f]).stdout || '').trim();
+    const updatedRaw = (gitSync(['log', '--format=%ct', '-1', '--', 'skills/' + f]).stdout || '').trim();
+    const add = addedRaw ? new Date(addedRaw).toISOString() : '';
+    const upd = updatedRaw ? new Date(Number(updatedRaw) * 1000).toISOString() : '';
+    if (/^\d{4}-\d\d-\d\dT/.test(add) && /^\d{4}-\d\d-\d\dT/.test(upd)) return { added: add, updated: upd };
   } catch {}
   try {
     const d = fs.statSync(path.join(SKILLS, f)).mtime.toISOString().slice(0, 10);
@@ -54,7 +73,7 @@ function gitDates(f) {
 }
 
 function main() {
-  try { spawnSync('git', ['fetch', 'origin', '--deepen=200', '--quiet'], { cwd: ROOT, timeout: 60000 }); } catch {}
+  try { gitSync(['fetch', 'origin', '--deepen=200', '--quiet']); } catch {}
   const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
   const files = fs.readdirSync(SKILLS).filter(f => f.endsWith('.md')).sort();
   let toolCount = 0;
@@ -110,9 +129,10 @@ function main() {
         : `<span class="badge task">task-built playbook</span>`;
     const raw = `https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/${f}`;
     const dt = gitDates(f);
-    return `<article class="card" data-origin="${origin}" data-updated="${dt.updated}" data-name="${esc(title)} ${esc(first.toLowerCase())}">
+    const fmtDT = (iso) => iso ? iso.slice(0, 10) + ' ' + iso.slice(11, 16) : '?';
+    return `<article class="card" data-origin="${origin}" data-added="${dt.added}" data-updated="${dt.updated}" data-name="${esc(title)} ${esc(first.toLowerCase())}">
   <h2>${esc(title)}</h2>${badge}<p class="desc">${esc(first)}</p>
-  <div class="dates">added ${dt.added || '?'} · updated ${String(dt.updated || '?').slice(0, 10)}</div>
+  <div class="dates">added ${fmtDT(dt.added)} · updated ${fmtDT(dt.updated)}</div>
   <details><summary>read full skill</summary><div class="body">${miniMd(text)}</div></details>
   <a class="raw" href="${raw}">view source on GitHub</a></article>`;
   }).join('\n');
@@ -141,7 +161,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="meta"><span class="pill">v${esc(pkg.version || '')}</span><span class="pill">${toolCount} tools</span><span class="pill">${files.length} skills (${auto} auto · ${imp} imported · ${task} built)</span><span class="pill">generated ${new Date().toISOString().slice(0, 10)}</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
-<script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.updated||'0000').localeCompare(a.dataset.updated||'0000'):s==='old'?(a.dataset.updated||'9999').localeCompare(b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
+<script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
 <div class="grid" id="grid">${cards}</div>
 <footer>Source: <a style="color:#58a6ff" href="https://github.com/ACHUTHAN17/windows-system-agent/tree/main/skills">github.com/ACHUTHAN17/windows-system-agent/tree/main/skills</a></footer>
 </div></body></html>`;

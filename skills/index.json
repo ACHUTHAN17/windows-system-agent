@@ -4,7 +4,7 @@
   "title": "academy-guide",
   "description": "Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — >.",
   "origin": "imported",
-  "added": "2026-09-17",
+  "added": "2026-09-17T15:08:54.000Z",
   "updated": "2026-09-17T15:08:54.000Z",
   "triggers": [
    "academy",
@@ -25,7 +25,7 @@
   "title": "agent-modes — run modes and how to work them in parallel",
   "description": "WinAgent is one brain with six bodies. Pick per task; combine for speed.",
   "origin": "auto",
-  "added": "2026-09-17",
+  "added": "2026-09-17T12:32:16.000Z",
   "updated": "2026-09-17T13:51:21.000Z",
   "triggers": [
    "mode",
@@ -54,7 +54,7 @@
   "title": "AgentVerse-OS Personal cloud OS for a developer and their AI agents on a single ",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T14:28:22.000Z",
   "updated": "2026-09-17T14:28:22.000Z",
   "triggers": [
    "agentverse",
@@ -81,7 +81,7 @@
   "title": "algorithmic-art",
   "description": "Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/algorithmic-art/SKILL.md) — Creating algorithmic art",
   "origin": "imported",
-  "added": "2026-09-17",
+  "added": "2026-09-17T15:41:17.000Z",
   "updated": "2026-09-17T15:41:17.000Z",
   "triggers": [
    "algorithmic",
@@ -103,7 +103,7 @@
   "title": "auto learn new skills",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T15:02:13.000Z",
   "updated": "2026-09-17T15:02:13.000Z",
   "triggers": [
    "auto",
@@ -127,7 +127,7 @@
   "title": "blitzstrike ⚡ Blitz Strike — a universal MCP penetration-testing toolbelt. Struc",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T15:35:27.000Z",
   "updated": "2026-09-17T15:35:27.000Z",
   "triggers": [
    "blitzstrike",
@@ -157,7 +157,7 @@
   "title": "brand-guidelines",
   "description": "Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/brand-guidelines/SKILL.md) — Applies Anthropic's off",
   "origin": "imported",
-  "added": "2026-09-17",
+  "added": "2026-09-17T15:41:17.000Z",
   "updated": "2026-09-17T15:41:17.000Z",
   "triggers": [
    "brand",
@@ -180,7 +180,7 @@
   "title": "browser-dom — drive pages by structure, not pixels (Gemini-style)",
   "description": "CDP tabs expose the DOM: query it, click/select/fill by selector, fall back to",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T13:16:19.000Z",
   "updated": "2026-09-17T13:16:19.000Z",
   "triggers": [
    "dom",
@@ -211,7 +211,7 @@
   "title": "canvas-design",
   "description": "Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/canvas-design/SKILL.md) — Create beautiful visual ar",
   "origin": "imported",
-  "added": "2026-09-17",
+  "added": "2026-09-17T15:41:17.000Z",
   "updated": "2026-09-17T15:41:17.000Z",
   "triggers": [
    "canvas",
@@ -235,7 +235,7 @@
   "title": "chat-telegram — the agent in your pocket (ChatGPT-mobile parity)",
   "description": "Talk to the agent from your phone like ChatGPT mobile: message → it works →",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T14:03:47.000Z",
   "updated": "2026-09-17T14:03:47.000Z",
   "triggers": [
    "telegram",
@@ -252,11 +252,32 @@
   ]
  },
  {
+  "name": "claude-api",
+  "title": "claude-api",
+  "description": "Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/claude-api/SKILL.md) — |-.",
+  "origin": "imported",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "claude",
+   "api",
+   "imported",
+   "achuthan17",
+   "skills",
+   "https",
+   "github",
+   "com",
+   "blob",
+   "head",
+   "skill"
+  ]
+ },
+ {
   "name": "coding",
   "title": "coding",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T15:19:44.000Z",
   "updated": "2026-09-17T15:19:44.000Z",
   "triggers": [
    "coding",
@@ -278,7 +299,7 @@
   "title": "computer-use — see + operate GUIs exactly like OpenAI Computer Use",
   "description": "Faithful mirror of the Computer Use model (ChatGPT desktop, Windows): an agent",
   "origin": "auto",
-  "added": "2026-09-17",
+  "added": "2026-09-17T11:53:58.000Z",
   "updated": "2026-09-17T11:53:58.000Z",
   "triggers": [
    "screenshot",
@@ -310,7 +331,7 @@
   "title": "dashboard — the web UI (chat, live stream, click-to-approve)",
   "description": "`node src/index.js --ui 8080` → open http://127.0.0.1:8080 (loopback only).",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T13:16:19.000Z",
   "updated": "2026-09-17T13:16:19.000Z",
   "triggers": [
    "dashboard",
@@ -331,11 +352,78 @@
   ]
  },
  {
+  "name": "discernment-nudge",
+  "title": "discernment-nudge",
+  "description": "Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/discernment-nudge/SKILL.md) — >.",
+  "origin": "imported",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "discernment",
+   "nudge",
+   "imported",
+   "achuthan17",
+   "skills",
+   "https",
+   "github",
+   "com",
+   "blob",
+   "head",
+   "skill"
+  ]
+ },
+ {
+  "name": "doc-coauthoring",
+  "title": "doc-coauthoring",
+  "description": "Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/doc-coauthoring/SKILL.md) — Guide users through a st",
+  "origin": "imported",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "doc",
+   "coauthoring",
+   "imported",
+   "achuthan17",
+   "skills",
+   "https",
+   "github",
+   "com",
+   "blob",
+   "head",
+   "skill",
+   "guide",
+   "users",
+   "through"
+  ]
+ },
+ {
+  "name": "docx",
+  "title": "docx",
+  "description": "Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/docx/SKILL.md) — \"Use this skill whenever the user w",
+  "origin": "imported",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "docx",
+   "imported",
+   "achuthan17",
+   "skills",
+   "https",
+   "github",
+   "com",
+   "blob",
+   "head",
+   "skill",
+   "whenever",
+   "user"
+  ]
+ },
+ {
   "name": "drag-drop",
   "title": "drag-drop — mouse drags, sliders, selections, drag-and-drop on Windows",
   "description": "`screen_drag {x1,y1,x2,y2}` moves with the left button held, in smooth steps.",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T11:28:22.000Z",
   "updated": "2026-09-17T11:28:22.000Z",
   "triggers": [
    "drag",
@@ -360,7 +448,7 @@
   "title": "essential windows run commands",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T12:50:03.000Z",
   "updated": "2026-09-17T12:50:03.000Z",
   "triggers": [
    "essential",
@@ -385,7 +473,7 @@
   "title": "file-fetch-upload — fetch ANY file (even locked/in-use) and upload it",
   "description": "File Manager parity: if Explorer can see it, you can fetch it. Locked SQLite",
   "origin": "auto",
-  "added": "2026-09-17",
+  "added": "2026-09-17T11:36:17.000Z",
   "updated": "2026-09-17T11:36:17.000Z",
   "triggers": [
    "fetch",
@@ -405,7 +493,7 @@
   "title": "github readme badges with shields.io",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T14:36:51.000Z",
   "updated": "2026-09-17T14:36:51.000Z",
   "triggers": [
    "github",
@@ -430,7 +518,7 @@
   "title": "github — push itself, multi-account auth, device flow (researched live)",
   "description": "Self-learned from GitHub docs + DevErrors + cli/cli (see memory note). This is",
   "origin": "auto",
-  "added": "2026-09-17",
+  "added": "2026-09-17T12:32:16.000Z",
   "updated": "2026-09-17T12:32:16.000Z",
   "triggers": [
    "github",
@@ -462,7 +550,7 @@
   "title": "keyboard shortcuts",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T14:48:22.000Z",
   "updated": "2026-09-17T14:48:22.000Z",
   "triggers": [
    "keyboard",
@@ -485,7 +573,7 @@
   "title": "llm-master 大模型（LLM）全栈学习路线与中文教程🔥：覆盖 Prompt Engineering、RAG、AI Agent、MCP、微调、模型部署、",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T14:28:22.000Z",
   "updated": "2026-09-17T14:28:22.000Z",
   "triggers": [
    "llm",
@@ -512,7 +600,7 @@
   "title": "mcp — plug the whole MCP ecosystem in as tools",
   "description": "Any MCP server (SQLite, Postgres, GitHub, Playwright, filesystem…) becomes",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T13:16:19.000Z",
   "updated": "2026-09-17T14:03:47.000Z",
   "triggers": [
    "mcp",
@@ -539,7 +627,7 @@
   "title": "office-docs — generate Word/Excel/PowerPoint/PDF locally AND on M365",
   "description": "Researched from Microsoft Graph docs, python-docx/openpyxl/python-pptx guides,",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T13:47:44.000Z",
   "updated": "2026-09-17T13:47:44.000Z",
   "triggers": [
    "word",
@@ -569,7 +657,7 @@
   "title": "schedule — recurring + event-driven tasks (ChatGPT-Schedules parity)",
   "description": "Three schedulers, pick by need. All re-read skills + memory each run.",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T14:03:47.000Z",
   "updated": "2026-09-17T14:03:47.000Z",
   "triggers": [
    "schedule",
@@ -598,7 +686,7 @@
   "title": "self-learn — teach yourself new skills from the web, live, mid-task",
   "description": "When a task needs knowledge you don't have (new app, new site, new API, stale",
   "origin": "auto",
-  "added": "2026-09-17",
+  "added": "2026-09-17T12:00:26.000Z",
   "updated": "2026-09-17T12:00:26.000Z",
   "triggers": [
    "learn",
@@ -628,7 +716,7 @@
   "title": "system-control — take whole-system control of this Windows machine",
   "description": "You are the operator: windows, processes, services, registry, power, clipboard.",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T11:28:22.000Z",
   "updated": "2026-09-17T11:28:22.000Z",
   "triggers": [
    "process",
@@ -654,7 +742,7 @@
   "title": "auto learn new skills",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T15:41:44.000Z",
   "updated": "2026-09-17T15:41:44.000Z",
   "triggers": [
    "auto",
@@ -678,7 +766,7 @@
   "title": "coding ### What should the agent learn?",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T15:37:41.000Z",
   "updated": "2026-09-17T15:37:41.000Z",
   "triggers": [
    "coding",
@@ -703,7 +791,7 @@
   "title": "windows snipping tool screenshots How to capture, annotate, and save screenshots",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T15:29:49.000Z",
   "updated": "2026-09-17T15:29:49.000Z",
   "triggers": [
    "windows",
@@ -731,7 +819,7 @@
   "title": "typing-editing — type, edit text and drive inputs anywhere on Windows",
   "description": "Text entry without a DOM: keyboard injection + clipboard. Needs an interactive",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T11:28:22.000Z",
   "updated": "2026-09-17T11:28:22.000Z",
   "triggers": [
    "type",
@@ -760,7 +848,7 @@
   "title": "uia-click — trigger ANY button by name (no coordinates, no focus tricks)",
   "description": "Windows exposes every button to UI Automation. Prefer this over `screen_click`",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T11:28:22.000Z",
   "updated": "2026-09-17T11:28:22.000Z",
   "triggers": [
    "button",
@@ -785,7 +873,7 @@
   "title": "windows clipboard history",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "auto",
-  "added": "2026-09-17",
+  "added": "2026-09-17T12:49:32.000Z",
   "updated": "2026-09-17T12:49:32.000Z",
   "triggers": [
    "windows",
@@ -809,7 +897,7 @@
   "title": "windows god mode folder",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T14:52:21.000Z",
   "updated": "2026-09-17T14:52:21.000Z",
   "triggers": [
    "windows",
@@ -834,7 +922,7 @@
   "title": "windows snipping tool screenshots",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T14:46:27.000Z",
   "updated": "2026-09-17T14:46:27.000Z",
   "triggers": [
    "windows",
@@ -859,7 +947,7 @@
   "title": "wordpress-build — build WordPress sites on the web (Windows host)",
   "description": "You build complete WordPress sites: install, theme, content, plugins, go-live.",
   "origin": "task",
-  "added": "2026-09-17",
+  "added": "2026-09-17T11:28:22.000Z",
   "updated": "2026-09-17T11:28:22.000Z",
   "triggers": [
    "wordpress",
