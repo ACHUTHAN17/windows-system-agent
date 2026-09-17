@@ -14,22 +14,63 @@ runs gated PowerShell, and talks to **any model** through one config:
 
 Any endpoint that speaks `POST /chat/completions` works (vLLM, OpenRouter, Azure proxy, corporate gateway…).
 
-## 1. Run (2 min)
+## 1. Fresh-machine setup (copy-paste, ~5 min, Windows PowerShell)
 
-```bat
-cd C:\Users\ADMIN\Documents\windows-system-agent
-copy .env.example .env
-notepad .env        :: set MODEL_API_URL / KEY / NAME for your provider
-run.bat "list files in Documents and tell me the 3 largest"
+```powershell
+# 0. Node.js 18+ (skip if `node --version` already prints v18 or higher)
+winget install OpenJS.NodeJS.LTS -e --silent --accept-source-agreements --accept-package-agreements
+# Close and reopen the terminal, then:
+node --version
 ```
 
-Other modes:
+```powershell
+# 1. Get the agent
+git clone https://github.com/ACHUTHAN17/windows-system-agent.git
+cd windows-system-agent
+```
 
-```bat
-run.bat                                  :: interactive REPL (model, tools, selftest, exit)
-run.bat --selftest                       :: hardware check, no LLM needed
-C:\Users\ADMIN\.pawwork\dsh\.tools\node.cmd src\index.js "open notepad" --yes
-C:\Users\ADMIN\.pawwork\dsh\.tools\node.cmd src\index.js --model llama3.1 --url http://localhost:11434/v1 "kill notepad"
+```powershell
+# 2. Point it at a model: copy the template, open it, set 3 lines (pick ONE block below)
+copy .env.example .env
+notepad .env
+```
+
+```ini
+# Ollama (local, free) — first run: ollama serve  +  ollama pull llama3.1
+MODEL_API_URL=http://localhost:11434/v1
+MODEL_API_KEY=ollama
+MODEL_NAME=llama3.1
+```
+
+```ini
+# OpenAI API
+MODEL_API_URL=https://api.openai.com/v1
+MODEL_API_KEY=sk-your-key-here
+MODEL_NAME=gpt-4o-mini
+```
+
+```powershell
+# 3. Prove it works (no model needed — expect SELFTEST OK at the end)
+node src\index.js --selftest
+
+# 4. First tasks
+node src\index.js "list files in Documents and tell me the 3 largest"
+.\run.bat "open notepad" --yes
+.\run.bat
+```
+
+Notes: `run.bat` reuses these exact commands (double-click works too). `--yes`
+means full-agent mode — no prompts, everything audit-logged. REPL commands:
+`model tools skills memory goals learn <topic> selftest exit`.
+
+More one-liners (same PowerShell):
+
+```powershell
+node src\index.js --selftest
+node src\index.js "kill notepad" --yes
+node src\index.js --model llama3.1 --url http://localhost:11434/v1 "list windows"
+node src\index.js --skill wordpress-build "describe my site plan"
+node src\index.js --daemon 300
 ```
 
 ## 2. Local LLM examples
@@ -44,7 +85,7 @@ ollama pull llama3.1
 :: .env: MODEL_API_URL=http://localhost:1234/v1  MODEL_API_KEY=lm-studio  MODEL_NAME=<shown in LM Studio>
 ```
 
-## 3. Tools (55)
+## 3. Tools (56)
 
 Files: `file_list, file_read, file_write, file_edit, file_mkdir, file_delete, file_move, file_copy, file_search`
 Apps/system: `app_launch, app_open, app_list, app_kill, window_list, shell_exec, sys_info`
@@ -58,6 +99,7 @@ Web: `web_fetch, web_post` (downloads, REST APIs e.g. WordPress)
 Computer-use actions: `screen_scroll, mouse_move, screen_double_click, wait`
 Memory: `memory_read, memory_write, memory_forget` (core memory, auto-loads)
 Research: `web_search, web_scrape` (self-learning engine)
+Push: `github_push` (commit + push itself, classifies auth errors with fixes)
 
 ### A. True screen agent
 `screenshot → screen_size → window_focus → screen_click / key_press` operates any app
@@ -96,7 +138,9 @@ Shipped skills (`skills/`, load with `--skill a,b` or `SKILLS=a,b`):
 `drag-drop` (drags/sliders/selections), `system-control` (whole machine),
 `uia-click` (press any button by name — mouse-free),
 `file-fetch-upload` (locked files + uploads), `computer-use` (see below),
-`self-learn` (research gaps mid-task, install skills, update core memory).
+`self-learn` (research gaps mid-task, install skills, update core memory),
+`github` (push itself, device-flow auth, multi-account fixes),
+`agent-modes` (six run modes + parallel learning/executing).
 Add your own: any `skills/<name>.md` works the same way.
 
 ### Computer-Use parity (mirrors OpenAI's model exactly)
@@ -129,7 +173,7 @@ user-takeover anytime, extra care for secrets/payments/admin.
 - **Daemon:** `--daemon 300 [--learn-cycles N]` loops forever (Ctrl+C stops).
 - **Goals:** `memory/GOALS.md` holds standing goals + a learn queue the daemon
   works through; `learn <topic>` in REPL learns on demand.
-- **Linux/macOS:** same agent, same 55 tools — `src/platform.js` +
+- **Linux/macOS:** same agent, same 56 tools — `src/platform.js` +
   `src/tools-linux.js` re-implement shell, screenshot (grim/scrot),
   input (xdotool), services (systemctl), logs (journalctl), wifi (nmcli),
   packages (dpkg), disks (df). Windows-only bits (registry, UIA) report
@@ -149,15 +193,55 @@ them, every step appended to `agent-audit.log`. Your own windows are never touch
 ## 6. Safety
 
 - `REQUIRE_APPROVAL=true` (default): every write/edit/delete/kill/shell asks `[y/N]`. `--yes` / `AUTO_YES=true` skips (automation only).
-- `ALLOWED_ROOTS`: optionally jail files, e.g. `C:\Users\ADMIN\Documents`. Empty = whole machine.
+- `ALLOWED_ROOTS`: optionally jail files, e.g. `C:\Users\You\Documents`. Empty = whole machine.
 - `BLOCKED_PATHS`: default blocks `System32/SysWOW64`; extend as needed.
 - Every task + tool call appends to `agent-audit.log`.
 
-## 5. Files
+## 7. Troubleshooting (copy-paste fixes)
+
+```powershell
+# 'git' is not recognized -> you installed git but this shell is older than it.
+# Close and reopen the terminal, then:
+git --version
+```
+
+```powershell
+# 'Repository not found' on push -> wrong identity, not a missing repo.
+gh auth status            # must show an account with access to the repo
+gh auth login --web --scopes "repo,read:org,workflow"   # re-login if not
+gh auth setup-git --hostname github.com
+```
+
+```powershell
+# 'failed to push ... fetch first' + repo created WITH a readme on GitHub:
+git fetch origin
+git merge origin/main --no-edit -X ours --allow-unrelated-histories
+git push -u origin main
+```
+
+```powershell
+# Agent says 'LLM request failed' -> the 3 .env lines are wrong or the server is down.
+# Re-check MODEL_API_URL / MODEL_API_KEY / MODEL_NAME, and for Ollama run: ollama serve
+```
+
+## 8. Linux quickstart (same agent, same 56 tools)
+
+```bash
+sudo apt install -y nodejs npm git xdotool scrot
+git clone https://github.com/ACHUTHAN17/windows-system-agent.git
+cd windows-system-agent
+node src/index.js --selftest   # win-only tools report SKIP, the rest PASS
+cp .env.example .env && nano .env   # set the same 3 MODEL_ lines
+node src/index.js "summarize the README"
+```
+
+## 9. Files
 
 ```
-package.json  config.example.json  .env.example  run.bat
-src/config.js  src/llm.js  src/tools.js  src/safety.js  src/index.js
+package.json  config.example.json  .env.example  run.bat  push.bat
+src/config.js  src/llm.js  src/tools.js  src/tools-linux.js  src/platform.js
+src/safety.js  src/index.js
+skills/ (10 playbooks)  memory/ (core memory + goals)
 ```
 
 No `npm install` — pure Node ≥ 18 (`fetch` built in). Tested on Node v24.
