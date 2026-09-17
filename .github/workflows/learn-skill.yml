@@ -20,7 +20,7 @@ permissions:
   issues: write
 jobs:
   learn:
-    if: github.event_name == 'workflow_dispatch' || contains(github.event.issue.labels.*.name, 'skill-request')
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.issue.labels.*.name, 'skill-request') || startsWith(github.event.issue.title, 'teach:')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

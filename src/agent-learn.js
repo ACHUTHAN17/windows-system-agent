@@ -72,10 +72,14 @@ async function distillLLM(topic, material) {
 function heuristicSkill(topic, sources) {
   const date = new Date().toISOString().slice(0, 10);
   const steps = [];
+  const seen = new Set();
   for (const s of sources) {
     for (const line of s.text.split(/\. /).slice(0, 60)) {
       const t = line.trim();
-      if (/^(step|tip|note|how|to |use |open |click |press |run |type |first|then|finally|\d+[.)])/i.test(t) && t.length > 30 && t.length < 300) {
+      const key = t.toLowerCase().replace(/[^a-z0-9]+/g, ' ').slice(0, 60);
+      if (seen.has(key)) continue;
+      if (/^(step|tip|note|how|to |use |open |click |press |run |type |first|then|finally|create|rename|select|copy|paste|cut |go |navigate|download|install|enable|disable|set |save|close|right-click|double-click|enter |input|choose|pick )\b/i.test(t) && t.length > 30 && t.length < 300 && !/see sources|follow the official|click here|read more/i.test(t)) {
+        seen.add(key);
         steps.push(t);
         if (steps.length >= 12) break;
       }
