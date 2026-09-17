@@ -16,7 +16,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push.</p>
-<div class="meta"><span class="pill">v1.8.0</span><span class="pill">61 tools</span><span class="pill">16 skills (6 auto-learned)</span><span class="pill">generated 2026-09-17</span></div>
+<div class="meta"><span class="pill">v1.9.0</span><span class="pill">62 tools</span><span class="pill">18 skills (6 auto-learned)</span><span class="pill">generated 2026-09-17</span></div>
 <input id="q" placeholder="filter skills…" oninput="document.querySelectorAll('.card').forEach(c=>c.style.display=c.dataset.name.includes(this.value.toLowerCase())?'':'none')">
 <div class="grid"><article class="card" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
   <h2>agent-modes</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from its own run modes + parallel discipline</div><p class="desc">WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
@@ -109,6 +109,33 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- Logins/payments: stay present, one step at a time, staging before production.</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/browser-dom.md">view source on GitHub</a></article>
+<article class="card" data-name="chat-telegram talk to the agent from your phone like chatgpt mobile: message → it works →">
+  <h2>chat-telegram</h2><span class="badge task">task-built playbook</span><p class="desc">Talk to the agent from your phone like ChatGPT mobile: message → it works →</p>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: chat-telegram — the agent in your pocket (ChatGPT-mobile parity)</h2>
+
+<p>Talk to the agent from your phone like ChatGPT mobile: message → it works →</p>
+<p>it replies + notifies on completion. No GitHub issue needed for quick tasks.</p>
+
+<h3>Setup (2 min, once)</h3>
+<p>1. Telegram → @BotFather → /newbot → copy the token.</p>
+<p>2. <code>.env</code>: <code>TELEGRAM_TOKEN=1234:abc...</code> (optional: <code>TELEGRAM_ALLOW_FROM=&lt;your-chat-id&gt;</code>,</p>
+<p>   else the first chat to message becomes the locked owner).</p>
+<p>3. Run: <code>node src/index.js --chat telegram</code> (keeps running = keeps listening).</p>
+
+<h3>Behavior</h3>
+<div class="li">- One message = one bounded task (<code>maxSteps</code> applies); replies chunked at 4000.</div>
+<div class="li">- <code>/new</code> fresh context · <code>/selftest</code> health check · <code>/stop</code> shutdown · <code>/help</code>.</div>
+<div class="li">- Per-chat memory (<code>memory/chat-&lt;id&gt;.md</code>, last 30 lines reloaded) — it</div>
+<p>  remembers YOUR thread, strangers get "Not authorized".</p>
+<div class="li">- Approvals still fire: without AUTO_YES a destructive step ASKS — answer in</div>
+<p>  the terminal, or run <code>--yes</code> for full-agent (audit-logged).</p>
+
+<h3>Rules</h3>
+<div class="li">- Token = password: <code>.env</code> only, never chat/logs/repo (gitignored).</div>
+<div class="li">- Strangers can't drive it (owner lock); don't forward bot messages with secrets.</div>
+<div class="li">- Long jobs: ask for progress ("status?") — or use <code>--every</code>/daemon + check back.</div>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/chat-telegram.md">view source on GitHub</a></article>
 <article class="card" data-name="computer-use faithful mirror of the computer use model (chatgpt desktop, windows): an agent">
   <h2>computer-use</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from OpenAI Computer Use docs (live web research)</div><p class="desc">Faithful mirror of the Computer Use model (ChatGPT desktop, Windows): an agent</p>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: computer-use — see + operate GUIs exactly like OpenAI Computer Use</h2>
@@ -347,6 +374,23 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- Treat MCP tools as third-party: approve first use, prefer read-only queries.</div>
 <div class="li">- Secrets go in the server <code>env</code> block (never in chat); <code>.env</code> is gitignored.</div>
 <div class="li">- Prefer built-in tools when both exist (fewer moving parts, better errors).</div>
+
+<h3>Connectors (ChatGPT-parity recipes — copy, fill tokens, restart)</h3>
+<p>```json</p>
+<p>MCP_SERVERS={</p>
+<p>"notion": {"command":"npx","args":["-y","@notionhq/notion-mcp-server"],"env":{"NOTION_TOKEN":"ntn_..."}},</p>
+<p>"github": {"command":"npx","args":["-y","@modelcontextprotocol/server-github"],"env":{"GITHUB_PERSONAL_ACCESS_TOKEN":"ghp_..."}},</p>
+<p>"google": {"command":"npx","args":["-y","@chieflatif/google-mcp"],"env":{"MCP_CORE_TOOLS":"1","GOOGLE_CLIENT_ID":"....apps.googleusercontent.com","GOOGLE_CLIENT_SECRET":"..."}},</p>
+<p>"drive": {"command":"npx","args":["-y","@piotr-agier/google-drive-mcp"]},</p>
+<p>"playwright": {"command":"npx","args":["-y","@playwright/mcp"]},</p>
+<p>"files": {"command":"npx","args":["-y","@modelcontextprotocol/server-filesystem","C:/Users/You/Documents"]}</p>
+<p>}</p>
+<p>```</p>
+<div class="li">- Notion: token from notion.so/my-integrations, then share pages with the integration.</div>
+<div class="li">- Google: one Google Cloud OAuth Desktop client; first run opens a browser login, then auto-refreshes. <code>MCP_CORE_TOOLS=1</code> = 24 essential tools.</div>
+<div class="li">- GitHub: classic PAT (<code>repo</code> scope) — same token shape as skills/github.md.</div>
+<div class="li">- Playwright: second browser brain (Microsoft's) for JS-heavy pages.</div>
+<div class="li">- Windows: prefer ABSOLUTE command paths if bare names fail (see skill text).</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/mcp.md">view source on GitHub</a></article>
 <article class="card" data-name="office-docs researched from microsoft graph docs, python-docx/openpyxl/python-pptx guides,">
@@ -419,6 +463,36 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- M365: GET the driveItem back, compare size/updated time.</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/office-docs.md">view source on GitHub</a></article>
+<article class="card" data-name="schedule three schedulers, pick by need. all re-read skills + memory each run.">
+  <h2>schedule</h2><span class="badge task">task-built playbook</span><p class="desc">Three schedulers, pick by need. All re-read skills + memory each run.</p>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: schedule — recurring + event-driven tasks (ChatGPT-Schedules parity)</h2>
+
+<p>Three schedulers, pick by need. All re-read skills + memory each run.</p>
+
+<h3>1. Local interval (`--every`, this machine, offline OK)</h3>
+<p><code>node src/index.js --every 30 "summarize new files in Downloads" [--repeat 3] [--yes]</code></p>
+<p>Runs now, then every N minutes (min 1). <code>--repeat</code> caps runs (testing).</p>
+<p>Good for: reminders, folder watches, heartbeat checks.</p>
+
+<h3>2. Cloud daily (GitHub runners, no PC)</h3>
+<p><code>.github/workflows/daily-sandbox.yml</code> — 03:00 UTC: selftest matrix,</p>
+<p>stalest-skill refresh, docs rebuild+push, page check, health issue on failure.</p>
+<p>Manual: Actions → daily-sandbox → Run workflow (opt skill name).</p>
+
+<h3>3. Event triggers (GitHub-native, ChatGPT-webhook parity)</h3>
+<p><code>.github/workflows/learn-skill.yml</code> — a <code>skill-request</code> issue IS the trigger:</p>
+<p>request → research → install → reply. Same pattern extends to any repo event</p>
+<p>(push/PR/label) with a small workflow. Gmail/Slack events need their MCP</p>
+<p>servers + a poller task (see skills/mcp.md connectors + <code>--every</code>).</p>
+
+<h3>Rules</h3>
+<div class="li">- Scheduled = unattended: prefer read-only; destructive needs AUTO_YES +</div>
+<p>  audit review after (see agent-audit.log), ChatGPT's approval_policy=never</p>
+<p>  equivalent — use sparingly, scope tightly.</p>
+<div class="li">- One writer per file; idempotent tasks (re-runs must be safe).</div>
+<div class="li">- Durable prompt: each run starts cold — put context in skills/memory, not chat.</div>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/schedule.md">view source on GitHub</a></article>
 <article class="card" data-name="self-learn when a task needs knowledge you don't have (new app, new site, new api, stale">
   <h2>self-learn</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned — the research-install-verify loop itself</div><p class="desc">When a task needs knowledge you don't have (new app, new site, new API, stale</p>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: self-learn — teach yourself new skills from the web, live, mid-task</h2>

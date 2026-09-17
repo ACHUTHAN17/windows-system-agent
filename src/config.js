@@ -69,6 +69,8 @@ export function loadConfig(argv = {}) {
     skillToken: env('SKILL_TOKEN', json.skillToken ?? ''),
     skillRepo: env('SKILL_REPO', json.skillRepo ?? 'ACHUTHAN17/windows-system-agent'),
     skillBranch: env('SKILL_BRANCH', json.skillBranch ?? 'main'),
+    telegramToken: env('TELEGRAM_TOKEN', json.telegramToken ?? ''),
+    telegramAllow: env('TELEGRAM_ALLOW_FROM', json.telegramAllow ?? ''),
     shellAllowlist: json.shellAllowlist ?? ['powershell.exe', 'cmd.exe', 'pwsh.exe', 'tasklist.exe', 'taskkill.exe'],
   };
   cfg.apiUrl = String(cfg.apiUrl).replace(/\/+$/, '');

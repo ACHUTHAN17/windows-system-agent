@@ -27,6 +27,8 @@ function parseArgs(raw) {
     else if (a === '--selftest') o.selftest = true;
     else if (a === '--once') o.once = true;
     else if (a === '--plan') o.plan = true;
+    else if (a === '--every') o.everyMin = Number(raw[++i] || 0);
+    else if (a === '--repeat') o.repeatN = Number(raw[++i] || 0);
     else if (a === '--learn') o.learnTopic = raw[++i] || '';
     else if (a === '--daemon') { const v = raw[i + 1]; o.daemonSec = (v !== undefined && !String(v).startsWith('--')) ? Number(raw[++i]) : 300; }
     else if (a === '--learn-cycles') o.learnCycles = Number(raw[++i] || 0);
@@ -339,6 +341,38 @@ async function main() {
     await startDashboard(Number(argv.UI) || 8080);
     return;
   }
+  if ((argv.CHAT || argv.chat) === 'telegram') {
+    const token = cfg.telegramToken || process.env.TELEGRAM_TOKEN;
+    if (!token) { console.log('TELEGRAM_TOKEN missing. Talk to @BotFather, set TELEGRAM_TOKEN in .env, retry.'); return; }
+    const { runTelegram } = await import('./channel-telegram.js');
+    const origLog = console.log;
+    let cap = [];
+    await runTelegram({
+      root: cfg.root, token, allowFrom: cfg.telegramAllow || process.env.TELEGRAM_ALLOW_FROM || '',
+      runTask: (t) => agentTask(t),
+      runSelftest: async () => {
+        cap = []; console.log = (...a) => cap.push(a.join(' '));
+        try { await selftest(); } finally { console.log = origLog; }
+        return cap.join('\n');
+      },
+    });
+    return;
+  }
+  if (argv.everyMin) {
+    const mins = Math.max(1, Number(argv.everyMin) || 60);
+    const stask = argv._.join(' ').trim() || 'memory maintenance: append one status line to MEMORY.md';
+    const maxR = Number(argv.repeatN || 0);
+    console.log(`WinAgent schedule — every ${mins} min${maxR ? `, ${maxR} run(s)` : ''}: ${stask.slice(0, 120)}`);
+    let n = 0;
+    for (;;) {
+      n++;
+      try { console.log(`[run ${n}] ${await agentTask(stask)}`); }
+      catch (e) { console.log(`[run ${n}] error: ${e.message}`); }
+      if (maxR && n >= maxR) break;
+      await new Promise(r => setTimeout(r, mins * 60000));
+    }
+    return;
+  }
   if (argv.selftest) return selftest();
   if (argv.learnTopic !== undefined) {
     try { console.log(await learnCycle(argv.learnTopic)); }
@@ -372,5 +406,17 @@ async function main() {
     process.exitCode = 1;
   }
 }
+
+// Subtask fan-out (Manus-style delegation): tools call cfg.runSubtask.
+// Depth-capped at 2 so delegates can't recurse forever.
+let delegateDepth = 0;
+cfg.runSubtask = async (task, max) => {
+  if (delegateDepth >= 2) throw new Error('delegate depth limit (2) reached');
+  const keep = cfg.maxSteps;
+  if (max) cfg.maxSteps = Math.min(Number(max) || 5, 10);
+  delegateDepth++;
+  try { return await agentTask(String(task)); }
+  finally { delegateDepth--; cfg.maxSteps = keep; }
+};
 
 main();

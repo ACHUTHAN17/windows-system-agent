@@ -1,3 +1,3 @@
-1.8.0
+1.9.0
 2026-09-17
-Office documents (COM Word/Excel/PPT + tab-to-PDF), daily autonomous cloud sandbox (61 tools)
+Telegram phone chat, local cron scheduler, subagent delegation, verified connectors (62 tools)

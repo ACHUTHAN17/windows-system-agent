@@ -26,6 +26,10 @@ Any endpoint that speaks `POST /chat/completions` works (vLLM, OpenRouter, Azure
 | Everyone's gap: no undo button, silent scope creep | Auto `.bak-TIMESTAMP` on every file write/edit (`NO_BACKUP=true` to skip) |
 | Manus/Operator: watchable cloud UI | `--ui 8080` local dashboard: chat, live SSE stream, click-to-approve (loopback only) |
 | cc-switch / MCP ecosystem: hundreds of integrations | `MCP_SERVERS`: any MCP server becomes `mcp_<server>_<tool>` |
+| ChatGPT agent: scheduled tasks + Gmail/Slack/GitHub event triggers | `--every` local intervals + daily-sandbox cloud cron + issue-event triggers; Gmail/Slack via MCP connectors + poller tasks |
+| ChatGPT agent: connectors (Gmail, Drive, GitHub, Notion) | Verified copy-paste MCP recipes in skills/mcp.md (Notion, GitHub, Google Workspace x2, Playwright, SQLite, filesystem) |
+| ChatGPT mobile: chat anywhere + done-notifications | `--chat telegram`: owner-locked phone chat, per-chat memory, completion replies are the notification |
+| OpenClaw: channels, cron, webchat, subagents, Docker | Telegram channel + `--every` cron + `--ui` webchat + `task_delegate` fan-out (depth-capped); Docker/Tailscale sharing = roadmap |
 
 Honest limits: no voice I/O yet, no isolated background desktop sessions (our
 mouse uses YOUR foreground — say the word and it stops), pixel grounding
@@ -103,7 +107,7 @@ ollama pull llama3.1
 :: .env: MODEL_API_URL=http://localhost:1234/v1  MODEL_API_KEY=lm-studio  MODEL_NAME=<shown in LM Studio>
 ```
 
-## 3. Tools (61)
+## 3. Tools (62)
 
 Files: `file_list, file_read, file_write, file_edit, file_mkdir, file_delete, file_move, file_copy, file_search`
 Apps/system: `app_launch, app_open, app_list, app_kill, window_list, shell_exec, sys_info`
@@ -120,6 +124,7 @@ Research: `web_search, web_scrape` (self-learning engine)
 Push: `github_push` (commit + push itself, classifies auth errors with fixes)
 DOM: `browser_dom, browser_click_sel, browser_fill_sel` (structure-first browsing)
 MCP: `mcp_<server>_<tool>` (any MCP server via `MCP_SERVERS` JSON)
+Delegate: `task_delegate` (fresh-loop subtasks, depth-capped fan-out)
 Documents: `office_run` (Word/Excel/PowerPoint via COM, hidden) + `doc_pdf` (any tab → PDF)
 Safety extras: auto `.bak` rollback on file writes · `--plan` approve-before-run · `--ui 8080` web dashboard with click approvals
 
@@ -164,7 +169,8 @@ Shipped skills (`skills/`, load with `--skill a,b` or `SKILLS=a,b`):
 `github` (push itself, device-flow auth, multi-account fixes),
 `agent-modes` (six run modes + parallel learning/executing),
 `dashboard` (web UI), `mcp` (MCP plugins), `browser-dom` (structure browsing),
-`office-docs` (Word/Excel/PowerPoint/PDF locally + M365 cloud).
+`office-docs` (Word/Excel/PowerPoint/PDF locally + M365 cloud),
+`chat-telegram` (phone chat UI), `schedule` (interval/cloud/event triggers).
 Add your own: any `skills/<name>.md` works the same way.
 
 **Skills load from GitHub first — no local files needed.** `SKILL_SOURCE=auto`
@@ -238,7 +244,7 @@ user-takeover anytime, extra care for secrets/payments/admin.
 - **Daemon:** `--daemon 300 [--learn-cycles N]` loops forever (Ctrl+C stops).
 - **Goals:** `memory/GOALS.md` holds standing goals + a learn queue the daemon
   works through; `learn <topic>` in REPL learns on demand.
-- **Linux/macOS:** same agent, same 61 tools — `src/platform.js` +
+- **Linux/macOS:** same agent, same 62 tools — `src/platform.js` +
   `src/tools-linux.js` re-implement shell, screenshot (grim/scrot),
   input (xdotool), services (systemctl), logs (journalctl), wifi (nmcli),
   packages (dpkg), disks (df). Windows-only bits (registry, UIA) report
@@ -301,7 +307,7 @@ git push -u origin main
 # Re-check MODEL_API_URL / MODEL_API_KEY / MODEL_NAME, and for Ollama run: ollama serve
 ```
 
-## 8. Linux quickstart (same agent, same 61 tools)
+## 8. Linux quickstart (same agent, same 62 tools)
 
 ```bash
 sudo apt install -y nodejs npm git xdotool scrot

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.9.0 — 2026-09-17 (vs ChatGPT agent + OpenClaw, full comparison)
+- Phone chat: `--chat telegram` (owner-locked, per-chat memory, /new /selftest /stop).
+- Local cron: `--every <min> "task" [--repeat N]` (ChatGPT-schedules parity).
+- Subagents: `task_delegate` (fresh-loop fan-out, depth-capped at 2).
+- Verified connector recipes (Notion/GitHub/Google/Playwright/SQLite/files).
+- 2 new skills: chat-telegram, schedule. 62 tools, 18 skills.
+
 ## 1.8.0 — 2026-09-17
 - Office documents: `office_run` (Word/Excel/PowerPoint via COM, live-tested
   with real files) + `doc_pdf` (any CDP tab → PDF); `office-docs` skill with

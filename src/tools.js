@@ -1151,6 +1151,19 @@ public class WinDbl { [DllImport("user32.dll")] public static extern bool SetCur
         } catch (e) { return fail(e.message); }
       },
     },
+    {
+      name: 'task_delegate', description: 'Run a subtask in a FRESH agent loop (own history, capped steps) and return its final answer. Fan out complex goals piece by piece. Max depth 2.',
+      args: { task: 'subtask text (required)', maxSteps: 'step cap, default 5, max 10 (opt)' },
+      async run(a, ctx) {
+        try {
+          const sub = (ctx.cfg || {}).runSubtask;
+          if (typeof sub !== 'function') return fail('delegation unavailable in this runtime');
+          if (!String(a.task || '').trim()) return fail('task is required');
+          const ans = await sub(String(a.task), Math.min(Number(a.maxSteps || 5), 10));
+          return ok({ answer: String(ans).slice(0, 6000) });
+        } catch (e) { return fail(e.message); }
+      },
+    },
   ];
   // Linux/macOS override layer: routes each call through tools-linux.js first.
   // On Windows it always falls through, so Windows behavior is unchanged.
