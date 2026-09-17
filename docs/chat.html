@@ -23,8 +23,8 @@ button.ghost{background:#21262d}button:disabled{opacity:.35}
 <a href="./">skills library</a><a href="https://github.com/ACHUTHAN17/windows-system-agent">repo</a>
 <span id="backend"></span><span id="ghstat"></span><button class="ghost" id="cfgbtn" style="margin-left:auto">⚙ settings</button></div>
 <div id="cfg">
-<select id="preset"><option value="free">free cloud models (no key needed)</option><option>openai</option><option>deepseek</option><option>openrouter</option><option>custom</option></select>
-<select id="freemodel"><option>openai</option><option>mistral</option><option>llama</option><option>qwen</option></select>
+<select id="preset"><option value="free">free cloud models (no key needed)</option><option>openai</option><option>deepseek</option><option>openrouter</option><option>github-models</option><option>custom</option></select>
+<select id="freemodel"><option>openai</option><option>openai-fast</option></select>
 <input id="apiurl" placeholder="Custom model URL (paid providers)"><input id="apikey" type="password" placeholder="Custom API key">
 <input id="model" placeholder="Custom model id">
 <input id="repo" placeholder="owner/repo"><input id="pat" type="password" placeholder="GitHub PAT — repo + workflow scopes (for DO buttons)">
@@ -97,11 +97,14 @@ async function talk(){
       hist.push({role:'assistant',content:a});
       b.innerHTML='<div class="who">agent · free · '+esc(entry.label||entry.model)+'</div>'+esc(a).replace(/`([^`]+)`/g,'<code>$1</code>');
     }else{
-      const k=store.get('apikey');
-      if(!k)throw {status:401,why:'custom backend needs its API key — paste it in ⚙, or tap ☆ Free mode'};
-      a=await postChat(store.get('apiurl').replace(/\/+$/,''),store.get('model')||'gpt-4o-mini',k,hist);
+      const isGHM=store.get('preset')==='github-models';
+      const k=store.get('apikey')||(isGHM?store.get('pat'):'');
+      if(!k)throw {status:401,why:(isGHM?'GitHub Models uses your PAT as its key — paste it in ⚙ (needs models permission)':'custom backend needs its API key — paste it in ⚙, or tap ☆ Free mode')};
+      const url=isGHM?'https://models.github.ai/inference':store.get('apiurl').replace(/\/+$/,'');
+      const mdl=store.get('model')||(isGHM?'gpt-4o-mini':'gpt-4o-mini');
+      a=await postChat(url,mdl,k,hist);
       hist.push({role:'assistant',content:a});
-      b.innerHTML='<div class="who">agent · custom</div>'+esc(a).replace(/`([^`]+)`/g,'<code>$1</code>');
+      b.innerHTML='<div class="who">agent · '+(isGHM?'github-models':'custom')+'</div>'+esc(a).replace(/`([^`]+)`/g,'<code>$1</code>');
     }
   }catch(e){
     const s=e.status||'';

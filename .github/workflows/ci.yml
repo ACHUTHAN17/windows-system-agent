@@ -29,3 +29,41 @@ jobs:
       - run: node --check src/config.js
       - run: node --check src/safety.js
       - run: node src/index.js --selftest
+  # Push-triggered autonomy heartbeat: GitHub's `schedule` trigger has proven
+  # unreliable on this repo (active, never fires), but pushes land constantly —
+  # so every push also grows one new interest. Dedup guards make it converge
+  # to a no-op instead of looping. Scheduled workflows remain as backup.
+  autonomy:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: scan own interests
+        id: curious
+        env:
+          MAX_TOPICS: 1
+        run: node src/curiosity.js
+      - name: learn if new
+        env:
+          TOPICS_JSON: ${{ steps.curious.outputs.topics }}
+          LLM_API_URL: ${{ secrets.LLM_API_URL }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
+        run: |
+          if [ -z "$TOPICS_JSON" ] || [ "$TOPICS_JSON" = "[]" ]; then echo "no new interests (converged)"; exit 0; fi
+          echo "$TOPICS_JSON" | jq -r '.[] | "\(.slug)\u001f\(.topic)"' | while IFS=$(printf '\037') read -r slug topic; do
+            echo "=== interest: $topic"
+            TOPIC="$topic" FILENAME_HINT="$slug" node src/agent-learn.js || echo "skip: $topic"
+          done
+          node src/build-docs.js
+      - name: commit + push if changed
+        run: |
+          git config user.name "winagent-bot"
+          git config user.email "winagent-bot@users.noreply.github.com"
+          git add skills docs
+          git diff --cached --quiet && echo "nothing new (converged)" || { git commit -m "autonomy heartbeat: self-taught interest"; for i in 1 2 3; do git pull --rebase --autostash && break; git checkout --theirs -- docs/index.html 2>/dev/null || true; node src/build-docs.js 2>/dev/null || true; git add -A; GIT_EDITOR=true git rebase --continue 2>/dev/null || git rebase --abort; sleep 5; done; git push; }

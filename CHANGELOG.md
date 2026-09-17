@@ -1,6 +1,12 @@
-# Changelog
+﻿# Changelog
 
-## 1.13.0 � 2026-09-17
+## 1.14.0 — 2026-09-17
+- Fixed silent autonomy: GitHub scheduler never fires here, so every push
+  now runs the curiosity heartbeat (converges to no-op when nothing is new).
+- Verified free models: Pollinations openai + openai-fast live; DDG, KeylessAI,
+  mistral/llama/qwen retired as dead; GitHub Models preset in chat (PAT key).
+
+## 1.13.0 � 2026-09-17
 - GitHub skill crawler: imports SKILL.md playbooks from other repos (proven
   live from anthropics/skills), provenance in skills/sources.json (daily).
 - Library filters + sorting: All / Auto-learned / Imported / Task-built,
@@ -87,4 +93,5 @@
 
 ## 1.0.0
 - Core agent: files, apps, shell, sysinfo + pluggable API/local/custom LLM.
+
 

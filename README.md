@@ -215,11 +215,11 @@ anytime: Actions tab → daily-sandbox → Run workflow. The agent tests and
 updates its own skills daily while you sleep.
 
 ### Curiosity: it learns on its OWN interest (no queue, no human)
-`.github/workflows/curiosity.yml` runs **09:00 UTC daily**: scans Hacker News
-top stories + trending new repos + this repo's open issues, scores them against
-what the agent is FOR (Windows, automation, Office, documents, agents…),
-learns the top 2 itself, pushes, and moves on. Skills it already has get
-refreshed instead of duplicated. Manual: Actions → curiosity → Run workflow.
+Every push fires the **autonomy heartbeat** (ci `autonomy` job — GitHub's
+`scheduler` proved unreliable here: registered `active` yet never fired, so
+pushes are the heartbeat now): scans Hacker News top stories + trending repos
++ open issues, learns the top new interest, pushes. Dedup guards make quiet
+periods converge to no-ops instead of loops. Schedules remain as backup.
 
 ### Crawl: learns other repos' skills freely (daily 06:00 UTC)
 `skill-crawler` scans known skill repos (Anthropic's, Superpowers, awesome

@@ -12,13 +12,12 @@ const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace
 const OUT = path.join(ROOT, 'docs', 'models.json');
 const PROBE = 'reply with exactly: scout-ok';
 
-// Curated free endpoints. `models` are tried in order; first live one wins
-// per endpoint. kind: openai-post (POST /chat/completions, no key) or
-// pollinations-get (GET /{prompt}?model= — no preflight, ultra-reliable).
+// Curated free endpoints (all probe-verified 2026-09-17; dead ones removed, not
+// hoped-for). kind: openai-post (POST /chat/completions, no key).
 const SEEDS = [
-  { id: 'pollinations', label: 'Pollinations', url: 'https://text.pollinations.ai/openai', kind: 'openai-post', models: ['openai', 'mistral', 'llama', 'qwen'] },
-  // DuckDuckGo AI chat retired from auto-probing (vqd handshake now rejects
-  // server-side callers 2026-09-17 — probeDDG kept for manual re-testing).
+  { id: 'pollinations', label: 'Pollinations', url: 'https://text.pollinations.ai/openai', kind: 'openai-post', models: ['openai', 'openai-fast'] },
+  // Retired (verified dead): DuckDuckGo AI chat (vqd rejects servers),
+  // Pollinations mistral/llama/qwen (moved off anonymous tier), KeylessAI (DNS dead).
 ];
 
 const SEARCHES = [
