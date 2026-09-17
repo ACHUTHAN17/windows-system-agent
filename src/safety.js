@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import readline from 'node:readline';
 
-const DESTRUCTIVE = new Set(['file_write', 'file_edit', 'file_delete', 'file_move', 'file_copy', 'app_kill', 'shell_exec', 'screen_click', 'screen_double_click', 'screen_drag', 'mouse_move', 'screen_scroll', 'key_press', 'key_tap', 'window_manage', 'browser_navigate', 'browser_click', 'browser_fill', 'reg_write', 'service_control']);
+const DESTRUCTIVE = new Set(['file_write', 'file_edit', 'file_delete', 'file_move', 'file_copy', 'app_kill', 'shell_exec', 'screen_click', 'screen_double_click', 'screen_drag', 'mouse_move', 'screen_scroll', 'key_press', 'key_tap', 'window_manage', 'browser_navigate', 'browser_click', 'browser_fill', 'reg_write', 'service_control', 'office_run', 'doc_pdf']);
 
 function norm(p) {
   try { return path.resolve(p).toLowerCase(); } catch { return String(p).toLowerCase(); }

@@ -1,3 +1,3 @@
-1.7.0
+1.8.0
 2026-09-17
-Web dashboard UI, MCP bridge, DOM browsing, auto-backup rollback, plan mode (59 tools)
+Office documents (COM Word/Excel/PPT + tab-to-PDF), daily autonomous cloud sandbox (61 tools)

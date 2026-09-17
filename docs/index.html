@@ -16,7 +16,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push.</p>
-<div class="meta"><span class="pill">v1.7.0</span><span class="pill">59 tools</span><span class="pill">15 skills (6 auto-learned)</span><span class="pill">generated 2026-09-17</span></div>
+<div class="meta"><span class="pill">v1.8.0</span><span class="pill">61 tools</span><span class="pill">16 skills (6 auto-learned)</span><span class="pill">generated 2026-09-17</span></div>
 <input id="q" placeholder="filter skills…" oninput="document.querySelectorAll('.card').forEach(c=>c.style.display=c.dataset.name.includes(this.value.toLowerCase())?'':'none')">
 <div class="grid"><article class="card" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
   <h2>agent-modes</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from its own run modes + parallel discipline</div><p class="desc">WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
@@ -320,6 +320,76 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- Prefer built-in tools when both exist (fewer moving parts, better errors).</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/mcp.md">view source on GitHub</a></article>
+<article class="card" data-name="office-docs researched from microsoft graph docs, python-docx/openpyxl/python-pptx guides,">
+  <h2>office-docs</h2><span class="badge task">task-built playbook</span><p class="desc">Researched from Microsoft Graph docs, python-docx/openpyxl/python-pptx guides,</p>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: office-docs — generate Word/Excel/PowerPoint/PDF locally AND on M365</h2>
+
+<p>Researched from Microsoft Graph docs, python-docx/openpyxl/python-pptx guides,</p>
+<p>and officekit (MIT, agent-first). Three lanes — pick the smallest that works.</p>
+
+<h3>Lane 1 — installed Office via COM (this machine has Office16: Word+Excel+PPT)</h3>
+<p>Tool: <code>office_run {app: word|excel|powerpoint, script}</code> (hidden, auto-quit).</p>
+<p><code>$app</code> is the COM application; save explicitly; result = script stdout.</p>
+
+<p>```powershell</p>
+<h2>Word report</h2>
+<p>$d=$app.Documents.Add(); $d.Content.Text="Monthly Report`nQ3 beats Q2.";</p>
+<p>$d.SaveAs("C:/Reports/q3.docx"); $d.Close(); "saved"</p>
+<h2>Word -&gt; PDF: $d.ExportAsFixedFormat("C:/Reports/q3.pdf", 17)</h2>
+<h2>Excel fill: $b=$app.Workbooks.Add(); $s=$b.Worksheets.Item(1);</h2>
+<h2>  $s.Cells.Item(1,1)="Product"; $s.Cells.Item(1,2)=250;</h2>
+<h2>  $b.SaveAs("C:/Reports/sales.xlsx"); $b.Close()</h2>
+<h2>PowerPoint deck: $p=$app.Presentations.Add();</h2>
+<h2>  $s=$p.Slides.Add(1, 1); $s.Shapes.Title.TextFrame.TextRange.Text="Q3 Review";</h2>
+<h2>  $p.SaveAs("C:/Reports/q3.pptx"); $p.Close()</h2>
+<h2>PPT -&gt; PDF: $p.ExportAsFixedFormat("C:/Reports/q3.pdf", 2)</h2>
+<p>```</p>
+<p>Rules: Visible=$false already set; always SaveAs+Close (finally Quits anyway);</p>
+<p>verify by reopening (file size &gt; 0, or read back via python/COM).</p>
+
+<h3>Lane 2 — Python stack (no Office needed, best for Linux/CI)</h3>
+<p>Setup once: <code>winget install Python.Python.3.12</code> (reopen shell) then</p>
+<p><code>pip install python-docx openpyxl python-pptx pypdf officekit</code>.</p>
+<div class="li">- <code>python-docx</code>: headings/paragraphs/tables/images/styles (no rendering).</div>
+<div class="li">- <code>openpyxl</code>: cells/formulas/charts/formatting (does NOT recalc — open in</div>
+<p>  Excel/LibreOffice to compute, or write static values for snapshots).</p>
+<div class="li">- <code>python-pptx</code>: text replace, tables, NATIVE charts (editable in PPT);</div>
+<p>  limits: animations, image-crop fidelity, theme-color inheritance, exact</p>
+<p>  designer masters (python-pptx gets internal decks 100%, board packs ~80%).</p>
+<div class="li">- <code>officekit</code> (MIT, agent-first CLI + MCP server!): `officekit text/view/query/</div>
+<p>  set/add/remove/merge/info/validate --json` across all three formats, plus</p>
+<p>  14 MCP tools — wire via <code>MCP_SERVERS</code> (see skills/mcp.md).</p>
+<div class="li">- DOCX→PDF without Office: LibreOffice headless</div>
+<p>  <code>soffice --headless --convert-to pdf file.docx</code>.</p>
+
+<h3>Lane 3 — Microsoft 365 cloud (Graph API, OneDrive/SharePoint)</h3>
+<p>Auth (same device-flow pattern as skills/github.md): register app in</p>
+<p>Entra ID (or use Graph Explorer), delegated flow, scopes</p>
+<p><code>Files.ReadWrite</code> (+<code>Sites.ReadWrite.All</code> for SharePoint). Token in <code>.env</code></p>
+<p>as <code>GRAPH_TOKEN</code> — never in chat/logs/repo.</p>
+<div class="li">- Upload/create (≤250MB): <code>PUT /me/drive/root:/Folder/Name.docx:/content</code></div>
+<p>  (body = binary; larger → createUploadSession, 320KiB-multiple chunks).</p>
+<div class="li">- Download/convert: <code>GET .../content</code>, or <code>.../content?format=pdf</code> for PDF.</div>
+<div class="li">- Excel cells API: <code>/me/drive/items/{id}/workbook/worksheets/{name}/range(address='A1:B2')</code></div>
+<p>  (PATCH values; <code>POST .../calculate</code>).</p>
+<div class="li">- Share: <code>POST .../createLink {type:"view"}</code> → webUrl.</div>
+<div class="li">- Templates: upload a <code>.dotx</code>-filled docx, then PATCH SharePoint listItem</div>
+<p>  fields for metadata (Title/ContentType/custom columns).</p>
+<p>Prefer <code>web_post</code>-style calls (see skills/file-fetch-upload.md upload pattern).</p>
+
+<h3>Lane 0 — instant PDF (no Office, no Python)</h3>
+<p><code>doc_pdf {tab, out}</code> prints any CDP tab to PDF (reports, invoices, receipts).</p>
+<p>HTML file → debug browser → PDF. For Word-format output without Office, write</p>
+<p><code>.doc</code>-compatible HTML (Word opens HTML renamed to .doc) — honest fallback.</p>
+
+<h3>Verify by artifact (always)</h3>
+<div class="li">- DOCX: size&gt;0, reopen (COM/python-docx), paragraph/table counts.</div>
+<div class="li">- XLSX: openpyxl load, expected sheets/cells, formulas present.</div>
+<div class="li">- PPTX: python-pptx slide/shape counts non-zero.</div>
+<div class="li">- PDF: page count via reader, spot-check text.</div>
+<div class="li">- M365: GET the driveItem back, compare size/updated time.</div>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/office-docs.md">view source on GitHub</a></article>
 <article class="card" data-name="self-learn when a task needs knowledge you don't have (new app, new site, new api, stale">
   <h2>self-learn</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned — the research-install-verify loop itself</div><p class="desc">When a task needs knowledge you don't have (new app, new site, new API, stale</p>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: self-learn — teach yourself new skills from the web, live, mid-task</h2>

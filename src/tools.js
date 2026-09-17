@@ -1117,6 +1117,40 @@ public class WinDbl { [DllImport("user32.dll")] public static extern bool SetCur
         } catch (e) { return fail(e.message); }
       },
     },
+    {
+      name: 'doc_pdf', description: 'Render a CDP tab to PDF (Page.printToPDF — zero dependencies). For reports, invoices, web receipts.',
+      args: { port: 'debug port, default 9222 (opt)', tab: 'tab id prefix (required)', out: 'absolute .pdf path (required)', landscape: 'true/false (opt)' },
+      async run(a) {
+        try {
+          if (!String(a.out || '').trim()) return fail('out path is required');
+          const t = await cdpFindTab(Number(a.port || 9222), String(a.tab));
+          const r = await cdpSend(t.webSocketDebuggerUrl, 'Page.printToPDF', {
+            landscape: !!a.landscape, printBackground: true,
+            paperWidth: 8.27, paperHeight: 11.69, marginTop: 0.4, marginBottom: 0.4, marginLeft: 0.4, marginRight: 0.4,
+          }, 60000);
+          const b64 = (r && r.data) || '';
+          if (!b64) return fail('empty PDF from browser', 'Reload the tab and retry.');
+          await fsp.mkdir(path.dirname(a.out), { recursive: true });
+          await fsp.writeFile(a.out, Buffer.from(b64, 'base64'));
+          return ok({ path: a.out, bytes: Buffer.byteLength(b64, 'base64') });
+        } catch (e) { return fail(e.message, 'Launch a debug browser first (browser_debug_launch).'); }
+      },
+    },
+    {
+      name: 'office_run', description: 'Drive installed MS Office via COM (Word/Excel/PowerPoint): create, fill, save, export PDF. Runs hidden. DESTRUCTIVE — needs approval.',
+      args: { app: 'word|excel|powerpoint (required)', script: 'PowerShell using $app, e.g. $d=$app.Documents.Add(); ...; $d.SaveAs("C:/x.docx") (required)', task: 'one-line description for audit (opt)' },
+      async run(a, ctx) {
+        try {
+          const app = String(a.app || '').toLowerCase();
+          const prog = { word: 'Word.Application', excel: 'Excel.Application', powerpoint: 'PowerPoint.Application' }[app];
+          if (!prog) return fail('app must be word|excel|powerpoint');
+          if (!String(a.script || '').trim()) return fail('script is required (see skills/office-docs.md for patterns)');
+          const code = `$ErrorActionPreference='Stop'; $prog='${prog}'; try { $app=New-Object -ComObject $prog } catch { throw 'Office ${app} not available ('+$_.Exception.Message+'). Install Microsoft 365/Office, or use the python stack (see skills/office-docs.md).' }; try { try { $app.Visible=$false } catch {}; try { $app.DisplayAlerts=0 } catch {}; ${String(a.script)}; 'office-ok' } finally { try { $app.Quit() } catch {}; try { [Runtime.InteropServices.Marshal]::ReleaseComObject($app) | Out-Null } catch {}; [GC]::Collect(); [GC]::WaitForPendingFinalizers() }`;
+          const { stdout } = await ps(code, 120000);
+          return ok({ app, result: stdout.slice(0, 4000) });
+        } catch (e) { return fail(e.message); }
+      },
+    },
   ];
   // Linux/macOS override layer: routes each call through tools-linux.js first.
   // On Windows it always falls through, so Windows behavior is unchanged.

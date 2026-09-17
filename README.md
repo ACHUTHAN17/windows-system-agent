@@ -103,7 +103,7 @@ ollama pull llama3.1
 :: .env: MODEL_API_URL=http://localhost:1234/v1  MODEL_API_KEY=lm-studio  MODEL_NAME=<shown in LM Studio>
 ```
 
-## 3. Tools (56)
+## 3. Tools (61)
 
 Files: `file_list, file_read, file_write, file_edit, file_mkdir, file_delete, file_move, file_copy, file_search`
 Apps/system: `app_launch, app_open, app_list, app_kill, window_list, shell_exec, sys_info`
@@ -120,6 +120,7 @@ Research: `web_search, web_scrape` (self-learning engine)
 Push: `github_push` (commit + push itself, classifies auth errors with fixes)
 DOM: `browser_dom, browser_click_sel, browser_fill_sel` (structure-first browsing)
 MCP: `mcp_<server>_<tool>` (any MCP server via `MCP_SERVERS` JSON)
+Documents: `office_run` (Word/Excel/PowerPoint via COM, hidden) + `doc_pdf` (any tab → PDF)
 Safety extras: auto `.bak` rollback on file writes · `--plan` approve-before-run · `--ui 8080` web dashboard with click approvals
 
 ### A. True screen agent
@@ -161,7 +162,9 @@ Shipped skills (`skills/`, load with `--skill a,b` or `SKILLS=a,b`):
 `file-fetch-upload` (locked files + uploads), `computer-use` (see below),
 `self-learn` (research gaps mid-task, install skills, update core memory),
 `github` (push itself, device-flow auth, multi-account fixes),
-`agent-modes` (six run modes + parallel learning/executing).
+`agent-modes` (six run modes + parallel learning/executing),
+`dashboard` (web UI), `mcp` (MCP plugins), `browser-dom` (structure browsing),
+`office-docs` (Word/Excel/PowerPoint/PDF locally + M365 cloud).
 Add your own: any `skills/<name>.md` works the same way.
 
 **Skills load from GitHub first — no local files needed.** `SKILL_SOURCE=auto`
@@ -197,6 +200,14 @@ Smarter distills: repo Settings → Secrets → Actions → add `LLM_API_URL` /
 `LLM_API_KEY` / `LLM_MODEL` (any OpenAI-compatible endpoint — free tiers work).
 Without keys you get the heuristic pass (official-docs steps, still useful).
 
+### Daily autonomous sandbox (no human, no PC)
+`.github/workflows/daily-sandbox.yml` runs **03:00 UTC every day** on GitHub's
+own runners: full selftest on Windows + Ubuntu, refresh of the stalest skill
+(web research → field update → docs rebuild → push), live-page HTTP check.
+Failures open/comment a `sandbox-health` issue with the run link. Trigger
+anytime: Actions tab → daily-sandbox → Run workflow. The agent tests and
+updates its own skills daily while you sleep.
+
 ### Computer-Use parity (mirrors OpenAI's model exactly)
 
 `--skill computer-use` loads the loop: **screenshot → ground → act → verify**,
@@ -227,7 +238,7 @@ user-takeover anytime, extra care for secrets/payments/admin.
 - **Daemon:** `--daemon 300 [--learn-cycles N]` loops forever (Ctrl+C stops).
 - **Goals:** `memory/GOALS.md` holds standing goals + a learn queue the daemon
   works through; `learn <topic>` in REPL learns on demand.
-- **Linux/macOS:** same agent, same 56 tools — `src/platform.js` +
+- **Linux/macOS:** same agent, same 61 tools — `src/platform.js` +
   `src/tools-linux.js` re-implement shell, screenshot (grim/scrot),
   input (xdotool), services (systemctl), logs (journalctl), wifi (nmcli),
   packages (dpkg), disks (df). Windows-only bits (registry, UIA) report
@@ -290,7 +301,7 @@ git push -u origin main
 # Re-check MODEL_API_URL / MODEL_API_KEY / MODEL_NAME, and for Ollama run: ollama serve
 ```
 
-## 8. Linux quickstart (same agent, same 56 tools)
+## 8. Linux quickstart (same agent, same 61 tools)
 
 ```bash
 sudo apt install -y nodejs npm git xdotool scrot

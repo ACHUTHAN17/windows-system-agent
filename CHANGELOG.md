@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.0 — 2026-09-17
+- Office documents: `office_run` (Word/Excel/PowerPoint via COM, live-tested
+  with real files) + `doc_pdf` (any CDP tab → PDF); `office-docs` skill with
+  COM / python / M365-Graph lanes. 61 tools, 16 skills.
+- Daily autonomous sandbox: scheduled Actions run selftest matrix
+  (win+ubuntu), refresh the stalest skill, rebuild+push docs, check the live
+  page, and file a `sandbox-health` issue on failure. Zero human, zero PC.
+
 ## 1.7.0 — 2026-09-17 (vs Manus / Claude / Operator / OpenClaw / Gemini)
 - Web dashboard `--ui 8080`: chat, live SSE stream, click-to-approve (loopback).
 - MCP bridge: any MCP server becomes `mcp_<server>_<tool>` (Windows .cmd-safe).
