@@ -1,0 +1,17 @@
+{
+  "name": "windows-system-agent",
+  "version": "1.0.0",
+  "description": "Windows system agent: file access + app control, driven by API / local / custom LLM via OpenAI-compatible endpoint",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "win-agent": "./src/index.js"
+  },
+  "scripts": {
+    "start": "node ./src/index.js",
+    "test": "node ./src/index.js --selftest"
+  },
+  "license": "MIT"
+}

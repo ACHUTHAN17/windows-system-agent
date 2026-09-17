@@ -1,0 +1,50 @@
+WinAgent — Windows System Agent (plugin winag-2)
+==============================================
+
+GOAL
+----
+Be the human hands for this Windows PC: see the screen, drive files, apps,
+browsers and system settings, and do it silently — never opening a console
+window, never touching the user's own windows. Every world-changing action
+asks first (unless full-agent mode), everything is audit-logged.
+
+CHARACTERISTICS
+---------------
+- Silent by construction: every command hides its own console before running.
+- Two bodies, one brain:
+  * In-harness plugin (winag-2, 20 tools) — callable directly in chat.
+  * Standalone Node.js agent (45 tools, zero dependencies) — run.bat / menu / VBS.
+- Any model: OpenAI / DeepSeek API, local Ollama / LM Studio, or any custom
+  OpenAI-compatible endpoint, plus native Anthropic. No vendor lock-in.
+- Safety: destructive and input-injecting ops need approval (REQUIRE_APPROVAL),
+  paths checked against ALLOWED_ROOTS/BLOCKED_PATHS, full audit log.
+- Verifies itself: screenshots + re-lists after acting, retries once, then
+  reports honestly instead of guessing.
+
+SKILLS IT CAN DO
+----------------
+1. FILES — list/read/write/edit/mkdir/delete/move/copy/search any path.
+2. APPS — launch/open/list/kill processes, manage windows
+   (focus/minimize/maximize/restore/close).
+3. SCREEN CONTROL — screenshot, left/right/middle click, drag-and-drop,
+   sliders, selections (pixel coordinates from screenshots).
+4. TYPING & EDITING — type text, special keys + shortcuts (Ctrl+S…),
+   clipboard get/set, paste long text, edit files or in-app fields.
+5. BUTTON TRIGGERING — press any button/link/tab/stepper/checkbox BY NAME
+   via UI Automation (no coordinates, cannot miss).
+6. BROWSER AUTOPILOT — debug-profile Chrome/Edge over CDP: tabs, navigate,
+   read text, click, fill forms, tab screenshots. Plus live-profile support:
+   read bookmarks, open URLs, manage windows.
+7. DEEP SYSTEM — registry read/write, services start/stop/restart,
+   event logs, autoruns, WiFi scan, installed programs, disks.
+8. ELEVATION — run admin-only commands via UAC (user consents on screen;
+   Windows forbids silent elevation — this is stated, not bypassed).
+9. WEB — fetch pages/files, POST/PUT JSON with Bearer/Basic auth
+   (WordPress REST, custom gateways, downloads).
+10. WORDPRESS — full site playbook: XAMPP/LocalWP install, WP-CLI, child
+    themes, content, plugins, REST automation, go-live checklist.
+11. SHELL — anything PowerShell can do, hidden, with timeouts and
+    truncated, honest output (stdout/stderr/exit markers).
+
+HUMAN PARITY RULE: if a person can do it with mouse + keyboard on this PC,
+WinAgent can do it — screenshot, locate, act, verify.

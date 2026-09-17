@@ -1,0 +1,22 @@
+# secrets + local config (never commit)
+.env
+config.json
+*.log
+agent-audit.log
+
+# runtime artifacts
+winshot-*.png
+test-*.png
+test-shot.png
+bm_tmp.json
+bm12.json
+tmp/
+
+# node
+node_modules/
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

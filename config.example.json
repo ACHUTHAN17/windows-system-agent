@@ -1,0 +1,16 @@
+{
+  "provider": "openai-compatible",
+  "apiUrl": "http://localhost:11434/v1",
+  "apiKey": "ollama",
+  "model": "llama3.1",
+  "extraHeaders": {},
+  "maxSteps": 15,
+  "temperature": 0.2,
+  "timeoutMs": 60000,
+  "requireApproval": true,
+  "autoYes": false,
+  "allowedRoots": [],
+  "blockedPaths": ["C:\\Windows\\System32", "C:\\Windows\\SysWOW64"],
+  "auditLog": "./agent-audit.log",
+  "shellAllowlist": ["powershell.exe", "cmd.exe", "pwsh.exe", "tasklist.exe", "taskkill.exe"]
+}

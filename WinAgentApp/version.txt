@@ -1,0 +1,3 @@
+1.3.0
+2026-09-17
+20 in-harness tools (winag-2) + 45 standalone tools + 6 skills + silent runner + sudo + app + repo files
