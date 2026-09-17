@@ -17,7 +17,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.20.0</span><span class="pill">63 tools</span><span class="pill">40 skills (6 auto · 8 imported · 26 built)</span><span class="pill">generated 2026-09-17</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">41 skills (6 auto · 8 imported · 27 built)</span><span class="pill">generated 2026-09-17</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
@@ -1604,6 +1604,65 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- M365: GET the driveItem back, compare size/updated time.</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/office-docs.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-17" data-updated="2026-09-17" data-name="open-models researched from opencode (sst/opencode, mit ~170k stars), openrouter docs,">
+  <h2>open-models</h2><span class="badge task">task-built playbook</span><p class="desc">Researched from OpenCode (sst/opencode, MIT ~170k stars), OpenRouter docs,</p>
+  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: open-models — the LLM landscape, free tiers, omni-routing (researched live)</h2>
+
+<p>Researched from OpenCode (sst/opencode, MIT ~170k stars), OpenRouter docs,</p>
+<p>LangGraph/CrewAI/Agents-SDK comparisons, and our own probe logs. Two jobs:</p>
+<p>pick the right model per task, and never pay when free suffices.</p>
+
+<h3>Free / keyless (verified live by our scout — see docs/models.json)</h3>
+<div class="li">- <strong>Pollinations</strong> (<code>https://text.pollinations.ai/openai</code>, models <code>openai</code>,</div>
+<p>  <code>openai-fast</code> = GPT-OSS 20B): zero key, OpenAI-compatible POST + GET fallback.</p>
+<p>  Our default. Respect it: no hot loops, cache answers.</p>
+<div class="li">- <strong>GitHub Models</strong> (<code>https://models.github.ai/inference</code>, PAT as key, free</div>
+<p>  quotas): <code>gpt-4o-mini</code>, <code>gpt-4o</code>, <code>DeepSeek-V3</code>, <code>Llama-3.3-70B</code>… — the</p>
+<p>  biggest free models available. Chat preset built in.</p>
+<div class="li">- Dead (retired from scout, don't retry blindly): DuckDuckGo AI (vkd blocks</div>
+<p>  servers), KeylessAI (DNS dead), Pollinations mistral/llama/qwen (left the</p>
+<p>  anonymous tier), crax.lol (blocks cross-origin browsers).</p>
+
+<h3>Cheap with one key</h3>
+<div class="li">- <strong>OpenRouter</strong> (<code>https://openrouter.ai/api/v1</code>, one key): hundreds of models,</div>
+<p>  many with <code>:free</code> suffix variants (rate-limited, key still required).</p>
+<p>  <code>.env</code>: <code>MODEL_API_URL=https://openrouter.ai/api/v1</code>,</p>
+<p>  <code>MODEL_API_KEY=sk-or-…</code>, <code>MODEL_NAME=&lt;vendor&gt;/&lt;model&gt;:free</code>.</p>
+<div class="li">- <strong>Puter.js</strong>: 400+ models browser-side, but visitors pay via Puter account —</div>
+<p>  not zero-friction. Roadmap only, never the default.</p>
+
+<h3>Local (private, offline, $0)</h3>
+<div class="li">- <strong>Ollama</strong> (<code>http://localhost:11434/v1</code>, <code>ollama serve</code> + <code>ollama pull llama3.1</code>),</div>
+<p>  <strong>LM Studio</strong> (<code>http://localhost:1234/v1</code>). Default <code>.env</code> targets Ollama.</p>
+
+<h3>Omni-routing (the right model per call, automatically)</h3>
+<p>1. Chat page: Free → GitHub Models → Custom fallback chain, registry-driven.</p>
+<p>2. Standalone: primary <code>.env</code> model + opt-in <code>LLM_FALLBACK_URL</code></p>
+<p>   (+<code>LLM_FALLBACK_MODEL</code>, <code>LLM_FALLBACK_KEY</code>) — one automatic retry on primary</p>
+<p>   failure. Free default fallback: Pollinations.</p>
+<p>3. Cost rule: cheap/keyless for loops, research, drafts; paid flagship only for</p>
+<p>   hard reasoning. Never loop a paid model on retries without a cap.</p>
+
+<h3>What we adopt from the open-source world</h3>
+<div class="li">- <strong>OpenCode</strong>: build/plan modes (= our <code>--yes</code>/<code>--plan</code>), <code>{server}_{tool}</code> MCP</div>
+<p>  names (= our <code>mcp_&lt;server&gt;_&lt;tool&gt;</code>), <code>AGENTS.md</code> project rules (= auto-loaded</p>
+<p>  into our prompt), model-agnostic harness (our llm.js), TUI+desktop+mobile</p>
+<p>  surfaces (= our REPL/dashboard/Telegram/chat).</p>
+<div class="li">- <strong>LangGraph</strong>: checkpoint/resume + audit trails → our <code>agent-audit.log</code> +</div>
+<p>  core memory (full time-travel = roadmap).</p>
+<div class="li">- <strong>CrewAI</strong>: role crews + A2A interop → our <code>task_delegate</code> fan-out (A2A = roadmap).</div>
+<div class="li">- <strong>OpenAI Agents SDK</strong>: handoffs + guardrails + tracing → our delegate +</div>
+<p>  approvals + audit.</p>
+<div class="li">- <strong>models.dev</strong>: community model registry → our <code>docs/models.json</code> + scout.</div>
+<div class="li">- <strong>officekit</strong> (MIT, agent-first): already wired as MCP/filesystem path.</div>
+
+<h3>Rules</h3>
+<div class="li">- Never commit keys (<code>.env</code> gitignored; Actions secrets for cloud).</div>
+<div class="li">- Verify a "free" endpoint with <code>reply with exactly: scout-ok</code> before trusting it.</div>
+<div class="li">- Record what works in <code>docs/models.json</code> via the scout — never hardcode hope.</div>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/open-models.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T14:03:47.000Z" data-updated="2026-09-17T14:03:47.000Z" data-name="schedule three schedulers, pick by need. all re-read skills + memory each run.">
   <h2>schedule</h2><span class="badge task">task-built playbook</span><p class="desc">Three schedulers, pick by need. All re-read skills + memory each run.</p>
   <div class="dates">added 2026-09-17 14:03 · updated 2026-09-17 14:03</div>
@@ -1810,9 +1869,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.geeksforgeeks.org/computer-science-fundamentals/computer-shortcut-keys/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/teach-keyboard-shortcuts.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17" data-updated="2026-09-17" data-name="teach-what-should-the-agent-learn-teach- auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-17T16:08:07.000Z" data-updated="2026-09-17T16:08:07.000Z" data-name="teach-what-should-the-agent-learn-teach- auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>teach-what-should-the-agent-learn-teach-</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <div class="dates">added 2026-09-17 16:08 · updated 2026-09-17 16:08</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: ### What should the agent learn?</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>

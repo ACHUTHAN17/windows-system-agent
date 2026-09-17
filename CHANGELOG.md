@@ -1,4 +1,10 @@
-﻿# Changelog
+# Changelog
+
+## 1.21.0 — 2026-09-17
+- Learned LLMs/OpenCode/OpenRouter/open-source world → `open-models` skill.
+- Omni-route fallback: one automatic retry on LLM_FALLBACK_URL (proven live).
+- AGENTS.md project rules auto-load (OpenCode convention).
+- Compulsory self-update: stale-brain guard fails loudly after 24h stillness.
 
 ## 1.20.0 — 2026-09-17
 - Chat model picker rework: one backend row, per-backend model list,

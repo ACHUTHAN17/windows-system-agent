@@ -47,3 +47,25 @@ jobs:
           NUM=$(gh issue list --search "sandbox-health in:title" --state open --json number -q '.[0].number')
           BODY="Daily sandbox FAILED — $RUN"
           if [ -z "$NUM" ]; then gh issue create --title "sandbox-health: daily run failed" --body "$BODY" --label "sandbox-health"; else gh issue comment "$NUM" --body "$BODY"; fi
+  # COMPULSORY self-update guard: the brain MUST move. If no skill/model/doc
+  # change landed in the last 24h, file a stale-brain issue and fail loudly —
+  # silence is not an option.
+  update-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 50
+      - name: brain moved in the last 24h?
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          N=$(git log --since="24 hours ago" --oneline -- skills/ docs/models.json docs/index.html | wc -l)
+          echo "brain-changing commits in 24h: $N"
+          if [ "$N" -eq 0 ]; then
+            RUN="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            NUM=$(gh issue list --search "stale-brain in:title" --state open --json number -q '.[0].number')
+            BODY="Brain hasn't changed in 24h — autonomy loops may be stuck. $RUN"
+            if [ -z "$NUM" ]; then gh issue create --title "stale-brain: no self-update in 24h" --body "$BODY" --label "stale-brain"; else gh issue comment "$NUM" --body "$BODY"; fi
+            exit 1
+          fi

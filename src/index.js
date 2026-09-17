@@ -133,6 +133,19 @@ function loadMemory(cfg) {
   } catch { return ''; }
 }
 
+// Project rules (OpenCode AGENTS.md convention): repo-local instructions the
+// agent must follow, loaded from the project root and the launch directory.
+function loadProjectRules(cfg) {
+  let out = '';
+  for (const dir of [cfg.root, process.cwd()]) {
+    try {
+      const p = path.join(dir, 'AGENTS.md');
+      if (fs.existsSync(p)) out += `\n\nPROJECT RULES (${p} — follow these):\n` + fs.readFileSync(p, 'utf8').slice(0, 4000);
+    } catch {}
+  }
+  return out;
+}
+
 function popLearnQueue() {
   try {
     const p = path.join(cfg.root, 'memory', 'learn-queue.md');
@@ -285,7 +298,7 @@ async function agentTask(task) {
     } catch {}
   }
   const history = [
-    { role: 'system', content: systemPrompt(toolPrompt(tools)) + skillPrompt(skills) + catalogPrompt(catalog) + loadMemory(cfg) },
+    { role: 'system', content: systemPrompt(toolPrompt(tools)) + skillPrompt(skills) + catalogPrompt(catalog) + loadMemory(cfg) + loadProjectRules(cfg) },
     { role: 'user', content: task },
   ];
   if (argv.plan) {

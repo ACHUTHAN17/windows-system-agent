@@ -4,8 +4,24 @@
 //  - "anthropic": native Anthropic Messages API.
 // Uses global fetch (Node 18+). No SDK dependencies.
 export async function chat(cfg, messages) {
-  if (cfg.provider === 'anthropic') return chatAnthropic(cfg, messages);
-  return chatOpenAICompatible(cfg, messages);
+  try {
+    if (cfg.provider === 'anthropic') return await chatAnthropic(cfg, messages);
+    return await chatOpenAICompatible(cfg, messages);
+  } catch (e) {
+    // Omni-route: one automatic retry on a fallback endpoint (opt-in).
+    // Free default: LLM_FALLBACK_URL=https://text.pollinations.ai/openai
+    const fb = (cfg.fallbackUrl || process.env.LLM_FALLBACK_URL || '').replace(/\/+$/, '');
+    if (!fb || cfg._fallbackUsed) throw e;
+    cfg._fallbackUsed = true;
+    try {
+      return await chatOpenAICompatible({
+        ...cfg,
+        apiUrl: fb,
+        model: cfg.fallbackModel || process.env.LLM_FALLBACK_MODEL || 'openai',
+        apiKey: cfg.fallbackKey ?? process.env.LLM_FALLBACK_KEY ?? '',
+      }, messages);
+    } finally { cfg._fallbackUsed = false; }
+  }
 }
 
 async function chatOpenAICompatible(cfg, messages) {

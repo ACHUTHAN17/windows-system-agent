@@ -324,6 +324,12 @@ Silent-running rules the agent follows: PowerShell always hidden (`windowsHide`)
 no interactive consoles ever, apps launch visibly only when the task needs eyes on
 them, every step appended to `agent-audit.log`. Your own windows are never touched.
 
+Omni-routing: `LLM_FALLBACK_URL` (+`_MODEL`, `_KEY`) retries once on another
+endpoint when primary fails (free default: Pollinations). `AGENTS.md` in the
+project root or launch dir auto-loads as project rules (OpenCode convention).
+Self-update is compulsory: the daily sandbox fails loudly with a `stale-brain`
+issue if the brain hasn't moved in 24h.
+
 ## 6. Safety
 
 - `REQUIRE_APPROVAL=true` (default): every write/edit/delete/kill/shell asks `[y/N]`. `--yes` / `AUTO_YES=true` skips (automation only).

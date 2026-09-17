@@ -71,6 +71,9 @@ export function loadConfig(argv = {}) {
     skillBranch: env('SKILL_BRANCH', json.skillBranch ?? 'main'),
     telegramToken: env('TELEGRAM_TOKEN', json.telegramToken ?? ''),
     telegramAllow: env('TELEGRAM_ALLOW_FROM', json.telegramAllow ?? ''),
+    fallbackUrl: env('LLM_FALLBACK_URL', json.fallbackUrl ?? ''),
+    fallbackModel: env('LLM_FALLBACK_MODEL', json.fallbackModel ?? 'openai'),
+    fallbackKey: env('LLM_FALLBACK_KEY', json.fallbackKey ?? ''),
     shellAllowlist: json.shellAllowlist ?? ['powershell.exe', 'cmd.exe', 'pwsh.exe', 'tasklist.exe', 'taskkill.exe'],
   };
   cfg.apiUrl = String(cfg.apiUrl).replace(/\/+$/, '');
