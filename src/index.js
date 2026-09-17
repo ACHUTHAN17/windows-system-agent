@@ -75,11 +75,26 @@ async function runTool(name, args) {
   return res;
 }
 
+function loadMemory(cfg) {
+  try {
+    const dir = path.join(cfg.root, 'memory');
+    if (!fs.existsSync(dir)) return '';
+    let out = '';
+    const main = path.join(dir, 'MEMORY.md');
+    if (fs.existsSync(main)) out += '\n\nCORE MEMORY (persists across runs — read it, use it, keep it fresh with memory_write):\n' + fs.readFileSync(main, 'utf8').slice(0, 6000);
+    const others = fs.readdirSync(dir).filter(f => f.endsWith('.md') && f !== 'MEMORY.md').slice(0, 10);
+    for (const f of others) {
+      try { out += `\n\n--- memory/${f} ---\n` + fs.readFileSync(path.join(dir, f), 'utf8').slice(0, 3000); } catch {}
+    }
+    return out;
+  } catch { return ''; }
+}
+
 async function agentTask(task) {
   const skills = loadSkills(argv, cfg);
   if (skills.length) console.log(`  [skills] ${skills.map(s => s.name).join(', ')}`);
   const history = [
-    { role: 'system', content: systemPrompt(toolPrompt(tools)) + skillPrompt(skills) },
+    { role: 'system', content: systemPrompt(toolPrompt(tools)) + skillPrompt(skills) + loadMemory(cfg) },
     { role: 'user', content: task },
   ];
   for (let step = 1; step <= cfg.maxSteps; step++) {
@@ -100,7 +115,7 @@ async function selftest() {
   const sk = loadSkills(argv, cfg);
   console.log(` skills: ${sk.length ? sk.map(s => s.name + ' (' + s.text.length + ' chars)').join(', ') : '(none loaded — try --skill wordpress-build)'}`);
   const checks = [];
-  for (const [name, args] of [['sys_info', {}], ['file_list', { path: cfg.root }], ['app_list', {}], ['window_list', {}], ['file_fetch', { path: cfg.root + '/package.json', outName: 'selftest-fetch.json' }], ['wait', { seconds: 1 }]]) {
+  for (const [name, args] of [['sys_info', {}], ['file_list', { path: cfg.root }], ['app_list', {}], ['window_list', {}], ['file_fetch', { path: cfg.root + '/package.json', outName: 'selftest-fetch.json' }], ['wait', { seconds: 1 }], ['memory_write', { text: 'selftest probe', topic: 'selftest' }], ['memory_read', { topic: 'selftest' }], ['memory_forget', { topic: 'selftest' }]]) {
     try {
       const r = await byName[name].run(args, { cfg });
       checks.push(`${r.ok ? 'PASS' : 'FAIL'} ${name}`);
@@ -122,6 +137,7 @@ async function repl() {
     if (line === 'model') { console.log(' ' + printActiveModel(cfg)); continue; }
     if (line === 'tools') { console.log(' ' + Object.keys(byName).join(', ')); continue; }
     if (line === 'skills') { try { console.log(' ' + fs.readdirSync(path.join(cfg.root, 'skills')).filter(f => f.endsWith('.md')).join(', ')); } catch { console.log(' (no skills dir)'); } continue; }
+    if (line === 'memory') { try { console.log(fs.readFileSync(path.join(cfg.root, 'memory', 'MEMORY.md'), 'utf8').slice(0, 2000)); } catch { console.log(' (no memory yet)'); } continue; }
     if (line === 'selftest') { await selftest(); continue; }
     try { console.log('\n' + await agentTask(line) + '\n'); }
     catch (e) { console.log('\nERROR: ' + e.message + '\n'); }

@@ -49,6 +49,10 @@ SKILLS IT CAN DO
     verify, with the exact action vocabulary (screenshot/click/double_click/
     drag/keypress/move/scroll/type/wait), foreground honesty, per-app
     always-allow approvals, and the full safety contract.
+13. SELF-LEARNING + CORE MEMORY — memory/MEMORY.md auto-loads every run and
+    the agent keeps it fresh; gaps trigger web_search → web_scrape → distill
+    → install new skill/memory note → verify → resume. It updates itself
+    constantly, whenever needed, with anti-poisoning rules.
 
 HUMAN PARITY RULE: if a person can do it with mouse + keyboard on this PC,
 WinAgent can do it — screenshot, locate, act, verify.

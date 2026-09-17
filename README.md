@@ -44,7 +44,7 @@ ollama pull llama3.1
 :: .env: MODEL_API_URL=http://localhost:1234/v1  MODEL_API_KEY=lm-studio  MODEL_NAME=<shown in LM Studio>
 ```
 
-## 3. Tools (50)
+## 3. Tools (55)
 
 Files: `file_list, file_read, file_write, file_edit, file_mkdir, file_delete, file_move, file_copy, file_search`
 Apps/system: `app_launch, app_open, app_list, app_kill, window_list, shell_exec, sys_info`
@@ -56,6 +56,8 @@ Human input: `screen_drag, key_tap, clipboard_write`
 System control: `window_manage`
 Web: `web_fetch, web_post` (downloads, REST APIs e.g. WordPress)
 Computer-use actions: `screen_scroll, mouse_move, screen_double_click, wait`
+Memory: `memory_read, memory_write, memory_forget` (core memory, auto-loads)
+Research: `web_search, web_scrape` (self-learning engine)
 
 ### A. True screen agent
 `screenshot → screen_size → window_focus → screen_click / key_press` operates any app
@@ -93,7 +95,8 @@ Shipped skills (`skills/`, load with `--skill a,b` or `SKILLS=a,b`):
 `wordpress-build` (sites), `typing-editing` (type/edit/paste),
 `drag-drop` (drags/sliders/selections), `system-control` (whole machine),
 `uia-click` (press any button by name — mouse-free),
-`file-fetch-upload` (locked files + uploads), `computer-use` (see below).
+`file-fetch-upload` (locked files + uploads), `computer-use` (see below),
+`self-learn` (research gaps mid-task, install skills, update core memory).
 Add your own: any `skills/<name>.md` works the same way.
 
 ### Computer-Use parity (mirrors OpenAI's model exactly)

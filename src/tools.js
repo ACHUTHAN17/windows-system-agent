@@ -19,6 +19,17 @@ async function ps(command, timeout = 20000) {
   return { stdout: stdout.trim(), stderr: stderr.trim() };
 }
 
+// ---------- HTML -> readable text (zero-dep) ----------
+function textOf(html) {
+  let t = String(html || '');
+  t = t.replace(new RegExp('<script' + '[^]*?</' + 'script>', 'gi'), ' ');
+  t = t.replace(new RegExp('<style' + '[^]*?</' + 'style>', 'gi'), ' ');
+  t = t.replace(/<[^>]+>/g, ' ');
+  t = t.replace(/&(nbsp|amp|quot|lt|gt|#39);/g, (m, e) => ({ nbsp: ' ', amp: '&', quot: '"', lt: '<', gt: '>', '#39': "'" }[e] || ' '));
+  t = t.replace(/&#([0-9]+);/g, (m, d) => { try { return String.fromCharCode(Number(d)); } catch { return ' '; } });
+  return t.replace(/\s+/g, ' ').trim();
+}
+
 // ---------- Chrome DevTools Protocol helpers (zero-dep: fetch + WebSocket) ----------
 async function cdpTabs(port) {
   const res = await fetch(`http://127.0.0.1:${port}/json/list`).catch(() => null);
@@ -862,6 +873,141 @@ public class WinDbl { [DllImport("user32.dll")] public static extern bool SetCur
         const s = Math.min(Math.max(Number(a.seconds || 3), 1), 120);
         await new Promise(r => setTimeout(r, s * 1000));
         return ok({ waitedSec: s });
+      },
+    },
+    {
+      name: 'memory_read', description: 'Read core memory (MEMORY.md + topic notes). Use at task start and before answering about past work.',
+      args: { topic: 'topic file without .md (opt, else everything)' },
+      async run(a, ctx) {
+        try {
+          const dir = path.join(ctx.cfg.root, 'memory');
+          if (a.topic) {
+            const key = String(a.topic).replace(/[^a-z0-9-_]/gi, '').slice(0, 40);
+            const text = await fsp.readFile(path.join(dir, key + '.md'), 'utf8').catch(() => null);
+            if (text === null) return fail(`no memory topic: ${key}`);
+            return ok({ topic: key, content: text.slice(0, 6000) });
+          }
+          let out = '';
+          try { out += await fsp.readFile(path.join(dir, 'MEMORY.md'), 'utf8'); } catch { out += '(no MEMORY.md yet)'; }
+          let files = [];
+          try { files = (await fsp.readdir(dir)).filter(f => f.endsWith('.md') && f !== 'MEMORY.md'); } catch {}
+          return ok({ memory: out.slice(0, 8000), topics: files });
+        } catch (e) { return fail(e.message); }
+      },
+    },
+    {
+      name: 'memory_write', description: 'Write to core memory (persists across runs). Ongoing facts -> MEMORY.md; bigger subjects -> topic file.',
+      args: { text: 'fact/note to remember (required)', topic: 'topic name for a separate note (opt)' },
+      async run(a, ctx) {
+        try {
+          if (!String(a.text || '').trim()) return fail('text is required');
+          const dir = path.join(ctx.cfg.root, 'memory');
+          await fsp.mkdir(dir, { recursive: true });
+          const line = `- [${new Date().toISOString().slice(0, 10)}] ${String(a.text).trim().slice(0, 1000)}\n`;
+          if (a.topic) {
+            const key = String(a.topic).replace(/[^a-z0-9-_]/gi, '').slice(0, 40) || 'note';
+            await fsp.appendFile(path.join(dir, key + '.md'), `\n## ${key}\n${line}`, 'utf8');
+            return ok({ saved: `memory/${key}.md` });
+          }
+          await fsp.appendFile(path.join(dir, 'MEMORY.md'), line, 'utf8');
+          return ok({ saved: 'memory/MEMORY.md' });
+        } catch (e) { return fail(e.message); }
+      },
+    },
+    {
+      name: 'memory_forget', description: 'Delete one memory topic file, or one MEMORY.md line by number.',
+      args: { topic: 'topic file without .md (opt)', line: '1-based line number in MEMORY.md (opt)' },
+      async run(a, ctx) {
+        try {
+          const dir = path.join(ctx.cfg.root, 'memory');
+          if (a.topic) {
+            const key = String(a.topic).replace(/[^a-z0-9-_]/gi, '').slice(0, 40);
+            await fsp.rm(path.join(dir, key + '.md'));
+            return ok({ forgot: `memory/${key}.md` });
+          }
+          if (a.line) {
+            const p = path.join(dir, 'MEMORY.md');
+            const lines = (await fsp.readFile(p, 'utf8')).split('\n');
+            const i = Number(a.line) - 1;
+            if (i < 0 || i >= lines.length) return fail('line out of range');
+            lines.splice(i, 1);
+            await fsp.writeFile(p, lines.join('\n'), 'utf8');
+            return ok({ forgotLine: Number(a.line) });
+          }
+          return fail('provide topic or line');
+        } catch (e) { return fail(e.message); }
+      },
+    },
+    {
+      name: 'web_search', description: 'Search the web (no API key). Returns titles/urls/snippets for research before scraping.',
+      args: { query: 'search terms (required)', max: 'results, default 6 (opt)' },
+      async run(a) {
+        try {
+          if (!String(a.query || '').trim()) return fail('query is required');
+          const res = await fetch('https://html.duckduckgo.com/html/?q=' + encodeURIComponent(String(a.query)), {
+            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) WinAgent/1.4' },
+          });
+          if (!res.ok) return fail(`search HTTP ${res.status}`, 'Retry once, then ask the user.');
+          const html = await res.text();
+          const linkRe = new RegExp('result__a[^>]*href="([^"]*)"[^>]*>([^]*?)</' + 'a>', 'gi');
+          const snipRe = new RegExp('result__snippet[^>]*>([^]*?)</' + 'div>', 'gi');
+          const out = [];
+          let m;
+          while ((m = linkRe.exec(html)) !== null && out.length < Number(a.max || 6)) {
+            let url = m[1];
+            const ud = url.match(/[?&]uddg=([^&]+)/);
+            if (ud) { try { url = decodeURIComponent(ud[1]); } catch {} }
+            const title = textOf(m[2]).slice(0, 150);
+            out.push({ title, url });
+          }
+          const snips = [];
+          while ((m = snipRe.exec(html)) !== null && snips.length < out.length) snips.push(textOf(m[1]).slice(0, 250));
+          out.forEach((r, i) => { if (snips[i]) r.snippet = snips[i]; });
+          return ok({ query: a.query, results: out });
+        } catch (e) { return fail(e.message, 'Check internet access and retry.'); }
+      },
+    },
+    {
+      name: 'web_scrape', description: 'Fetch pages as clean text (scripts/menus stripped). Follows same-site links up to maxPages. The research engine behind self-learning.',
+      args: { url: 'start URL (required)', maxPages: 'same-site pages, default 1, max 5 (opt)', maxChars: 'total chars, default 15000 (opt)' },
+      async run(a) {
+        try {
+          if (!String(a.url || '').trim()) return fail('url is required');
+          const maxP = Math.min(Math.max(Number(a.maxPages || 1), 1), 5);
+          const maxC = Math.min(Number(a.maxChars || 15000), 60000);
+          const seen = new Set();
+          const queue = [String(a.url)];
+          const pages = [];
+          let total = 0;
+          const linkRe = new RegExp('<a[^>]*href="([^"#]+)"[^>]*>([^]*?)</' + 'a>', 'gi');
+          while (queue.length && pages.length < maxP && total < maxC) {
+            const u = queue.shift();
+            if (seen.has(u)) continue;
+            seen.add(u);
+            let html;
+            try {
+              const res = await fetch(u, { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) WinAgent/1.4' } });
+              if (!res.ok) continue;
+              html = await res.text();
+            } catch { continue; }
+            const title = textOf((html.match(new RegExp('<title[^>]*>([^]*?)</' + 'title>', 'i')) || ['', ''])[1]).slice(0, 150);
+            const text = textOf(html).slice(0, maxC - total);
+            total += text.length;
+            pages.push({ url: u, title, text });
+            if (pages.length < maxP) {
+              let m;
+              const base = new URL(u);
+              while ((m = linkRe.exec(html)) !== null && queue.length < maxP + 2) {
+                try {
+                  const abs = new URL(m[1], base);
+                  if (abs.hostname === base.hostname && (abs.protocol === 'http:' || abs.protocol === 'https:') && !seen.has(abs.href)) queue.push(abs.href);
+                } catch {}
+              }
+            }
+          }
+          if (!pages.length) return fail('nothing fetchable at ' + a.url);
+          return ok({ pages: pages.length, totalChars: total, content: pages });
+        } catch (e) { return fail(e.message); }
       },
     },
   ];
