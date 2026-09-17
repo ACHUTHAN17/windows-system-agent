@@ -1,0 +1,92 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WinAgent online chat</title>
+<style>body{background:#0d1117;color:#e6edf3;font-family:system-ui,Segoe UI,Arial,sans-serif;margin:0;padding:0}
+.top{background:#161b22;border-bottom:1px solid #30363d;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.top b{font-size:16px}.top a{color:#58a6ff;font-size:13px}
+#cfg{background:#0d1117;border-bottom:1px solid #30363d;padding:10px 16px;display:none;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+#cfg input,#cfg select{background:#161b22;border:1px solid #30363d;color:#e6edf3;border-radius:6px;padding:7px;font-size:13px;width:100%;box-sizing:border-box}
+#chat{max-width:860px;margin:auto;padding:16px;padding-bottom:140px}
+.msg{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:12px 14px;margin:10px 0;font-size:14.5px;line-height:1.55;white-space:pre-wrap}
+.msg.you{background:#0d419d;border-color:#1f6feb}.msg .who{font-size:11px;color:#8b949e;margin-bottom:6px}
+.msg code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px;font-size:13px}
+.warn{background:#3b2f04;border:1px solid #9e6a03;border-radius:8px;padding:8px 12px;font-size:12.5px;margin:10px 0}
+#bar{position:fixed;bottom:0;left:0;right:0;background:#161b22;border-top:1px solid #30363d;padding:10px}
+#bar .row{max-width:860px;margin:auto;display:flex;gap:8px}
+#in{flex:1;padding:11px;border-radius:8px;border:1px solid #30363d;background:#0d1117;color:#e6edf3;font-size:14px}
+button{padding:10px 14px;border-radius:8px;border:1px solid #30363d;background:#1f6feb;color:#fff;font-weight:700;cursor:pointer;font-size:13px}
+button.ghost{background:#21262d}button:disabled{opacity:.4}
+#acts{max-width:860px;margin:6px auto 0;display:flex;gap:8px;flex-wrap:wrap}</style></head>
+<body>
+<div class="top"><b>WinAgent online chat</b>
+<a href="./">skills library</a><a href="https://github.com/ACHUTHAN17/windows-system-agent">repo</a>
+<button class="ghost" id="cfgbtn" style="margin-left:auto">⚙ settings</button></div>
+<div id="cfg">
+<input id="apiurl" placeholder="Model URL (https://api.openai.com/v1)">
+<input id="apikey" type="password" placeholder="Model API key (stays in YOUR browser)">
+<input id="model" placeholder="Model (gpt-4o-mini, deepseek-chat…)">
+<input id="repo" placeholder="owner/repo">
+<input id="pat" type="password" placeholder="GitHub PAT — repo + workflow scopes (for DO actions)">
+<select id="preset"><option value="">preset…</option><option>openai</option><option>deepseek</option><option>openrouter</option><option>custom</option></select>
+</div>
+<div id="chat"><div class="warn">🔑 Talk = your model key, called <b>directly from your browser</b> (never stored anywhere but this browser's localStorage). <b>DO actions</b> run on GitHub Actions via your PAT. Nothing here touches any PC.</div></div>
+<div id="bar"><div class="row"><input id="in" placeholder="chat, or ask it to do something…" autocomplete="off"><button id="send">Send</button></div>
+<div id="acts"><button class="ghost" id="teach">🧠 Teach skill</button><button class="ghost" id="dotask">⚙️ Run task in cloud</button><button class="ghost" id="test">🧪 Selftest cloud</button></div></div>
+<script>
+const $=id=>document.getElementById(id);
+const store={get:(k,d)=>localStorage.getItem('wa_'+k)||d||'',set:(k,v)=>localStorage.setItem('wa_'+k,v)};
+['apiurl','apikey','model','repo','pat'].forEach(k=>{$(k).value=store.get(k,k==='repo'?'ACHUTHAN17/windows-system-agent':'');$(k).onchange=()=>store.set(k,$(k).value);});
+$('preset').onchange=()=>{const p=$('preset').value;const U={openai:'https://api.openai.com/v1',deepseek:'https://api.deepseek.com/v1',openrouter:'https://openrouter.ai/api/v1'};if(U[p]){$('apiurl').value=U[p];store.set('apiurl',U[p]);}$('cfg').style.display='none';};
+$('cfgbtn').onclick=()=>{const c=$('cfg');c.style.display=c.style.display==='grid'?'none':'grid';};
+const hist=[{role:'system',content:'You are WinAgent, a Windows/Linux system agent (56+ tools: files, apps, browser CDP, Office docs, MCP, memory, self-learning skills). Repo: ACHUTHAN17/windows-system-agent. Be concise, practical, copy-paste-first. Never ask for secrets in chat — keys live in user env only.'}];
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function bubble(who,text,you){const d=document.createElement('div');d.className='msg'+(you?' you':'');d.innerHTML='<div class="who">'+who+'</div>'+esc(text).replace(/`([^`]+)`/g,'<code>$1</code>');$('chat').appendChild(d);window.scrollTo(0,99999);return d;}
+async function talk(){
+  const t=$('in').value.trim();if(!t)return;$('in').value='';bubble('you',t,true);hist.push({role:'user',content:t});
+  const b=bubble('agent','thinking…');
+  try{
+    const r=await fetch(store.get('apiurl').replace(/\/+$/,'')+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+store.get('apikey')},body:JSON.stringify({model:store.get('model')||'gpt-4o-mini',messages:hist,temperature:.3})});
+    if(!r.ok)throw new Error('model HTTP '+r.status+' — check settings ⚙');
+    const j=await r.json();const a=j.choices[0].message.content;hist.push({role:'assistant',content:a});b.innerHTML='<div class="who">agent</div>'+esc(a).replace(/`([^`]+)`/g,'<code>$1</code>');
+  }catch(e){b.innerHTML='<div class="who">agent</div>⚠ '+esc(e.message);}
+  window.scrollTo(0,99999);
+}
+$('send').onclick=talk;$('in').onkeydown=e=>{if(e.key==='Enter')talk();};
+async function gh(path,opts){
+  const r=await fetch('https://api.github.com/repos/'+store.get('repo')+path,{...(opts||{}),headers:{'Accept':'application/vnd.github+json','Authorization':'Bearer '+store.get('pat')}});
+  if(!r.ok)throw new Error('GitHub HTTP '+r.status+' — check PAT (needs repo + workflow scopes)');
+  return r.json();
+}
+async function dispatch(file,inputs){
+  await gh('/actions/workflows/'+file+'/dispatches',{method:'POST',body:JSON.stringify({ref:'main',inputs})});
+}
+async function waitRun(since,file){
+  for(let i=0;i<48;i++){
+    await new Promise(r=>setTimeout(r,10000));
+    const j=await gh('/actions/runs?event=workflow_dispatch&per_page=3');
+    const run=(j.workflow_runs||[]).find(x=>x.path==='.github/workflows/'+file&&new Date(x.created_at).getTime()>since-60000);
+    if(run&&run.status==='completed')return run;
+    if(run)bubble('agent','…still running ('+run.status+')');
+  }
+  throw new Error('timed out waiting for the run — check the Actions tab');
+}
+async function doAction(kind){
+  if(!store.get('pat')){bubble('agent','⚠ Set your GitHub PAT in ⚙ settings first (repo + workflow scopes).');return;}
+  const t=kind==='teach'?prompt('What should the agent learn?','keyboard shortcuts'):kind==='task'?prompt('Task for the cloud agent?','summarize the README'):null;
+  if(kind!=='test'&&!t)return;
+  const file=kind==='teach'?'learn-skill.yml':kind==='task'?'agent-task.yml':'daily-sandbox.yml';
+  const inputs=kind==='teach'?{topic:t}:kind==='task'?{task:t}:{};
+  bubble('agent','🚀 dispatched '+file+' — watching GitHub…');
+  try{
+    const since=Date.now();await dispatch(file,inputs);const run=await waitRun(since,file);
+    const url=run.html_url;
+    if(run.conclusion==='success'){
+      if(kind==='task'){
+        const raw=await(await fetch('https://raw.githubusercontent.com/'+store.get('repo')+'/main/runs/'+run.id+'.md')).text();
+        bubble('agent','✅ done: '+url+'\n\n'+raw.slice(0,3500));
+      }else bubble('agent','✅ done: '+url+'\nCheck the live library in a minute: https://achuthan17.github.io/windows-system-agent/');
+    }else bubble('agent','❌ run '+run.conclusion+': '+url);
+  }catch(e){bubble('agent','⚠ '+e.message);}
+}
+$('teach').onclick=()=>doAction('teach');$('dotask').onclick=()=>doAction('task');$('test').onclick=()=>doAction('test');
+</script></body></html>

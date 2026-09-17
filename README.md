@@ -214,6 +214,23 @@ Failures open/comment a `sandbox-health` issue with the run link. Trigger
 anytime: Actions tab → daily-sandbox → Run workflow. The agent tests and
 updates its own skills daily while you sleep.
 
+### Curiosity: it learns on its OWN interest (no queue, no human)
+`.github/workflows/curiosity.yml` runs **09:00 UTC daily**: scans Hacker News
+top stories + trending new repos + this repo's open issues, scores them against
+what the agent is FOR (Windows, automation, Office, documents, agents…),
+learns the top 2 itself, pushes, and moves on. Skills it already has get
+refreshed instead of duplicated. Manual: Actions → curiosity → Run workflow.
+
+### Online chat (full-fledged, phone-friendly, no PC/app)
+👉 https://achuthan17.github.io/windows-system-agent/chat.html
+Talk = your model key called **directly from your browser** (OpenAI, DeepSeek,
+OpenRouter, any OpenAI-compatible URL — stored in your browser only, nowhere
+else). DO buttons dispatch real cloud runs and poll them to completion:
+🧠 Teach skill · ⚙️ Run task in cloud (result file fetched + shown in chat) ·
+🧪 Selftest cloud. Doing needs a GitHub PAT (repo + workflow scopes, also
+browser-only). Full task runs need repo secrets `LLM_API_URL/KEY/MODEL` once —
+without them the cloud writes an honest triage note instead of pretending.
+
 ### Computer-Use parity (mirrors OpenAI's model exactly)
 
 `--skill computer-use` loads the loop: **screenshot → ground → act → verify**,

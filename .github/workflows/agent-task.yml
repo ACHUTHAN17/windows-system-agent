@@ -1,0 +1,53 @@
+name: agent-task (online chat backend — run a real task in the cloud)
+# Dispatched by docs/chat.html ("Run task") or manually. Runs the agent with
+# repo LLM secrets when present; otherwise writes a triage note. Result lands
+# in runs/<run-id>.md (committed) so the chat page can fetch and show it.
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'Task text for the agent'
+        required: true
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: run agent (or triage without LLM keys)
+        env:
+          MODEL_API_URL: ${{ secrets.LLM_API_URL }}
+          MODEL_API_KEY: ${{ secrets.LLM_API_KEY }}
+          MODEL_NAME: ${{ secrets.LLM_MODEL }}
+          AUTO_YES: true
+        run: |
+          mkdir -p runs
+          OUT="runs/${{ github.run_id }}.md"
+          {
+            echo "# Task result — run ${{ github.run_id }}"
+            echo ""
+            echo "**Task:** ${{ inputs.task }}"
+            echo ""
+          } > "$OUT"
+          if [ -z "$MODEL_API_KEY" ]; then
+            {
+              echo "No LLM keys configured, so I researched instead of acting."
+              echo "Add repo secrets LLM_API_URL / LLM_API_KEY / LLM_MODEL for full runs."
+              echo ""
+              echo "Triage pointers: break this into a skill request (skill-request issue)"
+              echo "or run it on a PC with \`--yes\`."
+            } >> "$OUT"
+          else
+            node src/index.js --yes --once "${{ inputs.task }}" >> "$OUT" 2>&1 || echo "_agent exited non-zero — see above_" >> "$OUT"
+          fi
+          node src/build-docs.js >/dev/null 2>&1 || true
+      - name: commit result
+        run: |
+          git config user.name "winagent-bot"
+          git config user.email "winagent-bot@users.noreply.github.com"
+          git add runs skills docs memory 2>/dev/null || true
+          git diff --cached --quiet && echo "nothing to commit" || { git commit -m "agent-task run ${{ github.run_id }}"; git push; }

@@ -74,7 +74,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 .raw{font-size:12px;color:#58a6ff}footer{color:#8b949e;font-size:12px;margin-top:22px}</style></head>
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
-<p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push.</p>
+<p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
 <div class="meta"><span class="pill">v${esc(pkg.version || '')}</span><span class="pill">${toolCount} tools</span><span class="pill">${files.length} skills (${auto} auto-learned)</span><span class="pill">generated ${new Date().toISOString().slice(0, 10)}</span></div>
 <input id="q" placeholder="filter skills…" oninput="document.querySelectorAll('.card').forEach(c=>c.style.display=c.dataset.name.includes(this.value.toLowerCase())?'':'none')">
 <div class="grid">${cards}</div>

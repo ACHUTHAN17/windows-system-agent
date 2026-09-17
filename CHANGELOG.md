@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.10.0 — 2026-09-17
+- Curiosity engine: agent picks its OWN interests (HN + trending + issues,
+  relevance-scored) and self-teaches daily on GitHub (`curiosity.yml`).
+- Online chat `docs/chat.html`: full-fledged phone-friendly UI using ONLINE
+  models direct from the browser + dispatch/poll cloud runs (teach/task/test).
+- Cloud task backend `agent-task.yml`: full agent runs on secrets, honest
+  triage note without; results committed to `runs/`.
+
 ## 1.9.0 — 2026-09-17 (vs ChatGPT agent + OpenClaw, full comparison)
 - Phone chat: `--chat telegram` (owner-locked, per-chat memory, /new /selftest /stop).
 - Local cron: `--every <min> "task" [--repeat N]` (ChatGPT-schedules parity).
