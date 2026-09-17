@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.13.0 — 2026-09-17
+- GitHub skill crawler: imports SKILL.md playbooks from other repos (proven
+  live from anthropics/skills), provenance in skills/sources.json (daily).
+- Library filters + sorting: All / Auto-learned / Imported / Task-built,
+  text search, Name A-Z / Z-A / Category sort.
+- Rolling refresh every 30 min (2 stalest skills); models now every 3 hours.
+- Image learning: IMAGE_URLS keyless-OCR screenshots into skill material.
+
 ## 1.12.0 â€” 2026-09-17
 - Self-adding free models: `model-scout` probes + discovers keyless endpoints
   and writes `docs/models.json`; chat dropdown fills itself live (30-min loop).
@@ -79,3 +87,4 @@
 
 ## 1.0.0
 - Core agent: files, apps, shell, sysinfo + pluggable API/local/custom LLM.
+

@@ -109,8 +109,18 @@ async function main() {
     } catch (e) { console.log(`[learn] skip ${h.url.slice(0, 60)}: ${e.message}`); }
     if (sources.map(s => s.text.length).reduce((a, b) => a + b, 0) > 12000) break;
   }
-  if (!sources.length) throw new Error('no material found — try a more specific topic');
-  const material = sources.map(s => `## ${s.title} (${s.url})\n${s.text}`).join('\n');
+  const imgUrls = String(process.env.IMAGE_URLS || '').split(',').map(s => s.trim()).filter(u => /^https?:\/\//.test(u)).slice(0, 4);
+  let material = sources.map(s => `## ${s.title} (${s.url})\n${s.text}`).join('\n');
+  for (const u of imgUrls) {
+    try {
+      const r = await fetch('https://api.ocr.space/parse/imageurl?apikey=helloworld&url=' + encodeURIComponent(u));
+      const j = await r.json();
+      const t = ((j.ParsedResults || []).map(p => p.ParsedText).join('\n') || '').trim().slice(0, 3000);
+      if (t) { material += `\n## Image evidence (${u})\n${t}\n`; console.log(`[learn] OCR ${u.slice(0, 60)} (${t.length} chars)`); }
+      else console.log(`[learn] OCR empty: ${u.slice(0, 60)}`);
+    } catch (e) { console.log(`[learn] OCR skip: ${e.message}`); }
+  }
+  if (!material.trim()) throw new Error('no material found — try a more specific topic or IMAGE_URLS');
   let content = await distillLLM(topic, material).catch(() => null);
   let mode = 'llm';
   if (!content) { content = heuristicSkill(topic, sources); mode = 'heuristic'; }

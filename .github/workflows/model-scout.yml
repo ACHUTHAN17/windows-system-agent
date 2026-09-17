@@ -1,10 +1,10 @@
 name: model-scout (finds free models by itself — no human, no keys)
-# Every 30 min on GitHub's runners: probes curated free endpoints, rotates one
+# Every 3 hours on GitHub's runners: probes curated free endpoints, rotates one
 # discovery search, writes docs/models.json which docs/chat.html loads live.
 # Only ever sends "reply with exactly: scout-ok" — never user data.
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '0 */3 * * *'
   workflow_dispatch:
 concurrency:
   group: model-scout

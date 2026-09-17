@@ -1,0 +1,42 @@
+name: skill-refresh (rolling refresh — every skill, every 30 min)
+# Every 30 minutes on GitHub's runners: picks the 2 stalest skills by commit
+# date, re-researches them (web + optional LLM secrets), appends field updates,
+# rebuilds docs, pushes. No human, no PC. Manual: pick a skill name or blank.
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+    inputs:
+      refresh:
+        description: 'Skill to refresh, e.g. wordpress-build (blank = 2 stalest)'
+        required: false
+concurrency:
+  group: skill-refresh
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: refresh stalest skills
+        env:
+          FORCE_ONE: ${{ inputs.refresh }}
+          LLM_API_URL: ${{ secrets.LLM_API_URL }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
+        run: |
+          if [ -n "$FORCE_ONE" ]; then NAMES="$FORCE_ONE"; else NAMES=$(for f in skills/*.md; do n=$(basename "$f" .md); ts=$(git log -1 --format=%ct -- "$f" 2>/dev/null || echo 0); echo "$ts $n"; done | sort -n | head -2 | awk '{print $2}'); fi
+          echo "refreshing: $NAMES"
+          for n in $NAMES; do TOPIC="refresh and verify the $n skill" node src/agent-learn.js || echo "skip: $n"; done
+          node src/build-docs.js
+      - name: commit + push if changed
+        run: |
+          git config user.name "winagent-bot"
+          git config user.email "winagent-bot@users.noreply.github.com"
+          git add skills docs
+          git diff --cached --quiet && echo "skills already fresh" || { git commit -m "rolling refresh (30-min)"; for i in 1 2 3; do git pull --rebase --autostash && break; git checkout --theirs -- docs/index.html 2>/dev/null || true; node src/build-docs.js 2>/dev/null || true; git add -A; GIT_EDITOR=true git rebase --continue 2>/dev/null || git rebase --abort; sleep 5; done; git push; }

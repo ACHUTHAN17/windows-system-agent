@@ -221,10 +221,27 @@ what the agent is FOR (Windows, automation, Office, documents, agents…),
 learns the top 2 itself, pushes, and moves on. Skills it already has get
 refreshed instead of duplicated. Manual: Actions → curiosity → Run workflow.
 
+### Crawl: learns other repos' skills freely (daily 06:00 UTC)
+`skill-crawler` scans known skill repos (Anthropic's, Superpowers, awesome
+lists…) + repo-search discovery, downloads SKILL.md playbooks via the keyless
+public API, adapts them, records provenance in `skills/sources.json`. Proven:
+imported live from anthropics/skills on first run.
+
+### Rolling refresh: every skill, every 30 min
+`skill-refresh.yml` re-researches the 2 stalest skills, appends field updates,
+rebuilds, pushes. Nothing goes stale — ever. (The old daily refresh inside
+daily-sandbox retired here; sandbox keeps testing + health.)
+
+### Image learning (no vision key needed)
+`IMAGE_URLS="https://…/shot1.png,..."` alongside any learn: keyless OCR reads
+the images (buttons, menus, diagrams, error dialogs) and the text becomes part
+of the skill material. Proven live. Paste screenshot URLs in a skill-request
+issue to teach from pictures.
+
 ### Online chat (full-fledged, phone-friendly, no PC/app, no key needed)
 👉 https://achuthan17.github.io/windows-system-agent/chat.html
 Talk = **free cloud models, zero setup** — the model dropdown fills itself from
-`docs/models.json`, which the agent's scout refreshes every 30 min (probes +
+`docs/models.json`, which the agent's scout refreshes every 3 hours (probes +
 discovers new free endpoints all by itself, benign prompt only). Paid backends
 optional in ⚙. DO buttons dispatch real cloud runs and poll them to completion:
 🧠 Teach skill (or no-token issue link) · ⚙️ Run task (result fetched into chat) ·

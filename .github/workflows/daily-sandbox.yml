@@ -1,15 +1,11 @@
-name: daily-sandbox (autonomous test + skill refresh — no human, no PC)
-# Runs 03:00 UTC daily on GitHub's runners: selftest matrix, stalest-skill
-# refresh via web research, docs rebuild+push, live-page health check.
-# Failures open/comment a `sandbox-health` issue with the run link.
+name: daily-sandbox (autonomous test + health — no human, no PC)
+# Runs 03:00 UTC daily on GitHub's runners: selftest matrix + live-page check.
+# Skill refreshing moved to skill-refresh.yml (every 30 min). Failures
+# open/comment a `sandbox-health` issue with the run link.
 on:
   schedule:
     - cron: '0 3 * * *'
   workflow_dispatch:
-    inputs:
-      refresh:
-        description: 'Skill to refresh instead of auto-pick, e.g. wordpress-build (opt)'
-        required: false
 concurrency:
   group: daily-sandbox
   cancel-in-progress: false
@@ -29,51 +25,17 @@ jobs:
         with:
           node-version: 20
       - run: node src/index.js --selftest
-  refresh:
-    runs-on: ubuntu-latest
-    outputs:
-      skill_file: ${{ steps.learn.outputs.skill_file }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: pick stalest skill (or manual input)
-        id: pick
-        run: |
-          if [ -n "${{ inputs.refresh }}" ]; then echo "name=${{ inputs.refresh }}" >> $GITHUB_OUTPUT; exit 0; fi
-          OLDEST=""
-          OLDEST_TS=9999999999
-          for f in skills/*.md; do
-            n=$(basename "$f" .md)
-            ts=$(git log -1 --format=%ct -- "$f" 2>/dev/null || echo 0)
-            if [ "$ts" -lt "$OLDEST_TS" ]; then OLDEST_TS=$ts; OLDEST=$n; fi
-          done
-          echo "name=$OLDEST" >> $GITHUB_OUTPUT
-          echo "refreshing stalest skill: $OLDEST"
-      - name: research + field-update the skill
-        id: learn
-        env:
-          TOPIC: refresh and verify the ${{ steps.pick.outputs.name }} skill
-          LLM_API_URL: ${{ secrets.LLM_API_URL }}
-          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
-          LLM_MODEL: ${{ secrets.LLM_MODEL }}
-        run: node src/agent-learn.js
-      - name: commit + push if changed
-        run: |
-          git config user.name "winagent-bot"
-          git config user.email "winagent-bot@users.noreply.github.com"
-          git add skills docs
-          git diff --cached --quiet && echo "skills already fresh" || { git commit -m "daily-sandbox refresh: ${{ steps.learn.outputs.skill_file }} [${{ steps.learn.outputs.mode }}]"; for i in 1 2 3; do git pull --rebase --autostash && break; git checkout --theirs -- docs/index.html 2>/dev/null || true; node src/build-docs.js 2>/dev/null || true; git add -A; GIT_EDITOR=true git rebase --continue 2>/dev/null || git rebase --abort; sleep 5; done; git push; }
   webqa:
     runs-on: ubuntu-latest
     steps:
-      - name: live page + raw skills reachable
+      - name: live pages + registry reachable
         run: |
           curl -fsSL -o /dev/null -w "pages:%{http_code}\n" https://achuthan17.github.io/windows-system-agent/
+          curl -fsSL -o /dev/null -w "chat:%{http_code}\n" https://achuthan17.github.io/windows-system-agent/chat.html
+          curl -fsSL -o /dev/null -w "models:%{http_code}\n" https://achuthan17.github.io/windows-system-agent/models.json
           curl -fsSL -o /dev/null -w "raw:%{http_code}\n" https://raw.githubusercontent.com/ACHUTHAN17/windows-system-agent/main/skills/self-learn.md
   report:
-    needs: [selftest, refresh, webqa]
+    needs: [selftest, webqa]
     if: failure()
     runs-on: ubuntu-latest
     steps:
@@ -83,5 +45,5 @@ jobs:
         run: |
           RUN="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           NUM=$(gh issue list --search "sandbox-health in:title" --state open --json number -q '.[0].number')
-          BODY="Daily sandbox FAILED — $RUN (failures: ${{ toJSON(needs) }})"
+          BODY="Daily sandbox FAILED — $RUN"
           if [ -z "$NUM" ]; then gh issue create --title "sandbox-health: daily run failed" --body "$BODY" --label "sandbox-health"; else gh issue comment "$NUM" --body "$BODY"; fi

@@ -43,20 +43,28 @@ function main() {
     const t = fs.readFileSync(path.join(ROOT, 'src', 'tools.js'), 'utf8');
     toolCount = (t.match(/      name: '/g) || []).length;
   } catch {}
+  let imported = {};
+  try { imported = JSON.parse(fs.readFileSync(path.join(SKILLS, 'sources.json'), 'utf8')); } catch {}
+  const originOf = (f) => imported[f] ? 'imported' : (LEARNED[f] ? 'auto' : 'task');
   const cards = files.map(f => {
     const text = fs.readFileSync(path.join(SKILLS, f), 'utf8');
     const title = f.replace(/\.md$/, '');
     const first = (text.split(/\r?\n/).find(l => l.trim() && !l.startsWith('#')) || '').slice(0, 140);
-    const badge = LEARNED[f]
-      ? `<span class="badge auto">auto-learned</span><div class="src">${esc(LEARNED[f])}</div>`
-      : `<span class="badge task">task-built playbook</span>`;
+    const origin = originOf(f);
+    const badge = origin === 'imported'
+      ? `<span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="${esc((imported[f] || {}).repo || '#')}">${esc(((imported[f] || {}).repo || '').replace('https://github.com/', ''))}</a> · crawled free from GitHub</div>`
+      : LEARNED[f]
+        ? `<span class="badge auto">auto-learned</span><div class="src">${esc(LEARNED[f])}</div>`
+        : `<span class="badge task">task-built playbook</span>`;
     const raw = `https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/${f}`;
-    return `<article class="card" data-name="${esc(title)} ${esc(first.toLowerCase())}">
+    return `<article class="card" data-origin="${origin}" data-name="${esc(title)} ${esc(first.toLowerCase())}">
   <h2>${esc(title)}</h2>${badge}<p class="desc">${esc(first)}</p>
   <details><summary>read full skill</summary><div class="body">${miniMd(text)}</div></details>
   <a class="raw" href="${raw}">view source on GitHub</a></article>`;
   }).join('\n');
   const auto = files.filter(f => LEARNED[f]).length;
+  const imp = files.filter(f => imported[f]).length;
+  const task = files.length - auto - imp;
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WinAgent learned skills (live)</title>
@@ -67,7 +75,8 @@ function main() {
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
 .card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:16px}
 .card h2{margin:0 0 8px;font-size:19px}.desc{color:#8b949e;font-size:14px;min-height:38px}
-.badge{font-size:11px;border-radius:12px;padding:2px 10px;font-weight:700}.auto{background:#1f6feb}.task{background:#30363d}
+.badge{font-size:11px;border-radius:12px;padding:2px 10px;font-weight:700}.auto{background:#1f6feb}.task{background:#30363d}.imp{background:#8250df}
+.filters{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}.filters button{background:#161b22;border:1px solid #30363d;color:#e6edf3;border-radius:16px;padding:4px 14px;font-size:13px;cursor:pointer}.filters button.on{background:#1f6feb;border-color:#1f6feb}.filters select{background:#161b22;border:1px solid #30363d;color:#e6edf3;border-radius:16px;padding:4px 10px;font-size:13px}
 .src{font-size:12px;color:#8b949e;margin:6px 0}.body{font-size:13.5px;line-height:1.55}.body h2{font-size:16px}.body h3{font-size:14px}
 code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px;font-size:12.5px}
 .li{margin-left:14px}.li:before{content:"• "}details{margin:10px 0}summary{cursor:pointer;color:#58a6ff}
@@ -75,9 +84,11 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v${esc(pkg.version || '')}</span><span class="pill">${toolCount} tools</span><span class="pill">${files.length} skills (${auto} auto-learned)</span><span class="pill">generated ${new Date().toISOString().slice(0, 10)}</span></div>
-<input id="q" placeholder="filter skills…" oninput="document.querySelectorAll('.card').forEach(c=>c.style.display=c.dataset.name.includes(this.value.toLowerCase())?'':'none')">
-<div class="grid">${cards}</div>
+<div class="meta"><span class="pill">v${esc(pkg.version || '')}</span><span class="pill">${toolCount} tools</span><span class="pill">${files.length} skills (${auto} auto · ${imp} imported · ${task} built)</span><span class="pill">generated ${new Date().toISOString().slice(0, 10)}</span></div>
+<div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option></select></div>
+<input id="q" placeholder="filter skills…" oninput="applyFilter()">
+<script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
+<div class="grid" id="grid">${cards}</div>
 <footer>Source: <a style="color:#58a6ff" href="https://github.com/ACHUTHAN17/windows-system-agent/tree/main/skills">github.com/ACHUTHAN17/windows-system-agent/tree/main/skills</a></footer>
 </div></body></html>`;
   fs.mkdirSync(path.join(ROOT, 'docs'), { recursive: true });
