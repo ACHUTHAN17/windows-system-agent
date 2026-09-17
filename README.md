@@ -121,6 +121,20 @@ coordinates), foreground honesty on Windows, per-app approvals with
 `[y=once / a=always / N]` + `ALLOWED_APPS` always-allow list, narrow tasks,
 user-takeover anytime, extra care for secrets/payments/admin.
 
+### Self-upgrade: idle learning, daemon, Linux
+- **Idle auto-learn:** `run.bat --idle-learn` — after 2s of quiet the agent
+  runs one web-research → distill → install cycle (skills/ + memory only),
+  at most every 5 min (`--idle-seconds N`, `--learn-cooldown S` tune it).
+- **One-shot:** `--learn "topic"` does a single cycle and exits.
+- **Daemon:** `--daemon 300 [--learn-cycles N]` loops forever (Ctrl+C stops).
+- **Goals:** `memory/GOALS.md` holds standing goals + a learn queue the daemon
+  works through; `learn <topic>` in REPL learns on demand.
+- **Linux/macOS:** same agent, same 55 tools — `src/platform.js` +
+  `src/tools-linux.js` re-implement shell, screenshot (grim/scrot),
+  input (xdotool), services (systemctl), logs (journalctl), wifi (nmcli),
+  packages (dpkg), disks (df). Windows-only bits (registry, UIA) report
+  SKIP in selftest; CI proves both OSes (`windows-latest` + `ubuntu-latest`).
+
 ## 5. Full agent mode (autonomous, silent)
 
 ```bat

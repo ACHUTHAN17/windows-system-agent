@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.5.0 — 2026-09-17
+- Idle autonomy: `--idle-learn` (2s quiet trigger), `--learn`, `--daemon`,
+  `learn <topic>` REPL command, `memory/GOALS.md` + learn queue, 5-min cooldown.
+- Self-upgrade engine: research → distill with own model → install to
+  skills//memory only (src/ never touched autonomously).
+- Linux/macOS support: `src/platform.js` + `src/tools-linux.js` (shell,
+  screenshot, xdotool input, systemctl, journalctl, nmcli, dpkg, df, CDP);
+  same 55 tools everywhere; win-only calls SKIP; CI on ubuntu + windows.
+- Per-app approvals `[y/a/N]` + `ALLOWED_APPS` (Computer-Use parity).
+
 ## 1.3.0 — 2026-09-17
 - In-harness plugin `winag-2` v8: **20 tools** — full human skill set
   (buttons/UIA, typing, keys, edit, drag, windows, clipboard, sudo, silent shell).

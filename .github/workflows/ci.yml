@@ -14,3 +14,18 @@ jobs:
       - run: node --check src/config.js
       - run: node --check src/safety.js
       - run: node src/index.js --skill wordpress-build --selftest
+  check-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node --check src/index.js
+      - run: node --check src/tools.js
+      - run: node --check src/tools-linux.js
+      - run: node --check src/platform.js
+      - run: node --check src/llm.js
+      - run: node --check src/config.js
+      - run: node --check src/safety.js
+      - run: node src/index.js --selftest

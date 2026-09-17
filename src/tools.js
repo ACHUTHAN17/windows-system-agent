@@ -7,6 +7,7 @@ import { spawn, execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import os from 'node:os';
 import { isPathAllowed } from './safety.js';
+import { linuxTool } from './tools-linux.js';
 
 const execFileAsync = promisify(execFile);
 
@@ -67,7 +68,7 @@ function cdpSend(wsUrl, method, params = {}, timeout = 15000) {
 }
 
 export function buildTools() {
-  return [
+  const tools = [
     {
       name: 'sys_info', description: 'OS, CPU, memory, uptime, user, hostname.',
       args: {},
@@ -1011,4 +1012,18 @@ public class WinDbl { [DllImport("user32.dll")] public static extern bool SetCur
       },
     },
   ];
+  // Linux/macOS override layer: routes each call through tools-linux.js first.
+  // On Windows it always falls through, so Windows behavior is unchanged.
+  return tools.map(t => ({
+    ...t,
+    run: async (a, c) => {
+      try {
+        const ov = await linuxTool(t.name, a, c);
+        if (ov && ov.handled) return ov.result;
+      } catch (e) {
+        return { ok: false, error: 'linux layer: ' + (e.message || String(e)) };
+      }
+      return t.run(a, c);
+    },
+  }));
 }

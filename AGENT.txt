@@ -53,6 +53,12 @@ SKILLS IT CAN DO
     the agent keeps it fresh; gaps trigger web_search → web_scrape → distill
     → install new skill/memory note → verify → resume. It updates itself
     constantly, whenever needed, with anti-poisoning rules.
+14. IDLE AUTONOMY — quiet >2s (or --daemon) triggers a bounded self-upgrade
+    cycle from memory/GOALS.md + learn queue: research, distill with its own
+    model, install to skills//memory only, log, resume. Self-aware (memory),
+    goal-oriented (GOALS.md), skill-upgrade oriented, never touching src/.
+15. CROSS-OS — the same 55 tools on Windows AND Linux/macOS (platform backends
+    + Linux re-implementations; Windows-only calls report SKIP elsewhere).
 
 HUMAN PARITY RULE: if a person can do it with mouse + keyboard on this PC,
 WinAgent can do it — screenshot, locate, act, verify.
