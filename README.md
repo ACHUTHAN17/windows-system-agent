@@ -143,6 +143,23 @@ Shipped skills (`skills/`, load with `--skill a,b` or `SKILLS=a,b`):
 `agent-modes` (six run modes + parallel learning/executing).
 Add your own: any `skills/<name>.md` works the same way.
 
+**Skills load from GitHub first — no local files needed.** `SKILL_SOURCE=auto`
+(default) fetches each skill live from this repo on every run, so the agent
+always learns the latest version; local `skills/` is only the offline fallback
+(`local` = offline only, `github` = remote only). Private repo? Put a classic
+PAT with `repo` scope in `.env` as `SKILL_TOKEN` (public repos need nothing).
+Browse the live library: [`skills/` on GitHub](./skills) + generated
+[`docs/index.html`](./docs/index.html) (auto-rebuilt by `node src/build-docs.js`).
+
+Run anywhere with zero footprint (shallow clone to TEMP, nothing permanent):
+
+```powershell
+git clone --depth 1 https://github.com/ACHUTHAN17/windows-system-agent.git $env:TEMP\winagent
+cd $env:TEMP\winagent
+$env:SKILL_TOKEN="github_pat_..."   # private repo only — skip if public
+node src\index.js --skill github "push my latest changes"
+```
+
 ### Computer-Use parity (mirrors OpenAI's model exactly)
 
 `--skill computer-use` loads the loop: **screenshot → ground → act → verify**,

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.6.0 — 2026-09-17
+- GitHub-first skills: `SKILL_SOURCE=auto` fetches playbooks live from the repo
+  every run (local fallback offline); `SKILL_TOKEN` for private repos.
+- Live library page: `node src/build-docs.js` generates `docs/index.html`
+  (10 skills, auto-learned badges, search filter).
+- Copy-paste-proof README + gh-first GITHUB_SETUP (verified by fresh clone).
+
 ## 1.5.0 — 2026-09-17
 - Idle autonomy: `--idle-learn` (2s quiet trigger), `--learn`, `--daemon`,
   `learn <topic>` REPL command, `memory/GOALS.md` + learn queue, 5-min cooldown.

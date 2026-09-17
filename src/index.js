@@ -37,7 +37,30 @@ function parseArgs(raw) {
   return o;
 }
 
-function loadSkills(argv, cfg) {
+async function fetchRemoteSkill(name, cfg) {
+  const mode = String(cfg.skillSource || 'auto').toLowerCase();
+  if (mode === 'local') return null;
+  const repo = cfg.skillRepo || 'ACHUTHAN17/windows-system-agent';
+  const branch = cfg.skillBranch || 'main';
+  const url = `https://raw.githubusercontent.com/${repo}/${branch}/skills/${name}`;
+  try {
+    const headers = { 'User-Agent': 'WinAgent/1.6' };
+    if (cfg.skillToken) headers.Authorization = `Bearer ${cfg.skillToken}`;
+    const res = await fetch(url, { headers, signal: AbortSignal.timeout(10000) });
+    if (!res.ok) {
+      if (mode === 'github') console.log(`  [skill] ${name}: remote HTTP ${res.status} (private repo? set SKILL_TOKEN)`);
+      return null;
+    }
+    const text = (await res.text()).slice(0, 12000);
+    if (!text.trim()) return null;
+    return { name, text, source: 'github' };
+  } catch (e) {
+    if (mode === 'github') console.log(`  [skill] ${name}: remote unreachable`);
+    return null;
+  }
+}
+
+async function loadSkills(argv, cfg) {
   const wanted = new Set();
   for (const src of [argv.skill, argv.SKILL, process.env.SKILLS]) {
     if (src) String(src).split(',').map(s => s.trim()).filter(Boolean).forEach(s => wanted.add(s));
@@ -48,10 +71,17 @@ function loadSkills(argv, cfg) {
     if (m) m[1].split(',').map(s => s.trim()).filter(Boolean).forEach(s => wanted.add(s));
   } catch { /* no .env */ }
   const loaded = [];
+  const remoteOnly = String(cfg.skillSource || 'auto').toLowerCase() === 'github';
   for (let name of wanted) {
     if (!name.endsWith('.md')) name += '.md';
-    try { loaded.push({ name, text: fs.readFileSync(path.join(cfg.root, 'skills', path.basename(name)), 'utf8').slice(0, 12000) }); }
-    catch { console.log(`  [skill] not found: skills/${name}`); }
+    const safe = path.basename(name);
+    const remote = await fetchRemoteSkill(safe, cfg);
+    if (remote) { console.log(`  [skill] ${safe} <- github (live)`); loaded.push(remote); continue; }
+    if (remoteOnly) { console.log(`  [skill] ${safe}: remote-only mode, skipped (offline or bad token)`); continue; }
+    try {
+      loaded.push({ name: safe, text: fs.readFileSync(path.join(cfg.root, 'skills', safe), 'utf8').slice(0, 12000), source: 'local' });
+      console.log(`  [skill] ${safe} <- local (github unreachable, fallback)`);
+    } catch { console.log(`  [skill] not found: skills/${safe} (local missing, remote unreachable)`); }
   }
   return loaded;
 }
@@ -178,7 +208,7 @@ async function learnCycle(topic) {
 }
 
 async function agentTask(task) {
-  const skills = loadSkills(argv, cfg);
+  const skills = await loadSkills(argv, cfg);
   if (skills.length) console.log(`  [skills] ${skills.map(s => s.name).join(', ')}`);
   const history = [
     { role: 'system', content: systemPrompt(toolPrompt(tools)) + skillPrompt(skills) + loadMemory(cfg) },
@@ -199,7 +229,7 @@ async function agentTask(task) {
 
 async function selftest() {
   console.log('WinAgent selftest (no LLM needed)');
-  const sk = loadSkills(argv, cfg);
+  const sk = await loadSkills(argv, cfg);
   console.log(` skills: ${sk.length ? sk.map(s => s.name + ' (' + s.text.length + ' chars)').join(', ') : '(none loaded — try --skill wordpress-build)'}`);
   const checks = [];
   const winOnlyTools = new Set(['window_focus', 'window_manage', 'reg_read', 'reg_write', 'browser_info']);
@@ -220,7 +250,7 @@ async function handleLine(line, rl) {
   if (/^(exit|quit)$/i.test(line)) { rl.close(); process.exit(0); }
   if (line === 'model') { console.log(' ' + printActiveModel(cfg)); return; }
   if (line === 'tools') { console.log(' ' + Object.keys(byName).join(', ')); return; }
-  if (line === 'skills') { try { console.log(' ' + fs.readdirSync(path.join(cfg.root, 'skills')).filter(f => f.endsWith('.md')).join(', ')); } catch { console.log(' (no skills dir)'); } return; }
+  if (line === 'skills') { try { console.log(' ' + fs.readdirSync(path.join(cfg.root, 'skills')).filter(f => f.endsWith('.md')).join(', ')); } catch { console.log(' (no local skills dir)'); } console.log(`  [source: ${cfg.skillSource || 'auto'} -> ${cfg.skillRepo || ''}/skills]`); return; }
   if (line === 'memory') { try { console.log(fs.readFileSync(path.join(cfg.root, 'memory', 'MEMORY.md'), 'utf8').slice(0, 2000)); } catch { console.log(' (no memory yet)'); } return; }
   if (line === 'goals') { try { console.log(fs.readFileSync(path.join(cfg.root, 'memory', 'GOALS.md'), 'utf8').slice(0, 2000)); } catch { console.log(' (no goals yet)'); } return; }
   if (line === 'selftest') { await selftest(); return; }

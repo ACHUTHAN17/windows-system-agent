@@ -65,6 +65,10 @@ export function loadConfig(argv = {}) {
     blockedPaths: list(env('BLOCKED_PATHS', json.blockedPaths ?? [])),
     allowedApps: list(env('ALLOWED_APPS', json.allowedApps ?? [])),
     requireAppApproval: env('REQUIRE_APP_APPROVAL', json.requireAppApproval),    auditLog: env('AUDIT_LOG', json.auditLog ?? './agent-audit.log'),
+    skillSource: env('SKILL_SOURCE', json.skillSource ?? 'auto'),
+    skillToken: env('SKILL_TOKEN', json.skillToken ?? ''),
+    skillRepo: env('SKILL_REPO', json.skillRepo ?? 'ACHUTHAN17/windows-system-agent'),
+    skillBranch: env('SKILL_BRANCH', json.skillBranch ?? 'main'),
     shellAllowlist: json.shellAllowlist ?? ['powershell.exe', 'cmd.exe', 'pwsh.exe', 'tasklist.exe', 'taskkill.exe'],
   };
   cfg.apiUrl = String(cfg.apiUrl).replace(/\/+$/, '');
