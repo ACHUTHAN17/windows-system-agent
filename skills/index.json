@@ -4,6 +4,8 @@
   "title": "academy-guide",
   "description": "Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — >.",
   "origin": "imported",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "academy",
    "guide",
@@ -23,6 +25,8 @@
   "title": "agent-modes — run modes and how to work them in parallel",
   "description": "WinAgent is one brain with six bodies. Pick per task; combine for speed.",
   "origin": "auto",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "mode",
    "daemon",
@@ -50,6 +54,8 @@
   "title": "AgentVerse-OS Personal cloud OS for a developer and their AI agents on a single ",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "agentverse",
    "personal",
@@ -75,6 +81,8 @@
   "title": "auto learn new skills",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "auto",
    "learn",
@@ -97,6 +105,8 @@
   "title": "blitzstrike ⚡ Blitz Strike — a universal MCP penetration-testing toolbelt. Struc",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "blitzstrike",
    "blitz",
@@ -125,6 +135,8 @@
   "title": "browser-dom — drive pages by structure, not pixels (Gemini-style)",
   "description": "CDP tabs expose the DOM: query it, click/select/fill by selector, fall back to",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "dom",
    "selector",
@@ -154,6 +166,8 @@
   "title": "chat-telegram — the agent in your pocket (ChatGPT-mobile parity)",
   "description": "Talk to the agent from your phone like ChatGPT mobile: message → it works →",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "telegram",
    "phone",
@@ -173,6 +187,8 @@
   "title": "coding",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "coding",
    "auto",
@@ -193,6 +209,8 @@
   "title": "computer-use — see + operate GUIs exactly like OpenAI Computer Use",
   "description": "Faithful mirror of the Computer Use model (ChatGPT desktop, Windows): an agent",
   "origin": "auto",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "screenshot",
    "click",
@@ -223,6 +241,8 @@
   "title": "dashboard — the web UI (chat, live stream, click-to-approve)",
   "description": "`node src/index.js --ui 8080` → open http://127.0.0.1:8080 (loopback only).",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "dashboard",
    "approve",
@@ -246,6 +266,8 @@
   "title": "drag-drop — mouse drags, sliders, selections, drag-and-drop on Windows",
   "description": "`screen_drag {x1,y1,x2,y2}` moves with the left button held, in smooth steps.",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "drag",
    "slider",
@@ -269,6 +291,8 @@
   "title": "essential windows run commands",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "essential",
    "windows",
@@ -292,6 +316,8 @@
   "title": "file-fetch-upload — fetch ANY file (even locked/in-use) and upload it",
   "description": "File Manager parity: if Explorer can see it, you can fetch it. Locked SQLite",
   "origin": "auto",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "fetch",
    "locked",
@@ -310,6 +336,8 @@
   "title": "github readme badges with shields.io",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "github",
    "readme",
@@ -333,6 +361,8 @@
   "title": "github — push itself, multi-account auth, device flow (researched live)",
   "description": "Self-learned from GitHub docs + DevErrors + cli/cli (see memory note). This is",
   "origin": "auto",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "github",
    "push",
@@ -363,6 +393,8 @@
   "title": "keyboard shortcuts",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "keyboard",
    "shortcuts",
@@ -384,6 +416,8 @@
   "title": "llm-master 大模型（LLM）全栈学习路线与中文教程🔥：覆盖 Prompt Engineering、RAG、AI Agent、MCP、微调、模型部署、",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "llm",
    "master",
@@ -409,6 +443,8 @@
   "title": "mcp — plug the whole MCP ecosystem in as tools",
   "description": "Any MCP server (SQLite, Postgres, GitHub, Playwright, filesystem…) becomes",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "mcp",
    "gmail",
@@ -434,6 +470,8 @@
   "title": "office-docs — generate Word/Excel/PowerPoint/PDF locally AND on M365",
   "description": "Researched from Microsoft Graph docs, python-docx/openpyxl/python-pptx guides,",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "word",
    "excel",
@@ -462,6 +500,8 @@
   "title": "schedule — recurring + event-driven tasks (ChatGPT-Schedules parity)",
   "description": "Three schedulers, pick by need. All re-read skills + memory each run.",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "schedule",
    "cron",
@@ -489,6 +529,8 @@
   "title": "self-learn — teach yourself new skills from the web, live, mid-task",
   "description": "When a task needs knowledge you don't have (new app, new site, new API, stale",
   "origin": "auto",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "learn",
    "research",
@@ -517,6 +559,8 @@
   "title": "system-control — take whole-system control of this Windows machine",
   "description": "You are the operator: windows, processes, services, registry, power, clipboard.",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "process",
    "service",
@@ -541,6 +585,8 @@
   "title": "windows snipping tool screenshots How to capture, annotate, and save screenshots",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "windows",
    "snipping",
@@ -567,6 +613,8 @@
   "title": "typing-editing — type, edit text and drive inputs anywhere on Windows",
   "description": "Text entry without a DOM: keyboard injection + clipboard. Needs an interactive",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "type",
    "typing",
@@ -594,6 +642,8 @@
   "title": "uia-click — trigger ANY button by name (no coordinates, no focus tricks)",
   "description": "Windows exposes every button to UI Automation. Prefer this over `screen_click`",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "button",
    "uia",
@@ -617,6 +667,8 @@
   "title": "windows clipboard history",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "auto",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "windows",
    "clipboard",
@@ -639,6 +691,8 @@
   "title": "windows god mode folder",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "windows",
    "god",
@@ -662,6 +716,8 @@
   "title": "windows snipping tool screenshots",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "windows",
    "snipping",
@@ -685,6 +741,8 @@
   "title": "wordpress-build — build WordPress sites on the web (Windows host)",
   "description": "You build complete WordPress sites: install, theme, content, plugins, go-live.",
   "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
   "triggers": [
    "wordpress",
    "blog",

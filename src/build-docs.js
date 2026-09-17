@@ -2,6 +2,7 @@
 // Usage: node src/build-docs.js   (run before every push that touches skills/)
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')), '..');
 const SKILLS = path.join(ROOT, 'skills');
@@ -35,7 +36,25 @@ function miniMd(src) {
   return out.join('\n');
 }
 
+// True per-skill dates from git history (added = first appearance, updated =
+// last touch). Deepens shallow clones first so CI dates are real; falls back
+// to file mtime when git is unavailable.
+function gitDates(f) {
+  try {
+    const added = spawnSync('git', ['log', '--diff-filter=A', '--format=%ci', '-1', '--', 'skills/' + f], { cwd: ROOT, encoding: 'utf8' }).stdout.trim().slice(0, 10);
+    const updated = spawnSync('git', ['log', '--format=%ct', '-1', '--', 'skills/' + f], { cwd: ROOT, encoding: 'utf8' });
+    const upd = updated.stdout ? new Date(Number(updated.stdout.trim()) * 1000).toISOString().slice(0, 10) : '';
+    if (/^\d{4}-\d\d-\d\d$/.test(added) && /^\d{4}-\d\d-\d\d$/.test(upd)) return { added, updated: upd };
+  } catch {}
+  try {
+    const d = fs.statSync(path.join(SKILLS, f)).mtime.toISOString().slice(0, 10);
+    return { added: d, updated: d };
+  } catch {}
+  return { added: '', updated: '' };
+}
+
 function main() {
+  try { spawnSync('git', ['fetch', 'origin', '--deepen=200', '--quiet'], { cwd: ROOT, timeout: 60000 }); } catch {}
   const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
   const files = fs.readdirSync(SKILLS).filter(f => f.endsWith('.md')).sort();
   let toolCount = 0;
@@ -75,7 +94,8 @@ function main() {
     const desc = (text.split(/\r?\n/).find(l => l.trim() && !l.startsWith('#')) || '').slice(0, 140);
     const auto = (title + ' ' + desc).toLowerCase().split(/[^a-z0-9+#]+/).filter(w => w.length > 2 && !STOP.has(w));
     const triggers = Array.from(new Set([...(MANUAL_TRIGGERS[name] || []), ...auto])).slice(0, 40);
-    return { name, title, description: desc, origin: originOf(f), triggers };
+    const dt = gitDates(f);
+    return { name, title, description: desc, origin: originOf(f), added: dt.added, updated: dt.updated, triggers };
   });
   fs.writeFileSync(path.join(SKILLS, 'index.json'), JSON.stringify(index, null, 1), 'utf8');
   const cards = files.map(f => {
@@ -89,8 +109,10 @@ function main() {
         ? `<span class="badge auto">auto-learned</span><div class="src">${esc(LEARNED[f])}</div>`
         : `<span class="badge task">task-built playbook</span>`;
     const raw = `https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/${f}`;
-    return `<article class="card" data-origin="${origin}" data-name="${esc(title)} ${esc(first.toLowerCase())}">
+    const dt = gitDates(f);
+    return `<article class="card" data-origin="${origin}" data-updated="${dt.updated}" data-name="${esc(title)} ${esc(first.toLowerCase())}">
   <h2>${esc(title)}</h2>${badge}<p class="desc">${esc(first)}</p>
+  <div class="dates">added ${dt.added || '?'} · updated ${dt.updated || '?'}</div>
   <details><summary>read full skill</summary><div class="body">${miniMd(text)}</div></details>
   <a class="raw" href="${raw}">view source on GitHub</a></article>`;
   }).join('\n');
@@ -112,14 +134,14 @@ function main() {
 .src{font-size:12px;color:#8b949e;margin:6px 0}.body{font-size:13.5px;line-height:1.55}.body h2{font-size:16px}.body h3{font-size:14px}
 code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px;font-size:12.5px}
 .li{margin-left:14px}.li:before{content:"• "}details{margin:10px 0}summary{cursor:pointer;color:#58a6ff}
-.raw{font-size:12px;color:#58a6ff}footer{color:#8b949e;font-size:12px;margin-top:22px}</style></head>
+.raw{font-size:12px;color:#58a6ff}.dates{font-size:11.5px;color:#8b949e;margin:2px 0 6px}footer{color:#8b949e;font-size:12px;margin-top:22px}</style></head>
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
 <div class="meta"><span class="pill">v${esc(pkg.version || '')}</span><span class="pill">${toolCount} tools</span><span class="pill">${files.length} skills (${auto} auto · ${imp} imported · ${task} built)</span><span class="pill">generated ${new Date().toISOString().slice(0, 10)}</span></div>
-<div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option></select></div>
+<div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
-<script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
+<script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.updated||'0000').localeCompare(a.dataset.updated||'0000'):s==='old'?(a.dataset.updated||'9999').localeCompare(b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
 <div class="grid" id="grid">${cards}</div>
 <footer>Source: <a style="color:#58a6ff" href="https://github.com/ACHUTHAN17/windows-system-agent/tree/main/skills">github.com/ACHUTHAN17/windows-system-agent/tree/main/skills</a></footer>
 </div></body></html>`;

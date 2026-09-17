@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.16.0 — 2026-09-17
+- Skill dates: every card shows added + last-updated (true git history,
+  deepened automatically on shallow clones, mtime fallback).
+- Date sorting: Newest first / Oldest first join Name A–Z / Z–A / Category.
+
 ## 1.15.0 — 2026-09-17
 - Automatic skill use: keyword router preloads matching playbooks per task
   (`[skills:auto]`, GitHub-first catalog), `skill_load` tool pulls more
