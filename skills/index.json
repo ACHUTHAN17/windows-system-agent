@@ -650,6 +650,30 @@
   ]
  },
  {
+  "name": "teach-auto-learn-new-skills",
+  "title": "auto learn new skills",
+  "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "auto",
+   "learn",
+   "new",
+   "skills",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
   "name": "teach-coding-what-should-the-agent-learn",
   "title": "coding ### What should the agent learn?",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",

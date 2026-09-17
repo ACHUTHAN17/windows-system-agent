@@ -17,7 +17,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.17.0</span><span class="pill">63 tools</span><span class="pill">33 skills (6 auto · 4 imported · 23 built)</span><span class="pill">generated 2026-09-17</span></div>
+<div class="meta"><span class="pill">v1.17.0</span><span class="pill">63 tools</span><span class="pill">34 skills (6 auto · 4 imported · 24 built)</span><span class="pill">generated 2026-09-17</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.updated||'0000').localeCompare(a.dataset.updated||'0000'):s==='old'?(a.dataset.updated||'9999').localeCompare(b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
@@ -1210,6 +1210,37 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>5. One change → verify → next change. Never chain blind destructive steps.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/system-control.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-updated="2026-09-17" data-name="teach-auto-learn-new-skills auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>teach-auto-learn-new-skills</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-17 · updated 2026-09-17</div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: auto learn new skills</h2>
+
+<p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions auto learn new skills.</p>
+
+<h3>Steps</h3>
+<p>1. Download Microsoft Edge More info about Internet Explorer and Microsoft Edge Table of contents Exit editor mode Ask Learn Ask Learn Reading mode Table of contents Read in English Add Add to Plans Edit Copy Markdown Print Note Access to this page requires authorization</p>
+<p>2. Use Agent Skills when you want to: Package domain expertise - Capture specialized knowledge (expense policies, legal workflows, data analysis pipelines) as reusable, portable packages</p>
+<p>3. Enable interoperability - Reuse the same skill across different Agent Skills-compatible products</p>
+<p>4. Use when asked about expense submissions, reimbursement rules, or spending limits</p>
+<p>5. Run scripts (as needed) - The agent calls the run_skill_script tool to execute scripts bundled with a skill</p>
+<p>6. Note load_skill is always advertised</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Agent Skills | Microsoft Learn</div>
+<p>  https://learn.microsoft.com/en-us/agent-framework/agents/skills</p>
+<div class="li">- Technical documentation | Microsoft Learn</div>
+<p>  https://learn.microsoft.com/en-us/docs/</p>
+<div class="li">- Agent Skills | OpenCode</div>
+<p>  https://opencode.ai/docs/skills/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/teach-auto-learn-new-skills.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-updated="2026-09-17" data-name="teach-coding-what-should-the-agent-learn auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>teach-coding-what-should-the-agent-learn</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-17 · updated 2026-09-17</div>
