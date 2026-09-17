@@ -1,5 +1,10 @@
 ﻿# Changelog
 
+## 1.20.0 — 2026-09-17
+- Chat model picker rework: one backend row, per-backend model list,
+  live requirement hints, inline everything (zero popups).
+- Fixed page-killer: removed dead handler that crashed script load.
+
 ## 1.19.0 — 2026-09-17
 - Real date-times: cards show added/updated with hour:minute;
   Newest/Oldest sort by true added time (proven monotonic in tests).
@@ -124,6 +129,7 @@
 
 ## 1.0.0
 - Core agent: files, apps, shell, sysinfo + pluggable API/local/custom LLM.
+
 
 
 
