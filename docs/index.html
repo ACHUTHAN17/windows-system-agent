@@ -56,6 +56,35 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- User away + goals queued → <code>--daemon</code>.</div>
 <div class="li">- Scripted pipelines → one-shot + <code>--yes</code> + audit review after.</div>
 <div class="li">- New machine → PAWWORK.md protocol, then selftest, then serve.</div>
+
+
+<p>---</p>
+<h3>Field update 2026-09-17</h3>
+<h2>Skill: refresh and verify the agent-modes skill</h2>
+
+<p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions refresh and verify the agent-modes skill.</p>
+
+<h3>Steps</h3>
+<p>1. Use when creating or modifying ClickHouse migrations</p>
+<p>2. Use when you need to run backend tests and <code>uv sync</code> fails due to Python version mismatch</p>
+<p>3. Use Agent Skills when you want to: Package domain expertise - Capture specialized knowledge (expense policies, legal workflows, data analysis pipelines) as reusable, portable packages</p>
+<p>4. Use when asked about expense submissions, reimbursement rules, or spending limits</p>
+<p>5. Run scripts (as needed) - The agent calls the run_skill_script tool to execute scripts bundled with a skill</p>
+<p>6. Note load_skill is always advertised</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- implementing-agent-modes by PostHog — Agent Skill</div>
+<p>  https://agentskills.codes/skills/implementing-agent-modes</p>
+<div class="li">- Agent Skills | Microsoft Learn</div>
+<p>  https://learn.microsoft.com/en-us/agent-framework/agents/skills</p>
+
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/agent-modes.md">view source on GitHub</a></article>
 <article class="card" data-name="browser-dom cdp tabs expose the dom: query it, click/select/fill by selector, fall back to">

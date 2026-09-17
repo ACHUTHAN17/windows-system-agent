@@ -90,7 +90,9 @@ async function main() {
   let topic = String(process.env.TOPIC || '').trim().replace(/^(teach|learn|skill)\s*:\s*/i, '').trim();
   if (!topic) throw new Error('TOPIC env is required');
   topic = topic.slice(0, 120);
-  const hint = String(process.env.FILENAME_HINT || '').replace(/[^a-z0-9-_]/gi, '').slice(0, 40);
+  let hint = String(process.env.FILENAME_HINT || '').replace(/[^a-z0-9-_]/gi, '').slice(0, 40);
+  const rm = topic.match(/refresh(?: and verify)?(?: the)? ([a-z0-9][a-z0-9-_ ]{1,40}?) skill/i);
+  if (!hint && rm) hint = rm[1].toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40);
   const slug = hint || topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'skill';
   console.log(`[learn] topic: ${topic} -> skills/${slug}.md`);
   const hits = await webSearch(topic + ' guide documentation', 5);

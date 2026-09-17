@@ -34,3 +34,32 @@ WinAgent is one brain with six bodies. Pick per task; combine for speed.
 - User away + goals queued → `--daemon`.
 - Scripted pipelines → one-shot + `--yes` + audit review after.
 - New machine → PAWWORK.md protocol, then selftest, then serve.
+
+
+---
+## Field update 2026-09-17
+# Skill: refresh and verify the agent-modes skill
+
+Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the agent-modes skill.
+
+## Steps
+1. Use when creating or modifying ClickHouse migrations
+2. Use when you need to run backend tests and `uv sync` fails due to Python version mismatch
+3. Use Agent Skills when you want to: Package domain expertise - Capture specialized knowledge (expense policies, legal workflows, data analysis pipelines) as reusable, portable packages
+4. Use when asked about expense submissions, reimbursement rules, or spending limits
+5. Run scripts (as needed) - The agent calls the run_skill_script tool to execute scripts bundled with a skill
+6. Note load_skill is always advertised
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- implementing-agent-modes by PostHog — Agent Skill
+  https://agentskills.codes/skills/implementing-agent-modes
+- Agent Skills | Microsoft Learn
+  https://learn.microsoft.com/en-us/agent-framework/agents/skills
+
