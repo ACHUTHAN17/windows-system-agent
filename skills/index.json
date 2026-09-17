@@ -581,6 +581,31 @@
   ]
  },
  {
+  "name": "teach-coding-what-should-the-agent-learn",
+  "title": "coding ### What should the agent learn?",
+  "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "coding",
+   "###",
+   "agent",
+   "learn",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
   "name": "teach-windows-snipping-tool-screenshots-",
   "title": "windows snipping tool screenshots How to capture, annotate, and save screenshots",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
