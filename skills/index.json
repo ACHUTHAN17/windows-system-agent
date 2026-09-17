@@ -5,7 +5,7 @@
   "description": "Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — >.",
   "origin": "imported",
   "added": "2026-09-17T15:08:54.000Z",
-  "updated": "2026-09-17T15:08:54.000Z",
+  "updated": "2026-09-17T19:12:53.000Z",
   "triggers": [
    "academy",
    "guide",
@@ -26,7 +26,7 @@
   "description": "WinAgent is one brain with six bodies. Pick per task; combine for speed.",
   "origin": "auto",
   "added": "2026-09-17T12:32:16.000Z",
-  "updated": "2026-09-17T13:51:21.000Z",
+  "updated": "2026-09-17T19:12:53.000Z",
   "triggers": [
    "mode",
    "daemon",
@@ -180,6 +180,28 @@
    "llm",
    "key",
    "configured"
+  ]
+ },
+ {
+  "name": "brainstorming",
+  "title": "brainstorming",
+  "description": "Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/brainstorming/SKILL.md) — \"You MUST use this before an",
+  "origin": "imported",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "brainstorming",
+   "imported",
+   "obra",
+   "superpowers",
+   "https",
+   "github",
+   "com",
+   "blob",
+   "head",
+   "skills",
+   "skill",
+   "before"
   ]
  },
  {
@@ -403,6 +425,30 @@
   ]
  },
  {
+  "name": "dispatching-parallel-agents",
+  "title": "dispatching-parallel-agents",
+  "description": "Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/dispatching-parallel-agents/SKILL.md) — Use when facin",
+  "origin": "imported",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "dispatching",
+   "parallel",
+   "agents",
+   "imported",
+   "obra",
+   "superpowers",
+   "https",
+   "github",
+   "com",
+   "blob",
+   "head",
+   "skills",
+   "skill",
+   "facin"
+  ]
+ },
+ {
   "name": "doc-coauthoring",
   "title": "doc-coauthoring",
   "description": "Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/doc-coauthoring/SKILL.md) — Guide users through a st",
@@ -499,6 +545,29 @@
   ]
  },
  {
+  "name": "executing-plans",
+  "title": "executing-plans",
+  "description": "Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/executing-plans/SKILL.md) — Use when you have a writte",
+  "origin": "imported",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "executing",
+   "plans",
+   "imported",
+   "obra",
+   "superpowers",
+   "https",
+   "github",
+   "com",
+   "blob",
+   "head",
+   "skills",
+   "skill",
+   "writte"
+  ]
+ },
+ {
   "name": "file-fetch-upload",
   "title": "file-fetch-upload — fetch ANY file (even locked/in-use) and upload it",
   "description": "File Manager parity: if Explorer can see it, you can fetch it. Locked SQLite",
@@ -516,6 +585,29 @@
    "manager",
    "parity",
    "explorer"
+  ]
+ },
+ {
+  "name": "finishing-a-development-branch",
+  "title": "finishing-a-development-branch",
+  "description": "Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/finishing-a-development-branch/SKILL.md) — Use when im",
+  "origin": "imported",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "finishing",
+   "development",
+   "branch",
+   "imported",
+   "obra",
+   "superpowers",
+   "https",
+   "github",
+   "com",
+   "blob",
+   "head",
+   "skills",
+   "skill"
   ]
  },
  {
@@ -710,6 +802,53 @@
   ]
  },
  {
+  "name": "receiving-code-review",
+  "title": "receiving-code-review",
+  "description": "Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/receiving-code-review/SKILL.md) — Use when receiving c",
+  "origin": "imported",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "receiving",
+   "code",
+   "review",
+   "imported",
+   "obra",
+   "superpowers",
+   "https",
+   "github",
+   "com",
+   "blob",
+   "head",
+   "skills",
+   "skill"
+  ]
+ },
+ {
+  "name": "requesting-code-review",
+  "title": "requesting-code-review",
+  "description": "Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/requesting-code-review/SKILL.md) — Use when completing",
+  "origin": "imported",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "requesting",
+   "code",
+   "review",
+   "imported",
+   "obra",
+   "superpowers",
+   "https",
+   "github",
+   "com",
+   "blob",
+   "head",
+   "skills",
+   "skill",
+   "completing"
+  ]
+ },
+ {
   "name": "schedule",
   "title": "schedule — recurring + event-driven tasks (ChatGPT-Schedules parity)",
   "description": "Three schedulers, pick by need. All re-read skills + memory each run.",
@@ -801,6 +940,30 @@
   ]
  },
  {
+  "name": "subagent-driven-development",
+  "title": "subagent-driven-development",
+  "description": "Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/subagent-driven-development/SKILL.md) — Use when execu",
+  "origin": "imported",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "subagent",
+   "driven",
+   "development",
+   "imported",
+   "obra",
+   "superpowers",
+   "https",
+   "github",
+   "com",
+   "blob",
+   "head",
+   "skills",
+   "skill",
+   "execu"
+  ]
+ },
+ {
   "name": "system-control",
   "title": "system-control — take whole-system control of this Windows machine",
   "description": "You are the operator: windows, processes, services, registry, power, clipboard.",
@@ -824,6 +987,29 @@
    "services",
    "power",
    "clipboard"
+  ]
+ },
+ {
+  "name": "systematic-debugging",
+  "title": "systematic-debugging",
+  "description": "Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/systematic-debugging/SKILL.md) — Use when encountering",
+  "origin": "imported",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "systematic",
+   "debugging",
+   "imported",
+   "obra",
+   "superpowers",
+   "https",
+   "github",
+   "com",
+   "blob",
+   "head",
+   "skills",
+   "skill",
+   "encountering"
   ]
  },
  {

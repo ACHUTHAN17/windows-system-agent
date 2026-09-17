@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">45 skills (6 auto · 8 imported · 31 built)</span><span class="pill">generated 2026-09-17</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">53 skills (6 auto · 16 imported · 31 built)</span><span class="pill">generated 2026-09-17</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="imported" data-added="2026-09-17T15:08:54.000Z" data-updated="2026-09-17T15:08:54.000Z" data-name="academy-guide imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/academy-guide/skill.md) — &gt;.">
+<div class="grid" id="grid"><article class="card" data-origin="imported" data-added="2026-09-17T15:08:54.000Z" data-updated="2026-09-17T19:12:53.000Z" data-name="academy-guide imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/academy-guide/skill.md) — &gt;.">
   <h2>academy-guide</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/anthropics/skills">anthropics/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — &gt;.</p>
-  <div class="dates">added 2026-09-17 15:08 · updated 2026-09-17 15:08</div>
+  <div class="dates">added 2026-09-17 15:08 · updated 2026-09-17 19:12</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: academy-guide</h2>
 
 <p>Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — &gt;.</p>
@@ -186,9 +186,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/academy-guide.md">view source on GitHub</a></article>
-<article class="card" data-origin="auto" data-added="2026-09-17T12:32:16.000Z" data-updated="2026-09-17T13:51:21.000Z" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
+<article class="card" data-origin="auto" data-added="2026-09-17T12:32:16.000Z" data-updated="2026-09-17T19:12:53.000Z" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
   <h2>agent-modes</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from its own run modes + parallel discipline</div><p class="desc">WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
-  <div class="dates">added 2026-09-17 12:32 · updated 2026-09-17 13:51</div>
+  <div class="dates">added 2026-09-17 12:32 · updated 2026-09-17 19:12</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: agent-modes — run modes and how to work them in parallel</h2>
 
 <p>WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
@@ -507,6 +507,156 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/shinthink/blitzstrike</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/blitzstrike-blitz-strike-a-universal-mcp.md">view source on GitHub</a></article>
+<article class="card" data-origin="imported" data-added="2026-09-17" data-updated="2026-09-17" data-name="brainstorming imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/brainstorming/skill.md) — "you must use this before an">
+  <h2>brainstorming</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/brainstorming/SKILL.md) — "You MUST use this before an</p>
+  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: brainstorming</h2>
+
+<p>Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/brainstorming/SKILL.md) — "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation.".</p>
+<p>Adapted to WinAgent tools where possible; verify tool names before use.</p>
+
+<h2>Brainstorming Ideas Into Designs</h2>
+
+<p>Help turn ideas into fully formed designs and specs through natural collaborative dialogue.</p>
+
+<p>Start by classifying how much process the request needs, then work</p>
+<p>through your path: understand the context, refine the idea, present a</p>
+<p>design, and get your human partner's approval.</p>
+
+<p>&lt;HARD-GATE&gt;</p>
+<p>Do NOT invoke any implementation skill, write any code, scaffold any</p>
+<p>project, or take any implementation action until you have told your</p>
+<p>human partner what you intend and they have approved it. This applies</p>
+<p>to EVERY task on EVERY path below — the ceremony scales with the task;</p>
+<p>the approval gate never does.</p>
+<p>&lt;/HARD-GATE&gt;</p>
+
+<h3>Three Paths</h3>
+
+<p>Before your first question, classify the request and say the</p>
+<p>classification out loud — "this looks bounded, so I'll present a short</p>
+<p>design here rather than write a spec" — so your human partner can</p>
+<p>override it:</p>
+
+<div class="li">- <strong>Spike</strong> — a feasibility question ("can we...", "is it possible...",</div>
+<p>  "quick and dirty is fine") whose output is an answer, not code you</p>
+<p>  keep. Present the question and what you'll try in 2-3 sentences, get</p>
+<p>  a nod, then find out as cheaply as correctness allows. No design</p>
+<p>  doc, no spec file. Report findings as a recommendation; anything you</p>
+<p>  built stays labeled throwaway.</p>
+<div class="li">- <strong>Bounded</strong> — a well-scoped change to code that already exists in</div>
+<p>  this repo: a new flag, a small endpoint, a one-file fix.</p>
+<p>  Understanding the kind of app is not enough — bounded means the flow</p>
+<p>  you are changing is already here to read. If there is no existing</p>
+<p>  flow to change, the task is not bounded. Ask the clarifying</p>
+<p>  questions that matter, present a short design IN CHAT (a few</p>
+<p>  sentences to a few short paragraphs), and STOP. Implementation</p>
+<p>  starts only after your human partner says yes to that design — a</p>
+<p>  bounded task's approval is as hard a gate as an architectural</p>
+<p>  one. No spec file, no implementation plan document.</p>
+<div class="li">- <strong>Architectural</strong> — new projects, new subsystems, changes that</div>
+<p>  restructure how components fit together or alter interfaces others</p>
+<p>  depend on. Follow the full process: questions, approaches, sectioned</p>
+<p>  design, written spec, then the writing-plans skill.</p>
+
+<p>When in doubt between two paths, take the heavier one. The ratchet is</p>
+<p>one-way: hidden complexity discovered mid-task upgrades the path —</p>
+<p>stop, say so, and step up. Nothing downgrades mid-task.</p>
+
+<h3>Anti-Pattern: "Too Simple To Need Approval"</h3>
+
+<p>Every path ends with your human partner approving your intent before</p>
+<p>implementation. A todo list, a single-function utility, a config</p>
+<p>change — the design may be two sentences in chat, but you MUST present</p>
+<p>it and get approval. "Simple" tasks are where unexamined assumptions</p>
+<p>cause the most wasted work. What scales with simplicity is the</p>
+<p>artifact, never the approval.</p>
+
+<h3>Red Flags</h3>
+
+<p>| Thought | Reality |</p>
+<p>|---------|---------|</p>
+<p>| "This is too simple to need a design" | Simple means a short design, not no design. Two sentences in chat, then approval. |</p>
+<p>| "I'll call it bounded and skip the spec" | Reaching for a label to skip work IS the doubt — take the heavier path. |</p>
+<p>| "It's bounded and the design is obvious — I'll start while they read it" | The gate is the approval, not the design's length. Present, then stop until you hear yes. |</p>
+<p>| "I understand this kind of app, so it's bounded" | Bounded measures the repo, not your familiarity. A new project has no existing flow — it is architectural. |</p>
+<p>| "The spike works, so I'll keep the code" | A spike's output is an answer. Keeping the code is a new request — classify it. |</p>
+<p>| "It grew, but I'm almost done — no need to re-classify" | Hidden complexity upgrades the path mid-task. Stop and say so. |</p>
+<p>| "They approved the spike, so the follow-up change is approved too" | Each task gets its own classification and its own approval. |</p>
+
+<h3>Checklist</h3>
+
+<p>Classify first, announce the path, then create a task for each item on</p>
+<p>your path and complete them in order.</p>
+
+<p><strong>Spike:</strong></p>
+<p>1. <strong>Explore project context</strong> — enough to frame the probe</p>
+<p>2. <strong>Present question + probe plan</strong> — 2-3 sentences</p>
+<p>3. <strong>Get approval</strong> — a nod is enough</p>
+<p>4. <strong>Investigate</strong> — as cheaply as correctness allows</p>
+<p>5. <strong>Report findings</strong> — a recommendation; label anything built as throwaway</p>
+
+<p><strong>Bounded:</strong></p>
+<p>1. <strong>Explore project context</strong> — check files, docs, recent commits</p>
+<p>2. <strong>Ask clarifying questions</strong> — one at a time, the ones that matter</p>
+<p>3. <strong>Present short design in chat</strong> — approach, files touched, testing</p>
+<p>4. <strong>Get approval</strong> — STOP and wait for an explicit yes; presenting the design and starting in the same breath is skipping the gate</p>
+<p>5. <strong>Implement</strong> — proceed with the normal development workflow (TDD applies); no plan document</p>
+
+<p><strong>Architectural:</strong></p>
+<p>1. <strong>Explore project context</strong> — check files, docs, recent commits</p>
+<p>2. <strong>Offer the visual companion just-in-time</strong> — NOT upfront. The first time a question would genuinely be clearer shown than described, offer it then (its own message); on approval its browser tab opens for you. If no visual question ever arises, never offer it. See the Visual Companion section below.</p>
+<p>3. <strong>Ask clarifying questions</strong> — one at a time, understand purpose/constraints/success criteria</p>
+<p>4. <strong>Propose 2-3 approaches</strong> — with trade-offs and your recommendation</p>
+<p>5. <strong>Present design</strong> — in sections scaled to their complexity, get user approval after each section</p>
+<p>6. <strong>Write design doc</strong> — save to <code>docs/superpowers/specs/YYYY-MM-DD-&lt;topic&gt;-design.md</code> and commit</p>
+<p>7. <strong>Spec self-review</strong> — quick inline check for placeholders, contradictions, ambiguity, scope (see below)</p>
+<p>8. <strong>User reviews written spec</strong> — ask user to review the spec file before proceeding</p>
+<p>9. <strong>Transition to implementation</strong> — invoke writing-plans skill to create implementation plan</p>
+
+<h3>Process Flow</h3>
+
+<p>```dot</p>
+<p>digraph brainstorming {</p>
+<p>    "Classify: spike / bounded / architectural" [shape=diamond];</p>
+<p>    "Present question + probe (2-3 sentences)" [shape=box];</p>
+<p>    "Ask clarifying questions (bounded)" [shape=box];</p>
+<p>    "Present short design in chat" [shape=box];</p>
+<p>    "Human approves?" [shape=diamond];</p>
+<p>    "Investigate; report recommendation" [shape=doublecircle];</p>
+<p>    "Implement via normal workflow (no plan doc)" [shape=doublecircle];</p>
+<p>    "Explore project context" [shape=box];</p>
+<p>    "Ask clarifying questions" [shape=box];</p>
+<p>    "Propose 2-3 approaches" [shape=box];</p>
+<p>    "Present design sections" [shape=box];</p>
+<p>    "User approves design?" [shape=diamond];</p>
+<p>    "Write design doc" [shape=box];</p>
+<p>    "Spec self-review\n(fix inline)" [shape=box];</p>
+<p>    "User reviews spec?" [shape=diamond];</p>
+<p>    "Invoke writing-plans skill" [shape=doublecircle];</p>
+<p>    "Hidden complexity? Upgrade path" [shape=box];</p>
+
+<p>    "Classify: spike / bounded / architectural" -&gt; "Present question + probe (2-3 sentences)" [label="spike"];</p>
+<p>    "Classify: spike / bounded / architectural" -&gt; "Ask clarifying questions (bounded)" [label="bounded"];</p>
+<p>    "Classify: spike / bounded / architectural" -&gt; "Explore project context" [label="architectural"];</p>
+<p>    "Present question + probe (2-3 sentences)" -&gt; "Human approves?";</p>
+<p>    "Ask clarifying questions (bounded)" -&gt; "Present short design in chat";</p>
+<p>    "Present short design in chat" -&gt; "Human approves?";</p>
+<p>    "Human approves?" -&gt; "Investigate; report recommendation" [label="spike: yes"];</p>
+<p>    "Human approves?" -&gt; "Implement via normal workflow (no plan doc)" [label="bounded: yes"];</p>
+<p>    "Hidden complexity? Upgrade path" -&gt; "Classify: spike / bounded / architectural";</p>
+<p>    "Explore project context" -&gt; "Ask clarifying questions";</p>
+<p>    "Ask clarifying questions" -&gt; "Propose 2-3 approaches";</p>
+<p>    "Propose 2-3 approaches" -&gt; "Present design sections";</p>
+<p>    "Present design sections" -&gt; "User approves design?";</p>
+<p>    "User approves design?" -&gt; "Present design sections" [label="no, revise"];</p>
+<p>    "User approves design?" -&gt; "Write design doc" [label="yes"];</p>
+<p>    "Write design doc" -&gt; "Spec self-review\n(fix inline)";</p>
+<p>    "Spec self-review\n(fix inline)" -&gt; "User reviews spec?";</p>
+<p>    "User reviews spec?" -&gt; "Write design doc" [label="changes requested"];</p>
+<p>    "User reviews spec?"</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/brainstorming.md">view source on GitHub</a></article>
 <article class="card" data-origin="imported" data-added="2026-09-17T15:41:17.000Z" data-updated="2026-09-17T15:41:17.000Z" data-name="brand-guidelines imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/brand-guidelines/skill.md) — applies anthropic's off">
   <h2>brand-guidelines</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/anthropics/skills">anthropics/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/brand-guidelines/SKILL.md) — Applies Anthropic's off</p>
   <div class="dates">added 2026-09-17 15:41 · updated 2026-09-17 15:41</div>
@@ -1081,6 +1231,178 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  or how it compares to the user's own data. *"How do these CPL</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/discernment-nudge.md">view source on GitHub</a></article>
+<article class="card" data-origin="imported" data-added="2026-09-17" data-updated="2026-09-17" data-name="dispatching-parallel-agents imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/dispatching-parallel-agents/skill.md) — use when facin">
+  <h2>dispatching-parallel-agents</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/dispatching-parallel-agents/SKILL.md) — Use when facin</p>
+  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: dispatching-parallel-agents</h2>
+
+<p>Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/dispatching-parallel-agents/SKILL.md) — Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies.</p>
+<p>Adapted to WinAgent tools where possible; verify tool names before use.</p>
+
+<h2>Dispatching Parallel Agents</h2>
+
+<h3>Overview</h3>
+
+<p>You delegate tasks to specialized agents with isolated context. By precisely crafting their instructions and context, you ensure they stay focused and succeed at their task. They should never inherit your session's context or history — you construct exactly what they need. This also preserves your own context for coordination work.</p>
+
+<p>When you have multiple unrelated failures (different test files, different subsystems, different bugs), investigating them sequentially wastes time. Each investigation is independent and can happen in parallel.</p>
+
+<p><strong>Core principle:</strong> Dispatch one agent per independent problem domain. Let them work concurrently.</p>
+
+<h3>When to Use</h3>
+
+<p>```dot</p>
+<p>digraph when_to_use {</p>
+<p>    "Multiple failures?" [shape=diamond];</p>
+<p>    "Are they independent?" [shape=diamond];</p>
+<p>    "Single agent investigates all" [shape=box];</p>
+<p>    "One agent per problem domain" [shape=box];</p>
+<p>    "Can they work in parallel?" [shape=diamond];</p>
+<p>    "Sequential agents" [shape=box];</p>
+<p>    "Parallel dispatch" [shape=box];</p>
+
+<p>    "Multiple failures?" -&gt; "Are they independent?" [label="yes"];</p>
+<p>    "Are they independent?" -&gt; "Single agent investigates all" [label="no - related"];</p>
+<p>    "Are they independent?" -&gt; "Can they work in parallel?" [label="yes"];</p>
+<p>    "Can they work in parallel?" -&gt; "Parallel dispatch" [label="yes"];</p>
+<p>    "Can they work in parallel?" -&gt; "Sequential agents" [label="no - shared state"];</p>
+<p>}</p>
+<p>```</p>
+
+<p><strong>Use when:</strong></p>
+<div class="li">- 3+ test files failing with different root causes</div>
+<div class="li">- Multiple subsystems broken independently</div>
+<div class="li">- Each problem can be understood without context from others</div>
+<div class="li">- No shared state between investigations</div>
+
+<p><strong>Don't use when:</strong></p>
+<div class="li">- Failures are related (fix one might fix others)</div>
+<div class="li">- Need to understand full system state</div>
+<div class="li">- Agents would interfere with each other</div>
+
+<h3>The Pattern</h3>
+
+<h3>1. Identify Independent Domains</h3>
+
+<p>Group failures by what's broken:</p>
+<div class="li">- File A tests: Tool approval flow</div>
+<div class="li">- File B tests: Batch completion behavior</div>
+<div class="li">- File C tests: Abort functionality</div>
+
+<p>Each domain is independent - fixing tool approval doesn't affect abort tests.</p>
+
+<h3>2. Create Focused Agent Tasks</h3>
+
+<p>Each agent gets:</p>
+<div class="li">- <strong>Specific scope:</strong> One test file or subsystem</div>
+<div class="li">- <strong>Clear goal:</strong> Make these tests pass</div>
+<div class="li">- <strong>Constraints:</strong> Don't change other code</div>
+<div class="li">- <strong>Expected output:</strong> Summary of what you found and fixed</div>
+
+<h3>3. Dispatch in Parallel</h3>
+
+<p>Issue all three subagent dispatches in the same response — they run in parallel:</p>
+
+<p>```text</p>
+<p>Subagent (general-purpose): "Fix agent-tool-abort.test.ts failures"</p>
+<p>Subagent (general-purpose): "Fix batch-completion-behavior.test.ts failures"</p>
+<p>Subagent (general-purpose): "Fix tool-approval-race-conditions.test.ts failures"</p>
+<h2>All three run concurrently.</h2>
+<p>```</p>
+
+<p>Multiple dispatch calls in one response = parallel execution. One per response = sequential.</p>
+
+<h3>4. Review and Integrate</h3>
+
+<p>When agents return:</p>
+<div class="li">- Read each summary</div>
+<div class="li">- Verify fixes don't conflict</div>
+<div class="li">- Run full test suite</div>
+<div class="li">- Integrate all changes</div>
+
+<h3>Agent Prompt Structure</h3>
+
+<p>Good agent prompts are:</p>
+<p>1. <strong>Focused</strong> - One clear problem domain</p>
+<p>2. <strong>Self-contained</strong> - All context needed to understand the problem</p>
+<p>3. <strong>Specific about output</strong> - What should the agent return?</p>
+
+<p>```markdown</p>
+<p>Fix the 3 failing tests in src/agents/agent-tool-abort.test.ts:</p>
+
+<p>1. "should abort tool with partial output capture" - expects 'interrupted at' in message</p>
+<p>2. "should handle mixed completed and aborted tools" - fast tool aborted instead of completed</p>
+<p>3. "should properly track pendingToolCount" - expects 3 results but gets 0</p>
+
+<p>These are timing/race condition issues. Your task:</p>
+
+<p>1. Read the test file and understand what each test verifies</p>
+<p>2. Identify root cause - timing issues or actual bugs?</p>
+<p>3. Fix by:</p>
+<div class="li">   - Replacing arbitrary timeouts with event-based waiting</div>
+<div class="li">   - Fixing bugs in abort implementation if found</div>
+<div class="li">   - Adjusting test expectations if testing changed behavior</div>
+
+<p>Do NOT just increase timeouts - find the real issue.</p>
+
+<p>Return: Summary of what you found and what you fixed.</p>
+<p>```</p>
+
+<h3>Common Mistakes</h3>
+
+<p><strong>❌ Too broad:</strong> "Fix all the tests" - agent gets lost</p>
+<p><strong>✅ Specific:</strong> "Fix agent-tool-abort.test.ts" - focused scope</p>
+
+<p><strong>❌ No context:</strong> "Fix the race condition" - agent doesn't know where</p>
+<p><strong>✅ Context:</strong> Paste the error messages and test names</p>
+
+<p><strong>❌ No constraints:</strong> Agent might refactor everything</p>
+<p><strong>✅ Constraints:</strong> "Do NOT change production code" or "Fix tests only"</p>
+
+<p><strong>❌ Vague output:</strong> "Fix it" - you don't know what changed</p>
+<p><strong>✅ Specific:</strong> "Return summary of root cause and changes"</p>
+
+<h3>When NOT to Use</h3>
+
+<p><strong>Related failures:</strong> Fixing one might fix others - investigate together first</p>
+<p><strong>Need full context:</strong> Understanding requires seeing entire system</p>
+<p><strong>Exploratory debugging:</strong> You don't know what's broken yet</p>
+<p><strong>Shared state:</strong> Agents would interfere (editing same files, using same resources)</p>
+
+<h3>Real Example from Session</h3>
+
+<p><strong>Scenario:</strong> 6 test failures across 3 files after major refactoring</p>
+
+<p><strong>Failures:</strong></p>
+<div class="li">- agent-tool-abort.test.ts: 3 failures (timing issues)</div>
+<div class="li">- batch-completion-behavior.test.ts: 2 failures (tools not executing)</div>
+<div class="li">- tool-approval-race-conditions.test.ts: 1 failure (execution count = 0)</div>
+
+<p><strong>Decision:</strong> Independent domains - abort logic separate from batch completion separate from race conditions</p>
+
+<p><strong>Dispatch:</strong></p>
+<p>```</p>
+<p>Agent 1 → Fix agent-tool-abort.test.ts</p>
+<p>Agent 2 → Fix batch-completion-behavior.test.ts</p>
+<p>Agent 3 → Fix tool-approval-race-conditions.test.ts</p>
+<p>```</p>
+
+<p><strong>Results:</strong></p>
+<div class="li">- Agent 1: Replaced timeouts with event-based waiting</div>
+<div class="li">- Agent 2: Fixed event structure bug (threadId in wrong place)</div>
+<div class="li">- Agent 3: Added wait for async tool execution to complete</div>
+
+<p><strong>Integration:</strong> All fixes independent, no conflicts, full suite green</p>
+
+<h3>Verification</h3>
+
+<p>After agents return:</p>
+<p>1. <strong>Review each summary</strong> - Understand what changed</p>
+<p>2. <strong>Check for conflicts</strong> - Did agents edit same code?</p>
+<p>3. <strong>Run full suite</strong> - Verify all fixes work together</p>
+<p>4. <strong>Spot check</strong> - Agents can make systematic errors</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/dispatching-parallel-agents.md">view source on GitHub</a></article>
 <article class="card" data-origin="imported" data-added="2026-09-17T16:04:50.000Z" data-updated="2026-09-17T16:04:50.000Z" data-name="doc-coauthoring imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/doc-coauthoring/skill.md) — guide users through a st">
   <h2>doc-coauthoring</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/ACHUTHAN17/skills">ACHUTHAN17/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/doc-coauthoring/SKILL.md) — Guide users through a st</p>
   <div class="dates">added 2026-09-17 16:04 · updated 2026-09-17 16:04</div>
@@ -1419,6 +1741,75 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://vailtech.net/sites/default/files/Win_Essential_Windows_Run_Commands.pdf</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/essential-windows-run-commands.md">view source on GitHub</a></article>
+<article class="card" data-origin="imported" data-added="2026-09-17" data-updated="2026-09-17" data-name="executing-plans imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/executing-plans/skill.md) — use when you have a writte">
+  <h2>executing-plans</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/executing-plans/SKILL.md) — Use when you have a writte</p>
+  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: executing-plans</h2>
+
+<p>Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/executing-plans/SKILL.md) — Use when you have a written implementation plan to execute in a separate session with review checkpoints.</p>
+<p>Adapted to WinAgent tools where possible; verify tool names before use.</p>
+
+<h2>Executing Plans</h2>
+
+<h3>Overview</h3>
+
+<p>Load plan, review critically, execute all tasks, report when complete.</p>
+
+<p><strong>Announce at start:</strong> "I'm using the executing-plans skill to implement this plan."</p>
+
+<p><strong>Note:</strong> Tell your human partner that Superpowers works much better with access to subagents (Claude Code, Codex CLI, Codex App, Copilot CLI, and Gemini CLI all qualify; see the per-platform tool refs in <code>../using-superpowers/references/</code>). If subagents are available, use superpowers:subagent-driven-development instead of this skill.</p>
+
+<h3>The Process</h3>
+
+<h3>Step 1: Load and Review Plan</h3>
+<p>1. Ensure an isolated workspace: use superpowers:using-git-worktrees to create one or verify the existing one</p>
+<p>2. Read plan file</p>
+<p>3. Review critically - identify any questions or concerns about the plan</p>
+<p>4. If concerns: Raise them with your human partner before starting</p>
+<p>5. If no concerns: Create todos for the plan items and proceed</p>
+
+<h3>Step 2: Execute Tasks</h3>
+
+<p>For each task:</p>
+<p>1. Mark as in_progress</p>
+<p>2. Follow each step exactly (plan has bite-sized steps)</p>
+<p>3. Run verifications as specified</p>
+<p>4. Mark as completed</p>
+
+<h3>Step 3: Complete Development</h3>
+
+<p>After all tasks complete and verified:</p>
+<div class="li">- Announce: "I'm using the finishing-a-development-branch skill to complete this work."</div>
+<div class="li">- <strong>REQUIRED SUB-SKILL:</strong> Use superpowers:finishing-a-development-branch</div>
+<div class="li">- Follow that skill to verify tests, present options, execute choice</div>
+
+<h3>When to Stop and Ask for Help</h3>
+
+<p><strong>STOP executing immediately when:</strong></p>
+<div class="li">- Hit a blocker (missing dependency, test fails, instruction unclear)</div>
+<div class="li">- Plan has critical gaps preventing starting</div>
+<div class="li">- You don't understand an instruction</div>
+<div class="li">- Verification fails repeatedly</div>
+
+<p><strong>Ask for clarification rather than guessing.</strong></p>
+
+<h3>When to Revisit Earlier Steps</h3>
+
+<p><strong>Return to Review (Step 1) when:</strong></p>
+<div class="li">- Partner updates the plan based on your feedback</div>
+<div class="li">- Fundamental approach needs rethinking</div>
+
+<p><strong>Don't force through blockers</strong> - stop and ask.</p>
+
+<h3>Remember</h3>
+<div class="li">- Review plan critically first</div>
+<div class="li">- Follow plan steps exactly</div>
+<div class="li">- Don't skip verifications</div>
+<div class="li">- Reference skills when plan says to</div>
+<div class="li">- Stop when blocked, don't guess</div>
+<div class="li">- Never start implementation on main/master branch without explicit user consent</div>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/executing-plans.md">view source on GitHub</a></article>
 <article class="card" data-origin="auto" data-added="2026-09-17T11:36:17.000Z" data-updated="2026-09-17T11:36:17.000Z" data-name="file-fetch-upload file manager parity: if explorer can see it, you can fetch it. locked sqlite">
   <h2>file-fetch-upload</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from locked-file + upload research</div><p class="desc">File Manager parity: if Explorer can see it, you can fetch it. Locked SQLite</p>
   <div class="dates">added 2026-09-17 11:36 · updated 2026-09-17 11:36</div>
@@ -1454,6 +1845,236 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>branch before the first push of a session.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/file-fetch-upload.md">view source on GitHub</a></article>
+<article class="card" data-origin="imported" data-added="2026-09-17" data-updated="2026-09-17" data-name="finishing-a-development-branch imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/finishing-a-development-branch/skill.md) — use when im">
+  <h2>finishing-a-development-branch</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/finishing-a-development-branch/SKILL.md) — Use when im</p>
+  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: finishing-a-development-branch</h2>
+
+<p>Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/finishing-a-development-branch/SKILL.md) — Use when implementation is complete, all tests pass, and you need to decide how to integrate the work.</p>
+<p>Adapted to WinAgent tools where possible; verify tool names before use.</p>
+
+<h2>Finishing a Development Branch</h2>
+
+<h3>Overview</h3>
+
+<p><strong>Core principle:</strong> Verify tests → Detect environment → Present options → Execute choice → Clean up.</p>
+
+<p><strong>Announce at start:</strong> "I'm using the finishing-a-development-branch skill to complete this work."</p>
+
+<h3>Step 1: Verify Tests</h3>
+
+<p>Run the project's full test suite (<code>npm test</code> / <code>cargo test</code> / <code>pytest</code> / <code>go test ./...</code>).</p>
+
+<p><strong>If tests fail</strong>, report the failures and stop — the menu comes after a green suite:</p>
+
+<p>```</p>
+<p>Tests failing (&lt;N&gt; failures). Must fix before completing:</p>
+
+<p>[Show failures]</p>
+<p>```</p>
+
+<p><strong>If tests pass:</strong> continue to Step 2.</p>
+
+<h3>Step 2: Detect Environment</h3>
+
+<p>```bash</p>
+<p>GIT_DIR=$(cd "$(git rev-parse --git-dir)" 2&gt;/dev/null &amp;&amp; pwd -P)</p>
+<p>GIT_COMMON=$(cd "$(git rev-parse --git-common-dir)" 2&gt;/dev/null &amp;&amp; pwd -P)</p>
+<h2>Capture now, while still inside the workspace — Step 5 changes directory</h2>
+<h2>before cleanup (Step 6) needs this value</h2>
+<p>WORKTREE_PATH=$(git rev-parse --show-toplevel)</p>
+<p>```</p>
+
+<p>This determines which menu to show and how cleanup works:</p>
+
+<p>| State | Menu | Cleanup |</p>
+<p>|-------|------|---------|</p>
+<p>| <code>GIT_DIR == GIT_COMMON</code> (normal repo) | Standard 3 options | No worktree to clean up |</p>
+<p>| <code>GIT_DIR != GIT_COMMON</code>, named branch | Standard 3 options | Provenance-based (see Step 6) |</p>
+<p>| <code>GIT_DIR != GIT_COMMON</code>, detached HEAD | Reduced 2 options (no merge) | Externally managed — leave in place |</p>
+
+<h3>Step 3: Determine Base Branch</h3>
+
+<p>The base branch is whatever this work forked from — usually named in the</p>
+<p>plan, the conversation, or the branch's upstream. If it is not already</p>
+<p>known, ask: "This branch split from &lt;your best guess&gt; - is that correct?"</p>
+<p>Confirm before merging: merging into the wrong base is expensive to undo.</p>
+
+<h3>Step 4: Present Options</h3>
+
+<p><strong>Normal repo and named-branch worktree — present exactly these 3 options:</strong></p>
+
+<p>```</p>
+<p>Implementation complete. What would you like to do?</p>
+
+<p>1. Merge back to &lt;base-branch&gt; locally</p>
+<p>2. Push and create a Pull Request</p>
+<p>3. Keep the branch as-is (I'll handle it later)</p>
+
+<p>Which option?</p>
+<p>```</p>
+
+<p><strong>Detached HEAD — present exactly these 2 options:</strong></p>
+
+<p>```</p>
+<p>Implementation complete. You're on a detached HEAD (externally managed workspace).</p>
+
+<p>1. Push as new branch and create a Pull Request</p>
+<p>2. Keep as-is (I'll handle it later)</p>
+
+<p>Which option?</p>
+<p>```</p>
+
+<p>Present the menu exactly as written — concise, with every option coming</p>
+<p>from the list above. Discarding the work happens only in response to your</p>
+<p>human partner explicitly asking for it (see "If your human partner asks to</p>
+<p>discard the work" below). Wait for their answer; the integration decision</p>
+<p>is theirs.</p>
+
+<h3>Step 5: Execute Choice</h3>
+
+<h3>Option 1: Merge Locally</h3>
+
+<p>```bash</p>
+<h2>Get main repo root for CWD safety</h2>
+<p>MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)</p>
+<p>cd "$MAIN_ROOT"</p>
+
+<h2>Merge first — verify success before removing anything</h2>
+<p>git checkout &lt;base-branch&gt;</p>
+<p>git pull</p>
+<p>git merge &lt;feature-branch&gt;</p>
+
+<h2>Verify tests on merged result</h2>
+<p>&lt;test command&gt;</p>
+<p>```</p>
+
+<p>If tests fail on the merged result: stop, leave the worktree and branch in</p>
+<p>place, and investigate — nothing has been pushed, so the merge is local</p>
+<p>and recoverable.</p>
+
+<p>Once the merged result is green: clean up the worktree (Step 6), then</p>
+<p>delete the branch:</p>
+
+<p>```bash</p>
+<p>git branch -d &lt;feature-branch&gt;</p>
+<p>```</p>
+
+<h3>Option 2: Push and Create PR</h3>
+
+<p>```bash</p>
+<p>git push -u origin &lt;feature-branch&gt;</p>
+<h2>From a detached HEAD, name the new branch on the remote:</h2>
+<h2>git push origin HEAD:refs/heads/&lt;new-branch&gt;</h2>
+<p>```</p>
+
+<p>Then create the pull/merge request against &lt;base-branch&gt; with the forge's</p>
+<p>tooling — its CLI if one is available, or the creation URL most forges</p>
+<p>print when you push — following the repo's PR template and conventions if</p>
+<p>present, and report the URL to your human partner.</p>
+
+<p>Keep the worktree — your human partner iterates on PR feedback there.</p>
+
+<h3>Option 3: Keep As-Is</h3>
+
+<p>Report: "Keeping branch &lt;name&gt;. Worktree preserved at &lt;path&gt;."</p>
+
+<h3>If your human partner asks to discard the work</h3>
+
+<p>This path exists only as a response to an explicit request to throw the</p>
+<p>work away. Confirm first:</p>
+
+<p>```</p>
+<p>This will permanently delete:</p>
+<div class="li">- Branch &lt;name&gt;</div>
+<div class="li">- All commits: &lt;commit-list&gt;</div>
+<div class="li">- Worktree at &lt;path&gt;</div>
+
+<p>Type 'discard' to confirm.</p>
+<p>```</p>
+
+<p>Wait for that exact confirmation. When it arrives:</p>
+
+<p>```bash</p>
+<p>MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)</p>
+<p>cd "$MAIN_ROOT"</p>
+<p>```</p>
+
+<p>Then clean up the worktree (Step 6) and force-delete the branch:</p>
+
+<p>```bash</p>
+<p>git branch -D &lt;feature-branch&gt;</p>
+<p>```</p>
+
+<h3>Step 6: Cleanup Workspace</h3>
+
+<p><strong>Runs for Option 1 and confirmed discards.</strong> Options 2 and 3 always</p>
+<p>preserve the worktree. Both callers have already changed directory to the</p>
+<p>main repo root — worktree removal must run from outside the worktree —</p>
+<p>and use the <code>GIT_DIR</code>/<code>GIT_COMMON</code>/<code>WORKTREE_PATH</code> values captured in</p>
+<p>Step 2, from before that directory change.</p>
+
+<p><strong>If <code>GIT_DIR == GIT_COMMON</code>:</strong> Normal repo, no worktree to clean up. Done.</p>
+
+<p><strong>If <code>WORKTREE_PATH</code> is under <code>.worktrees/</code> or <code>worktrees/</code>:</strong> Superpowers</p>
+<p>created this worktree — we own cleanup:</p>
+
+<p>```bash</p>
+<p>git worktree remove "$WORKTREE_PATH"</p>
+<p>git worktree prune  # Self-healing: clean up any stale registrations</p>
+<p>```</p>
+
+<p><strong>If removal is refused</strong> (<code>contains modified or untracked files</code>): the</p>
+<p>worktree holds files that exist nowhere else — uncommitted plans, notes,</p>
+<p>or scratch work. Never <code>--force</code> on your own initiative. Show your human</p>
+<p>partner what is at stake and ask:</p>
+
+<p>```bash</p>
+<p>git -C "$WORKTREE_PATH" status --porcelain -uall</p>
+<p>```</p>
+
+<p>```</p>
+<p>Worktree removal refused — these files were never committed:</p>
+
+<p>&lt;file list&gt;</p>
+
+<p>1. Commit them to &lt;branch&gt; before cleanup</p>
+<p>2. Move them into &lt;main repo root&gt;</p>
+<p>3. Delete them (unrecoverable)</p>
+
+<p>Which?</p>
+<p>```</p>
+
+<p>Carry out the choice, then remove the worktree.</p>
+
+<p><strong>Otherwise:</strong> The host environment owns this workspace — leave it in</p>
+<p>place. If your platform provides a workspace-exit tool, use it.</p>
+
+<h3>Quick Reference</h3>
+
+<p>| Option | Merge | Push | Keep Worktree | Cleanup Branch |</p>
+<p>|--------|-------|------|---------------|----------------|</p>
+<p>| 1. Merge locally | yes | - | - | yes |</p>
+<p>| 2. Create PR | - | yes | yes | - |</p>
+<p>| 3. Keep as-is | - | - | yes | - |</p>
+<p>| Discard (explicit request only) | - | - | - | yes (force) |</p>
+
+<h3>Common Rationalizations</h3>
+
+<p>| Excuse | Reality |</p>
+<p>|--------|---------|</p>
+<p>| "Tests passed earlier this session" | Run the suite on the tree you are about to integrate. A green run only proves the tree it ran on. |</p>
+<p>| "They obviously want it merged" | Integration is your human partner's decision. Present the menu and wait. |</p>
+<p>| "They seem done with this feature — I'll offer to discard it" | The menu is complete as written. Discard happens only when your human partner asks for it in so many words. |</p>
+<p>| "'Yeah, get rid of it' counts as confirmation" | Only the typed word <code>discard</code> authorizes deletion. |</p>
+<p>| "The PR is up, so the worktree is clutter now" | PR feedback gets fixed in that worktree. It stays until the work lands. |</p>
+<p>| "This other worktree looks stale — I'll clean it too" | Clean up only worktrees under <code>.worktrees/</code> or <code>worktrees/</code>. Everything else belongs to the host. |</p>
+<p>| "Removal refused — <code>--force</code> is just finishing the cleanup" | The refusal means files exist only in that worktree. <code>--force</code> destroys them permanently. Show your human partner and ask. |</p>
+<p>| "The merged-result failure is probably flaky" | A failing merged result stops everything. Branch and worktree stay put while you investigate. |</p>
+<p>| "The base branch is obviously main" | Confirm the fork point or ask. Merging into the wrong base is expensive to undo. |</p>
+<p>| "The push was rejected — force-push will fix it" | A rejected push means the remote moved. Investigate; force-push only on your human partner's explicit request. |</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/finishing-a-development-branch.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T14:36:51.000Z" data-updated="2026-09-17T14:36:51.000Z" data-name="github-readme-badges-with-shields-io auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>github-readme-badges-with-shields-io</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-17 14:36 · updated 2026-09-17 14:36</div>
@@ -1752,6 +2373,316 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- Record what works in <code>docs/models.json</code> via the scout — never hardcode hope.</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/open-models.md">view source on GitHub</a></article>
+<article class="card" data-origin="imported" data-added="2026-09-17" data-updated="2026-09-17" data-name="receiving-code-review imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/receiving-code-review/skill.md) — use when receiving c">
+  <h2>receiving-code-review</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/receiving-code-review/SKILL.md) — Use when receiving c</p>
+  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: receiving-code-review</h2>
+
+<p>Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/receiving-code-review/SKILL.md) — Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionable - requires technical rigor and verification, not performative.</p>
+<p>Adapted to WinAgent tools where possible; verify tool names before use.</p>
+
+<h2>Code Review Reception</h2>
+
+<h3>Overview</h3>
+
+<p>Code review requires technical evaluation, not emotional performance.</p>
+
+<p><strong>Core principle:</strong> Verify before implementing. Ask before assuming. Technical correctness over social comfort.</p>
+
+<h3>The Response Pattern</h3>
+
+<p>```</p>
+<p>WHEN receiving code review feedback:</p>
+
+<p>1. READ: Complete feedback without reacting</p>
+<p>2. UNDERSTAND: Restate requirement in own words (or ask)</p>
+<p>3. VERIFY: Check against codebase reality</p>
+<p>4. EVALUATE: Technically sound for THIS codebase?</p>
+<p>5. RESPOND: Technical acknowledgment or reasoned pushback</p>
+<p>6. IMPLEMENT: One item at a time, test each</p>
+<p>```</p>
+
+<h3>Forbidden Responses</h3>
+
+<p><strong>NEVER:</strong></p>
+<div class="li">- "You're absolutely right!" (explicit instruction-file violation)</div>
+<div class="li">- "Great point!" / "Excellent feedback!" (performative)</div>
+<div class="li">- "Let me implement that now" (before verification)</div>
+
+<p><strong>INSTEAD:</strong></p>
+<div class="li">- Restate the technical requirement</div>
+<div class="li">- Ask clarifying questions</div>
+<div class="li">- Push back with technical reasoning if wrong</div>
+<div class="li">- Just start working (actions &gt; words)</div>
+
+<h3>Handling Unclear Feedback</h3>
+
+<p>```</p>
+<p>IF any item is unclear:</p>
+<p>  STOP - do not implement anything yet</p>
+<p>  ASK for clarification on unclear items</p>
+
+<p>WHY: Items may be related. Partial understanding = wrong implementation.</p>
+<p>```</p>
+
+<p><strong>Example:</strong></p>
+<p>```</p>
+<p>your human partner: "Fix 1-6"</p>
+<p>You understand 1,2,3,6. Unclear on 4,5.</p>
+
+<p>❌ WRONG: Implement 1,2,3,6 now, ask about 4,5 later</p>
+<p>✅ RIGHT: "I understand items 1,2,3,6. Need clarification on 4 and 5 before proceeding."</p>
+<p>```</p>
+
+<h3>Source-Specific Handling</h3>
+
+<h3>From your human partner</h3>
+<div class="li">- <strong>Trusted</strong> - implement after understanding</div>
+<div class="li">- <strong>Still ask</strong> if scope unclear</div>
+<div class="li">- <strong>No performative agreement</strong></div>
+<div class="li">- <strong>Skip to action</strong> or technical acknowledgment</div>
+
+<h3>From External Reviewers</h3>
+<p>```</p>
+<p>BEFORE implementing:</p>
+<p>  1. Check: Technically correct for THIS codebase?</p>
+<p>  2. Check: Breaks existing functionality?</p>
+<p>  3. Check: Reason for current implementation?</p>
+<p>  4. Check: Works on all platforms/versions?</p>
+<p>  5. Check: Does reviewer understand full context?</p>
+
+<p>IF suggestion seems wrong:</p>
+<p>  Push back with technical reasoning</p>
+
+<p>IF can't easily verify:</p>
+<p>  Say so: "I can't verify this without [X]. Should I [investigate/ask/proceed]?"</p>
+
+<p>IF conflicts with your human partner's prior decisions:</p>
+<p>  Stop and discuss with your human partner first</p>
+<p>```</p>
+
+<p><strong>your human partner's rule:</strong> "External feedback - be skeptical, but check carefully"</p>
+
+<h3>YAGNI Check for "Professional" Features</h3>
+
+<p>```</p>
+<p>IF reviewer suggests "implementing properly":</p>
+<p>  grep codebase for actual usage</p>
+
+<p>  IF unused: "This endpoint isn't called. Remove it (YAGNI)?"</p>
+<p>  IF used: Then implement properly</p>
+<p>```</p>
+
+<p><strong>your human partner's rule:</strong> "You and reviewer both report to me. If we don't need this feature, don't add it."</p>
+
+<h3>Implementation Order</h3>
+
+<p>```</p>
+<p>FOR multi-item feedback:</p>
+<p>  1. Clarify anything unclear FIRST</p>
+<p>  2. Then implement in this order:</p>
+<div class="li">     - Blocking issues (breaks, security)</div>
+<div class="li">     - Simple fixes (typos, imports)</div>
+<div class="li">     - Complex fixes (refactoring, logic)</div>
+<p>  3. Test each fix individually</p>
+<p>  4. Verify no regressions</p>
+<p>```</p>
+
+<h3>When To Push Back</h3>
+
+<p>Push back when:</p>
+<div class="li">- Suggestion breaks existing functionality</div>
+<div class="li">- Reviewer lacks full context</div>
+<div class="li">- Violates YAGNI (unused feature)</div>
+<div class="li">- Technically incorrect for this stack</div>
+<div class="li">- Legacy/compatibility reasons exist</div>
+<div class="li">- Conflicts with your human partner's architectural decisions</div>
+
+<p><strong>How to push back:</strong></p>
+<div class="li">- Use technical reasoning, not defensiveness</div>
+<div class="li">- Ask specific questions</div>
+<div class="li">- Reference working tests/code</div>
+<div class="li">- Involve your human partner if architectural</div>
+
+<p><strong>If you're uncomfortable pushing back out loud:</strong> Name that tension, then tell your partner about the issue you've seen. They'll appreciate your honesty.</p>
+
+<h3>Acknowledging Correct Feedback</h3>
+
+<p>When feedback IS correct:</p>
+<p>```</p>
+<p>✅ "Fixed. [Brief description of what changed]"</p>
+<p>✅ "Good catch - [specific issue]. Fixed in [location]."</p>
+<p>✅ [Just fix it and show in the code]</p>
+
+<p>❌ "You're absolutely right!"</p>
+<p>❌ "Great point!"</p>
+<p>❌ "Thanks for catching that!"</p>
+<p>❌ "Thanks for [anything]"</p>
+<p>❌ ANY gratitude expression</p>
+<p>```</p>
+
+<p><strong>Why no thanks:</strong> Actions speak. Just fix it. The code itself shows you heard the feedback.</p>
+
+<p><strong>If you catch yourself about to write "Thanks":</strong> DELETE IT. State the fix instead.</p>
+
+<h3>Gracefully Correcting Your Pushback</h3>
+
+<p>If you pushed back and were wrong:</p>
+<p>```</p>
+<p>✅ "You were right - I checked [X] and it does [Y]. Implementing now."</p>
+<p>✅ "Verified this and you're correct. My initial understanding was wrong because [reason]. Fixing."</p>
+
+<p>❌ Long apology</p>
+<p>❌ Defending why you pushed back</p>
+<p>❌ Over-explaining</p>
+<p>```</p>
+
+<p>State the correction factually and move on.</p>
+
+<h3>Common Mistakes</h3>
+
+<p>| Mistake | Fix |</p>
+<p>|---------|-----|</p>
+<p>| Performative agreement | State requirement or just act |</p>
+<p>| Blind implementation | Verify against codebase first |</p>
+<p>| Batch without testing | One at a time, test each |</p>
+<p>| Assuming reviewer is right | Check if breaks things |</p>
+<p>| Avoiding pushback | Technical correctness &gt; comfort |</p>
+<p>| Partial implementation | Clarify all items first |</p>
+<p>| Can't verify, proceed anyway | State limitation, ask for direction |</p>
+
+<h3>Real Examples</h3>
+
+<p><strong>Performative Agreement (Bad):</strong></p>
+<p>```</p>
+<p>Reviewer: "Remove legacy code"</p>
+<p>❌ "You're absolutely right! Let me remove that..."</p>
+<p>```</p>
+
+<p><strong>Technical Verification (Good):</strong></p>
+<p>```</p>
+<p>Reviewer: "Remove legacy code"</p>
+<p>✅ "Checking... build target is 10.15+, this API needs 13+. Need legacy for backward compat. Current impl has wrong bundle ID - fix it or drop pre-13 support?"</p>
+<p>```</p>
+
+<p><strong>YAGNI (Good):</strong></p>
+<p>```</p>
+<p>Reviewer: "Implement proper metrics tracking with database, date filters, CSV export"</p>
+<p>✅ "Grepped codebase - nothing calls this endpoint. Remove it (YAGNI)? Or is there usage I'm missing?"</p>
+<p>```</p>
+
+<p><strong>Unclear Item (Good):</strong></p>
+<p>```</p>
+<p>your human partner: "Fix items 1-6"</p>
+<p>You understand 1,2,3,6. Unclear on 4,5.</p>
+<p>✅ "Understand 1,2,3,6. Need clarification on 4 and 5 before implementing."</p>
+<p>```</p>
+
+<h3>GitHub Thread Replies</h3>
+
+<p>When replying to inline review comments on GitHub, reply in the comment thread (<code>gh api repos/{owner}/{repo}/pulls/{pr}/comments/{id}/replies</code>), not as a top-level PR comment.</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/receiving-code-review.md">view source on GitHub</a></article>
+<article class="card" data-origin="imported" data-added="2026-09-17" data-updated="2026-09-17" data-name="requesting-code-review imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/requesting-code-review/skill.md) — use when completing">
+  <h2>requesting-code-review</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/requesting-code-review/SKILL.md) — Use when completing</p>
+  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: requesting-code-review</h2>
+
+<p>Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/requesting-code-review/SKILL.md) — Use when completing tasks, implementing major features, or before merging to verify work meets requirements.</p>
+<p>Adapted to WinAgent tools where possible; verify tool names before use.</p>
+
+<h2>Requesting Code Review</h2>
+
+<p>Dispatch a code reviewer subagent to catch issues before they cascade. The reviewer gets precisely crafted context for evaluation — never your session's history.</p>
+
+<p><strong>Core principle:</strong> Review early, review often.</p>
+
+<h3>When to Request Review</h3>
+
+<p><strong>Mandatory:</strong></p>
+<div class="li">- After each task in subagent-driven development</div>
+<div class="li">- After completing major feature</div>
+<div class="li">- Before merge to main</div>
+
+<p><strong>Optional but valuable:</strong></p>
+<div class="li">- When stuck (fresh perspective)</div>
+<div class="li">- Before refactoring (baseline check)</div>
+<div class="li">- After fixing complex bug</div>
+
+<h3>How to Request</h3>
+
+<p><strong>1. Get git SHAs:</strong></p>
+<p>```bash</p>
+<p>BASE_SHA=$(git rev-parse HEAD~1)  # or origin/main</p>
+<p>HEAD_SHA=$(git rev-parse HEAD)</p>
+<p>```</p>
+
+<p><strong>2. Dispatch code reviewer subagent:</strong></p>
+
+<p>Dispatch a <code>general-purpose</code> subagent, filling the template at [code-reviewer.md](code-reviewer.md)</p>
+
+<p><strong>Placeholders:</strong></p>
+<div class="li">- <code>{DESCRIPTION}</code> - Brief summary of what you built</div>
+<div class="li">- <code>{PLAN_OR_REQUIREMENTS}</code> - What it should do</div>
+<div class="li">- <code>{BASE_SHA}</code> - Starting commit</div>
+<div class="li">- <code>{HEAD_SHA}</code> - Ending commit</div>
+
+<p><strong>3. Act on feedback:</strong></p>
+<div class="li">- Fix Critical issues immediately</div>
+<div class="li">- Fix Important issues before proceeding</div>
+<div class="li">- Note Minor issues for later</div>
+<div class="li">- Push back if reviewer is wrong (with reasoning)</div>
+
+<h3>Example</h3>
+
+<p>```</p>
+<p>[Just completed Task 2: Add verification function]</p>
+
+<p>You: Let me request code review before proceeding.</p>
+
+<p>BASE_SHA=$(git log --oneline | grep "Task 1" | head -1 | awk '{print $1}')</p>
+<p>HEAD_SHA=$(git rev-parse HEAD)</p>
+
+<p>[Dispatch code reviewer subagent]</p>
+<p>  DESCRIPTION: Added verifyIndex() and repairIndex() with 4 issue types</p>
+<p>  PLAN_OR_REQUIREMENTS: Task 2 from docs/superpowers/plans/deployment-plan.md</p>
+<p>  BASE_SHA: a7981ec</p>
+<p>  HEAD_SHA: 3df7661</p>
+
+<p>[Subagent returns]:</p>
+<p>  Strengths: Clean architecture, real tests</p>
+<p>  Issues:</p>
+<p>    Important: Missing progress indicators</p>
+<p>    Minor: Magic number (100) for reporting interval</p>
+<p>  Assessment: Ready to proceed</p>
+
+<p>You: [Fix progress indicators]</p>
+<p>[Continue to Task 3]</p>
+<p>```</p>
+
+<h3>Common Rationalizations</h3>
+
+<p>| Excuse | Reality |</p>
+<p>|--------|---------|</p>
+<p>| "I'll just review the diff myself instead of dispatching a reviewer" | You're the coordinator — reviewing the diff inline burns the context window you need to keep driving the work. Dispatch a reviewer subagent: the diff and the evaluation live in its context, and only the findings come back to you. |</p>
+<p>| "The reviewer needs my whole session history to understand the change" | Hand it precisely crafted context, never your session's history. That keeps the reviewer on the work product, not your thought process. |</p>
+
+<h3>Red Flags</h3>
+
+<p><strong>Never:</strong></p>
+<div class="li">- Skip review because "it's simple"</div>
+<div class="li">- Ignore Critical issues</div>
+<div class="li">- Proceed with unfixed Important issues</div>
+<div class="li">- Argue with valid technical feedback</div>
+
+<p><strong>If reviewer wrong:</strong></p>
+<div class="li">- Push back with technical reasoning</div>
+<div class="li">- Show code/tests that prove it works</div>
+<div class="li">- Request clarification</div>
+
+<p>See template at: [code-reviewer.md](code-reviewer.md)</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/requesting-code-review.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T14:03:47.000Z" data-updated="2026-09-17T14:03:47.000Z" data-name="schedule three schedulers, pick by need. all re-read skills + memory each run.">
   <h2>schedule</h2><span class="badge task">task-built playbook</span><p class="desc">Three schedulers, pick by need. All re-read skills + memory each run.</p>
   <div class="dates">added 2026-09-17 14:03 · updated 2026-09-17 14:03</div>
@@ -1849,6 +2780,139 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/agent-cli-framework/aclif</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-aclif-agent-cli-framework-one-gr.md">view source on GitHub</a></article>
+<article class="card" data-origin="imported" data-added="2026-09-17" data-updated="2026-09-17" data-name="subagent-driven-development imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/subagent-driven-development/skill.md) — use when execu">
+  <h2>subagent-driven-development</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/subagent-driven-development/SKILL.md) — Use when execu</p>
+  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: subagent-driven-development</h2>
+
+<p>Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/subagent-driven-development/SKILL.md) — Use when executing implementation plans with independent tasks in the current session.</p>
+<p>Adapted to WinAgent tools where possible; verify tool names before use.</p>
+
+<h2>Subagent-Driven Development</h2>
+
+<p>Execute plan by dispatching a fresh implementer subagent per task, a task review (spec compliance + code quality) after each, and a broad whole-branch review at the end.</p>
+
+<p><strong>Why subagents:</strong> You delegate tasks to specialized agents with isolated context. By precisely crafting their instructions and context, you ensure they stay focused and succeed at their task. They should never inherit your session's context or history — you construct exactly what they need. This also preserves your own context for coordination work.</p>
+
+<p><strong>Core principle:</strong> Fresh subagent per task + task review (spec + quality) + broad final review = high quality, fast iteration</p>
+
+<p><strong>Narration:</strong> between tool calls, narrate at most one short line — the</p>
+<p>ledger and the tool results carry the record.</p>
+
+<p><strong>Continuous execution:</strong> Do not pause to check in with your human partner between tasks. Execute all tasks from the plan without stopping. The only reasons to stop are the four named below, or all tasks complete. "Should I continue?" prompts and progress summaries waste their time — they asked you to execute the plan, so execute it.</p>
+
+<p><strong>Rulings, not stalls.</strong> A running plan does not wait on a human. Conflicts,</p>
+<p>ambiguities, plan defects, a cap you would have asked to exceed — decide</p>
+<p>them. The spec is the binding authority, the plan is its argument, and your</p>
+<p>judgment settles what neither answers. Record every decision in the ledger as</p>
+<p><code>Ruling: &lt;what you decided&gt; — &lt;why&gt; — &lt;what it costs if wrong&gt;</code>, and keep</p>
+<p>going. A wrong ruling costs rework your human partner can see and undo; a</p>
+<p>session parked on a question costs their whole day and buys nothing.</p>
+
+<p>Four things stop you, and only these: an irreversible or destructive</p>
+<p>operation; a security-sensitive action; a side effect outside this worktree</p>
+<p>that norms say you ask about first (a merge, a push to a shared branch, a</p>
+<p>publish); and a plan so broken that every path forward is a guess. For those,</p>
+<p>stop and ask.</p>
+
+<h3>When to Use</h3>
+
+<p>```dot</p>
+<p>digraph when_to_use {</p>
+<p>    "Have implementation plan?" [shape=diamond];</p>
+<p>    "Tasks mostly independent?" [shape=diamond];</p>
+<p>    "Stay in this session?" [shape=diamond];</p>
+<p>    "subagent-driven-development" [shape=box];</p>
+<p>    "executing-plans" [shape=box];</p>
+<p>    "Manual execution or brainstorm first" [shape=box];</p>
+
+<p>    "Have implementation plan?" -&gt; "Tasks mostly independent?" [label="yes"];</p>
+<p>    "Have implementation plan?" -&gt; "Manual execution or brainstorm first" [label="no"];</p>
+<p>    "Tasks mostly independent?" -&gt; "Stay in this session?" [label="yes"];</p>
+<p>    "Tasks mostly independent?" -&gt; "Manual execution or brainstorm first" [label="no - tightly coupled"];</p>
+<p>    "Stay in this session?" -&gt; "subagent-driven-development" [label="yes"];</p>
+<p>    "Stay in this session?" -&gt; "executing-plans" [label="no - parallel session"];</p>
+<p>}</p>
+<p>```</p>
+
+<p><strong>vs. Executing Plans (parallel session):</strong></p>
+<div class="li">- Same session (no context switch)</div>
+<div class="li">- Fresh subagent per task (no context pollution)</div>
+<div class="li">- Review after each task (spec compliance + code quality), broad review at the end</div>
+<div class="li">- Faster iteration (no human-in-loop between tasks)</div>
+
+<h3>The Process</h3>
+
+<p>```dot</p>
+<p>digraph process {</p>
+<p>    rankdir=TB;</p>
+
+<p>    subgraph cluster_per_task {</p>
+<p>        label="Per Task";</p>
+<p>        "Dispatch implementer subagent (./implementer-prompt.md)" [shape=box];</p>
+<p>        "Implementer asks questions?" [shape=diamond];</p>
+<p>        "Answer questions, provide context" [shape=box];</p>
+<p>        "Implementer implements, tests, commits, self-reviews" [shape=box];</p>
+<p>        "Generate review package, dispatch task reviewer (./task-reviewer-prompt.md)" [shape=box];</p>
+<p>        "Spec ✅ and quality approved?" [shape=diamond];</p>
+<p>        "Finding conflicts with plan text?" [shape=diamond];</p>
+<p>        "Rule on the conflict, ledger the ruling" [shape=box];</p>
+<p>        "Fix round R of 5: R≤3 resume implementer; R≥4 fresh implementer, more capable model" [shape=box];</p>
+<p>        "Dispatch scoped re-review (./re-review-prompt.md)" [shape=box];</p>
+<p>        "All findings addressed?" [shape=diamond];</p>
+<p>        "R = 5?" [shape=diamond];</p>
+<p>        "Adjudicate each open finding" [shape=box];</p>
+<p>        "Any load-bearing finding?" [shape=diamond];</p>
+<p>        "Rule and continue; stop only if every path forward is a guess" [shape=box];</p>
+<p>        "Park findings in ledger with rulings" [shape=box];</p>
+<p>        "Append completion to ledger, mark todo complete" [shape=box];</p>
+<p>    }</p>
+
+<p>    "Setup: worktree, ledger check, read plan, pre-flight review" [shape=box];</p>
+<p>    "More tasks remain?" [shape=diamond];</p>
+<p>    "Dispatch final code reviewer (../requesting-code-review/code-reviewer.md)" [shape=box];</p>
+<p>    "Final findings? ONE fix dispatch, one scoped re-review, adjudicate residuals" [shape=box];</p>
+<p>    "Final review clean: delete this plan's workspace" [shape=box];</p>
+<p>    "Use superpowers:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];</p>
+
+<p>    "Setup: worktree, ledger check, read plan, pre-flight review" -&gt; "Dispatch implementer subagent (./implementer-prompt.md)";</p>
+<p>    "Dispatch implementer subagent (./implementer-prompt.md)" -&gt; "Implementer asks questions?";</p>
+<p>    "Implementer asks questions?" -&gt; "Answer questions, provide context" [label="yes"];</p>
+<p>    "Answer questions, provide context" -&gt; "Implementer implements, tests, commits, self-reviews";</p>
+<p>    "Implementer asks questions?" -&gt; "Implementer implements, tests, commits, self-reviews" [label="no"];</p>
+<p>    "Implementer implements, tests, commits, self-reviews" -&gt; "Generate review package, dispatch task reviewer (./task-reviewer-prompt.md)";</p>
+<p>    "Generate review package, dispatch task reviewer (./task-reviewer-prompt.md)" -&gt; "Spec ✅ and quality approved?";</p>
+<p>    "Spec ✅ and quality approved?" -&gt; "Append completion to ledger, mark todo complete" [label="yes"];</p>
+<p>    "Spec ✅ and quality approved?" -&gt; "Finding conflicts with plan text?" [label="no"];</p>
+<p>    "Finding conflicts with plan text?" -&gt; "Rule on the conflict, ledger the ruling" [label="yes"];</p>
+<p>    "Rule on the conflict, ledger the ruling" -&gt; "Fix round R of 5: R≤3 resume implementer; R≥4 fresh implementer, more capable model";</p>
+<p>    "Finding conflicts with plan text?" -&gt; "Fix round R of 5: R≤3 resume implementer; R≥4 fresh implementer, more capable model" [label="no"];</p>
+<p>    "Fix round R of 5: R≤3 resume implementer; R≥4 fresh implementer, more capable model" -&gt; "Dispatch scoped re-review (./re-review-prompt.md)";</p>
+<p>    "Dispatch scoped re-review (./re-review-prompt.md)" -&gt; "All findings addressed?";</p>
+<p>    "All findings addressed?" -&gt; "Append completion to ledger, mark todo complete" [label="yes"];</p>
+<p>    "All findings addressed?" -&gt; "R = 5?" [label="no"];</p>
+<p>    "R = 5?" -&gt; "Fix round R of 5: R≤3 resume implementer; R≥4 fresh implementer, more capable model" [label="no - next round"];</p>
+<p>    "R = 5?" -&gt; "Adjudicate each open finding" [label="yes - breaker trips"];</p>
+<p>    "Adjudicate each open finding" -&gt; "Any load-bearing finding?";</p>
+<p>    "Any load-bearing finding?" -&gt; "Rule and continue; stop only if every path forward is a guess" [label="yes"];</p>
+<p>    "Any load-bearing finding?" -&gt; "Park findings in ledger with rulings" [label="no"];</p>
+<p>    "Park findings in ledger with rulings" -&gt; "Append completion to ledger, mark todo complete";</p>
+<p>    "Append completion to ledger, mark todo complete" -&gt; "More tasks remain?";</p>
+<p>    "More tasks remain?" -&gt; "Dispatch implementer subagent (./implementer-prompt.md)" [label="yes"];</p>
+<p>    "More tasks remain?" -&gt; "Dispatch final code reviewer (../requesting-code-review/code-reviewer.md)" [label="no"];</p>
+<p>    "Dispatch final code reviewer (../requesting-code-review/code-reviewer.md)" -&gt; "Final findings? ONE fix dispatch, one scoped re-review, adjudicate residuals";</p>
+<p>    "Final findings? ONE fix dispatch, one scoped re-review, adjudicate residuals" -&gt; "Final review clean: delete this plan's workspace";</p>
+<p>    "Final review clean: delete this plan's workspace" -&gt; "Use superpowers:finishing-a-development-branch";</p>
+<p>}</p>
+<p>```</p>
+
+<h3>Setup</h3>
+
+<p>Ensure the work happens in an isolated workspace: use</p>
+<p>superpowers:using-git-worktrees to create one or verify the existing one.</p>
+<p>Never start implementation on a m</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/subagent-driven-development.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T11:28:22.000Z" data-updated="2026-09-17T11:28:22.000Z" data-name="system-control you are the operator: windows, processes, services, registry, power, clipboard.">
   <h2>system-control</h2><span class="badge task">task-built playbook</span><p class="desc">You are the operator: windows, processes, services, registry, power, clipboard.</p>
   <div class="dates">added 2026-09-17 11:28 · updated 2026-09-17 11:28</div>
@@ -1889,6 +2953,266 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>5. One change → verify → next change. Never chain blind destructive steps.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/system-control.md">view source on GitHub</a></article>
+<article class="card" data-origin="imported" data-added="2026-09-17" data-updated="2026-09-17" data-name="systematic-debugging imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/systematic-debugging/skill.md) — use when encountering">
+  <h2>systematic-debugging</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/systematic-debugging/SKILL.md) — Use when encountering</p>
+  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: systematic-debugging</h2>
+
+<p>Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/systematic-debugging/SKILL.md) — Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes.</p>
+<p>Adapted to WinAgent tools where possible; verify tool names before use.</p>
+
+<h2>Systematic Debugging</h2>
+
+<h3>Overview</h3>
+
+<p><strong>Core principle:</strong> ALWAYS find root cause before attempting fixes. Symptom fixes are failure.</p>
+
+<p><strong>Violating the letter of this process is violating the spirit of debugging.</strong></p>
+
+<h3>The Iron Law</h3>
+
+<p>```</p>
+<p>NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST</p>
+<p>```</p>
+
+<p>If you haven't completed Phase 1, you cannot propose fixes.</p>
+
+<h3>When to Use</h3>
+
+<p>Use for ANY technical issue:</p>
+<div class="li">- Test failures</div>
+<div class="li">- Bugs in production</div>
+<div class="li">- Unexpected behavior</div>
+<div class="li">- Performance problems</div>
+<div class="li">- Build failures</div>
+<div class="li">- Integration issues</div>
+
+<p><strong>Use this ESPECIALLY when:</strong></p>
+<div class="li">- Under time pressure (emergencies make guessing tempting)</div>
+<div class="li">- "Just one quick fix" seems obvious</div>
+<div class="li">- You've already tried multiple fixes</div>
+<div class="li">- Previous fix didn't work</div>
+<div class="li">- You don't fully understand the issue</div>
+
+<p><strong>Don't skip when:</strong></p>
+<div class="li">- Issue seems simple (simple bugs have root causes too)</div>
+<div class="li">- You're in a hurry (rushing guarantees rework)</div>
+<div class="li">- Manager wants it fixed NOW (systematic is faster than thrashing)</div>
+
+<h3>The Four Phases</h3>
+
+<p>You MUST complete each phase before proceeding to the next.</p>
+
+<h3>Phase 1: Root Cause Investigation</h3>
+
+<p><strong>BEFORE attempting ANY fix:</strong></p>
+
+<p>1. <strong>Read Error Messages Carefully</strong></p>
+<div class="li">   - Don't skip past errors or warnings</div>
+<div class="li">   - They often contain the exact solution</div>
+<div class="li">   - Read stack traces completely</div>
+<div class="li">   - Note line numbers, file paths, error codes</div>
+
+<p>2. <strong>Reproduce Consistently</strong></p>
+<div class="li">   - Can you trigger it reliably?</div>
+<div class="li">   - What are the exact steps?</div>
+<div class="li">   - Does it happen every time?</div>
+<div class="li">   - If not reproducible → gather more data, don't guess</div>
+
+<p>3. <strong>Check Recent Changes</strong></p>
+<div class="li">   - What changed that could cause this?</div>
+<div class="li">   - Git diff, recent commits</div>
+<div class="li">   - New dependencies, config changes</div>
+<div class="li">   - Environmental differences</div>
+
+<p>4. <strong>Gather Evidence in Multi-Component Systems</strong></p>
+
+<p>   <strong>WHEN system has multiple components (CI → build → signing, API → service → database):</strong></p>
+
+<p>   <strong>BEFORE proposing fixes, add diagnostic instrumentation:</strong></p>
+<p>   ```</p>
+<p>   For EACH component boundary:</p>
+<div class="li">     - Log what data enters component</div>
+<div class="li">     - Log what data exits component</div>
+<div class="li">     - Verify environment/config propagation</div>
+<div class="li">     - Check state at each layer</div>
+
+<p>   Run once to gather evidence showing WHERE it breaks</p>
+<p>   THEN analyze evidence to identify failing component</p>
+<p>   THEN investigate that specific component</p>
+<p>   ```</p>
+
+<p>   <strong>Example (multi-layer system):</strong></p>
+<p>   ```bash</p>
+<p>   # Layer 1: Workflow</p>
+<p>   echo "=== Secrets available in workflow: ==="</p>
+<p>   echo "IDENTITY: ${IDENTITY:+SET}${IDENTITY:-UNSET}"</p>
+
+<p>   # Layer 2: Build script</p>
+<p>   echo "=== Env vars in build script: ==="</p>
+<p>   env | grep IDENTITY || echo "IDENTITY not in environment"</p>
+
+<p>   # Layer 3: Signing script</p>
+<p>   echo "=== Keychain state: ==="</p>
+<p>   security list-keychains</p>
+<p>   security find-identity -v</p>
+
+<p>   # Layer 4: Actual signing</p>
+<p>   codesign --sign "$IDENTITY" --verbose=4 "$APP"</p>
+<p>   ```</p>
+
+<p>   <strong>This reveals:</strong> Which layer fails (secrets → workflow ✓, workflow → build ✗)</p>
+
+<p>5. <strong>Trace Data Flow</strong></p>
+
+<p>   <strong>WHEN error is deep in call stack:</strong></p>
+
+<p>   See <code>root-cause-tracing.md</code> in this directory for the complete backward tracing technique.</p>
+
+<p>   <strong>Quick version:</strong></p>
+<div class="li">   - Where does bad value originate?</div>
+<div class="li">   - What called this with bad value?</div>
+<div class="li">   - Keep tracing up until you find the source</div>
+<div class="li">   - Fix at source, not at symptom</div>
+
+<h3>Phase 2: Pattern Analysis</h3>
+
+<p><strong>Find the pattern before fixing:</strong></p>
+
+<p>1. <strong>Find Working Examples</strong></p>
+<div class="li">   - Locate similar working code in same codebase</div>
+<div class="li">   - What works that's similar to what's broken?</div>
+
+<p>2. <strong>Compare Against References</strong></p>
+<div class="li">   - If implementing pattern, read reference implementation COMPLETELY</div>
+<div class="li">   - Don't skim - read every line</div>
+<div class="li">   - Understand the pattern fully before applying</div>
+
+<p>3. <strong>Identify Differences</strong></p>
+<div class="li">   - What's different between working and broken?</div>
+<div class="li">   - List every difference, however small</div>
+<div class="li">   - Don't assume "that can't matter"</div>
+
+<p>4. <strong>Understand Dependencies</strong></p>
+<div class="li">   - What other components does this need?</div>
+<div class="li">   - What settings, config, environment?</div>
+<div class="li">   - What assumptions does it make?</div>
+
+<h3>Phase 3: Hypothesis and Testing</h3>
+
+<p><strong>Scientific method:</strong></p>
+
+<p>1. <strong>Form Single Hypothesis</strong></p>
+<div class="li">   - State clearly: "I think X is the root cause because Y"</div>
+<div class="li">   - Write it down</div>
+<div class="li">   - Be specific, not vague</div>
+
+<p>2. <strong>Test Minimally</strong></p>
+<div class="li">   - Make the SMALLEST possible change to test hypothesis</div>
+<div class="li">   - One variable at a time</div>
+<div class="li">   - Don't fix multiple things at once</div>
+
+<p>3. <strong>Verify Before Continuing</strong></p>
+<div class="li">   - Did it work? Yes → Phase 4</div>
+<div class="li">   - Didn't work? Form NEW hypothesis</div>
+<div class="li">   - DON'T add more fixes on top</div>
+
+<p>4. <strong>When You Don't Know</strong></p>
+<div class="li">   - Say "I don't understand X"</div>
+<div class="li">   - Don't pretend to know</div>
+<div class="li">   - Ask for help</div>
+<div class="li">   - Research more</div>
+
+<h3>Phase 4: Implementation</h3>
+
+<p><strong>Fix the root cause, not the symptom:</strong></p>
+
+<p>1. <strong>Create Failing Test Case</strong></p>
+<div class="li">   - Simplest possible reproduction</div>
+<div class="li">   - Automated test if possible</div>
+<div class="li">   - One-off test script if no framework</div>
+<div class="li">   - MUST have before fixing</div>
+<div class="li">   - Use the <code>superpowers:test-driven-development</code> skill for writing proper failing tests</div>
+
+<p>2. <strong>Implement Single Fix</strong></p>
+<div class="li">   - Address the root cause identified</div>
+<div class="li">   - ONE change at a time</div>
+<div class="li">   - No "while I'm here" improvements</div>
+<div class="li">   - No bundled refactoring</div>
+
+<p>3. <strong>Verify Fix</strong></p>
+<div class="li">   - Test passes now?</div>
+<div class="li">   - No other tests broken?</div>
+<div class="li">   - Issue actually resolved?</div>
+<div class="li">   - Use the <code>superpowers:verification-before-completion</code> skill before claiming success</div>
+
+<p>4. <strong>If Fix Doesn't Work</strong></p>
+<div class="li">   - STOP</div>
+<div class="li">   - Count: How many fixes have you tried?</div>
+<div class="li">   - If &lt; 3: Return to Phase 1, re-analyze with new information</div>
+<div class="li">   - <strong>If ≥ 3: STOP and question the architecture (step 5 below)</strong></div>
+<div class="li">   - DON'T attempt Fix #4 without architectural discussion</div>
+
+<p>5. <strong>If 3+ Fixes Failed: Question Architecture</strong></p>
+
+<p>   <strong>Pattern indicating architectural problem:</strong></p>
+<div class="li">   - Each fix reveals new shared state/coupling/problem in different place</div>
+<div class="li">   - Fixes require "massive refactoring" to implement</div>
+<div class="li">   - Each fix creates new symptoms elsewhere</div>
+
+<p>   <strong>STOP and question fundamentals:</strong></p>
+<div class="li">   - Is this pattern fundamentally sound?</div>
+<div class="li">   - Are we "sticking with it through sheer inertia"?</div>
+<div class="li">   - Should we refactor architecture vs. continue fixing symptoms?</div>
+
+<p>   <strong>Discuss with your human partner before attempting more fixes</strong></p>
+
+<p>   This is NOT a failed hypothesis - this is a wrong architecture.</p>
+
+<h3>Red Flags - STOP and Follow Process</h3>
+
+<p>If you catch yourself thinking:</p>
+<div class="li">- "Quick fix for now, investigate later"</div>
+<div class="li">- "Just try changing X and see if it works"</div>
+<div class="li">- "Add multiple changes, run tests"</div>
+<div class="li">- "Skip the test, I'll manually verify"</div>
+<div class="li">- "It's probably X, let me fix that"</div>
+<div class="li">- "I don't fully understand but this might work"</div>
+<div class="li">- "Pattern says X but I'll adapt it differently"</div>
+<div class="li">- "Here are the main problems: [lists fixes without investigation]"</div>
+<div class="li">- Proposing solutions before tracing data flow</div>
+<div class="li">- <strong>"One more fix attempt" (when already tried 2+)</strong></div>
+<div class="li">- <strong>Each fix reveals new problem in different place</strong></div>
+
+<p><strong>ALL of these mean: STOP. Return to Phase 1.</strong></p>
+
+<p><strong>If 3+ fixes failed:</strong> Question the architecture (see Phase 4.5)</p>
+
+<h3>your human partner's Signals You're Doing It Wrong</h3>
+
+<p><strong>Watch for these redirections:</strong></p>
+<div class="li">- "Is that not happening?" - You assumed without verifying</div>
+<div class="li">- "Will it show us...?" - You should have added evidence gathering</div>
+<div class="li">- "Stop guessing" - You're proposing fixes without understanding</div>
+<div class="li">- "Ultra-think this" - Question fundamentals, not just symptoms</div>
+<div class="li">- "We're stuck?" (frustrated) - Your approach isn't working</div>
+
+<p><strong>When you see these:</strong> STOP. Return to Phase 1.</p>
+
+<h3>Common Rationalizations</h3>
+
+<p>| Excuse | Reality |</p>
+<p>|--------|---------|</p>
+<p>| "Issue is simple, don't need process" | Simple issues have root causes too. Process is fast for simple bugs. |</p>
+<p>| "Emergency, no time for process" | Systematic debugging is FASTER than guess-and-check thrashing. |</p>
+<p>| "Just try this first, then investigate" | First fix sets the pattern. Do it right from the start. |</p>
+<p>| "I'll write test after confirming fix works" | Untested fixes don't stick. Test first proves it. |</p>
+<p>| "Multiple fixes at once saves time" | Can't isolate what worked. Causes new bugs. |</p>
+<p>| "Reference too long, I'll adapt the pattern" | Partial understanding guarantees bugs. Read it completely. |</p>
+<p>| "I see the problem, let me fix it" | Seeing symptoms ≠ understanding root cause. |</p>
+<p>| "One more fix attempt" (after 2+ failures) | 3+</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/systematic-debugging.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T16:38:04.000Z" data-updated="2026-09-17T16:38:04.000Z" data-name="teach-agentic-browsing auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>teach-agentic-browsing</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-17 16:38 · updated 2026-09-17 16:38</div>

@@ -46,5 +46,53 @@
     "repo": "https://github.com/ACHUTHAN17/skills",
     "file": "skills/docx/SKILL.md",
     "at": "2026-09-17"
+  },
+  "brainstorming.md": {
+    "origin": "imported",
+    "repo": "https://github.com/obra/superpowers",
+    "file": "skills/brainstorming/SKILL.md",
+    "at": "2026-09-17"
+  },
+  "dispatching-parallel-agents.md": {
+    "origin": "imported",
+    "repo": "https://github.com/obra/superpowers",
+    "file": "skills/dispatching-parallel-agents/SKILL.md",
+    "at": "2026-09-17"
+  },
+  "executing-plans.md": {
+    "origin": "imported",
+    "repo": "https://github.com/obra/superpowers",
+    "file": "skills/executing-plans/SKILL.md",
+    "at": "2026-09-17"
+  },
+  "finishing-a-development-branch.md": {
+    "origin": "imported",
+    "repo": "https://github.com/obra/superpowers",
+    "file": "skills/finishing-a-development-branch/SKILL.md",
+    "at": "2026-09-17"
+  },
+  "receiving-code-review.md": {
+    "origin": "imported",
+    "repo": "https://github.com/obra/superpowers",
+    "file": "skills/receiving-code-review/SKILL.md",
+    "at": "2026-09-17"
+  },
+  "requesting-code-review.md": {
+    "origin": "imported",
+    "repo": "https://github.com/obra/superpowers",
+    "file": "skills/requesting-code-review/SKILL.md",
+    "at": "2026-09-17"
+  },
+  "subagent-driven-development.md": {
+    "origin": "imported",
+    "repo": "https://github.com/obra/superpowers",
+    "file": "skills/subagent-driven-development/SKILL.md",
+    "at": "2026-09-17"
+  },
+  "systematic-debugging.md": {
+    "origin": "imported",
+    "repo": "https://github.com/obra/superpowers",
+    "file": "skills/systematic-debugging/SKILL.md",
+    "at": "2026-09-17"
   }
 }
