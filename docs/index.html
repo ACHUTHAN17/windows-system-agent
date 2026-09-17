@@ -17,7 +17,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">53 skills (6 auto · 16 imported · 31 built)</span><span class="pill">generated 2026-09-17</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">55 skills (6 auto · 16 imported · 33 built)</span><span class="pill">generated 2026-09-17</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
@@ -2583,6 +2583,34 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>When replying to inline review comments on GitHub, reply in the comment thread (<code>gh api repos/{owner}/{repo}/pulls/{pr}/comments/{id}/replies</code>), not as a top-level PR comment.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/receiving-code-review.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-17" data-updated="2026-09-17" data-name="reelbench-skills-learning-notes-and-tool auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>reelbench-skills-learning-notes-and-tool</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: reelbench-skills Learning notes and tooling skills for AI video - AI 视频相关的学习与工具 skill</h2>
+
+<p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions reelbench-skills Learning notes and tooling skills for AI video - AI 视频相关的学习与工具 skill.</p>
+
+<h3>Steps</h3>
+<p>1. How do I install reelbench-skills? Clone the repository with "git clone https://github.com/eternityspring/reelbench-skills" and add it to your Claude Code skills directory (see the Installation section above)</p>
+<p>2. Open the IDE Extensions category from the badge at the top of this page, or use the Related Skills and comparison links further down to weigh reelbench-skills against similar tools</p>
+<p>3. To the maximum extent permitted by applicable law, SkillsLLM is not liable for losses arising from third-party software</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - eternityspring/reelbench-skills: Learning notes and tooling ...</div>
+<p>  https://github.com/eternityspring/reelbench-skills</p>
+<div class="li">- GitHub - jackyrx/NX_reelbench-skills: Learning notes and tooling skills ...</div>
+<p>  https://github.com/jackyrx/NX_reelbench-skills</p>
+<div class="li">- reelbench-skills - IDE Extensions on GitHub | SkillsLLM</div>
+<p>  https://skillsllm.com/skill/reelbench-skills</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/reelbench-skills-learning-notes-and-tool.md">view source on GitHub</a></article>
 <article class="card" data-origin="imported" data-added="2026-09-17T19:36:25.000Z" data-updated="2026-09-17T19:36:25.000Z" data-name="requesting-code-review imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/requesting-code-review/skill.md) — use when completing">
   <h2>requesting-code-review</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/requesting-code-review/SKILL.md) — Use when completing</p>
   <div class="dates">added 2026-09-17 19:36 · updated 2026-09-17 19:36</div>
@@ -3513,6 +3541,38 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>display scale before coordinate clicking. Skip windows with no MainWindowHandle.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/uia-click.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-17" data-updated="2026-09-17" data-name="viserys-agent auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>viserys-agent</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: viserys-agent</h2>
+
+<p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions viserys-agent.</p>
+
+<h3>Steps</h3>
+<p>1. Use when you need to document an architecture decision (ADR) or the reasoning behind a design choice, when changing public APIs, shipping features, or when you need to record context that future engineers and agents will need to understand the codebase</p>
+<p>2. Open the cloned repository folder in OpenCode</p>
+<p>3. Press Tab to open the agent selector</p>
+<p>4. Choose the Right Workflow Start with the meta skill using-agent-skills when you are unsure which workflow applies</p>
+<p>5. Use interview-me when requirements must be collected one question at a time</p>
+<p>6. Use spec-driven-development before starting a project, feature, or significant change without a specification</p>
+<p>7. Use constraint-driven-development when no quality bar exists or checks are being suppressed merely to make the build pass</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - rizqinrr/viserys-agent</div>
+<p>  https://github.com/rizqinrr/viserys-agent</p>
+<div class="li">- viserys-agent/skills/documentation-and-adrs/SKILL.md at main - GitHub</div>
+<p>  https://github.com/rizqinrr/viserys-agent/blob/main/skills/documentation-and-adrs/SKILL.md</p>
+<div class="li">- How to Build Consistent AI Coding Workflows with Viserys</div>
+<p>  https://www.aiezz.com/en/tutorial/tutorial-caa6f8cd65b9c21ee06f75bd</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/viserys-agent.md">view source on GitHub</a></article>
 <article class="card" data-origin="auto" data-added="2026-09-17T12:49:32.000Z" data-updated="2026-09-17T12:49:32.000Z" data-name="windows-clipboard-history auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>windows-clipboard-history</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from Microsoft docs (chat request)</div><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-17 12:49 · updated 2026-09-17 12:49</div>
