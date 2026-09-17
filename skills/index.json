@@ -77,6 +77,36 @@
   ]
  },
  {
+  "name": "ai-data-extractor-free-open-source-extra",
+  "title": "ai-data-extractor Free open-source extractor for AI coding assistant chat histor",
+  "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "data",
+   "extractor",
+   "free",
+   "open",
+   "source",
+   "coding",
+   "assistant",
+   "chat",
+   "histor",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
   "name": "algorithmic-art",
   "title": "algorithmic-art",
   "description": "Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/algorithmic-art/SKILL.md) — Creating algorithmic art",
@@ -657,8 +687,8 @@
   "title": "open-models — the LLM landscape, free tiers, omni-routing (researched live)",
   "description": "Researched from OpenCode (sst/opencode, MIT ~170k stars), OpenRouter docs,",
   "origin": "task",
-  "added": "2026-09-17",
-  "updated": "2026-09-17",
+  "added": "2026-09-17T16:11:09.000Z",
+  "updated": "2026-09-17T16:11:09.000Z",
   "triggers": [
    "open",
    "models",
