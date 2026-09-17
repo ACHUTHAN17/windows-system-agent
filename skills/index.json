@@ -93,6 +93,34 @@
   ]
  },
  {
+  "name": "blitzstrike-blitz-strike-a-universal-mcp",
+  "title": "blitzstrike ⚡ Blitz Strike — a universal MCP penetration-testing toolbelt. Struc",
+  "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "triggers": [
+   "blitzstrike",
+   "blitz",
+   "strike",
+   "universal",
+   "mcp",
+   "penetration",
+   "testing",
+   "toolbelt",
+   "struc",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
   "name": "browser-dom",
   "title": "browser-dom — drive pages by structure, not pixels (Gemini-style)",
   "description": "CDP tabs expose the DOM: query it, click/select/fill by selector, fall back to",
