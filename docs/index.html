@@ -17,7 +17,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.13.0</span><span class="pill">62 tools</span><span class="pill">26 skills (6 auto · 1 imported · 19 built)</span><span class="pill">generated 2026-09-17</span></div>
+<div class="meta"><span class="pill">v1.13.0</span><span class="pill">62 tools</span><span class="pill">27 skills (6 auto · 1 imported · 20 built)</span><span class="pill">generated 2026-09-17</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
@@ -330,6 +330,29 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- Long jobs: ask for progress ("status?") — or use <code>--every</code>/daemon + check back.</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/chat-telegram.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-name="coding auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>coding</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: coding</h2>
+
+<p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions coding.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Code Documentation Best Practices and Standards: A Complete Guide - Codacy</div>
+<p>  https://blog.codacy.com/code-documentation</p>
+<div class="li">- Tools and techniques for effective code documentation - GitHub</div>
+<p>  https://github.com/resources/articles/tools-and-techniques-for-effective-code-documentation</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/coding.md">view source on GitHub</a></article>
 <article class="card" data-origin="auto" data-name="computer-use faithful mirror of the computer use model (chatgpt desktop, windows): an agent">
   <h2>computer-use</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from OpenAI Computer Use docs (live web research)</div><p class="desc">Faithful mirror of the Computer Use model (ChatGPT desktop, Windows): an agent</p>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: computer-use — see + operate GUIs exactly like OpenAI Computer Use</h2>
