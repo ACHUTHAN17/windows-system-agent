@@ -17,3 +17,6 @@
   (gh auth status + setup-git + ls-remote). Stored in skills/github.md.
 - [2026-09-17] Learned (goal round 1): six run modes + parallel discipline in
   skills/agent-modes.md. gh CLI installing via winget for device-flow auth.
+- [2026-09-17] PUSHED to GitHub (admin run): gh device flow as ACHUTHAN17,
+  credential helper wired, remote boilerplate README merged with -X ours,
+  all commits live at github.com/ACHUTHAN17/windows-system-agent (main).
