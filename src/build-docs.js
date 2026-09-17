@@ -14,6 +14,7 @@ const LEARNED = {
   'agent-modes.md': 'auto-learned from its own run modes + parallel discipline',
   'self-learn.md': 'auto-learned — the research-install-verify loop itself',
   'file-fetch-upload.md': 'auto-learned from locked-file + upload research',
+  'windows-clipboard-history.md': 'auto-learned from Microsoft docs (chat request)',
 };
 
 function esc(s) {

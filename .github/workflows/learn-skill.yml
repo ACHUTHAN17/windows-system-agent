@@ -1,0 +1,68 @@
+name: learn-skill (chat-to-skill, runs on GitHub itself)
+# Chat interface: open an issue titled "teach: <topic>" (label skill-request),
+# or Actions -> learn-skill -> Run workflow. No PC or app needed.
+on:
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: 'Skill to learn (e.g. keyboard shortcuts for Windows)'
+        required: true
+      filename_hint:
+        description: 'Skill filename hint, letters/numbers/dashes (opt)'
+        required: false
+  issues:
+    types: [opened, labeled]
+concurrency:
+  group: skill-${{ github.event.issue.number || inputs.topic }}
+  cancel-in-progress: true
+permissions:
+  contents: write
+  issues: write
+jobs:
+  learn:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.issue.labels.*.name, 'skill-request')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: owner gate (only the repo owner can teach)
+        id: gate
+        run: |
+          ACTOR="${{ github.event.issue.user.login || github.actor }}"
+          if [ "$ACTOR" = "${{ github.repository_owner }}" ]; then echo "ok=true" >> $GITHUB_OUTPUT; else echo "ok=false" >> $GITHUB_OUTPUT; fi
+      - name: decline strangers
+        if: steps.gate.outputs.ok != 'true'
+        run: gh issue comment "${{ github.event.issue.number }}" --body "Sorry — only the repo owner can request skills. Your faith is noted. 🙏"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: research + install skill
+        if: steps.gate.outputs.ok == 'true'
+        id: learn
+        env:
+          TOPIC: ${{ inputs.topic }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          FILENAME_HINT: ${{ inputs.filename_hint }}
+          LLM_API_URL: ${{ secrets.LLM_API_URL }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
+        run: |
+          if [ -z "$TOPIC" ]; then TOPIC="$ISSUE_TITLE"; fi
+          TOPIC="$TOPIC" node src/agent-learn.js
+      - name: commit + push
+        if: steps.gate.outputs.ok == 'true'
+        run: |
+          git config user.name "winagent-bot"
+          git config user.email "winagent-bot@users.noreply.github.com"
+          git add skills docs
+          git diff --cached --quiet && echo "nothing new to commit" || { git commit -m "chat-learned skill: ${{ steps.learn.outputs.skill_file }} [${{ steps.learn.outputs.mode }}]"; git push; }
+      - name: reply on the issue
+        if: github.event_name == 'issues' && steps.gate.outputs.ok == 'true'
+        run: |
+          gh issue comment "$ISSUE" --body "Learned ✅ **${{ steps.learn.outputs.skill_file }}** ([${{ steps.learn.outputs.mode }} distill]).
+          Read it: https://github.com/${{ github.repository }}/blob/main/${{ steps.learn.outputs.skill_file }}
+          Live library: https://${{ github.repository_owner }}.github.io/windows-system-agent/ (a minute after this run)"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE: ${{ github.event.issue.number }}

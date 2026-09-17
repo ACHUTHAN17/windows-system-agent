@@ -1,0 +1,13 @@
+name: Request a skill
+description: Chat with the agent — type what it should learn, GitHub does the rest
+title: "teach: "
+labels: ["skill-request"]
+body:
+  - type: textarea
+    id: topic
+    attributes:
+      label: What should the agent learn?
+      description: One line is enough, e.g. "keyboard shortcuts for Windows power users". The agent researches the web, writes the skill, rebuilds the live page, and replies here — no PC or app needed.
+      placeholder: "teach: ..."
+    validations:
+      required: true

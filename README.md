@@ -160,6 +160,22 @@ $env:SKILL_TOKEN="github_pat_..."   # private repo only — skip if public
 node src\index.js --skill github "push my latest changes"
 ```
 
+### Chat-to-skill: teach from your phone, no PC or app needed
+
+The **skill-request issue IS the chat interface** — open one, type what the
+agent should learn, GitHub does the rest:
+
+👉 https://github.com/ACHUTHAN17/windows-system-agent/issues/new?template=skill-request.yml&title=teach%3A+
+
+Title it `teach: <topic>`. A GitHub Actions runner researches the web, writes
+`skills/<topic>.md`, rebuilds the live library, commits, pushes, and replies
+on your issue with links. Only the repo owner can trigger it (strangers get a
+polite decline). Backup path: Actions tab → `learn-skill` → Run workflow.
+Live library: https://achuthan17.github.io/windows-system-agent/
+Smarter distills: repo Settings → Secrets → Actions → add `LLM_API_URL` /
+`LLM_API_KEY` / `LLM_MODEL` (any OpenAI-compatible endpoint — free tiers work).
+Without keys you get the heuristic pass (official-docs steps, still useful).
+
 ### Computer-Use parity (mirrors OpenAI's model exactly)
 
 `--skill computer-use` loads the loop: **screenshot → ground → act → verify**,

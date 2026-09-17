@@ -16,7 +16,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push.</p>
-<div class="meta"><span class="pill">v1.5.0</span><span class="pill">56 tools</span><span class="pill">10 skills (5 auto-learned)</span><span class="pill">generated 2026-09-17</span></div>
+<div class="meta"><span class="pill">v1.6.0</span><span class="pill">56 tools</span><span class="pill">11 skills (6 auto-learned)</span><span class="pill">generated 2026-09-17</span></div>
 <input id="q" placeholder="filter skills…" oninput="document.querySelectorAll('.card').forEach(c=>c.style.display=c.dataset.name.includes(this.value.toLowerCase())?'':'none')">
 <div class="grid"><article class="card" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
   <h2>agent-modes</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from its own run modes + parallel discipline</div><p class="desc">WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
@@ -379,6 +379,42 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>display scale before coordinate clicking. Skip windows with no MainWindowHandle.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/uia-click.md">view source on GitHub</a></article>
+<article class="card" data-name="windows-clipboard-history auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>windows-clipboard-history</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from Microsoft docs (chat request)</div><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: windows clipboard history</h2>
+
+<p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions windows clipboard history.</p>
+
+<h3>Steps</h3>
+<p>1. Open Clipboard settings How do I turn on my clipboard history for the first time? To turn your clipboard on for the first time, select Windows logo key + V , and then select Turn on</p>
+<p>2. How do I sync my clipboard items to my PC? To sync clipboard items to your PC, you'll need to make sure the sync feature is on</p>
+<p>3. Note The sync feature is tied to your Microsoft account or your work account, so remember to use the same login information on all your devices</p>
+<p>4. How do I clear my clipboard history? You can quickly clear everything—except pinned items—on your device and the cloud</p>
+<p>5. How do I clear an individual item I don't want to see in the clipboard history anymore? You can clear any specific item on your clipboard</p>
+<p>6. To turn your clipboard on for the first time, select Windows logo key + V and select Turn on</p>
+<p>7. Note The sync feature is tied to your Microsoft account or your work account, so remember to use the same login information on all your devices</p>
+<p>8. Note The Manually sync text that I copy option would mean you'd need to open your clipboard history ( Windows logo key + V ) and manually select the sync button on the clipboard item</p>
+<p>9. Then the text would be uploaded to the cloud and synced to other devices</p>
+<p>10. Press Windows logo key + V to save recent copied or cut items on the cloud-based clipboard so you can paste them in other apps or sync across devices</p>
+<p>11. To start using clipboard history, press Windows logo key + V</p>
+<p>12. To sync clipboard items to your PC, you'll need to make sure the sync feature is on</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Using the clipboard | Microsoft Support</div>
+<p>  https://support.microsoft.com/en-us/windows/apps/using-the-clipboard</p>
+<div class="li">- Clipboard History for Productivity | Microsoft Windows</div>
+<p>  https://www.microsoft.com/en-us/windows/tips/clipboard-history</p>
+<div class="li">- How to Use Windows 11 Clipboard History | Microsoft Windows</div>
+<p>  https://www.microsoft.com/en-us/windows/learning-center/how-to-use-clipboard-history-in-windows-11</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/windows-clipboard-history.md">view source on GitHub</a></article>
 <article class="card" data-name="wordpress-build you build complete wordpress sites: install, theme, content, plugins, go-live.">
   <h2>wordpress-build</h2><span class="badge task">task-built playbook</span><p class="desc">You build complete WordPress sites: install, theme, content, plugins, go-live.</p>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: wordpress-build — build WordPress sites on the web (Windows host)</h2>
