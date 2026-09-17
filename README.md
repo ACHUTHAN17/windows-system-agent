@@ -14,6 +14,24 @@ runs gated PowerShell, and talks to **any model** through one config:
 
 Any endpoint that speaks `POST /chat/completions` works (vLLM, OpenRouter, Azure proxy, corporate gateway…).
 
+## How WinAgent compares (Sept 2026 landscape)
+
+| They have | WinAgent answer |
+|---|---|
+| Claude Computer Use / Cowork: screenshot loop, permission gates, skills, plan review | Same loop + approvals + `skills/` + `--plan` (approve before run) |
+| OpenAI Operator / Codex background sessions: web tasks, human takeover | CDP browser tools + foreground honesty + user-takeover-anytime + web-approval dashboard |
+| Manus: cloud execution, parallel work, long-horizon autonomy | Chat-to-skill + learn-skill Actions run fully on GitHub; daemon/idle self-upgrade; batched parallel calls |
+| OpenClaw: MIT, any-model, local-first, plugins, voice roadmap | MIT, any-model API/local, fully-offline capable, MCP plugins, skills |
+| Gemini/Mariner: DOM-aware browsing (no pixel flake) | `browser_dom` / `browser_click_sel` / `browser_fill_sel` (synthetic DOM events) |
+| Everyone's gap: no undo button, silent scope creep | Auto `.bak-TIMESTAMP` on every file write/edit (`NO_BACKUP=true` to skip) |
+| Manus/Operator: watchable cloud UI | `--ui 8080` local dashboard: chat, live SSE stream, click-to-approve (loopback only) |
+| cc-switch / MCP ecosystem: hundreds of integrations | `MCP_SERVERS`: any MCP server becomes `mcp_<server>_<tool>` |
+
+Honest limits: no voice I/O yet, no isolated background desktop sessions (our
+mouse uses YOUR foreground — say the word and it stops), pixel grounding
+quality depends on your model, not us. Benchmarks (OSWorld/GAIA) measure their
+models; this harness just aims to waste none of it.
+
 ## 1. Fresh-machine setup (copy-paste, ~5 min, Windows PowerShell)
 
 ```powershell
@@ -100,6 +118,9 @@ Computer-use actions: `screen_scroll, mouse_move, screen_double_click, wait`
 Memory: `memory_read, memory_write, memory_forget` (core memory, auto-loads)
 Research: `web_search, web_scrape` (self-learning engine)
 Push: `github_push` (commit + push itself, classifies auth errors with fixes)
+DOM: `browser_dom, browser_click_sel, browser_fill_sel` (structure-first browsing)
+MCP: `mcp_<server>_<tool>` (any MCP server via `MCP_SERVERS` JSON)
+Safety extras: auto `.bak` rollback on file writes · `--plan` approve-before-run · `--ui 8080` web dashboard with click approvals
 
 ### A. True screen agent
 `screenshot → screen_size → window_focus → screen_click / key_press` operates any app
@@ -211,6 +232,18 @@ user-takeover anytime, extra care for secrets/payments/admin.
   input (xdotool), services (systemctl), logs (journalctl), wifi (nmcli),
   packages (dpkg), disks (df). Windows-only bits (registry, UIA) report
   SKIP in selftest; CI proves both OSes (`windows-latest` + `ubuntu-latest`).
+
+### Web dashboard (the UI competitors charge for)
+
+```powershell
+node src\index.js --ui 8080
+# open http://127.0.0.1:8080 — chat box, live task stream, approval buttons,
+# selftest + stop controls, skills grid. Loopback only (same machine);
+# reach it from your phone via SSH tunnel, never expose it raw.
+```
+
+Approvals asked in terminal (`[y/N]`, `[y=once/a=always/N]`) appear as cards
+with clickable buttons (120s timeout = deny). One task at a time.
 
 ## 5. Full agent mode (autonomous, silent)
 

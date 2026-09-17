@@ -8,12 +8,16 @@ import path from 'node:path';
 import { loadConfig, printActiveModel } from './config.js';
 import { buildTools } from './tools.js';
 import { chat, parseAgentJson, systemPrompt, toolPrompt } from './llm.js';
-import { needsApproval, askYesNo, audit, needsAppApproval, askAppApproval } from './safety.js';
+import { needsApproval, askYesNo, audit, needsAppApproval, askAppApproval, requestApproval, requestAppApproval } from './safety.js';
 
 const argv = parseArgs(process.argv.slice(2));
 const cfg = loadConfig(argv);
 const tools = buildTools();
 const byName = Object.fromEntries(tools.map(t => [t.name, t]));
+try {
+  const { discoverMcp } = await import('./mcp.js');
+  for (const t of await discoverMcp(cfg)) { tools.push(t); byName[t.name] = t; }
+} catch (e) { console.log(`  [mcp] discovery skipped: ${e.message}`); }
 
 function parseArgs(raw) {
   const o = { _: [] };
@@ -22,6 +26,7 @@ function parseArgs(raw) {
     if (a === '--yes' || a === '-y') o.yes = true;
     else if (a === '--selftest') o.selftest = true;
     else if (a === '--once') o.once = true;
+    else if (a === '--plan') o.plan = true;
     else if (a === '--learn') o.learnTopic = raw[++i] || '';
     else if (a === '--daemon') { const v = raw[i + 1]; o.daemonSec = (v !== undefined && !String(v).startsWith('--')) ? Number(raw[++i]) : 300; }
     else if (a === '--learn-cycles') o.learnCycles = Number(raw[++i] || 0);
@@ -97,14 +102,14 @@ async function runTool(name, args) {
   const appNeed = needsAppApproval(cfg, name, args);
   if (appNeed) {
     audit(cfg, `APPROVAL-ASK-APP ${appNeed}`);
-    const how = await askAppApproval(appNeed);
+    const how = await requestAppApproval(cfg, appNeed);
     if (!how) { audit(cfg, `APPROVAL-DENY-APP ${appNeed}`); return { ok: false, error: 'denied by user', hint: 'User declined app approval. Use an allowed app or stop.' }; }
     if (how === 'always') { cfg._appGrants = cfg._appGrants || new Set(); cfg._appGrants.add(appNeed); }
   }
   if (needsApproval(cfg, name)) {
     audit(cfg, `APPROVAL-ASK ${name} ${JSON.stringify(args).slice(0, 400)}`);
-    const yes = await askYesNo(`Allow ${name} ${JSON.stringify(args).slice(0, 300)}?`);
-    if (!yes) { audit(cfg, `APPROVAL-DENY ${name}`); return { ok: false, error: 'denied by user', hint: 'User declined approval. Explain and stop or propose a read-only alternative.' }; }
+    const how2 = await requestApproval(cfg, `Allow ${name} ${JSON.stringify(args).slice(0, 300)}?`);
+    if (!how2) { audit(cfg, `APPROVAL-DENY ${name}`); return { ok: false, error: 'denied by user', hint: 'User declined approval. Explain and stop or propose a read-only alternative.' }; }
   }
   const res = await tool.run(args || {}, { cfg });
   audit(cfg, `TOOL ${name} args=${JSON.stringify(args).slice(0, 300)} -> ${JSON.stringify(res).slice(0, 500)}`);
@@ -214,6 +219,21 @@ async function agentTask(task) {
     { role: 'system', content: systemPrompt(toolPrompt(tools)) + skillPrompt(skills) + loadMemory(cfg) },
     { role: 'user', content: task },
   ];
+  if (argv.plan) {
+    const planRaw = await chat(cfg, [
+      { role: 'system', content: 'Outline a short numbered plan (max 8 steps) using the available tools. Reply as JSON: {"plan": ["step 1", "..."]}. No other text.' },
+      { role: 'user', content: task },
+    ]);
+    let planText = planRaw;
+    try {
+      const pj = JSON.parse((planRaw.match(/\{[\s\S]*\}/) || [''])[0]);
+      if (pj && Array.isArray(pj.plan)) planText = pj.plan.map((s, i) => `${i + 1}. ${s}`).join('\n');
+    } catch {}
+    console.log('\nProposed plan:\n' + planText + '\n');
+    const okp = await requestApproval(cfg, 'Execute this plan?');
+    if (!okp) return 'Plan rejected — nothing was executed.';
+    history.push({ role: 'user', content: 'Approved plan to follow:\n' + planText });
+  }
   for (let step = 1; step <= cfg.maxSteps; step++) {
     const raw = await chat(cfg, history);
     const parsed = parseAgentJson(raw);
@@ -314,6 +334,11 @@ async function repl() {
 }
 
 async function main() {
+  if (argv.UI !== undefined) {
+    const { startDashboard } = await import('./dashboard.js');
+    await startDashboard(Number(argv.UI) || 8080);
+    return;
+  }
   if (argv.selftest) return selftest();
   if (argv.learnTopic !== undefined) {
     try { console.log(await learnCycle(argv.learnTopic)); }

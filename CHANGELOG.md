@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.7.0 — 2026-09-17 (vs Manus / Claude / Operator / OpenClaw / Gemini)
+- Web dashboard `--ui 8080`: chat, live SSE stream, click-to-approve (loopback).
+- MCP bridge: any MCP server becomes `mcp_<server>_<tool>` (Windows .cmd-safe).
+- DOM browsing: `browser_dom` / `browser_click_sel` / `browser_fill_sel`.
+- Rollback: auto `.bak-TIMESTAMP` on file_write/file_edit (`NO_BACKUP=true` off).
+- Plan mode: `--plan` outlines + approves before executing (Cowork-style).
+- 3 new skills: dashboard, mcp, browser-dom. 59 standalone tools.
+
 ## 1.6.0 — 2026-09-17
 - GitHub-first skills: `SKILL_SOURCE=auto` fetches playbooks live from the repo
   every run (local fallback offline); `SKILL_TOKEN` for private repos.

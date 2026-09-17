@@ -16,7 +16,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push.</p>
-<div class="meta"><span class="pill">v1.6.0</span><span class="pill">56 tools</span><span class="pill">12 skills (6 auto-learned)</span><span class="pill">generated 2026-09-17</span></div>
+<div class="meta"><span class="pill">v1.7.0</span><span class="pill">59 tools</span><span class="pill">15 skills (6 auto-learned)</span><span class="pill">generated 2026-09-17</span></div>
 <input id="q" placeholder="filter skills…" oninput="document.querySelectorAll('.card').forEach(c=>c.style.display=c.dataset.name.includes(this.value.toLowerCase())?'':'none')">
 <div class="grid"><article class="card" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
   <h2>agent-modes</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from its own run modes + parallel discipline</div><p class="desc">WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
@@ -58,6 +58,28 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- New machine → PAWWORK.md protocol, then selftest, then serve.</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/agent-modes.md">view source on GitHub</a></article>
+<article class="card" data-name="browser-dom cdp tabs expose the dom: query it, click/select/fill by selector, fall back to">
+  <h2>browser-dom</h2><span class="badge task">task-built playbook</span><p class="desc">CDP tabs expose the DOM: query it, click/select/fill by selector, fall back to</p>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: browser-dom — drive pages by structure, not pixels (Gemini-style)</h2>
+
+<p>CDP tabs expose the DOM: query it, click/select/fill by selector, fall back to</p>
+<p>coordinates only when the page has no structure (canvas, games).</p>
+
+<h3>Flow (debug browser first: `browser_debug_launch`, own profile, port 9222)</h3>
+<p>1. <code>browser_dom {port, tab}</code> — accessibility snapshot: buttons/links/inputs</p>
+<p>   with index, tag, text, x/y/w/h. Add <code>selector</code> to narrow (any CSS).</p>
+<p>2. <code>browser_click_sel {port, tab, selector, index?}</code> — synthetic <code>.click()</code></p>
+<p>   (no coordinates, no miss). Reports what it clicked.</p>
+<p>3. <code>browser_fill_sel {port, tab, selector, value, submit?}</code> — focuses, sets</p>
+<p>   value, fires input+change events (React-safe). <code>submit:true</code> presses Enter.</p>
+<p>4. Verify with <code>browser_tab_read</code> / <code>browser_screenshot</code>, never assume.</p>
+
+<h3>Rules</h3>
+<div class="li">- Structure first, pixels last: selector → UIA → coordinates.</div>
+<div class="li">- Indexes shift after navigation — re-run <code>browser_dom</code> per page.</div>
+<div class="li">- Logins/payments: stay present, one step at a time, staging before production.</div>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/browser-dom.md">view source on GitHub</a></article>
 <article class="card" data-name="computer-use faithful mirror of the computer use model (chatgpt desktop, windows): an agent">
   <h2>computer-use</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from OpenAI Computer Use docs (live web research)</div><p class="desc">Faithful mirror of the Computer Use model (ChatGPT desktop, Windows): an agent</p>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: computer-use — see + operate GUIs exactly like OpenAI Computer Use</h2>
@@ -118,6 +140,29 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  must be reviewable on disk.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/computer-use.md">view source on GitHub</a></article>
+<article class="card" data-name="dashboard `node src/index.js --ui 8080` → open http://127.0.0.1:8080 (loopback only).">
+  <h2>dashboard</h2><span class="badge task">task-built playbook</span><p class="desc">`node src/index.js --ui 8080` → open http://127.0.0.1:8080 (loopback only).</p>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: dashboard — the web UI (chat, live stream, click-to-approve)</h2>
+
+<p><code>node src/index.js --ui 8080</code> → open http://127.0.0.1:8080 (loopback only).</p>
+<p>The page drives the agent as a child process and answers its approval prompts</p>
+<p>from the browser — the agent core is untouched.</p>
+
+<h3>What you get</h3>
+<div class="li">- <strong>Chat box</strong>: type any task, Send runs it <code>--once</code> (one task at a time).</div>
+<div class="li">- <strong>Live stream</strong>: every stdout line, color-coded (approvals amber, errors red,</div>
+<p>  passes green). Auto-scrolls; ring buffer keeps the last 200 events per load.</p>
+<div class="li">- <strong>Approval card</strong>: pops up on <code>[y/N]</code> / <code>[y=once/a=always/N]</code> prompts with</div>
+<p>  real buttons (once / always / deny). 120s timeout = deny. No terminal needed.</p>
+<div class="li">- <strong>Selftest + Stop buttons</strong>, skills grid, model pill, MCP status pill.</div>
+
+<h3>Rules</h3>
+<div class="li">- Loopback only: same-machine browsers. To reach it from your phone, use an</div>
+<p>  SSH tunnel (<code>ssh -L 8080:127.0.0.1:8080 &lt;this-pc&gt;</code>) — never expose it raw.</p>
+<div class="li">- Approvals still default-deny on timeout; AUTO_YES tasks skip prompts entirely.</div>
+<div class="li">- One task at a time (409 busy otherwise). Daemon/idle modes stay in terminal.</div>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/dashboard.md">view source on GitHub</a></article>
 <article class="card" data-name="drag-drop `screen_drag {x1,y1,x2,y2}` moves with the left button held, in smooth steps.">
   <h2>drag-drop</h2><span class="badge task">task-built playbook</span><p class="desc">`screen_drag {x1,y1,x2,y2}` moves with the left button held, in smooth steps.</p>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: drag-drop — mouse drags, sliders, selections, drag-and-drop on Windows</h2>
@@ -251,6 +296,30 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  completed change set, confirm remote SHA moved.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/github.md">view source on GitHub</a></article>
+<article class="card" data-name="mcp any mcp server (sqlite, postgres, github, playwright, filesystem…) becomes">
+  <h2>mcp</h2><span class="badge task">task-built playbook</span><p class="desc">Any MCP server (SQLite, Postgres, GitHub, Playwright, filesystem…) becomes</p>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: mcp — plug the whole MCP ecosystem in as tools</h2>
+
+<p>Any MCP server (SQLite, Postgres, GitHub, Playwright, filesystem…) becomes</p>
+<p><code>mcp_&lt;server&gt;_&lt;tool&gt;</code> with zero code. Unreachable servers warn-and-skip.</p>
+
+<h3>Configure (`.env`, one line of JSON)</h3>
+<p>```</p>
+<p>MCP_SERVERS={"sqlite":{"command":"uvx","args":["mcp-server-sqlite","--db-path","C:/data/a.db"]},"gh":{"command":"npx","args":["-y","@modelcontextprotocol/server-github"],"env":{"GITHUB_PERSONAL_ACCESS_TOKEN":"..."}}}</p>
+<p>```</p>
+<p>Windows needs <code>uvx</code>/<code>npx</code> on PATH (or absolute command paths). Restart after edit.</p>
+
+<h3>Use</h3>
+<div class="li">- Tools list shows <code>mcp_sqlite_query</code> etc. on boot (<code>[mcp] sqlite: N tools</code>).</div>
+<div class="li">- Call like any tool; results are capped at 8000 chars.</div>
+<div class="li">- Failing server? Agent still boots; check the <code>[mcp]</code> boot line.</div>
+
+<h3>Rules</h3>
+<div class="li">- Treat MCP tools as third-party: approve first use, prefer read-only queries.</div>
+<div class="li">- Secrets go in the server <code>env</code> block (never in chat); <code>.env</code> is gitignored.</div>
+<div class="li">- Prefer built-in tools when both exist (fewer moving parts, better errors).</div>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/mcp.md">view source on GitHub</a></article>
 <article class="card" data-name="self-learn when a task needs knowledge you don't have (new app, new site, new api, stale">
   <h2>self-learn</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned — the research-install-verify loop itself</div><p class="desc">When a task needs knowledge you don't have (new app, new site, new API, stale</p>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: self-learn — teach yourself new skills from the web, live, mid-task</h2>

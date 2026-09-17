@@ -67,6 +67,20 @@ function cdpSend(wsUrl, method, params = {}, timeout = 15000) {
   });
 }
 
+// Rollback safety: snapshot a file before overwriting (Manus/Cowork gap:
+// "none of them ship a real undo button" — we ship one). Opt out with
+// NO_BACKUP=true. Backups live next to the file: <name>.bak-YYYYMMDD-HHMMSS
+async function backupIfExists(p) {
+  try {
+    if (String(process.env.NO_BACKUP || '') === 'true') return null;
+    await fsp.access(p);
+    const stamp = new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14);
+    const bak = p + '.bak-' + stamp;
+    await fsp.copyFile(p, bak);
+    return bak;
+  } catch { return null; }
+}
+
 export function buildTools() {
   const tools = [
     {
@@ -110,27 +124,29 @@ export function buildTools() {
       },
     },
     {
-      name: 'file_write', description: 'Create/overwrite text file. Creates parent dirs. DESTRUCTIVE.',
+      name: 'file_write', description: 'Create/overwrite text file. Creates parent dirs. Auto-backs-up existing file (.bak-TIMESTAMP). DESTRUCTIVE.',
       args: { path: 'absolute file path', content: 'full text' },
       async run(a, ctx) {
         try {
           const chk = isPathAllowed(ctx.cfg, a.path); if (!chk.ok) return fail(chk.reason);
           await fsp.mkdir(path.dirname(a.path), { recursive: true });
+          const bak = await backupIfExists(a.path);
           await fsp.writeFile(a.path, String(a.content ?? ''), 'utf8');
-          return ok({ path: a.path, bytes: Buffer.byteLength(String(a.content ?? '')) });
+          return ok({ path: a.path, bytes: Buffer.byteLength(String(a.content ?? '')), backup: bak });
         } catch (e) { return fail(e.message); }
       },
     },
     {
-      name: 'file_edit', description: 'Replace first occurrence of oldString with newString. DESTRUCTIVE.',
+      name: 'file_edit', description: 'Replace first occurrence of oldString with newString. Auto-backs-up (.bak-TIMESTAMP). DESTRUCTIVE.',
       args: { path: 'absolute file path', oldString: 'literal to find', newString: 'replacement' },
       async run(a, ctx) {
         try {
           const chk = isPathAllowed(ctx.cfg, a.path); if (!chk.ok) return fail(chk.reason);
           const text = await fsp.readFile(a.path, 'utf8');
           if (!text.includes(a.oldString)) return fail('oldString not found');
+          const bak = await backupIfExists(a.path);
           await fsp.writeFile(a.path, text.replace(a.oldString, String(a.newString ?? '')), 'utf8');
-          return ok({ path: a.path });
+          return ok({ path: a.path, backup: bak });
         } catch (e) { return fail(e.message); }
       },
     },
@@ -1051,6 +1067,53 @@ public class WinDbl { [DllImport("user32.dll")] public static extern bool SetCur
             if (/denied|403|permission/i.test(m2)) return fail('push denied: wrong identity or no write access', 'Check git credential fill; fix per skills/github.md.');
             return fail(m2.slice(0, 400));
           }
+        } catch (e) { return fail(e.message); }
+      },
+    },
+    {
+      name: 'browser_dom', description: 'DOM snapshot of a CDP tab: buttons/links/inputs with index, tag, text, x/y/w/h. Default selector covers interactive elements; pass any CSS to narrow.',
+      args: { port: 'debug port, default 9222 (opt)', tab: 'tab id prefix (required)', selector: 'CSS selector (opt)' },
+      async run(a) {
+        try {
+          const t = await cdpFindTab(Number(a.port || 9222), String(a.tab));
+          const q = String(a.selector || 'button,a,input,select,textarea,[role=button],[role=link]');
+          const expr = `(function(){var els=[...document.querySelectorAll(${JSON.stringify(q)})].slice(0,50);return els.map(function(e,i){var r=e.getBoundingClientRect();return {i:i,tag:(e.tagName||'').toLowerCase(),text:((e.innerText||e.value||e.getAttribute('aria-label')||'')).replace(/\\s+/g,' ').slice(0,120),x:Math.round(r.x),y:Math.round(r.y),w:Math.round(r.width),h:Math.round(r.height)};});})()`;
+          const r = await cdpSend(t.webSocketDebuggerUrl, 'Runtime.evaluate', { expression: expr, returnByValue: true });
+          const els = (((r || {}).result || {}).value) || [];
+          return ok({ tab: t.title, count: els.length, elements: els });
+        } catch (e) { return fail(e.message, 'Launch a debug browser first (browser_debug_launch).'); }
+      },
+    },
+    {
+      name: 'browser_click_sel', description: 'Click a DOM element by CSS selector (synthetic click — no coordinates, cannot miss). INPUT-INJECTING.',
+      args: { port: 'debug port, default 9222 (opt)', tab: 'tab id prefix (required)', selector: 'CSS selector (required)', index: 'match number, default 0 (opt)' },
+      async run(a) {
+        try {
+          if (!String(a.selector || '').trim()) return fail('selector is required');
+          const t = await cdpFindTab(Number(a.port || 9222), String(a.tab));
+          const expr = `(function(){var els=[...document.querySelectorAll(${JSON.stringify(String(a.selector))})];var e=els[${Number(a.index || 0)}];if(!e)return 'not-found:'+els.length;try{e.scrollIntoView({block:'center'})}catch(_){};e.click();return 'clicked:'+(((e.innerText||e.value||e.tagName)||'').toString().slice(0,120));})()`;
+          const r = await cdpSend(t.webSocketDebuggerUrl, 'Runtime.evaluate', { expression: expr, returnByValue: true });
+          const v = String((((r || {}).result || {}).value) ?? '');
+          if (v.startsWith('not-found')) return fail(v, 'Run browser_dom first to get exact selectors.');
+          return ok({ result: v });
+        } catch (e) { return fail(e.message); }
+      },
+    },
+    {
+      name: 'browser_fill_sel', description: 'Fill a form field by CSS selector (focus + value + input/change events, React-safe). INPUT-INJECTING.',
+      args: { port: 'debug port, default 9222 (opt)', tab: 'tab id prefix (required)', selector: 'CSS selector (required)', value: 'text to enter (required)', submit: 'press Enter after (opt)' },
+      async run(a) {
+        try {
+          if (!String(a.selector || '').trim()) return fail('selector is required');
+          const t = await cdpFindTab(Number(a.port || 9222), String(a.tab));
+          const expr = `(function(){var e=document.querySelectorAll(${JSON.stringify(String(a.selector))})[${Number(a.index || 0)}];if(!e)return 'not-found';e.focus();e.value=${JSON.stringify(String(a.value ?? ''))};e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));return 'filled';})()`;
+          const r = await cdpSend(t.webSocketDebuggerUrl, 'Runtime.evaluate', { expression: expr, returnByValue: true });
+          const v = String((((r || {}).result || {}).value) ?? '');
+          if (v.startsWith('not-found')) return fail(v, 'Run browser_dom first to get exact selectors.');
+          if (a.submit) {
+            await cdpSend(t.webSocketDebuggerUrl, 'Runtime.evaluate', { expression: `document.activeElement && document.activeElement.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}))`, returnByValue: true });
+          }
+          return ok({ result: v, submit: !!a.submit });
         } catch (e) { return fail(e.message); }
       },
     },

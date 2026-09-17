@@ -76,3 +76,23 @@ export async function askAppApproval(app) {
     return null;
   } finally { rl.close(); }
 }
+
+// ---- Web-dashboard approval bridge: when cfg.approvalHandler is set
+// (dashboard), approvals resolve there ('once'|'always'|false).
+// Otherwise the terminal prompts above are used.
+export async function requestApproval(cfg, label) {
+  if (cfg && typeof cfg.approvalHandler === 'function') {
+    const r = await cfg.approvalHandler(label);
+    return r ? 'once' : null;
+  }
+  return (await askYesNo(label)) ? 'once' : null;
+}
+
+export async function requestAppApproval(cfg, app) {
+  if (cfg && typeof cfg.approvalHandler === 'function') {
+    const r = await cfg.approvalHandler(`APP ${app}`);
+    if (r === 'always' || r === 'once') return r;
+    return null;
+  }
+  return askAppApproval(app);
+}
