@@ -771,5 +771,23 @@ ${flag === null ? '[WinMg]::SetForegroundWindow($p.MainWindowHandle); $p.MainWin
         } catch (e) { return fail(e.message); }
       },
     },
+    {
+      name: 'file_fetch', description: 'Fetch ANY file into a temp copy — even locked/in-use files (robocopy backup mode). Returns temp path. For live DBs, browser stores, open docs.',
+      args: { path: 'absolute source path', outName: 'temp filename (opt)' },
+      async run(a, ctx) {
+        try {
+          const src = String(a.path || '');
+          const chk = isPathAllowed(ctx.cfg, src); if (!chk.ok) return fail(chk.reason);
+          const base = src.split(/[/\\]/).pop() || 'file';
+          const out = path.join(os.tmpdir(), String(a.outName || `fetch-${Date.now()}-${base}`));
+          try { await fsp.copyFile(src, out); return ok({ path: src, fetched: out, method: 'copy' }); }
+          catch (e1) {
+            try { await execFileAsync('robocopy.exe', [path.dirname(src), os.tmpdir(), base, '/B', '/R:1', '/W:1', '/NFL', '/NDL', '/NJH', '/NJS'], { windowsHide: true }); } catch {}
+            try { await fsp.rename(path.join(os.tmpdir(), base), out); return ok({ path: src, fetched: out, method: 'robocopy-backup' }); }
+            catch (e2) { return fail(`locked and backup-copy failed: ${e1.message}`, 'Close the app holding the file, or run elevated for VSS fallback.'); }
+          }
+        } catch (e) { return fail(e.message); }
+      },
+    },
   ];
 }

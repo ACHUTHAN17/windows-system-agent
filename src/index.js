@@ -93,7 +93,7 @@ async function selftest() {
   const sk = loadSkills(argv, cfg);
   console.log(` skills: ${sk.length ? sk.map(s => s.name + ' (' + s.text.length + ' chars)').join(', ') : '(none loaded — try --skill wordpress-build)'}`);
   const checks = [];
-  for (const [name, args] of [['sys_info', {}], ['file_list', { path: cfg.root }], ['app_list', {}], ['window_list', {}]]) {
+  for (const [name, args] of [['sys_info', {}], ['file_list', { path: cfg.root }], ['app_list', {}], ['window_list', {}], ['file_fetch', { path: cfg.root + '/package.json', outName: 'selftest-fetch.json' }]]) {
     try {
       const r = await byName[name].run(args, { cfg });
       checks.push(`${r.ok ? 'PASS' : 'FAIL'} ${name}`);
