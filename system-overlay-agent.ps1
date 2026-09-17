@@ -89,7 +89,14 @@ $timer = New-Object System.Windows.Threading.DispatcherTimer
 $timer.Interval = [TimeSpan]::FromMilliseconds(120)
 $tick = 0
 $lastActive = $false
+$idleCount = 0
 $timer.Add_Tick({
+  # auto-exit if idle 25 ticks (~3 sec) when active:false - ensures glow fully gone after stop
+  try {
+    $raw2 = Get-Content $stateFile -Raw -ErrorAction SilentlyContinue | ConvertFrom-Json -ErrorAction SilentlyContinue
+    if ($raw2 -and -not $raw2.active) { $idleCount++ } else { $idleCount = 0 }
+    if ($idleCount -gt 25) { $timer.Stop(); $win.Close(); return }
+  } catch {}
   $tick++
   # pulse corners slightly when active
   $p = 0.82 + 0.18 * [Math]::Sin($tick * 0.09)
@@ -163,3 +170,4 @@ $timer.Start()
 # Close cleanly on file delete
 $win.Add_Closed({ $timer.Stop() })
 [void]$win.ShowDialog()
+
