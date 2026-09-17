@@ -17,7 +17,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.19.0</span><span class="pill">63 tools</span><span class="pill">38 skills (6 auto · 8 imported · 24 built)</span><span class="pill">generated 2026-09-17</span></div>
+<div class="meta"><span class="pill">v1.19.0</span><span class="pill">63 tools</span><span class="pill">39 skills (6 auto · 8 imported · 25 built)</span><span class="pill">generated 2026-09-17</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
@@ -656,9 +656,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- Long jobs: ask for progress ("status?") — or use <code>--every</code>/daemon + check back.</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/chat-telegram.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17" data-updated="2026-09-17" data-name="claude-api imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/claude-api/skill.md) — |-.">
+<article class="card" data-origin="imported" data-added="2026-09-17T16:04:50.000Z" data-updated="2026-09-17T16:04:50.000Z" data-name="claude-api imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/claude-api/skill.md) — |-.">
   <h2>claude-api</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/ACHUTHAN17/skills">ACHUTHAN17/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/claude-api/SKILL.md) — |-.</p>
-  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <div class="dates">added 2026-09-17 16:04 · updated 2026-09-17 16:04</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: claude-api</h2>
 
 <p>Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/claude-api/SKILL.md) — |-.</p>
@@ -827,9 +827,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- One task at a time (409 busy otherwise). Daemon/idle modes stay in terminal.</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/dashboard.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17" data-updated="2026-09-17" data-name="discernment-nudge imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/discernment-nudge/skill.md) — &gt;.">
+<article class="card" data-origin="imported" data-added="2026-09-17T16:04:50.000Z" data-updated="2026-09-17T16:04:50.000Z" data-name="discernment-nudge imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/discernment-nudge/skill.md) — &gt;.">
   <h2>discernment-nudge</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/ACHUTHAN17/skills">ACHUTHAN17/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/discernment-nudge/SKILL.md) — &gt;.</p>
-  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <div class="dates">added 2026-09-17 16:04 · updated 2026-09-17 16:04</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: discernment-nudge</h2>
 
 <p>Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/discernment-nudge/SKILL.md) — &gt;.</p>
@@ -992,9 +992,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  or how it compares to the user's own data. *"How do these CPL</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/discernment-nudge.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17" data-updated="2026-09-17" data-name="doc-coauthoring imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/doc-coauthoring/skill.md) — guide users through a st">
+<article class="card" data-origin="imported" data-added="2026-09-17T16:04:50.000Z" data-updated="2026-09-17T16:04:50.000Z" data-name="doc-coauthoring imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/doc-coauthoring/skill.md) — guide users through a st">
   <h2>doc-coauthoring</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/ACHUTHAN17/skills">ACHUTHAN17/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/doc-coauthoring/SKILL.md) — Guide users through a st</p>
-  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <div class="dates">added 2026-09-17 16:04 · updated 2026-09-17 16:04</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: doc-coauthoring</h2>
 
 <p>Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/doc-coauthoring/SKILL.md) — Guide users through a structured workflow for co-authoring documentation. Use when user wants to write documentation, proposals, technical specs, decision docs, or similar structured content. This wor.</p>
@@ -1175,9 +1175,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>-</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/doc-coauthoring.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17" data-updated="2026-09-17" data-name="docx imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/docx/skill.md) — "use this skill whenever the user w">
+<article class="card" data-origin="imported" data-added="2026-09-17T16:04:50.000Z" data-updated="2026-09-17T16:04:50.000Z" data-name="docx imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/docx/skill.md) — "use this skill whenever the user w">
   <h2>docx</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/ACHUTHAN17/skills">ACHUTHAN17/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/docx/SKILL.md) — "Use this skill whenever the user w</p>
-  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <div class="dates">added 2026-09-17 16:04 · updated 2026-09-17 16:04</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: docx</h2>
 
 <p>Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/docx/SKILL.md) — "Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx files) or Word templates (.dotx files). Triggers include: any mention of 'Word doc', 'word document',.</p>
@@ -1778,6 +1778,38 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://tweag.github.io/agentic-coding-handbook/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/teach-coding-what-should-the-agent-learn.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-17" data-updated="2026-09-17" data-name="teach-keyboard-shortcuts auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>teach-keyboard-shortcuts</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: keyboard shortcuts</h2>
+
+<p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions keyboard shortcuts.</p>
+
+<h3>Steps</h3>
+<p>1. Note The behavior of some keyboard shortcuts may vary in different applications</p>
+<p>2. Press this key: To do this action: Copilot key Copilot key (when Copilot is not available or disabled) Open Microsoft Copilot or Microsoft 365 Copilot</p>
+<p>3. Tip To customize what happens when you press the Copilot key , go to Settings &gt; Personalization &gt; Text input &gt; Customize Copilot key on keyboard</p>
+<p>4. Press this key: To do this action: Backspace Delete characters to the left of the cursor</p>
+<p>5. Download Microsoft Edge More info about Internet Explorer and Microsoft Edge Table of contents Exit editor mode Ask Learn Ask Learn Reading mode Table of contents Read in English Add Add to Plans Edit Copy Markdown Print Note Access to this page requires authorization</p>
+<p>6. Press the shortcut again, press Esc , or select the close button to dismiss it</p>
+<p>7. Press Ctrl + F to move focus to the search box</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Keyboard shortcuts in Windows | Microsoft Support</div>
+<p>  https://support.microsoft.com/en-us/accessibility/windows/keyboard-shortcuts-in-windows</p>
+<div class="li">- PowerToys Shortcut Guide utility for Windows | Microsoft Learn</div>
+<p>  https://learn.microsoft.com/en-us/windows/powertoys/shortcut-guide</p>
+<div class="li">- 500+ Keyboard Shortcuts List (A to Z): Ultimate Guide</div>
+<p>  https://www.geeksforgeeks.org/computer-science-fundamentals/computer-shortcut-keys/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/teach-keyboard-shortcuts.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T15:29:49.000Z" data-updated="2026-09-17T15:29:49.000Z" data-name="teach-windows-snipping-tool-screenshots- auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>teach-windows-snipping-tool-screenshots-</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-17 15:29 · updated 2026-09-17 15:29</div>
