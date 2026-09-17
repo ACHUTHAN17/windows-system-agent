@@ -46,6 +46,38 @@ function main() {
   let imported = {};
   try { imported = JSON.parse(fs.readFileSync(path.join(SKILLS, 'sources.json'), 'utf8')); } catch {}
   const originOf = (f) => imported[f] ? 'imported' : (LEARNED[f] ? 'auto' : 'task');
+  // Skill router index: powers automatic selection (name/description/triggers).
+  // Rebuilt on every docs build; fetched live by agents (SKILL_SOURCE=auto).
+  const STOP = new Set('the,and,for,with,you,your,from,that,this,these,those,into,over,under,via,per,was,were,has,have,had,will,would,can,all,any,our,out,about,using,use,used,when,then,than,them,they,their,there,here,what,which,while,also,such,more,most,some,only,just,like,get,see,let,many,much,must,shall,should,could,does,did,done,each,other,same,too,very,own,both,how,now,off,once,its,not,but,are'.split(','));
+  const MANUAL_TRIGGERS = {
+    'computer-use': ['screenshot', 'click', 'pixel', 'gui', 'mouse', 'keyboard', 'screen', 'foreground', 'coordinate', 'ground'],
+    'github': ['github', 'push', 'repo', 'commit', 'clone', 'pull', 'branch'],
+    'agent-modes': ['mode', 'daemon', 'idle', 'repl', 'autonomous'],
+    'self-learn': ['learn', 'research', 'teach', 'unknown', 'stuck'],
+    'file-fetch-upload': ['fetch', 'locked', 'upload', 'cookie', 'sqlite'],
+    'system-control': ['process', 'service', 'registry', 'startup', 'wifi'],
+    'typing-editing': ['type', 'typing', 'paste', 'keystroke', 'edit'],
+    'drag-drop': ['drag', 'slider', 'drop'],
+    'uia-click': ['button', 'uia', 'press'],
+    'wordpress-build': ['wordpress', 'blog', 'site', 'cms'],
+    'office-docs': ['word', 'excel', 'powerpoint', 'pdf', 'document', 'sheet', 'slide'],
+    'dashboard': ['dashboard', 'approve'],
+    'mcp': ['mcp', 'gmail', 'notion', 'slack', 'connector', 'plugin'],
+    'browser-dom': ['dom', 'selector', 'css', 'form', 'webpage'],
+    'schedule': ['schedule', 'cron', 'recurring', 'daily', 'reminder'],
+    'chat-telegram': ['telegram', 'phone', 'mobile'],
+  };
+  const index = files.filter(f => f.endsWith('.md')).map(f => {
+    const name = f.replace(/\.md$/, '');
+    let text = '';
+    try { text = fs.readFileSync(path.join(SKILLS, f), 'utf8'); } catch {}
+    const title = ((text.match(/^# Skill:\s*(.+)/m) || [])[1] || name).slice(0, 80);
+    const desc = (text.split(/\r?\n/).find(l => l.trim() && !l.startsWith('#')) || '').slice(0, 140);
+    const auto = (title + ' ' + desc).toLowerCase().split(/[^a-z0-9+#]+/).filter(w => w.length > 2 && !STOP.has(w));
+    const triggers = Array.from(new Set([...(MANUAL_TRIGGERS[name] || []), ...auto])).slice(0, 40);
+    return { name, title, description: desc, origin: originOf(f), triggers };
+  });
+  fs.writeFileSync(path.join(SKILLS, 'index.json'), JSON.stringify(index, null, 1), 'utf8');
   const cards = files.map(f => {
     const text = fs.readFileSync(path.join(SKILLS, f), 'utf8');
     const title = f.replace(/\.md$/, '');

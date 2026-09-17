@@ -1164,6 +1164,35 @@ public class WinDbl { [DllImport("user32.dll")] public static extern bool SetCur
         } catch (e) { return fail(e.message); }
       },
     },
+    {
+      name: 'skill_load', description: 'Load a skill playbook into context mid-task by name (no .md needed). Call the moment the catalog says one fits — no need to guess contents.',
+      args: { name: 'skill name, e.g. computer-use (required)' },
+      async run(a, ctx) {
+        try {
+          const safe = path.basename(String(a.name || '').trim().replace(/\.md$/, ''));
+          if (!safe) return fail('name is required');
+          const cfg = (ctx && ctx.cfg) || {};
+          const mode = String(cfg.skillSource || 'auto').toLowerCase();
+          if (mode !== 'local') {
+            try {
+              const repo = cfg.skillRepo || 'ACHUTHAN17/windows-system-agent';
+              const branch = cfg.skillBranch || 'main';
+              const headers = { 'User-Agent': 'WinAgent/1.6' };
+              if (cfg.skillToken) headers.Authorization = `Bearer ${cfg.skillToken}`;
+              const res = await fetch(`https://raw.githubusercontent.com/${repo}/${branch}/skills/${safe}.md`, { headers, signal: AbortSignal.timeout(10000) });
+              if (res.ok) {
+                const text = (await res.text()).slice(0, 8000);
+                if (text.trim()) return ok({ name: safe, source: 'github', content: text });
+              }
+            } catch {}
+            if (mode === 'github') return fail('remote unreachable (offline or bad token?)');
+          }
+          const text = await fsp.readFile(path.join(cfg.root || '.', 'skills', safe + '.md'), 'utf8').catch(() => null);
+          if (text === null) return fail(`no such skill: ${safe}`);
+          return ok({ name: safe, source: 'local', content: text.slice(0, 8000) });
+        } catch (e) { return fail(e.message); }
+      },
+    },
   ];
   // Linux/macOS override layer: routes each call through tools-linux.js first.
   // On Windows it always falls through, so Windows behavior is unchanged.

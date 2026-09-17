@@ -214,11 +214,78 @@ async function learnCycle(topic) {
   return 'nothing actionable distilled';
 }
 
+const STOPWORDS = new Set('the,and,for,with,you,your,from,that,this,these,those,into,over,under,via,per,was,were,has,have,had,will,would,can,all,any,our,out,about,using,use,used,when,then,than,them,they,their,there,here,what,which,while,also,such,more,most,some,only,just,like,get,see,let,many,much,must,shall,should,could,does,did,done,each,other,same,too,very,own,both,how,now,off,once,its,not,but,are'.split(','));
+
+// Skill router: the catalog lists every skill (name/description/triggers).
+// GitHub-first like skills themselves; local index.json, extracted dir, else none.
+async function loadCatalog(cfg) {
+  const mode = String(cfg.skillSource || 'auto').toLowerCase();
+  if (mode !== 'local') {
+    try {
+      const repo = cfg.skillRepo || 'ACHUTHAN17/windows-system-agent';
+      const branch = cfg.skillBranch || 'main';
+      const headers = { 'User-Agent': 'WinAgent/1.6' };
+      if (cfg.skillToken) headers.Authorization = `Bearer ${cfg.skillToken}`;
+      const res = await fetch(`https://raw.githubusercontent.com/${repo}/${branch}/skills/index.json`, { headers, signal: AbortSignal.timeout(10000) });
+      if (res.ok) {
+        const j = await res.json();
+        if (Array.isArray(j) && j.length) return { list: j, source: 'github' };
+      }
+    } catch {}
+    if (mode === 'github') return { list: [], source: 'github-unreachable' };
+  }
+  try {
+    const j = JSON.parse(fs.readFileSync(path.join(cfg.root, 'skills', 'index.json'), 'utf8'));
+    if (Array.isArray(j) && j.length) return { list: j, source: 'local-index' };
+  } catch {}
+  try {
+    const dir = path.join(cfg.root, 'skills');
+    const list = fs.readdirSync(dir).filter(f => f.endsWith('.md')).map(f => {
+      const name = f.replace(/\.md$/, '');
+      let text = '';
+      try { text = fs.readFileSync(path.join(dir, f), 'utf8'); } catch {}
+      const title = ((text.match(/^# Skill:\s*(.+)/m) || [])[1] || name).slice(0, 80);
+      const desc = (text.split(/\r?\n/).find(l => l.trim() && !l.startsWith('#')) || '').slice(0, 140);
+      const triggers = Array.from(new Set((title + ' ' + desc).toLowerCase().split(/[^a-z0-9+#]+/).filter(w => w.length > 2 && !STOPWORDS.has(w)))).slice(0, 40);
+      return { name, title, description: desc, origin: 'local', triggers };
+    });
+    return { list, source: 'local-extract' };
+  } catch { return { list: [], source: 'none' }; }
+}
+
+function catalogPrompt(catalog) {
+  if (!catalog.list.length) return '';
+  return '\n\nSKILL CATALOG — call skill_load {"name"} the moment one fits the task (preloaded skills above are already active, never reload them):\n' +
+    catalog.list.slice(0, 40).map(s => `- ${s.name}: ${(s.description || '').slice(0, 120)}`).join('\n');
+}
+
+// Keyword preloading: task words vs triggers, threshold >= 2, max 3, deduped.
+function autoPick(task, list, explicit) {
+  const have = new Set((explicit || []).map(s => String(s.name || '').replace(/\.md$/, '')));
+  const words = new Set(String(task).toLowerCase().split(/[^a-z0-9+#]+/).filter(w => w.length > 2));
+  return list
+    .filter(s => s && s.name && !have.has(s.name))
+    .map(s => ({ s, score: ((s.triggers || []).map(String)).reduce((a, t) => a + (words.has(t.toLowerCase()) ? (t.length > 5 ? 2 : 1) : 0), 0) }))
+    .filter(x => x.score >= 2)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+    .map(x => x.s.name);
+}
+
 async function agentTask(task) {
   const skills = await loadSkills(argv, cfg);
   if (skills.length) console.log(`  [skills] ${skills.map(s => s.name).join(', ')}`);
+  const catalog = await loadCatalog(cfg);
+  for (const an of autoPick(task, catalog.list, skills)) {
+    try {
+      const loader = byName['skill_load'];
+      if (!loader) break;
+      const r = await loader.run({ name: an }, { cfg });
+      if (r.ok) { skills.push({ name: an + '.md', text: r.content }); console.log(`  [skills:auto] ${an} <- ${r.source}`); }
+    } catch {}
+  }
   const history = [
-    { role: 'system', content: systemPrompt(toolPrompt(tools)) + skillPrompt(skills) + loadMemory(cfg) },
+    { role: 'system', content: systemPrompt(toolPrompt(tools)) + skillPrompt(skills) + catalogPrompt(catalog) + loadMemory(cfg) },
     { role: 'user', content: task },
   ];
   if (argv.plan) {
@@ -255,7 +322,7 @@ async function selftest() {
   console.log(` skills: ${sk.length ? sk.map(s => s.name + ' (' + s.text.length + ' chars)').join(', ') : '(none loaded — try --skill wordpress-build)'}`);
   const checks = [];
   const winOnlyTools = new Set(['window_focus', 'window_manage', 'reg_read', 'reg_write', 'browser_info']);
-  for (const [name, args] of [['sys_info', {}], ['file_list', { path: cfg.root }], ['app_list', {}], ['window_list', {}], ['file_fetch', { path: cfg.root + '/package.json', outName: 'selftest-fetch.json' }], ['wait', { seconds: 1 }], ['memory_write', { text: 'selftest probe', topic: 'selftest' }], ['memory_read', { topic: 'selftest' }], ['memory_forget', { topic: 'selftest' }]]) {
+  for (const [name, args] of [['sys_info', {}], ['file_list', { path: cfg.root }], ['app_list', {}], ['window_list', {}], ['file_fetch', { path: cfg.root + '/package.json', outName: 'selftest-fetch.json' }], ['wait', { seconds: 1 }], ['memory_write', { text: 'selftest probe', topic: 'selftest' }], ['memory_read', { topic: 'selftest' }], ['memory_forget', { topic: 'selftest' }], ['skill_load', { name: 'self-learn' }]]) {
     try {
       const r = await byName[name].run(args, { cfg });
       const skip = !r.ok && process.platform !== 'win32' && winOnlyTools.has(name);

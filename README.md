@@ -107,7 +107,7 @@ ollama pull llama3.1
 :: .env: MODEL_API_URL=http://localhost:1234/v1  MODEL_API_KEY=lm-studio  MODEL_NAME=<shown in LM Studio>
 ```
 
-## 3. Tools (62)
+## 3. Tools (63)
 
 Files: `file_list, file_read, file_write, file_edit, file_mkdir, file_delete, file_move, file_copy, file_search`
 Apps/system: `app_launch, app_open, app_list, app_kill, window_list, shell_exec, sys_info`
@@ -125,6 +125,7 @@ Push: `github_push` (commit + push itself, classifies auth errors with fixes)
 DOM: `browser_dom, browser_click_sel, browser_fill_sel` (structure-first browsing)
 MCP: `mcp_<server>_<tool>` (any MCP server via `MCP_SERVERS` JSON)
 Delegate: `task_delegate` (fresh-loop subtasks, depth-capped fan-out)
+Router: `skill_load` (pull any playbook mid-task — usually automatic)
 Documents: `office_run` (Word/Excel/PowerPoint via COM, hidden) + `doc_pdf` (any tab → PDF)
 Safety extras: auto `.bak` rollback on file writes · `--plan` approve-before-run · `--ui 8080` web dashboard with click approvals
 
@@ -160,6 +161,13 @@ run.bat --skill wordpress-build,seo "migrate my blog to LocalWP"
 ```
 
 Or set once in `.env`: `SKILLS=wordpress-build`. Type `skills` in the REPL to list them.
+
+**You don't need to pick — skills load themselves.** Every task auto-matches
+against `skills/index.json` (name/description/trigger catalog, rebuilt on every
+push, fetched live from GitHub): a screenshot task wakes `computer-use` +
+`drag-drop` + `uia-click` on its own (`[skills:auto]` in the log). Mid-task the
+model can pull any other playbook with the `skill_load` tool. Manual flags
+still work for forcing or pinning. Unrelated tasks load nothing.
 Shipped skills (`skills/`, load with `--skill a,b` or `SKILLS=a,b`):
 `wordpress-build` (sites), `typing-editing` (type/edit/paste),
 `drag-drop` (drags/sliders/selections), `system-control` (whole machine),
@@ -283,7 +291,7 @@ user-takeover anytime, extra care for secrets/payments/admin.
 - **Daemon:** `--daemon 300 [--learn-cycles N]` loops forever (Ctrl+C stops).
 - **Goals:** `memory/GOALS.md` holds standing goals + a learn queue the daemon
   works through; `learn <topic>` in REPL learns on demand.
-- **Linux/macOS:** same agent, same 62 tools — `src/platform.js` +
+- **Linux/macOS:** same agent, same 63 tools — `src/platform.js` +
   `src/tools-linux.js` re-implement shell, screenshot (grim/scrot),
   input (xdotool), services (systemctl), logs (journalctl), wifi (nmcli),
   packages (dpkg), disks (df). Windows-only bits (registry, UIA) report
@@ -346,7 +354,7 @@ git push -u origin main
 # Re-check MODEL_API_URL / MODEL_API_KEY / MODEL_NAME, and for Ollama run: ollama serve
 ```
 
-## 8. Linux quickstart (same agent, same 62 tools)
+## 8. Linux quickstart (same agent, same 63 tools)
 
 ```bash
 sudo apt install -y nodejs npm git xdotool scrot

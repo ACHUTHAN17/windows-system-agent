@@ -1,4 +1,9 @@
-﻿# Changelog
+# Changelog
+
+## 1.15.0 — 2026-09-17
+- Automatic skill use: keyword router preloads matching playbooks per task
+  (`[skills:auto]`, GitHub-first catalog), `skill_load` tool pulls more
+  mid-task. Manual flags still force/pin. 63 tools.
 
 ## 1.14.0 — 2026-09-17
 - Fixed silent autonomy: GitHub scheduler never fires here, so every push
