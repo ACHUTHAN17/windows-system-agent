@@ -44,7 +44,7 @@ ollama pull llama3.1
 :: .env: MODEL_API_URL=http://localhost:1234/v1  MODEL_API_KEY=lm-studio  MODEL_NAME=<shown in LM Studio>
 ```
 
-## 3. Tools (45)
+## 3. Tools (50)
 
 Files: `file_list, file_read, file_write, file_edit, file_mkdir, file_delete, file_move, file_copy, file_search`
 Apps/system: `app_launch, app_open, app_list, app_kill, window_list, shell_exec, sys_info`
@@ -55,6 +55,7 @@ C. Deep system: `reg_write, service_control, eventlog_recent, startup_list, wifi
 Human input: `screen_drag, key_tap, clipboard_write`
 System control: `window_manage`
 Web: `web_fetch, web_post` (downloads, REST APIs e.g. WordPress)
+Computer-use actions: `screen_scroll, mouse_move, screen_double_click, wait`
 
 ### A. True screen agent
 `screenshot → screen_size → window_focus → screen_click / key_press` operates any app
@@ -91,8 +92,31 @@ Or set once in `.env`: `SKILLS=wordpress-build`. Type `skills` in the REPL to li
 Shipped skills (`skills/`, load with `--skill a,b` or `SKILLS=a,b`):
 `wordpress-build` (sites), `typing-editing` (type/edit/paste),
 `drag-drop` (drags/sliders/selections), `system-control` (whole machine),
-`uia-click` (press any button by name — mouse-free).
+`uia-click` (press any button by name — mouse-free),
+`file-fetch-upload` (locked files + uploads), `computer-use` (see below).
 Add your own: any `skills/<name>.md` works the same way.
+
+### Computer-Use parity (mirrors OpenAI's model exactly)
+
+`--skill computer-use` loads the loop: **screenshot → ground → act → verify**,
+one action per step, same vocabulary:
+
+| Reference action | Standalone tool | Chat tool |
+|---|---|---|
+| screenshot | `screen_screenshot` | `win_screenshot` |
+| click | `screen_click` / `win_ui_invoke` | `win_ui_invoke` |
+| double_click | `screen_double_click` | `win_double_click` |
+| drag | `screen_drag` | `win_drag` |
+| keypress | `key_tap` | `win_key` |
+| move | `mouse_move` | `win_mouse_move` |
+| scroll | `screen_scroll` | `win_scroll` |
+| type | `key_press` / paste | `win_type` / `win_clipboard` |
+| wait | `wait` | `win_wait` |
+
+Same rules: structured paths before pixels (API > CDP > named buttons >
+coordinates), foreground honesty on Windows, per-app approvals with
+`[y=once / a=always / N]` + `ALLOWED_APPS` always-allow list, narrow tasks,
+user-takeover anytime, extra care for secrets/payments/admin.
 
 ## 5. Full agent mode (autonomous, silent)
 

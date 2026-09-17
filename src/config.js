@@ -63,7 +63,8 @@ export function loadConfig(argv = {}) {
     autoYes: String(env('AUTO_YES', argv.yes ? 'true' : (json.autoYes ?? false))) === 'true' || argv.yes === true,
     allowedRoots: list(env('ALLOWED_ROOTS', json.allowedRoots ?? [])),
     blockedPaths: list(env('BLOCKED_PATHS', json.blockedPaths ?? [])),
-    auditLog: env('AUDIT_LOG', json.auditLog ?? './agent-audit.log'),
+    allowedApps: list(env('ALLOWED_APPS', json.allowedApps ?? [])),
+    requireAppApproval: env('REQUIRE_APP_APPROVAL', json.requireAppApproval),    auditLog: env('AUDIT_LOG', json.auditLog ?? './agent-audit.log'),
     shellAllowlist: json.shellAllowlist ?? ['powershell.exe', 'cmd.exe', 'pwsh.exe', 'tasklist.exe', 'taskkill.exe'],
   };
   cfg.apiUrl = String(cfg.apiUrl).replace(/\/+$/, '');

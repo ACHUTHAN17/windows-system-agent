@@ -45,6 +45,10 @@ SKILLS IT CAN DO
     themes, content, plugins, REST automation, go-live checklist.
 11. SHELL — anything PowerShell can do, hidden, with timeouts and
     truncated, honest output (stdout/stderr/exit markers).
+12. COMPUTER-USE — the OpenAI loop, faithfully: screenshot → ground → act →
+    verify, with the exact action vocabulary (screenshot/click/double_click/
+    drag/keypress/move/scroll/type/wait), foreground honesty, per-app
+    always-allow approvals, and the full safety contract.
 
 HUMAN PARITY RULE: if a person can do it with mouse + keyboard on this PC,
 WinAgent can do it — screenshot, locate, act, verify.

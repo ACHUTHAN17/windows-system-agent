@@ -789,5 +789,80 @@ ${flag === null ? '[WinMg]::SetForegroundWindow($p.MainWindowHandle); $p.MainWin
         } catch (e) { return fail(e.message); }
       },
     },
+    {
+      name: 'screen_scroll', description: 'Scroll wheel at x,y pixels. Direction up|down|left|right, amount in notches (default 3). INPUT-INJECTING.',
+      args: { x: 'number', y: 'number', direction: 'up|down|left|right (opt)', amount: 'notches, default 3 (opt)' },
+      async run(a) {
+        try {
+          const x = Number(a.x), y = Number(a.y);
+          if (!Number.isFinite(x) || !Number.isFinite(y)) return fail('x and y must be numbers');
+          const dir = String(a.direction || 'down').toLowerCase();
+          const n = Math.min(Math.max(Number(a.amount || 3), 1), 20);
+          const vert = dir === 'up' ? 120 : dir === 'down' ? -120 : 0;
+          const horiz = dir === 'right' ? 120 : dir === 'left' ? -120 : 0;
+          if (!vert && !horiz) return fail('direction must be up|down|left|right');
+          const code = `Add-Type -AssemblyName System.Windows.Forms
+Add-Type @'
+using System;
+using System.Runtime.InteropServices;
+public class WinWheel {
+ [DllImport("user32.dll")] public static extern bool SetCursorPos(int X, int Y);
+ [DllImport("user32.dll")] public static extern void mouse_event(int dwFlags, int dx, int dy, int dwData, int dwExtraInfo);
+}
+'@
+[WinWheel]::SetCursorPos(${x}, ${y})
+Start-Sleep -Milliseconds 200
+for ($i = 0; $i -lt ${n}; $i++) {
+  [WinWheel]::mouse_event(2048, 0, 0, ${vert}, 0)
+  [WinWheel]::mouse_event(4096, 0, 0, ${horiz}, 0)
+  Start-Sleep -Milliseconds 120
+}
+'scrolled'`;
+          const { stdout } = await ps(code);
+          return ok({ x, y, direction: dir, amount: n, result: stdout });
+        } catch (e) { return fail(e.message); }
+      },
+    },
+    {
+      name: 'mouse_move', description: 'Move cursor to x,y pixels WITHOUT clicking (hover menus, tooltips). INPUT-INJECTING.',
+      args: { x: 'number', y: 'number' },
+      async run(a) {
+        try {
+          const x = Number(a.x), y = Number(a.y);
+          if (!Number.isFinite(x) || !Number.isFinite(y)) return fail('x and y must be numbers');
+          await ps(`Add-Type -AssemblyName System.Windows.Forms; Add-Type @'
+using System;
+using System.Runtime.InteropServices;
+public class WinMove { [DllImport("user32.dll")] public static extern bool SetCursorPos(int X, int Y); }
+'@; [WinMove]::SetCursorPos(${x}, ${y}); 'moved'`);
+          return ok({ x, y });
+        } catch (e) { return fail(e.message); }
+      },
+    },
+    {
+      name: 'screen_double_click', description: 'Double-click at x,y pixels. INPUT-INJECTING.',
+      args: { x: 'number', y: 'number' },
+      async run(a) {
+        try {
+          const x = Number(a.x), y = Number(a.y);
+          if (!Number.isFinite(x) || !Number.isFinite(y)) return fail('x and y must be numbers');
+          await ps(`Add-Type -AssemblyName System.Windows.Forms; Add-Type @'
+using System;
+using System.Runtime.InteropServices;
+public class WinDbl { [DllImport("user32.dll")] public static extern bool SetCursorPos(int X, int Y); [DllImport("user32.dll")] public static extern void mouse_event(int dwFlags, int dx, int dy, int dwData, int dwExtraInfo); }
+'@; [WinDbl]::SetCursorPos(${x}, ${y}); Start-Sleep -Milliseconds 150; [WinDbl]::mouse_event(2,0,0,0,0); Start-Sleep -Milliseconds 60; [WinDbl]::mouse_event(4,0,0,0,0); Start-Sleep -Milliseconds 80; [WinDbl]::mouse_event(2,0,0,0,0); Start-Sleep -Milliseconds 60; [WinDbl]::mouse_event(4,0,0,0,0); 'double-clicked'`);
+          return ok({ x, y });
+        } catch (e) { return fail(e.message); }
+      },
+    },
+    {
+      name: 'wait', description: 'Wait N seconds (loaders, saves, installs), then continue. Max 120s. Always re-screenshot after waiting.',
+      args: { seconds: 'number, default 3' },
+      async run(a) {
+        const s = Math.min(Math.max(Number(a.seconds || 3), 1), 120);
+        await new Promise(r => setTimeout(r, s * 1000));
+        return ok({ waitedSec: s });
+      },
+    },
   ];
 }

@@ -8,7 +8,7 @@ import path from 'node:path';
 import { loadConfig, printActiveModel } from './config.js';
 import { buildTools } from './tools.js';
 import { chat, parseAgentJson, systemPrompt, toolPrompt } from './llm.js';
-import { needsApproval, askYesNo, audit } from './safety.js';
+import { needsApproval, askYesNo, audit, needsAppApproval, askAppApproval } from './safety.js';
 
 const argv = parseArgs(process.argv.slice(2));
 const cfg = loadConfig(argv);
@@ -58,6 +58,13 @@ function skillPrompt(loaded) {
 async function runTool(name, args) {
   const tool = byName[name];
   if (!tool) return { ok: false, error: `unknown tool: ${name}`, hint: `Valid: ${Object.keys(byName).join(', ')}` };
+  const appNeed = needsAppApproval(cfg, name, args);
+  if (appNeed) {
+    audit(cfg, `APPROVAL-ASK-APP ${appNeed}`);
+    const how = await askAppApproval(appNeed);
+    if (!how) { audit(cfg, `APPROVAL-DENY-APP ${appNeed}`); return { ok: false, error: 'denied by user', hint: 'User declined app approval. Use an allowed app or stop.' }; }
+    if (how === 'always') { cfg._appGrants = cfg._appGrants || new Set(); cfg._appGrants.add(appNeed); }
+  }
   if (needsApproval(cfg, name)) {
     audit(cfg, `APPROVAL-ASK ${name} ${JSON.stringify(args).slice(0, 400)}`);
     const yes = await askYesNo(`Allow ${name} ${JSON.stringify(args).slice(0, 300)}?`);
@@ -93,7 +100,7 @@ async function selftest() {
   const sk = loadSkills(argv, cfg);
   console.log(` skills: ${sk.length ? sk.map(s => s.name + ' (' + s.text.length + ' chars)').join(', ') : '(none loaded — try --skill wordpress-build)'}`);
   const checks = [];
-  for (const [name, args] of [['sys_info', {}], ['file_list', { path: cfg.root }], ['app_list', {}], ['window_list', {}], ['file_fetch', { path: cfg.root + '/package.json', outName: 'selftest-fetch.json' }]]) {
+  for (const [name, args] of [['sys_info', {}], ['file_list', { path: cfg.root }], ['app_list', {}], ['window_list', {}], ['file_fetch', { path: cfg.root + '/package.json', outName: 'selftest-fetch.json' }], ['wait', { seconds: 1 }]]) {
     try {
       const r = await byName[name].run(args, { cfg });
       checks.push(`${r.ok ? 'PASS' : 'FAIL'} ${name}`);
