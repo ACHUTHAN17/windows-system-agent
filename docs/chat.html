@@ -4,71 +4,84 @@
 <style>body{background:#0d1117;color:#e6edf3;font-family:system-ui,Segoe UI,Arial,sans-serif;margin:0;padding:0}
 .top{background:#161b22;border-bottom:1px solid #30363d;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .top b{font-size:16px}.top a{color:#58a6ff;font-size:13px}
+.pillbox{font-size:12px;background:#0d1117;border:1px solid #30363d;border-radius:14px;padding:3px 12px}
+#backend{color:#3fb950}#ghstat{color:#8b949e}
 #cfg{background:#0d1117;border-bottom:1px solid #30363d;padding:10px 16px;display:none;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
 #cfg input,#cfg select{background:#161b22;border:1px solid #30363d;color:#e6edf3;border-radius:6px;padding:7px;font-size:13px;width:100%;box-sizing:border-box}
-#chat{max-width:860px;margin:auto;padding:16px;padding-bottom:170px}
+#modes{background:#0d1117;border-bottom:1px solid #30363d;padding:10px 16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+#modes button{flex:1;min-width:140px;padding:12px;font-size:14px}
+#chat{max-width:860px;margin:auto;padding:16px;padding-bottom:230px}
 .msg{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:12px 14px;margin:10px 0;font-size:14.5px;line-height:1.55;white-space:pre-wrap}
 .msg.you{background:#0d419d;border-color:#1f6feb}.msg .who{font-size:11px;color:#8b949e;margin-bottom:6px}
 .msg code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px;font-size:13px}
 .warn{background:#0e2a13;border:1px solid #1f6feb;border-radius:8px;padding:8px 12px;font-size:12.5px;margin:10px 0}
 #bar{position:fixed;bottom:0;left:0;right:0;background:#161b22;border-top:1px solid #30363d;padding:10px}
-#bar .row{max-width:860px;margin:auto;display:flex;gap:8px}
-#in{flex:1;padding:11px;border-radius:8px;border:1px solid #30363d;background:#0d1117;color:#e6edf3;font-size:14px}
+#bar .row{max-width:860px;margin:auto;display:flex;gap:8px;margin-bottom:8px}
+#in,#doin{flex:1;padding:11px;border-radius:8px;border:1px solid #30363d;background:#0d1117;color:#e6edf3;font-size:14px}
 button{padding:10px 14px;border-radius:8px;border:1px solid #30363d;background:#1f6feb;color:#fff;font-weight:700;cursor:pointer;font-size:13px}
-button.ghost{background:#21262d}button:disabled{opacity:.35}
-#acts{max-width:860px;margin:6px auto 0;display:flex;gap:8px;flex-wrap:wrap}
-#ghstat{font-size:12px;color:#8b949e}#backend{font-size:12px;color:#3fb950}</style></head>
+button.ghost{background:#21262d}button:disabled{opacity:.35}button.mode-on{outline:2px solid #3fb950}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid #30363d;border-top-color:#58a6ff;border-radius:50%;animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}</style></head>
 <body>
 <div class="top"><b>WinAgent online chat</b>
 <a href="./">skills library</a><a href="https://github.com/ACHUTHAN17/windows-system-agent">repo</a>
-<span id="backend"></span><span id="ghstat"></span><button class="ghost" id="cfgbtn" style="margin-left:auto">⚙ settings</button></div>
+<span class="pillbox" id="backend"></span><span class="pillbox" id="ghstat">GitHub: not connected</span><button class="ghost" id="cfgbtn" style="margin-left:auto">⚙ keys</button></div>
+<div id="modes">
+<button data-m="free" id="m-free">⚡ Free models<br><small>no key · instant</small></button>
+<button data-m="github-models" id="m-github-models">🐙 GitHub Models<br><small>uses your PAT</small></button>
+<button data-m="custom" id="m-custom">🔧 Custom<br><small>your URL + key</small></button>
+<select id="freemodel" style="flex:1;min-width:140px;padding:12px;border-radius:8px;background:#0d1117;color:#e6edf3;border:1px solid #30363d"></select>
+</div>
 <div id="cfg">
-<select id="preset"><option value="free">free cloud models (no key needed)</option><option>openai</option><option>deepseek</option><option>openrouter</option><option>github-models</option><option>custom</option></select>
-<select id="freemodel"><option>openai</option><option>openai-fast</option></select>
-<input id="apiurl" placeholder="Custom model URL (paid providers)"><input id="apikey" type="password" placeholder="Custom API key">
-<input id="model" placeholder="Custom model id">
-<input id="repo" placeholder="owner/repo"><input id="pat" type="password" placeholder="GitHub PAT — repo + workflow scopes (for DO buttons)">
-<button class="ghost" id="freereset">☆ Free mode (clear custom settings)</button>
+<input id="apiurl" placeholder="Custom model URL (https://…/v1)"><input id="apikey" type="password" placeholder="Custom API key">
+<input id="model" placeholder="Custom model id"><input id="repo" placeholder="owner/repo">
+<input id="pat" type="password" placeholder="GitHub PAT — repo + workflow scopes">
 <button class="ghost" id="test">Test GitHub connection</button>
 </div>
-<div id="chat"><div class="warn">✅ Chat works with <b>zero setup</b> — free cloud models, no key, no login. Just type below and Send. <b>DO buttons</b> need a GitHub PAT <i>or</i> use the no-token issue link. Keys stay in this browser only.</div></div>
-<div id="bar"><div class="row"><input id="in" placeholder="chat, or ask it to do something…" autocomplete="off"><button id="send">Send</button></div>
-<div id="acts"><button class="ghost" id="teach">🧠 Teach skill</button><button class="ghost" id="teachfree">🧠 Teach via issue (no token)</button><button class="ghost" id="dotask">⚙️ Run task</button><button class="ghost" id="test2">🧪 Selftest</button></div></div>
+<div id="chat"><div class="warn">✅ Pick a mode above (Free needs nothing), type, Send. <b>Teach / Run task</b> type the topic below and tap — no popups. PAT unlocks cloud actions (or use the no-token issue link).</div></div>
+<div id="bar">
+<div class="row"><input id="in" placeholder="chat with the agent…" autocomplete="off"><button id="send">Send</button></div>
+<div class="row"><input id="doin" placeholder="skill or task, e.g. keyboard shortcuts…" autocomplete="off"><button class="ghost" id="teach">🧠 Teach</button><button class="ghost" id="teachfree">📝 Issue</button><button class="ghost" id="dotask">⚙️ Run</button><button class="ghost" id="test2">🧪 Test</button></div>
+</div>
 <script>
 const $=id=>document.getElementById(id);
 const store={get:(k,d)=>localStorage.getItem('wa_'+k)||d||'',set:(k,v)=>localStorage.setItem('wa_'+k,v)};
 const FREE_URL='https://text.pollinations.ai/openai';
-if(!store.get('preset'))store.set('preset','free');
+if(!store.get('mode'))store.set('mode','free');
 if(!store.get('repo'))store.set('repo','ACHUTHAN17/windows-system-agent');
 ['apiurl','apikey','model','repo','pat'].forEach(k=>{$(k).value=store.get(k);$(k).onchange=()=>{store.set(k,$(k).value);gate();pill();};});
-$('preset').value=store.get('preset');
-$('freemodel').onchange=()=>{store.set('freemodel',$('freemodel').value);pill();};
-let MODELS=null;  // live registry from docs/models.json (bot-updated every 30 min)
+let MODELS=null;
 async function loadModels(){
   try{
     const r=await fetch('./models.json'); if(!r.ok)throw 0;
     const j=await r.json();
-    if(j.live&&j.live.length){
-      MODELS=j.live;
-      const sel=$('freemodel'); sel.innerHTML='';
+    if(j.live&&j.live.length){MODELS=j.live;
+      const sel=$('freemodel');sel.innerHTML='';
       j.live.forEach((e,i)=>{const o=document.createElement('option');o.value=String(i);o.textContent=e.label+' ('+(Math.round(e.latencyMs/100)/10)+'s)';sel.appendChild(o);});
-      const sv=store.get('freemodel'); sel.value=(sv!==''&&j.live[sv])?sv:'0'; pill();
     }
-  }catch(e){ /* static fallback options stay */ }
-  if(!$('freemodel').value)$('freemodel').value=store.get('freemodel')||'openai';
+  }catch(e){}
+  if(!$('freemodel').options.length){const sel=$('freemodel');['openai','openai-fast'].forEach(m=>{const o=document.createElement('option');o.textContent='Pollinations · '+m;o.value='fb:'+m;sel.appendChild(o);});}
+  const sv=store.get('freemodel'); if(sv&&[...$('freemodel').options].some(o=>o.value===sv))$('freemodel').value=sv;
+  pill();
 }
 function curEntry(){
-  const mi=store.get('freemodel');
-  if(MODELS&&mi!==''&&MODELS[mi])return MODELS[mi];
+  const v=$('freemodel').value||'';
+  if(v.startsWith('fb:'))return {url:FREE_URL,kind:'openai-post',model:v.slice(3),label:'Pollinations · '+v.slice(3)};
+  if(MODELS&&MODELS[v])return MODELS[v];
   return {url:FREE_URL,kind:'openai-post',model:'openai',label:'Pollinations · openai'};
 }
-loadModels();
-$('freereset').onclick=()=>{['apiurl','apikey','model'].forEach(k=>{store.set(k,'');$(k).value='';});store.set('preset','free');$('preset').value='free';pill();bubble('agent','☆ Free mode on — type anything, no key needed.');};
-function pill(){const f=store.get('preset')==='free';let lbl='custom backend';if(f){try{lbl='free · '+curEntry().label;}catch(e){lbl='free';}}$('backend').textContent='using: '+lbl;}
+$('freemodel').onchange=()=>{store.set('freemodel',$('freemodel').value);pill();};
+function setMode(m){store.set('mode',m);document.querySelectorAll('#modes button').forEach(b=>b.classList.toggle('mode-on',b.dataset.m===m));pill();}
+document.querySelectorAll('#modes button').forEach(b=>b.onclick=()=>setMode(b.dataset.m));
+function pill(){
+  const m=store.get('mode');
+  $('backend').textContent='using: '+(m==='free'?('free · '+curEntry().label):m==='github-models'?'GitHub Models':'custom backend');
+  setMode(m);
+}
 $('cfgbtn').onclick=()=>{const c=$('cfg');c.style.display=c.style.display==='grid'?'none':'grid';};
 const hist=[{role:'system',content:'You are WinAgent, a Windows/Linux system agent (60+ tools: files, apps, browser CDP, Office docs, MCP, memory, self-learning skills). Repo: ACHUTHAN17/windows-system-agent. Be concise, practical, copy-paste-first. Never ask for secrets in chat.'}];
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
 function bubble(who,text,you){const d=document.createElement('div');d.className='msg'+(you?' you':'');d.innerHTML='<div class="who">'+who+'</div>'+esc(text).replace(/`([^`]+)`/g,'<code>$1</code>');$('chat').appendChild(d);window.scrollTo(0,99999);return d;}
+function busyBubble(text){return bubble('agent','<span class="spin"></span> '+esc(text));}
 async function postChat(url,model,key,msgs){
   const headers={'Content-Type':'application/json'};if(key)headers['Authorization']='Bearer '+key;
   const r=await fetch(url+'/chat/completions',{method:'POST',headers,body:JSON.stringify({model,messages:msgs,temperature:.3})});
@@ -84,32 +97,32 @@ async function getChat(model,msgs){
 }
 async function talk(){
   const t=$('in').value.trim();if(!t)return;$('in').value='';bubble('you',t,true);hist.push({role:'user',content:t});
-  const free=store.get('preset')==='free';
-  const b=bubble('agent','thinking…');
+  const mode=store.get('mode');const b=busyBubble(mode==='free'?'thinking… (free)':mode==='github-models'?'thinking… (GitHub Models)':'thinking… (custom)');
   try{
-    let a;
-    if(free){
+    let a,label;
+    if(mode==='free'){
       const entry=curEntry();
       try{
         if(entry.kind==='openai-post')a=await postChat(entry.url.replace(/\/+$/,''),entry.model,'',hist);
         else a=await getChat(entry.model,hist);
-      }catch(e){a=await getChat(entry.model,hist);}  // GET fallback: proven endpoint, no preflight
-      hist.push({role:'assistant',content:a});
-      b.innerHTML='<div class="who">agent · free · '+esc(entry.label||entry.model)+'</div>'+esc(a).replace(/`([^`]+)`/g,'<code>$1</code>');
+      }catch(e){a=await getChat(entry.model,hist);}
+      label='free · '+entry.label;
+    }else if(mode==='github-models'){
+      const k=store.get('apikey')||store.get('pat');
+      if(!k)throw {status:401,why:'GitHub Models uses your PAT as its key — paste it in ⚙ keys'};
+      a=await postChat('https://models.github.ai/inference',store.get('model')||'gpt-4o-mini',k,hist);
+      label='github-models';
     }else{
-      const isGHM=store.get('preset')==='github-models';
-      const k=store.get('apikey')||(isGHM?store.get('pat'):'');
-      if(!k)throw {status:401,why:(isGHM?'GitHub Models uses your PAT as its key — paste it in ⚙ (needs models permission)':'custom backend needs its API key — paste it in ⚙, or tap ☆ Free mode')};
-      const url=isGHM?'https://models.github.ai/inference':store.get('apiurl').replace(/\/+$/,'');
-      const mdl=store.get('model')||(isGHM?'gpt-4o-mini':'gpt-4o-mini');
-      a=await postChat(url,mdl,k,hist);
-      hist.push({role:'assistant',content:a});
-      b.innerHTML='<div class="who">agent · '+(isGHM?'github-models':'custom')+'</div>'+esc(a).replace(/`([^`]+)`/g,'<code>$1</code>');
+      const k=store.get('apikey');
+      if(!k)throw {status:401,why:'custom backend needs its API key in ⚙ keys — or pick ⚡ Free'};
+      a=await postChat(store.get('apiurl').replace(/\/+$/,''),store.get('model')||'gpt-4o-mini',k,hist);
+      label='custom';
     }
+    hist.push({role:'assistant',content:a});
+    b.innerHTML='<div class="who">agent · '+esc(label)+'</div>'+esc(a).replace(/`([^`]+)`/g,'<code>$1</code>');
   }catch(e){
     const s=e.status||'';
-    const msg=s===401?(e.why||'401 — key rejected or unknown model. Tap ☆ Free mode.'):(s===404?'404 — bad URL/model. Tap ☆ Free mode.':('request failed'+(s?' HTTP '+s:'')+'. Tap ☆ Free mode to reset.'));
-    b.innerHTML='<div class="who">agent</div>⚠ '+esc(msg);
+    b.innerHTML='<div class="who">agent</div>⚠ '+esc(s===401?(e.why||'key rejected — check ⚙ keys, or pick ⚡ Free'):'request failed'+(s?' HTTP '+s:'')+'. Pick ⚡ Free to reset.');
   }
   window.scrollTo(0,99999);
 }
@@ -117,12 +130,12 @@ $('send').onclick=talk;$('in').onkeydown=e=>{if(e.key==='Enter')talk();};
 function gate(){
   const ok=!!store.get('pat');
   ['teach','dotask','test2'].forEach(id=>{$(id).disabled=!ok;});
-  if(!ok)$('ghstat').textContent='GitHub: token needed for DO buttons (or use no-token teach)';
+  if(!ok)$('ghstat').textContent='GitHub: PAT needed for cloud DO (or 📝 Issue link)';
 }
 async function gh(path,opts){
   let r;
   try{r=await fetch('https://api.github.com/repos/'+store.get('repo')+path,{...(opts||{}),headers:{'Accept':'application/vnd.github+json','Authorization':'Bearer '+store.get('pat')}});}
-  catch(e){throw new Error('network/CORS blocked — are you offline? ('+e.message+')');}
+  catch(e){throw new Error('network blocked — are you offline?');}
   if(r.status===401)throw new Error('401 bad PAT — regenerate it (repo + workflow scopes)');
   if(r.status===404)throw new Error('404 — wrong owner/repo in ⚙, or PAT lacks repo access');
   if(r.status===422){const t=await r.text();throw new Error('422 rejected: '+t.slice(0,200));}
@@ -133,13 +146,13 @@ $('test').onclick=async()=>{
   try{
     const me=await(await fetch('https://api.github.com/user',{headers:{'Authorization':'Bearer '+store.get('pat')}})).json();
     if(!me.login)throw new Error('bad PAT');
-    $('ghstat').textContent='GitHub: connected as @'+me.login;gate();
-    bubble('agent','✅ GitHub connected as @'+me.login+' — DO buttons unlocked.');
+    $('ghstat').textContent='GitHub: @'+me.login+' ✓';gate();
+    bubble('agent','✅ GitHub connected as @'+me.login+' — cloud buttons unlocked.');
   }catch(e){bubble('agent','⚠ connection failed: '+e.message);}
 };
 async function dispatch(file,inputs){await gh('/actions/workflows/'+file+'/dispatches',{method:'POST',body:JSON.stringify({ref:'main',inputs})});}
 async function waitRun(since,file){
-  for(let i=0;i<48;i++){
+  for(let i=0;i < 48;i++){
     await new Promise(r=>setTimeout(r,10000));
     let j;try{j=await gh('/actions/runs?event=workflow_dispatch&per_page=5');}catch(e){continue;}
     const run=(j.workflow_runs||[]).find(x=>(x.path==='.github/workflows/'+file)&&new Date(x.created_at).getTime()>since-90000);
@@ -148,29 +161,39 @@ async function waitRun(since,file){
   }
   throw new Error('timed out — watch it here: https://github.com/'+store.get('repo')+'/actions');
 }
-async function needPat(){if(store.get('pat'))return true;$('cfg').style.display='grid';bubble('agent','⚠ Paste your GitHub PAT in ⚙ settings first (or use “Teach via issue” — no token).');return false;}
+function slugify(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40);}
+async function needPat(){if(store.get('pat'))return true;$('cfg').style.display='grid';bubble('agent','⚠ Paste your GitHub PAT in ⚙ keys first (or use 📝 Issue — no token).');return false;}
 async function doAction(kind){
   if(!(await needPat()))return;
-  const t=kind==='teach'?prompt('What should the agent learn?','keyboard shortcuts'):kind==='task'?prompt('Task for the cloud agent?','summarize the README'):null;
-  if(kind!=='test'&&!t)return;
+  const t=$('doin').value.trim();
+  if(kind!=='test'&&!t){bubble('agent','⚠ Type the skill/topic in the box first.');$('doin').focus();return;}
   const file=kind==='teach'?'learn-skill.yml':kind==='task'?'agent-task.yml':'daily-sandbox.yml';
   const inputs=kind==='teach'?{topic:t}:kind==='task'?{task:t}:{};
-  bubble('agent','🚀 dispatched '+file+' — watching GitHub…');
+  const prog=busyBubble('dispatched '+file+' — watching GitHub…');
   try{
     const since=Date.now();await dispatch(file,inputs);const run=await waitRun(since,file);
     if(run.conclusion==='success'){
-      if(kind==='task'){
-        try{const raw=await(await fetch('https://raw.githubusercontent.com/'+store.get('repo')+'/main/runs/'+run.id+'.md')).text();bubble('agent','✅ done: '+run.html_url+'\n\n'+raw.slice(0,3500));}
-        catch(e){bubble('agent','✅ done: '+run.html_url);}
-      }else bubble('agent','✅ done: '+run.html_url+'\nLibrary refreshes in ~1 min: https://achuthan17.github.io/windows-system-agent/');
-    }else bubble('agent','❌ run '+run.conclusion+': '+run.html_url);
-  }catch(e){bubble('agent','⚠ '+e.message);}
+      if(kind==='teach'){
+        const slug=slugify(t);
+        try{
+          const raw=await(await fetch('https://raw.githubusercontent.com/'+store.get('repo')+'/main/skills/'+slug+'.md')).text();
+          if(raw.startsWith('404'))throw 0;
+          prog.innerHTML='<div class="who">agent · new skill</div>'+esc(raw.slice(0,2500))+'<br><br>📚 Full skill: <a style="color:#58a6ff" href="https://github.com/'+store.get('repo')+'/blob/main/skills/'+slug+'.md">skills/'+slug+'.md</a>';
+        }catch(e){prog.innerHTML='<div class="who">agent</div>✅ done: '+run.html_url+'<br>Library refreshes in ~1 min.';}
+      }else if(kind==='task'){
+        try{const raw=await(await fetch('https://raw.githubusercontent.com/'+store.get('repo')+'/main/runs/'+run.id+'.md')).text();prog.innerHTML='<div class="who">agent · result</div>'+esc(raw.slice(0,3500));}
+        catch(e){prog.innerHTML='<div class="who">agent</div>✅ done: '+run.html_url;}
+      }else prog.innerHTML='<div class="who">agent</div>✅ done: '+run.html_url;
+    }else prog.innerHTML='<div class="who">agent</div>❌ run '+run.conclusion+': '+run.html_url;
+  }catch(e){prog.innerHTML='<div class="who">agent</div>⚠ '+esc(e.message);}
+  window.scrollTo(0,99999);
 }
 $('teach').onclick=()=>doAction('teach');$('dotask').onclick=()=>doAction('task');$('test2').onclick=()=>doAction('test');
+$('doin').onkeydown=e=>{if(e.key==='Enter')doAction('teach');};
 $('teachfree').onclick=()=>{
-  const t=prompt('What should the agent learn?','keyboard shortcuts');if(!t)return;
+  const t=$('doin').value.trim()||'keyboard shortcuts';
   window.open('https://github.com/'+store.get('repo')+'/issues/new?template=skill-request.yml&title='+encodeURIComponent('teach: '+t),'_blank');
   bubble('agent','📝 Issue form opened — hit Submit there and the agent learns it. No token needed.');
 };
-gate();pill();
+gate();pill();loadModels();
 </script></body></html>

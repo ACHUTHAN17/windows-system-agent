@@ -1,5 +1,12 @@
 ﻿# Changelog
 
+## 1.18.0 — 2026-09-17
+- Fixed date sorting (full timestamps — same-day skills now order correctly).
+- 24/7 crawling (every 5 min + rate-limit guard); models stay on 3h cycle.
+- Chat rework: mode buttons, inline topic box (no popups), result preview
+  in chat, GitHub Models preset, backend pill.
+- Teach = type name → web scrape + crawl → skill doc, all autonomous.
+
 ## 1.17.0 — 2026-09-17
 - Bulk crawl + rescan: imports ALL new skills per run (up to 10), fresh
   discovery query each round until dry (proven: 3/round live).
@@ -110,6 +117,7 @@
 
 ## 1.0.0
 - Core agent: files, apps, shell, sysinfo + pluggable API/local/custom LLM.
+
 
 
 

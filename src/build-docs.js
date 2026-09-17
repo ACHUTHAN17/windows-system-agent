@@ -43,8 +43,8 @@ function gitDates(f) {
   try {
     const added = spawnSync('git', ['log', '--diff-filter=A', '--format=%ci', '-1', '--', 'skills/' + f], { cwd: ROOT, encoding: 'utf8' }).stdout.trim().slice(0, 10);
     const updated = spawnSync('git', ['log', '--format=%ct', '-1', '--', 'skills/' + f], { cwd: ROOT, encoding: 'utf8' });
-    const upd = updated.stdout ? new Date(Number(updated.stdout.trim()) * 1000).toISOString().slice(0, 10) : '';
-    if (/^\d{4}-\d\d-\d\d$/.test(added) && /^\d{4}-\d\d-\d\d$/.test(upd)) return { added, updated: upd };
+    const upd = updated.stdout ? new Date(Number(updated.stdout.trim()) * 1000).toISOString() : '';
+    if (/^\d{4}-\d\d-\d\d$/.test(added) && /^\d{4}-\d\d-\d\dT/.test(upd)) return { added, updated: upd };
   } catch {}
   try {
     const d = fs.statSync(path.join(SKILLS, f)).mtime.toISOString().slice(0, 10);
@@ -112,7 +112,7 @@ function main() {
     const dt = gitDates(f);
     return `<article class="card" data-origin="${origin}" data-updated="${dt.updated}" data-name="${esc(title)} ${esc(first.toLowerCase())}">
   <h2>${esc(title)}</h2>${badge}<p class="desc">${esc(first)}</p>
-  <div class="dates">added ${dt.added || '?'} · updated ${dt.updated || '?'}</div>
+  <div class="dates">added ${dt.added || '?'} · updated ${String(dt.updated || '?').slice(0, 10)}</div>
   <details><summary>read full skill</summary><div class="body">${miniMd(text)}</div></details>
   <a class="raw" href="${raw}">view source on GitHub</a></article>`;
   }).join('\n');

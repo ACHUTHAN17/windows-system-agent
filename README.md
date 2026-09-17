@@ -229,10 +229,10 @@ pushes are the heartbeat now): scans Hacker News top stories + trending repos
 + open issues, learns the top new interest, pushes. Dedup guards make quiet
 periods converge to no-ops instead of loops. Schedules remain as backup.
 
-### Crawl: learns other repos' skills freely — bulk + rescan (daily 06:00 UTC)
+### Crawl: learns other repos' skills freely — 24/7, every 5 min
 `skill-crawler` imports EVERYTHING new it finds (up to 10/run), then scans
-AGAIN with a fresh discovery query until dry. Proven: 3 skills in one round
-from anthropics/skills. Provenance in `skills/sources.json`.
+AGAIN with a fresh discovery query until dry. Rate-limit guard backs off
+quietly when the keyless API budget runs low. Provenance in `skills/sources.json`.
 
 ### Think + act hourly (`agent-act.yml`)
 Every hour the agent: bulk-crawls, refreshes free models, AUDITS every skill
@@ -251,16 +251,14 @@ the images (buttons, menus, diagrams, error dialogs) and the text becomes part
 of the skill material. Proven live. Paste screenshot URLs in a skill-request
 issue to teach from pictures.
 
-### Online chat (full-fledged, phone-friendly, no PC/app, no key needed)
+### Online chat: type, tap, done (no popups, no keys needed)
 👉 https://achuthan17.github.io/windows-system-agent/chat.html
-Talk = **free cloud models, zero setup** — the model dropdown fills itself from
-`docs/models.json`, which the agent's scout refreshes every 3 hours (probes +
-discovers new free endpoints all by itself, benign prompt only). Paid backends
-optional in ⚙. DO buttons dispatch real cloud runs and poll them to completion:
-🧠 Teach skill (or no-token issue link) · ⚙️ Run task (result fetched into chat) ·
-🧪 Selftest cloud. Doing needs a GitHub PAT (repo + workflow scopes, also
-browser-only). Full task runs need repo secrets `LLM_API_URL/KEY/MODEL` once —
-without them the cloud writes an honest triage note instead of pretending.
+Mode buttons (Free / GitHub Models / Custom), live backend pill, inline topic
+box — teach shows the new skill's text right in chat. Free models come from
+the bot-kept registry (`docs/models.json`, scouted every 3 hours). DO buttons
+dispatch real cloud runs and poll them to completion (PAT, browser-only, or the
+no-token issue link). Full task runs need repo secrets `LLM_API_URL/KEY/MODEL`
+once — without them the cloud writes an honest triage note instead of pretending.
 
 ### Framework (start here before changing anything)
 `ARCHITECTURE.md` — layers, contracts, conventions, 5-minute recipes for

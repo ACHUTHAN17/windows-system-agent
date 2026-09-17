@@ -1,14 +1,14 @@
-name: skill-crawl (learns other repos' skills — daily, no human)
-# Daily 06:00 UTC on GitHub's runners: scans known skill repos + discovery
-# search, imports up to 2 new SKILL.md playbooks (adapted, provenance in
-# skills/sources.json), rebuilds docs, pushes. Keyless public API only.
+name: skill-crawl (learns other repos' skills — 24/7, no human)
+# Every 5 min on GitHub's runners: scans known skill repos + discovery search,
+# imports EVERYTHING new (bulk + rescan until dry), rebuilds docs, pushes.
+# Rate-limit guard exits quietly when the keyless API budget runs low.
 on:
   schedule:
-    - cron: '0 6 * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
     inputs:
       max:
-        description: 'Max skills to import (default 2, max 5)'
+        description: 'Max skills to import (default 10, max 20)'
         required: false
 concurrency:
   group: skill-crawl
@@ -23,13 +23,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: rate-limit guard (keyless budget is 60/hr)
+        id: budget
+        run: |
+          LEFT=$(curl -fsSL https://api.github.com/rate_limit | jq -r '.resources.core.remaining // 0')
+          echo "api budget left: $LEFT"
+          if [ "$LEFT" -lt 15 ]; then echo "go=false" >> $GITHUB_OUTPUT; else echo "go=true" >> $GITHUB_OUTPUT; fi
       - name: crawl + adapt skills
+        if: steps.budget.outputs.go == 'true'
         env:
           MAX_IMPORT: ${{ inputs.max }}
         run: |
           node src/skill-crawler.js
           node src/build-docs.js
       - name: commit + push if changed
+        if: steps.budget.outputs.go == 'true'
         run: |
           git config user.name "winagent-bot"
           git config user.email "winagent-bot@users.noreply.github.com"

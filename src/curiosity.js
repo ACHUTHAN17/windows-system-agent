@@ -9,7 +9,7 @@ import path from 'node:path';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')), '..');
 const REPO = process.env.SKILL_REPO || 'ACHUTHAN17/windows-system-agent';
-const MAX = Math.min(Number(process.env.MAX_TOPICS || 2), 3);
+const MAX = Math.min(Number(process.env.MAX_TOPICS || 3), 4);
 
 // What the agent is FOR — topics matching these are interesting.
 const HUNGRY = ['windows', 'automat', 'office', 'document', 'excel', 'word', 'powerpoint', 'pdf', 'browser', 'node', 'cli', 'skill', 'agent', 'mcp', 'github', 'telegram', 'ocr', 'spreadsheet', 'slides', 'notion', 'gmail', 'calendar', 'terminal', 'powershell', 'shortcut', 'clipboard', 'screenshot'];
@@ -84,7 +84,7 @@ async function main() {
   const seen = new Set();
   const picks = [];
   for (const c of all.sort((a, b) => b.score - a.score)) {
-    if (c.score < 2) continue;
+    if (c.score < 1) continue;
     const slug = slugify(c.title);
     if (!slug || seen.has(slug) || have.has(slug)) continue;
     seen.add(slug);

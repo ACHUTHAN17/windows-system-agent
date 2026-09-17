@@ -1,3 +1,3 @@
-1.17.0
+1.18.0
 2026-09-17
-Bulk crawl+rescan, hourly think-and-act audit (33 skills healthy)
+Date sorting fixed, 24-7 crawl, chat rework, teach inline
