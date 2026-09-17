@@ -50,4 +50,4 @@ jobs:
           git config user.name "winagent-bot"
           git config user.email "winagent-bot@users.noreply.github.com"
           git add runs skills docs memory 2>/dev/null || true
-          git diff --cached --quiet && echo "nothing to commit" || { git commit -m "agent-task run ${{ github.run_id }}"; git push; }
+          git diff --cached --quiet && echo "nothing to commit" || { git commit -m "agent-task run ${{ github.run_id }}"; for i in 1 2 3; do git pull --rebase --autostash && break; git checkout --theirs -- docs/index.html 2>/dev/null || true; node src/build-docs.js 2>/dev/null || true; git add -A; GIT_EDITOR=true git rebase --continue 2>/dev/null || git rebase --abort; sleep 5; done; git push; }

@@ -56,7 +56,7 @@ jobs:
           git config user.name "winagent-bot"
           git config user.email "winagent-bot@users.noreply.github.com"
           git add skills docs
-          git diff --cached --quiet && echo "nothing new to commit" || { git commit -m "chat-learned skill: ${{ steps.learn.outputs.skill_file }} [${{ steps.learn.outputs.mode }}]"; git push; }
+          git diff --cached --quiet && echo "nothing new to commit" || { git commit -m "chat-learned skill: ${{ steps.learn.outputs.skill_file }} [${{ steps.learn.outputs.mode }}]"; for i in 1 2 3; do git pull --rebase --autostash && break; git checkout --theirs -- docs/index.html 2>/dev/null || true; node src/build-docs.js 2>/dev/null || true; git add -A; GIT_EDITOR=true git rebase --continue 2>/dev/null || git rebase --abort; sleep 5; done; git push; }
       - name: reply on the issue
         if: github.event_name == 'issues' && steps.gate.outputs.ok == 'true'
         run: |
