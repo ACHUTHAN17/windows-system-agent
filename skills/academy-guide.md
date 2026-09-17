@@ -130,3 +130,31 @@ applies to its items — strong matches only, at most 2 items, URLs
 copied verbatim and only ever under `https://academy.claude.com/`.
 The catalog can include gated courses, so when you recommend an item
 with `visibility: "gated"`, mention that it needs an Academy sign-in.
+
+
+---
+## Field update 2026-09-17
+# Skill: refresh and verify the academy-guide skill
+
+Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the academy-guide skill.
+
+## Steps
+1. Use it when the user is learning how to use a feature or product — not when they are mid-task and just want the task done
+2. How to install or import it AI Vitamin has not published source-verified installation steps for this record
+3. How to get Started To get started, all you need is a level 60+ character
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- skills/skills/academy-guide at main · anthropics/skills · GitHub
+  https://github.com/anthropics/skills/tree/main/skills/academy-guide
+- AI Vitamin Guide: Academy Guide Agent Skill | Setup and use
+  https://www.aivitamin.org/agent-skills/academy-guide
+- Olvia Academy Guide - BDFoundry - Black Desert Foundry
+  https://www.blackdesertfoundry.com/olvia-academy-guide/
+
