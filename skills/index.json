@@ -77,6 +77,28 @@
   ]
  },
  {
+  "name": "algorithmic-art",
+  "title": "algorithmic-art",
+  "description": "Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/algorithmic-art/SKILL.md) — Creating algorithmic art",
+  "origin": "imported",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "algorithmic",
+   "art",
+   "imported",
+   "anthropics",
+   "skills",
+   "https",
+   "github",
+   "com",
+   "blob",
+   "head",
+   "skill",
+   "creating"
+  ]
+ },
+ {
   "name": "auto-learn-new-skills",
   "title": "auto learn new skills",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
@@ -131,6 +153,29 @@
   ]
  },
  {
+  "name": "brand-guidelines",
+  "title": "brand-guidelines",
+  "description": "Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/brand-guidelines/SKILL.md) — Applies Anthropic's off",
+  "origin": "imported",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "brand",
+   "guidelines",
+   "imported",
+   "anthropics",
+   "skills",
+   "https",
+   "github",
+   "com",
+   "blob",
+   "head",
+   "skill",
+   "applies",
+   "anthropic"
+  ]
+ },
+ {
   "name": "browser-dom",
   "title": "browser-dom — drive pages by structure, not pixels (Gemini-style)",
   "description": "CDP tabs expose the DOM: query it, click/select/fill by selector, fall back to",
@@ -159,6 +204,30 @@
    "fill",
    "fall",
    "back"
+  ]
+ },
+ {
+  "name": "canvas-design",
+  "title": "canvas-design",
+  "description": "Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/canvas-design/SKILL.md) — Create beautiful visual ar",
+  "origin": "imported",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "canvas",
+   "design",
+   "imported",
+   "anthropics",
+   "skills",
+   "https",
+   "github",
+   "com",
+   "blob",
+   "head",
+   "skill",
+   "create",
+   "beautiful",
+   "visual"
   ]
  },
  {

@@ -17,7 +17,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.16.0</span><span class="pill">63 tools</span><span class="pill">30 skills (6 auto · 1 imported · 23 built)</span><span class="pill">generated 2026-09-17</span></div>
+<div class="meta"><span class="pill">v1.17.0</span><span class="pill">63 tools</span><span class="pill">33 skills (6 auto · 4 imported · 23 built)</span><span class="pill">generated 2026-09-17</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.updated||'0000').localeCompare(a.dataset.updated||'0000'):s==='old'?(a.dataset.updated||'9999').localeCompare(b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
@@ -254,6 +254,115 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.claudemap.org/en/explore/agentverse-os</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/agentverse-os-personal-cloud-os-for-a-de.md">view source on GitHub</a></article>
+<article class="card" data-origin="imported" data-updated="2026-09-17" data-name="algorithmic-art imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/algorithmic-art/skill.md) — creating algorithmic art">
+  <h2>algorithmic-art</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/anthropics/skills">anthropics/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/algorithmic-art/SKILL.md) — Creating algorithmic art</p>
+  <div class="dates">added 2026-09-17 · updated 2026-09-17</div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: algorithmic-art</h2>
+
+<p>Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/algorithmic-art/SKILL.md) — Creating algorithmic art using p5.js with seeded randomness and interactive parameter exploration. Use this when users request creating art using code, generative art, algorithmic art, flow fields, or.</p>
+<p>Adapted to WinAgent tools where possible; verify tool names before use.</p>
+
+<p>Algorithmic philosophies are computational aesthetic movements that are then expressed through code. Output .md files (philosophy), .html files (interactive viewer), and .js files (generative algorithms).</p>
+
+<p>This happens in two steps:</p>
+<p>1. Algorithmic Philosophy Creation (.md file)</p>
+<p>2. Express by creating p5.js generative art (.html + .js files)</p>
+
+<p>First, undertake this task:</p>
+
+<h3>ALGORITHMIC PHILOSOPHY CREATION</h3>
+
+<p>To begin, create an ALGORITHMIC PHILOSOPHY (not static images or templates) that will be interpreted through:</p>
+<div class="li">- Computational processes, emergent behavior, mathematical beauty</div>
+<div class="li">- Seeded randomness, noise fields, organic systems</div>
+<div class="li">- Particles, flows, fields, forces</div>
+<div class="li">- Parametric variation and controlled chaos</div>
+
+<h3>THE CRITICAL UNDERSTANDING</h3>
+<div class="li">- What is received: Some subtle input or instructions by the user to take into account, but use as a foundation; it should not constrain creative freedom.</div>
+<div class="li">- What is created: An algorithmic philosophy/generative aesthetic movement.</div>
+<div class="li">- What happens next: The same version receives the philosophy and EXPRESSES IT IN CODE - creating p5.js sketches that are 90% algorithmic generation, 10% essential parameters.</div>
+
+<p>Consider this approach:</p>
+<div class="li">- Write a manifesto for a generative art movement</div>
+<div class="li">- The next phase involves writing the algorithm that brings it to life</div>
+
+<p>The philosophy must emphasize: Algorithmic expression. Emergent behavior. Computational beauty. Seeded variation.</p>
+
+<h3>HOW TO GENERATE AN ALGORITHMIC PHILOSOPHY</h3>
+
+<p><strong>Name the movement</strong> (1-2 words): "Organic Turbulence" / "Quantum Harmonics" / "Emergent Stillness"</p>
+
+<p><strong>Articulate the philosophy</strong> (4-6 paragraphs - concise but complete):</p>
+
+<p>To capture the ALGORITHMIC essence, express how this philosophy manifests through:</p>
+<div class="li">- Computational processes and mathematical relationships?</div>
+<div class="li">- Noise functions and randomness patterns?</div>
+<div class="li">- Particle behaviors and field dynamics?</div>
+<div class="li">- Temporal evolution and system states?</div>
+<div class="li">- Parametric variation and emergent complexity?</div>
+
+<p><strong>CRITICAL GUIDELINES:</strong></p>
+<div class="li">- <strong>Avoid redundancy</strong>: Each algorithmic aspect should be mentioned once. Avoid repeating concepts about noise theory, particle dynamics, or mathematical principles unless adding new depth.</div>
+<div class="li">- <strong>Emphasize craftsmanship REPEATEDLY</strong>: The philosophy MUST stress multiple times that the final algorithm should appear as though it took countless hours to develop, was refined with care, and comes from someone at the absolute top of their field. This framing is essential - repeat phrases like "meticulously crafted algorithm," "the product of deep computational expertise," "painstaking optimization," "master-level implementation."</div>
+<div class="li">- <strong>Leave creative space</strong>: Be specific about the algorithmic direction, but concise enough that the next Claude has room to make interpretive implementation choices at an extremely high level of craftsmanship.</div>
+
+<p>The philosophy must guide the next version to express ideas ALGORITHMICALLY, not through static images. Beauty lives in the process, not the final frame.</p>
+
+<h3>PHILOSOPHY EXAMPLES</h3>
+
+<p><strong>"Organic Turbulence"</strong></p>
+<p>Philosophy: Chaos constrained by natural law, order emerging from disorder.</p>
+<p>Algorithmic expression: Flow fields driven by layered Perlin noise. Thousands of particles following vector forces, their trails accumulating into organic density maps. Multiple noise octaves create turbulent regions and calm zones. Color emerges from velocity and density - fast particles burn bright, slow ones fade to shadow. The algorithm runs until equilibrium - a meticulously tuned balance where every parameter was refined through countless iterations by a master of computational aesthetics.</p>
+
+<p><strong>"Quantum Harmonics"</strong></p>
+<p>Philosophy: Discrete entities exhibiting wave-like interference patterns.</p>
+<p>Algorithmic expression: Particles initialized on a grid, each carrying a phase value that evolves through sine waves. When particles are near, their phases interfere - constructive interference creates bright nodes, destructive creates voids. Simple harmonic motion generates complex emergent mandalas. The result of painstaking frequency calibration where every ratio was carefully chosen to produce resonant beauty.</p>
+
+<p><strong>"Recursive Whispers"</strong></p>
+<p>Philosophy: Self-similarity across scales, infinite depth in finite space.</p>
+<p>Algorithmic expression: Branching structures that subdivide recursively. Each branch slightly randomized but constrained by golden ratios. L-systems or recursive subdivision generate tree-like forms that feel both mathematical and organic. Subtle noise perturbations break perfect symmetry. Line weights diminish with each recursion level. Every branching angle the product of deep mathematical exploration.</p>
+
+<p><strong>"Field Dynamics"</strong></p>
+<p>Philosophy: Invisible forces made visible through their effects on matter.</p>
+<p>Algorithmic expression: Vector fields constructed from mathematical functions or noise. Particles born at edges, flowing along field lines, dying when they reach equilibrium or boundaries. Multiple fields can attract, repel, or rotate particles. The visualization shows only the traces - ghost-like evidence of invisible forces. A computational dance meticulously choreographed through force balance.</p>
+
+<p><strong>"Stochastic Crystallization"</strong></p>
+<p>Philosophy: Random processes crystallizing into ordered structures.</p>
+<p>Algorithmic expression: Randomized circle packing or Voronoi tessellation. Start with random points, let them evolve through relaxation algorithms. Cells push apart until equilibrium. Color based on cell size, neighbor count, or distance from center. The organic tiling that emerges feels both random and inevitable. Every seed produces unique crystalline beauty - the mark of a master-level generative algorithm.</p>
+
+<p>*These are condensed examples. The actual algorithmic philosophy should be 4-6 substantial paragraphs.*</p>
+
+<h3>ESSENTIAL PRINCIPLES</h3>
+<div class="li">- <strong>ALGORITHMIC PHILOSOPHY</strong>: Creating a computational worldview to be expressed through code</div>
+<div class="li">- <strong>PROCESS OVER PRODUCT</strong>: Always emphasize that beauty emerges from the algorithm's execution - each run is unique</div>
+<div class="li">- <strong>PARAMETRIC EXPRESSION</strong>: Ideas communicate through mathematical relationships, forces, behaviors - not static composition</div>
+<div class="li">- <strong>ARTISTIC FREEDOM</strong>: The next Claude interprets the philosophy algorithmically - provide creative implementation room</div>
+<div class="li">- <strong>PURE GENERATIVE ART</strong>: This is about making LIVING ALGORITHMS, not static images with randomness</div>
+<div class="li">- <strong>EXPERT CRAFTSMANSHIP</strong>: Repeatedly emphasize the final algorithm must feel meticulously crafted, refined through countless iterations, the product of deep expertise by someone at the absolute top of their field in computational aesthetics</div>
+
+<p><strong>The algorithmic philosophy should be 4-6 paragraphs long.</strong> Fill it with poetic computational philosophy that brings together the intended vision. Avoid repeating the same points. Output this algorithmic philosophy as a .md file.</p>
+
+<p>---</p>
+
+<h3>DEDUCING THE CONCEPTUAL SEED</h3>
+
+<p><strong>CRITICAL STEP</strong>: Before implementing the algorithm, identify the subtle conceptual thread from the original request.</p>
+
+<p><strong>THE ESSENTIAL PRINCIPLE</strong>:</p>
+<p>The concept is a <strong>subtle, niche reference embedded within the algorithm itself</strong> - not always literal, always sophisticated. Someone familiar with the subject should feel it intuitively, while others simply experience a masterful generative composition. The algorithmic philosophy provides the computational language. The deduced concept provides the soul - the quiet conceptual DNA woven invisibly into parameters, behaviors, and emergence patterns.</p>
+
+<p>This is <strong>VERY IMPORTANT</strong>: The reference must be so refined that it enhances the work's depth without announcing itself. Think like a jazz musician quoting another song through algorithmic harmony - only those who know will catch it, but everyone appreciates the generative beauty.</p>
+
+<p>---</p>
+
+<h3>P5.JS IMPLEMENTATION</h3>
+
+<p>With the philosophy AND conceptual framework established, express it through code. Pause to gather thoughts before proceeding. Use only the algorithmic philosophy created and the instructions below.</p>
+
+<h3>⚠️ STEP 0: READ THE TEMPLATE FIRST</h3>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/algorithmic-art.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-updated="2026-09-17" data-name="auto-learn-new-skills auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>auto-learn-new-skills</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-17 · updated 2026-09-17</div>
@@ -309,6 +418,83 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/shinthink/blitzstrike</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/blitzstrike-blitz-strike-a-universal-mcp.md">view source on GitHub</a></article>
+<article class="card" data-origin="imported" data-updated="2026-09-17" data-name="brand-guidelines imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/brand-guidelines/skill.md) — applies anthropic's off">
+  <h2>brand-guidelines</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/anthropics/skills">anthropics/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/brand-guidelines/SKILL.md) — Applies Anthropic's off</p>
+  <div class="dates">added 2026-09-17 · updated 2026-09-17</div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: brand-guidelines</h2>
+
+<p>Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/brand-guidelines/SKILL.md) — Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand colors or style guidelines, visual formatting.</p>
+<p>Adapted to WinAgent tools where possible; verify tool names before use.</p>
+
+<h2>Anthropic Brand Styling</h2>
+
+<h3>Overview</h3>
+
+<p>To access Anthropic's official brand identity and style resources, use this skill.</p>
+
+<p><strong>Keywords</strong>: branding, corporate identity, visual identity, post-processing, styling, brand colors, typography, Anthropic brand, visual formatting, visual design</p>
+
+<h3>Brand Guidelines</h3>
+
+<h3>Colors</h3>
+
+<p><strong>Main Colors:</strong></p>
+
+<div class="li">- Dark: <code>#141413</code> - Primary text and dark backgrounds</div>
+<div class="li">- Light: <code>#faf9f5</code> - Light backgrounds and text on dark</div>
+<div class="li">- Mid Gray: <code>#b0aea5</code> - Secondary elements</div>
+<div class="li">- Light Gray: <code>#e8e6dc</code> - Subtle backgrounds</div>
+
+<p><strong>Accent Colors:</strong></p>
+
+<div class="li">- Orange: <code>#d97757</code> - Primary accent</div>
+<div class="li">- Blue: <code>#6a9bcc</code> - Secondary accent</div>
+<div class="li">- Green: <code>#788c5d</code> - Tertiary accent</div>
+
+<h3>Typography</h3>
+
+<div class="li">- <strong>Headings</strong>: Poppins (with Arial fallback)</div>
+<div class="li">- <strong>Body Text</strong>: Lora (with Georgia fallback)</div>
+<div class="li">- <strong>Note</strong>: Fonts should be pre-installed in your environment for best results</div>
+
+<h3>Features</h3>
+
+<h3>Smart Font Application</h3>
+
+<div class="li">- Applies Poppins font to headings (24pt and larger)</div>
+<div class="li">- Applies Lora font to body text</div>
+<div class="li">- Automatically falls back to Arial/Georgia if custom fonts unavailable</div>
+<div class="li">- Preserves readability across all systems</div>
+
+<h3>Text Styling</h3>
+
+<div class="li">- Headings (24pt+): Poppins font</div>
+<div class="li">- Body text: Lora font</div>
+<div class="li">- Smart color selection based on background</div>
+<div class="li">- Preserves text hierarchy and formatting</div>
+
+<h3>Shape and Accent Colors</h3>
+
+<div class="li">- Non-text shapes use accent colors</div>
+<div class="li">- Cycles through orange, blue, and green accents</div>
+<div class="li">- Maintains visual interest while staying on-brand</div>
+
+<h3>Technical Details</h3>
+
+<h3>Font Management</h3>
+
+<div class="li">- Uses system-installed Poppins and Lora fonts when available</div>
+<div class="li">- Provides automatic fallback to Arial (headings) and Georgia (body)</div>
+<div class="li">- No font installation required - works with existing system fonts</div>
+<div class="li">- For best results, pre-install Poppins and Lora fonts in your environment</div>
+
+<h3>Color Application</h3>
+
+<div class="li">- Uses RGB color values for precise brand matching</div>
+<div class="li">- Applied via python-pptx's RGBColor class</div>
+<div class="li">- Maintains color fidelity across different systems</div>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/brand-guidelines.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-updated="2026-09-17" data-name="browser-dom cdp tabs expose the dom: query it, click/select/fill by selector, fall back to">
   <h2>browser-dom</h2><span class="badge task">task-built playbook</span><p class="desc">CDP tabs expose the DOM: query it, click/select/fill by selector, fall back to</p>
   <div class="dates">added 2026-09-17 · updated 2026-09-17</div>
@@ -332,6 +518,116 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- Logins/payments: stay present, one step at a time, staging before production.</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/browser-dom.md">view source on GitHub</a></article>
+<article class="card" data-origin="imported" data-updated="2026-09-17" data-name="canvas-design imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/canvas-design/skill.md) — create beautiful visual ar">
+  <h2>canvas-design</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/anthropics/skills">anthropics/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/canvas-design/SKILL.md) — Create beautiful visual ar</p>
+  <div class="dates">added 2026-09-17 · updated 2026-09-17</div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: canvas-design</h2>
+
+<p>Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/canvas-design/SKILL.md) — Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a poster, piece of art, design, or other static piece. Create ori.</p>
+<p>Adapted to WinAgent tools where possible; verify tool names before use.</p>
+
+<p>These are instructions for creating design philosophies - aesthetic movements that are then EXPRESSED VISUALLY. Output only .md files, .pdf files, and .png files.</p>
+
+<p>Complete this in two steps:</p>
+<p>1. Design Philosophy Creation (.md file)</p>
+<p>2. Express by creating it on a canvas (.pdf file or .png file)</p>
+
+<p>First, undertake this task:</p>
+
+<h3>DESIGN PHILOSOPHY CREATION</h3>
+
+<p>To begin, create a VISUAL PHILOSOPHY (not layouts or templates) that will be interpreted through:</p>
+<div class="li">- Form, space, color, composition</div>
+<div class="li">- Images, graphics, shapes, patterns</div>
+<div class="li">- Minimal text as visual accent</div>
+
+<h3>THE CRITICAL UNDERSTANDING</h3>
+<div class="li">- What is received: Some subtle input or instructions by the user that should be taken into account, but used as a foundation; it should not constrain creative freedom.</div>
+<div class="li">- What is created: A design philosophy/aesthetic movement.</div>
+<div class="li">- What happens next: Then, the same version receives the philosophy and EXPRESSES IT VISUALLY - creating artifacts that are 90% visual design, 10% essential text.</div>
+
+<p>Consider this approach:</p>
+<div class="li">- Write a manifesto for an art movement</div>
+<div class="li">- The next phase involves making the artwork</div>
+
+<p>The philosophy must emphasize: Visual expression. Spatial communication. Artistic interpretation. Minimal words.</p>
+
+<h3>HOW TO GENERATE A VISUAL PHILOSOPHY</h3>
+
+<p><strong>Name the movement</strong> (1-2 words): "Brutalist Joy" / "Chromatic Silence" / "Metabolist Dreams"</p>
+
+<p><strong>Articulate the philosophy</strong> (4-6 paragraphs - concise but complete):</p>
+
+<p>To capture the VISUAL essence, express how the philosophy manifests through:</p>
+<div class="li">- Space and form</div>
+<div class="li">- Color and material</div>
+<div class="li">- Scale and rhythm</div>
+<div class="li">- Composition and balance</div>
+<div class="li">- Visual hierarchy</div>
+
+<p><strong>CRITICAL GUIDELINES:</strong></p>
+<div class="li">- <strong>Avoid redundancy</strong>: Each design aspect should be mentioned once. Avoid repeating points about color theory, spatial relationships, or typographic principles unless adding new depth.</div>
+<div class="li">- <strong>Emphasize craftsmanship REPEATEDLY</strong>: The philosophy MUST stress multiple times that the final work should appear as though it took countless hours to create, was labored over with care, and comes from someone at the absolute top of their field. This framing is essential - repeat phrases like "meticulously crafted," "the product of deep expertise," "painstaking attention," "master-level execution."</div>
+<div class="li">- <strong>Leave creative space</strong>: Remain specific about the aesthetic direction, but concise enough that the next Claude has room to make interpretive choices also at a extremely high level of craftmanship.</div>
+
+<p>The philosophy must guide the next version to express ideas VISUALLY, not through text. Information lives in design, not paragraphs.</p>
+
+<h3>PHILOSOPHY EXAMPLES</h3>
+
+<p><strong>"Concrete Poetry"</strong></p>
+<p>Philosophy: Communication through monumental form and bold geometry.</p>
+<p>Visual expression: Massive color blocks, sculptural typography (huge single words, tiny labels), Brutalist spatial divisions, Polish poster energy meets Le Corbusier. Ideas expressed through visual weight and spatial tension, not explanation. Text as rare, powerful gesture - never paragraphs, only essential words integrated into the visual architecture. Every element placed with the precision of a master craftsman.</p>
+
+<p><strong>"Chromatic Language"</strong></p>
+<p>Philosophy: Color as the primary information system.</p>
+<p>Visual expression: Geometric precision where color zones create meaning. Typography minimal - small sans-serif labels letting chromatic fields communicate. Think Josef Albers' interaction meets data visualization. Information encoded spatially and chromatically. Words only to anchor what color already shows. The result of painstaking chromatic calibration.</p>
+
+<p><strong>"Analog Meditation"</strong></p>
+<p>Philosophy: Quiet visual contemplation through texture and breathing room.</p>
+<p>Visual expression: Paper grain, ink bleeds, vast negative space. Photography and illustration dominate. Typography whispered (small, restrained, serving the visual). Japanese photobook aesthetic. Images breathe across pages. Text appears sparingly - short phrases, never explanatory blocks. Each composition balanced with the care of a meditation practice.</p>
+
+<p><strong>"Organic Systems"</strong></p>
+<p>Philosophy: Natural clustering and modular growth patterns.</p>
+<p>Visual expression: Rounded forms, organic arrangements, color from nature through architecture. Information shown through visual diagrams, spatial relationships, iconography. Text only for key labels floating in space. The composition tells the story through expert spatial orchestration.</p>
+
+<p><strong>"Geometric Silence"</strong></p>
+<p>Philosophy: Pure order and restraint.</p>
+<p>Visual expression: Grid-based precision, bold photography or stark graphics, dramatic negative space. Typography precise but minimal - small essential text, large quiet zones. Swiss formalism meets Brutalist material honesty. Structure communicates, not words. Every alignment the work of countless refinements.</p>
+
+<p>*These are condensed examples. The actual design philosophy should be 4-6 substantial paragraphs.*</p>
+
+<h3>ESSENTIAL PRINCIPLES</h3>
+<div class="li">- <strong>VISUAL PHILOSOPHY</strong>: Create an aesthetic worldview to be expressed through design</div>
+<div class="li">- <strong>MINIMAL TEXT</strong>: Always emphasize that text is sparse, essential-only, integrated as visual element - never lengthy</div>
+<div class="li">- <strong>SPATIAL EXPRESSION</strong>: Ideas communicate through space, form, color, composition - not paragraphs</div>
+<div class="li">- <strong>ARTISTIC FREEDOM</strong>: The next Claude interprets the philosophy visually - provide creative room</div>
+<div class="li">- <strong>PURE DESIGN</strong>: This is about making ART OBJECTS, not documents with decoration</div>
+<div class="li">- <strong>EXPERT CRAFTSMANSHIP</strong>: Repeatedly emphasize the final work must look meticulously crafted, labored over with care, the product of countless hours by someone at the top of their field</div>
+
+<p><strong>The design philosophy should be 4-6 paragraphs long.</strong> Fill it with poetic design philosophy that brings together the core vision. Avoid repeating the same points. Keep the design philosophy generic without mentioning the intention of the art, as if it can be used wherever. Output the design philosophy as a .md file.</p>
+
+<p>---</p>
+
+<h3>DEDUCING THE SUBTLE REFERENCE</h3>
+
+<p><strong>CRITICAL STEP</strong>: Before creating the canvas, identify the subtle conceptual thread from the original request.</p>
+
+<p><strong>THE ESSENTIAL PRINCIPLE</strong>:</p>
+<p>The topic is a <strong>subtle, niche reference embedded within the art itself</strong> - not always literal, always sophisticated. Someone familiar with the subject should feel it intuitively, while others simply experience a masterful abstract composition. The design philosophy provides the aesthetic language. The deduced topic provides the soul - the quiet conceptual DNA woven invisibly into form, color, and composition.</p>
+
+<p>This is <strong>VERY IMPORTANT</strong>: The reference must be refined so it enhances the work's depth without announcing itself. Think like a jazz musician quoting another song - only those who know will catch it, but everyone appreciates the music.</p>
+
+<p>---</p>
+
+<h3>CANVAS CREATION</h3>
+
+<p>With both the philosophy and the conceptual framework established, express it on a canvas. Take a moment to gather thoughts and clear the mind. Use the design philosophy created and the instructions below to craft a masterpiece, embodying all aspects of the philosophy with expert craftsmanship.</p>
+
+<p><strong>IMPORTANT</strong>: For any type of content, even if the user requests something for a movie/game/book, the approach should still be sophisticated. Never lose sight of the idea that this should be art, not something that's cartoony or amateur.</p>
+
+<p>To create museum or magazine quality work, use the design philosophy as the foundation. Create one single page, highly visual, design-forward PDF or PNG output (unless asked for more pages). Generally use repeating patterns and perfect shapes. Treat the abstract philosophical design as if it were a scientific bible, borrowing the visual language of systematic observation—dense accumulation of marks, repeated elements, or layered patterns that build meaning through patient repetition and reward sustained viewing. Add sparse, clinical typography and systematic reference markers that suggest this could be a diagram from an imaginary discipline, treating the invisible subject with the same reverence typically reserved for documenting observable p</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/canvas-design.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-updated="2026-09-17" data-name="chat-telegram talk to the agent from your phone like chatgpt mobile: message → it works →">
   <h2>chat-telegram</h2><span class="badge task">task-built playbook</span><p class="desc">Talk to the agent from your phone like ChatGPT mobile: message → it works →</p>
   <div class="dates">added 2026-09-17 · updated 2026-09-17</div>

@@ -1,4 +1,11 @@
-# Changelog
+﻿# Changelog
+
+## 1.17.0 — 2026-09-17
+- Bulk crawl + rescan: imports ALL new skills per run (up to 10), fresh
+  discovery query each round until dry (proven: 3/round live).
+- Think-and-act hourly (agent-act): crawl + model refresh + full skill
+  health audit, commits whatever changed. First audit: 33 skills, all healthy.
+- Auditor fixes: harness-tool allowlist, localhost skip, strict section rule.
 
 ## 1.16.0 — 2026-09-17
 - Skill dates: every card shows added + last-updated (true git history,
@@ -103,5 +110,6 @@
 
 ## 1.0.0
 - Core agent: files, apps, shell, sysinfo + pluggable API/local/custom LLM.
+
 
 

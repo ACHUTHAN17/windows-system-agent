@@ -229,16 +229,21 @@ pushes are the heartbeat now): scans Hacker News top stories + trending repos
 + open issues, learns the top new interest, pushes. Dedup guards make quiet
 periods converge to no-ops instead of loops. Schedules remain as backup.
 
-### Crawl: learns other repos' skills freely (daily 06:00 UTC)
-`skill-crawler` scans known skill repos (Anthropic's, Superpowers, awesome
-lists…) + repo-search discovery, downloads SKILL.md playbooks via the keyless
-public API, adapts them, records provenance in `skills/sources.json`. Proven:
-imported live from anthropics/skills on first run.
+### Crawl: learns other repos' skills freely — bulk + rescan (daily 06:00 UTC)
+`skill-crawler` imports EVERYTHING new it finds (up to 10/run), then scans
+AGAIN with a fresh discovery query until dry. Proven: 3 skills in one round
+from anthropics/skills. Provenance in `skills/sources.json`.
+
+### Think + act hourly (`agent-act.yml`)
+Every hour the agent: bulk-crawls, refreshes free models, AUDITS every skill
+it has (structure, tool refs, link health → `memory/skill-health.md`), commits
+whatever changed. It thinks about its collection and acts on it — alone.
 
 ### Rolling refresh: every skill, every 30 min
 `skill-refresh.yml` re-researches the 2 stalest skills, appends field updates,
 rebuilds, pushes. Nothing goes stale — ever. (The old daily refresh inside
 daily-sandbox retired here; sandbox keeps testing + health.)
+Latest audit: 33 skills, 0 need attention, 0 dead links.
 
 ### Image learning (no vision key needed)
 `IMAGE_URLS="https://…/shot1.png,..."` alongside any learn: keyless OCR reads

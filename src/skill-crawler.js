@@ -1,15 +1,15 @@
 // Skill crawler: learns ALREADY-AVAILABLE skills from OTHER GitHub repos.
-// Runs on Actions (no human): scans seed skill-repos + repo search, downloads
-// SKILL.md playbooks via the public API (no key), adapts them to our format,
-// records provenance in skills/sources.json, skips what we already have.
-// Env: MAX_IMPORT (default 2), SEED_REPOS (comma, opt).
+// Bulk mode: imports EVERYTHING new it finds (up to MAX), then scans AGAIN
+// with a fresh discovery query (rescan rounds) until nothing new appears.
+// Runs on Actions (no human). Provenance in skills/sources.json.
+// Env: MAX_IMPORT (default 10), SEED_REPOS (comma, opt).
 import fs from 'node:fs';
 import path from 'node:path';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')), '..');
 const SKILLS = path.join(ROOT, 'skills');
 const SOURCES = path.join(SKILLS, 'sources.json');
-const MAX = Math.min(Number(process.env.MAX_IMPORT || 2), 5);
+const MAX = Math.min(Number(process.env.MAX_IMPORT || 10), 20);
 
 const SEEDS = (process.env.SEED_REPOS || 'anthropics/skills,obra/superpowers,travisvn/awesome-claude-skills').split(',').map(s => s.trim()).filter(Boolean);
 
@@ -52,13 +52,20 @@ async function candidatesFromRepo(repo) {
   return out;
 }
 
-async function discoverRepos() {
+const DISCOVERY_QUERIES = [
+  'claude+skills+awesome+in:name',
+  'ai+agent+skills+playbooks+in:name',
+  'mcp+awesome+servers+in:name',
+];
+
+async function discoverRepos(round) {
   const found = [];
   try {
-    const j = await gh('/search/repositories?q=claude+skills+awesome+in:name&sort=stars&order=desc&per_page=8');
+    const q = DISCOVERY_QUERIES[round % DISCOVERY_QUERIES.length];
+    const j = await gh(`/search/repositories?q=${q}&sort=stars&order=desc&per_page=8`);
     for (const r of j.items || []) {
       if (!SEEDS.includes(r.full_name)) found.push(r.full_name);
-      if (found.length >= 2) break;
+      if (found.length >= 3) break;
     }
   } catch (e) { console.log('[crawl] discovery skipped: ' + e.message); }
   return found;
@@ -67,28 +74,34 @@ async function discoverRepos() {
 async function main() {
   const sources = loadSources();
   const have = new Set(fs.readdirSync(SKILLS).filter(f => f.endsWith('.md')).map(f => f.replace(/\.md$/, '')));
-  const repos = [...SEEDS, ...await discoverRepos()];
-  console.log(`[crawl] scanning ${repos.length} repos: ${repos.join(', ')}`);
   let done = [];
-  for (const repo of repos.slice(0, 3)) {
-    for (const c of await candidatesFromRepo(repo)) {
+  // Rescan rounds: fresh discovery query each round until nothing new or cap.
+  for (let round = 0; round < 3 && done.length < MAX; round++) {
+    const repos = round === 0 ? [...SEEDS, ...await discoverRepos(0)] : await discoverRepos(round);
+    console.log(`[crawl] round ${round + 1}: scanning ${repos.length} repos`);
+    let roundNew = 0;
+    for (const repo of repos.slice(0, 5)) {
+      for (const c of await candidatesFromRepo(repo)) {
+        if (done.length >= MAX) break;
+        const dir = c.path.split('/').slice(-2, -1)[0] || c.path;
+        const slug = slugify(dir.replace(/\.md$/, ''));
+        if (!slug || have.has(slug) || done.find(d => d.slug === slug)) continue;
+        try {
+          const blob = await gh(`/repos/${repo}/git/blobs/${(await gh(`/repos/${repo}/contents/${c.path}`)).sha}`);
+          const md = Buffer.from(blob.content, 'base64').toString('utf8');
+          const adapted = adapt(slug, md, repo, c.path);
+          if (!adapted) continue;
+          fs.writeFileSync(path.join(SKILLS, slug + '.md'), adapted, 'utf8');
+          sources[slug + '.md'] = { origin: 'imported', repo: `https://github.com/${repo}`, file: c.path, at: new Date().toISOString().slice(0, 10) };
+          have.add(slug);
+          done.push({ slug, repo });
+          roundNew++;
+          console.log(`[crawl] IMPORTED ${slug}.md from ${repo}/${c.path}`);
+        } catch (e) { console.log(`[crawl] skip ${c.path}: ${e.message}`); }
+      }
       if (done.length >= MAX) break;
-      const dir = c.path.split('/').slice(-2, -1)[0] || c.path;
-      const slug = slugify(dir.replace(/\.md$/, ''));
-      if (!slug || have.has(slug) || done.find(d => d.slug === slug)) continue;
-      try {
-        const blob = await gh(`/repos/${repo}/git/blobs/${(await gh(`/repos/${repo}/contents/${c.path}`)).sha}`);
-        const md = Buffer.from(blob.content, 'base64').toString('utf8');
-        const adapted = adapt(slug, md, repo, c.path);
-        if (!adapted) continue;
-        fs.writeFileSync(path.join(SKILLS, slug + '.md'), adapted, 'utf8');
-        sources[slug + '.md'] = { origin: 'imported', repo: `https://github.com/${repo}`, file: c.path, at: new Date().toISOString().slice(0, 10) };
-        have.add(slug);
-        done.push({ slug, repo });
-        console.log(`[crawl] IMPORTED ${slug}.md from ${repo}/${c.path}`);
-      } catch (e) { console.log(`[crawl] skip ${c.path}: ${e.message}`); }
     }
-    if (done.length >= MAX) break;
+    if (roundNew === 0) { console.log('[crawl] round found nothing new — stopping'); break; }
   }
   fs.writeFileSync(SOURCES, JSON.stringify(sources, null, 2), 'utf8');
   console.log(`[crawl] done: ${done.length} imported`);

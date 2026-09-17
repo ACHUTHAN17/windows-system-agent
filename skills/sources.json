@@ -4,5 +4,23 @@
     "repo": "https://github.com/anthropics/skills",
     "file": "skills/academy-guide/SKILL.md",
     "at": "2026-09-17"
+  },
+  "algorithmic-art.md": {
+    "origin": "imported",
+    "repo": "https://github.com/anthropics/skills",
+    "file": "skills/algorithmic-art/SKILL.md",
+    "at": "2026-09-17"
+  },
+  "brand-guidelines.md": {
+    "origin": "imported",
+    "repo": "https://github.com/anthropics/skills",
+    "file": "skills/brand-guidelines/SKILL.md",
+    "at": "2026-09-17"
+  },
+  "canvas-design.md": {
+    "origin": "imported",
+    "repo": "https://github.com/anthropics/skills",
+    "file": "skills/canvas-design/SKILL.md",
+    "at": "2026-09-17"
   }
 }

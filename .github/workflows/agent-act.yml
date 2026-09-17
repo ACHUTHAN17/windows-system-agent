@@ -1,0 +1,38 @@
+name: agent-act (think + act on its skills — hourly, no human)
+# Every hour on GitHub's runners the agent: (1) crawls GitHub for new skills
+# in bulk (imports ALL new finds, rescans until dry), (2) refreshes the free
+# model registry, (3) audits every skill it has (structure/tools/links) and
+# records verdicts in memory/skill-health.md. Commits whatever changed.
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+concurrency:
+  group: agent-act
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  act:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: bulk crawl GitHub skills
+        env:
+          MAX_IMPORT: 10
+        run: node src/skill-crawler.js
+      - name: refresh free models
+        run: node src/model-scout.js
+      - name: audit own skills (think)
+        run: node src/skill-audit.js
+      - name: rebuild docs
+        run: node src/build-docs.js
+      - name: commit + push if changed
+        run: |
+          git config user.name "winagent-bot"
+          git config user.email "winagent-bot@users.noreply.github.com"
+          git add skills docs memory
+          git diff --cached --quiet && echo "nothing new (converged)" || { git commit -m "agent-act: bulk crawl + model refresh + health audit"; for i in 1 2 3; do git pull --rebase --autostash && break; git checkout --theirs -- docs/index.html 2>/dev/null || true; node src/build-docs.js 2>/dev/null || true; git add -A; GIT_EDITOR=true git rebase --continue 2>/dev/null || git rebase --abort; sleep 5; done; git push; }
