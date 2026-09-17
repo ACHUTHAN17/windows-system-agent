@@ -16,7 +16,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.11.0</span><span class="pill">62 tools</span><span class="pill">24 skills (6 auto-learned)</span><span class="pill">generated 2026-09-17</span></div>
+<div class="meta"><span class="pill">v1.12.0</span><span class="pill">62 tools</span><span class="pill">25 skills (6 auto-learned)</span><span class="pill">generated 2026-09-17</span></div>
 <input id="q" placeholder="filter skills…" oninput="document.querySelectorAll('.card').forEach(c=>c.style.display=c.dataset.name.includes(this.value.toLowerCase())?'':'none')">
 <div class="grid"><article class="card" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
   <h2>agent-modes</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from its own run modes + parallel discipline</div><p class="desc">WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
@@ -112,6 +112,36 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.claudemap.org/en/explore/agentverse-os</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/agentverse-os-personal-cloud-os-for-a-de.md">view source on GitHub</a></article>
+<article class="card" data-name="auto-learn-new-skills auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>auto-learn-new-skills</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: auto learn new skills</h2>
+
+<p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions auto learn new skills.</p>
+
+<h3>Steps</h3>
+<p>1. Download Microsoft Edge More info about Internet Explorer and Microsoft Edge Table of contents Exit editor mode Ask Learn Ask Learn Reading mode Table of contents Read in English Add Add to Plans Edit Copy Markdown Print Note Access to this page requires authorization</p>
+<p>2. Use Agent Skills when you want to: Package domain expertise - Capture specialized knowledge (expense policies, legal workflows, data analysis pipelines) as reusable, portable packages</p>
+<p>3. Enable interoperability - Reuse the same skill across different Agent Skills-compatible products</p>
+<p>4. Use when asked about expense submissions, reimbursement rules, or spending limits</p>
+<p>5. Run scripts (as needed) - The agent calls the run_skill_script tool to execute scripts bundled with a skill</p>
+<p>6. Note load_skill is always advertised</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Agent Skills | Microsoft Learn</div>
+<p>  https://learn.microsoft.com/en-us/agent-framework/agents/skills</p>
+<div class="li">- GitHub - ECNU-ICALK/AutoSkill: AutoSkill: Experience-Driven Lifelong ...</div>
+<p>  https://github.com/ECNU-ICALK/AutoSkill</p>
+<div class="li">- Agent Skills | OpenCode</div>
+<p>  https://opencode.ai/docs/skills/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/auto-learn-new-skills.md">view source on GitHub</a></article>
 <article class="card" data-name="browser-dom cdp tabs expose the dom: query it, click/select/fill by selector, fall back to">
   <h2>browser-dom</h2><span class="badge task">task-built playbook</span><p class="desc">CDP tabs expose the DOM: query it, click/select/fill by selector, fall back to</p>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: browser-dom — drive pages by structure, not pixels (Gemini-style)</h2>
