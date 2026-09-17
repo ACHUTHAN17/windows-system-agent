@@ -16,7 +16,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push.</p>
-<div class="meta"><span class="pill">v1.6.0</span><span class="pill">56 tools</span><span class="pill">11 skills (6 auto-learned)</span><span class="pill">generated 2026-09-17</span></div>
+<div class="meta"><span class="pill">v1.6.0</span><span class="pill">56 tools</span><span class="pill">12 skills (6 auto-learned)</span><span class="pill">generated 2026-09-17</span></div>
 <input id="q" placeholder="filter skills…" oninput="document.querySelectorAll('.card').forEach(c=>c.style.display=c.dataset.name.includes(this.value.toLowerCase())?'':'none')">
 <div class="grid"><article class="card" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
   <h2>agent-modes</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from its own run modes + parallel discipline</div><p class="desc">WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
@@ -151,6 +151,31 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>into destructive zones (Recycle Bin, close buttons) without explicit instruction.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/drag-drop.md">view source on GitHub</a></article>
+<article class="card" data-name="essential-windows-run-commands auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>essential-windows-run-commands</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: essential windows run commands</h2>
+
+<p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions essential windows run commands.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Essential Windows Run Commands Guide - Scribd</div>
+<p>  https://www.scribd.com/document/888756302/Essential-Run-Commands-Windows</p>
+<div class="li">- Essential Windows Run Commands Guide</div>
+<p>  https://www.scribd.com/document/804676446/200-Run-Commands</p>
+<div class="li">- PDF Essential Windows Run Commands You Should Know</div>
+<p>  https://vailtech.net/sites/default/files/Win_Essential_Windows_Run_Commands.pdf</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/essential-windows-run-commands.md">view source on GitHub</a></article>
 <article class="card" data-name="file-fetch-upload file manager parity: if explorer can see it, you can fetch it. locked sqlite">
   <h2>file-fetch-upload</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from locked-file + upload research</div><p class="desc">File Manager parity: if Explorer can see it, you can fetch it. Locked SQLite</p>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: file-fetch-upload — fetch ANY file (even locked/in-use) and upload it</h2>
