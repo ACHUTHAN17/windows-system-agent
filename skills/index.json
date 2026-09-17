@@ -611,6 +611,35 @@
   ]
  },
  {
+  "name": "fujitsu-launches-made-in-japan-next-gene",
+  "title": "Fujitsu launches made-in-Japan next-generation CPU FUJITSU-MONAKA",
+  "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "fujitsu",
+   "launches",
+   "made",
+   "japan",
+   "next",
+   "generation",
+   "cpu",
+   "monaka",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
   "name": "github-readme-badges-with-shields-io",
   "title": "github readme badges with shields.io",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
@@ -665,6 +694,28 @@
    "cli",
    "memory",
    "note"
+  ]
+ },
+ {
+  "name": "how-to-write-with-an-llm",
+  "title": "How to Write with an LLM",
+  "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-17",
+  "updated": "2026-09-17",
+  "triggers": [
+   "write",
+   "llm",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "key",
+   "configured"
   ]
  },
  {

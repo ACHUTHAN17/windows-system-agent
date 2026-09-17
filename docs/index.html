@@ -17,7 +17,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">55 skills (6 auto · 16 imported · 33 built)</span><span class="pill">generated 2026-09-17</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">57 skills (6 auto · 16 imported · 35 built)</span><span class="pill">generated 2026-09-17</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
@@ -2139,6 +2139,28 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>| "The push was rejected — force-push will fix it" | A rejected push means the remote moved. Investigate; force-push only on your human partner's explicit request. |</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/finishing-a-development-branch.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-17" data-updated="2026-09-17" data-name="fujitsu-launches-made-in-japan-next-gene auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>fujitsu-launches-made-in-japan-next-gene</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Fujitsu launches made-in-Japan next-generation CPU FUJITSU-MONAKA</h2>
+
+<p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Fujitsu launches made-in-Japan next-generation CPU FUJITSU-MONAKA.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Fujitsu launches made-in-Japan next-generation CPU FUJITSU-MONAKA and ...</div>
+<p>  https://www.prnewswire.com/news-releases/fujitsu-launches-made-in-japan-next-generation-cpu-fujitsu-monaka-and-fujitsu-monaka-server-for-sovereign-ai-infrastructure-302877394.html</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/fujitsu-launches-made-in-japan-next-gene.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T14:36:51.000Z" data-updated="2026-09-17T14:36:51.000Z" data-name="github-readme-badges-with-shields-io auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>github-readme-badges-with-shields-io</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-17 14:36 · updated 2026-09-17 14:36</div>
@@ -2208,6 +2230,33 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  completed change set, confirm remote SHA moved.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/github.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-17" data-updated="2026-09-17" data-name="how-to-write-with-an-llm auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>how-to-write-with-an-llm</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-17  · updated 2026-09-17 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: How to Write with an LLM</h2>
+
+<p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions How to Write with an LLM.</p>
+
+<h3>Steps</h3>
+<p>1. To get a good first draft, you'll need to supply good prompts</p>
+<p>2. To choose a role, imagine who could best explain or teach a certain topic to the target audience</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- CMU LibGuides: LLM Documentation Guide: LLM Documentation</div>
+<p>  https://guides.library.cmu.edu/LLMDocumentationGuide</p>
+<div class="li">- Write LLM-friendly docs in March 2026 | Fern</div>
+<p>  https://buildwithfern.com/post/how-to-write-llm-friendly-documentation</p>
+<div class="li">- Using large language models (LLMs) in technical writing</div>
+<p>  https://developers.google.com/tech-writing/two/llms</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/how-to-write-with-an-llm.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T14:48:22.000Z" data-updated="2026-09-17T14:48:22.000Z" data-name="keyboard-shortcuts auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>keyboard-shortcuts</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-17 14:48 · updated 2026-09-17 14:48</div>
