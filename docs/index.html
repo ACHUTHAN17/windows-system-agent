@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">65 skills (6 auto · 16 imported · 43 built)</span><span class="pill">generated 2026-09-18</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">67 skills (6 auto · 16 imported · 45 built)</span><span class="pill">generated 2026-09-18</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="imported" data-added="2026-09-17T15:08:54.000Z" data-updated="2026-09-18T14:55:47.000Z" data-name="academy-guide imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/academy-guide/skill.md) — &gt;.">
+<div class="grid" id="grid"><article class="card" data-origin="imported" data-added="2026-09-17T15:08:54.000Z" data-updated="2026-09-18T18:17:16.000Z" data-name="academy-guide imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/academy-guide/skill.md) — &gt;.">
   <h2>academy-guide</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/anthropics/skills">anthropics/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — &gt;.</p>
-  <div class="dates">added 2026-09-17 15:08 · updated 2026-09-18 14:55</div>
+  <div class="dates">added 2026-09-17 15:08 · updated 2026-09-18 18:17</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: academy-guide</h2>
 
 <p>Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — &gt;.</p>
@@ -358,9 +358,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/academy-guide.md">view source on GitHub</a></article>
-<article class="card" data-origin="auto" data-added="2026-09-17T12:32:16.000Z" data-updated="2026-09-18T14:55:47.000Z" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
+<article class="card" data-origin="auto" data-added="2026-09-17T12:32:16.000Z" data-updated="2026-09-18T18:17:16.000Z" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
   <h2>agent-modes</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from its own run modes + parallel discipline</div><p class="desc">WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
-  <div class="dates">added 2026-09-17 12:32 · updated 2026-09-18 14:55</div>
+  <div class="dates">added 2026-09-17 12:32 · updated 2026-09-18 18:17</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: agent-modes — run modes and how to work them in parallel</h2>
 
 <p>WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
@@ -3375,6 +3375,60 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/agent-cli-framework/aclif</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-aclif-agent-cli-framework-one-gr.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-18" data-updated="2026-09-18" data-name="show-hn-ax-check-com-can-agents-use-your auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-ax-check-com-can-agents-use-your</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-18  · updated 2026-09-18 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Ax-check.com – Can agents use your product?</h2>
+
+<p>Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: Ax-check.com – Can agents use your product?.</p>
+
+<h3>Steps</h3>
+<p>1. Step 1: The harness assembles context Before anything hits the model, the harness (Copilot, Claude Code, Cursor) assembles the context window</p>
+<p>2. Step 2: The model reads the room The model receives this assembled context and does something humans don’t: it reads everything at once</p>
+<p>3. Step 3: Tool selection (or not) If the model decides it needs more information, it looks at the available tools and skills</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- AX Check — the agent experience check</div>
+<p>  https://www.ax-check.com/</p>
+<div class="li">- How AI coding agents actually use your technology</div>
+<p>  https://developer.microsoft.com/blog/how-ai-coding-agents-actually-use-your-technology/</p>
+<div class="li">- Hacker News</div>
+<p>  https://news.ycombinator.com/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-ax-check-com-can-agents-use-your.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-18" data-updated="2026-09-18" data-name="show-hn-cactus-needle-3-8-29mb-automatio auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-cactus-needle-3-8-29mb-automatio</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-18  · updated 2026-09-18 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Cactus Needle 3: 8-29MB automation models can match DeepSeek V4 Flash</h2>
+
+<p>Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: Cactus Needle 3: 8-29MB automation models can match DeepSeek V4 Flash.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Needle 3 - 8-29 MB foundation model for tiny devices | Cactus</div>
+<p>  https://cactuscompute.com/needle</p>
+<div class="li">- Cactus Needle 3: 8-29MB automation models can… | VibeLeaderboard</div>
+<p>  https://www.vibeleaderboard.ai/intel/d8777935-e7ec-4a7d-93cb-56763957ff84</p>
+<div class="li">- GitHub - cactus-compute/needle: Automation foundation model for tiny ...</div>
+<p>  https://github.com/cactus-compute/needle</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-cactus-needle-3-8-29mb-automatio.md">view source on GitHub</a></article>
 <article class="card" data-origin="imported" data-added="2026-09-17T19:36:25.000Z" data-updated="2026-09-17T19:36:25.000Z" data-name="subagent-driven-development imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/subagent-driven-development/skill.md) — use when execu">
   <h2>subagent-driven-development</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/subagent-driven-development/SKILL.md) — Use when execu</p>
   <div class="dates">added 2026-09-17 19:36 · updated 2026-09-17 19:36</div>
