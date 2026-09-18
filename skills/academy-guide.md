@@ -215,3 +215,32 @@ When the task mentions refresh and verify the academy-guide skill.
 - Academy Guide | anthropics/skills Agent Skill | SkillsMP
   https://skillsmp.com/creators/anthropics/skills/skills-academy-guide
 
+
+
+---
+## Field update 2026-09-18
+# Skill: refresh and verify the academy-guide skill
+
+Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the academy-guide skill.
+
+## Steps
+1. Use it when the user is learning how to use a feature or product — not when they are mid-task and just want the task done
+2. How to install or import it AI Vitamin has not published source-verified installation steps for this record
+3. Use cases — worked examples of applying Claude to a concrete task, usually with a prompt to try
+4. How to get Started To get started, all you need is a level 60+ character
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- AI Vitamin Guide: Academy Guide Agent Skill | Setup and use
+  https://www.aivitamin.org/agent-skills/academy-guide
+- skills/skills/academy-guide/SKILL.md at main · anthropics/skills
+  https://github.com/anthropics/skills/blob/main/skills/academy-guide/SKILL.md
+- Olvia Academy Guide - BDFoundry - Black Desert Foundry
+  https://www.blackdesertfoundry.com/olvia-academy-guide/
+
