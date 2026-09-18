@@ -17,7 +17,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">69 skills (6 auto · 16 imported · 47 built)</span><span class="pill">generated 2026-09-18</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">71 skills (6 auto · 16 imported · 49 built)</span><span class="pill">generated 2026-09-18</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
@@ -2752,6 +2752,35 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/ikkun1222/awesome-jev-hellogumbo/blob/main/README.md</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/jev-ultrafast-i-am-speed.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-18" data-updated="2026-09-18" data-name="jevlike auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>jevlike</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-18  · updated 2026-09-18 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: jevlike</h2>
+
+<p>Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions jevlike.</p>
+
+<h3>Steps</h3>
+<p>1. Input tokens cost $0.042 per million, with output tokens free</p>
+<p>2. How to build with TypeSafe — Design guidance for decomposing a workflow into narrow judgments while keeping policy and side effects in code</p>
+<p>3. How to Use Jev: A practical guide to TypeSafe's System One model - DEV Community Skip to content Navigation menu Search Powered by Algolia Search Log in Create account DEV Community Close Add reaction Like Unicorn Exploding Head Raised Hands Fire Jump to Comments Save Boost Pick as gem More..</p>
+<p>4. Copy link Copy link Copied to Clipboard Share to X Share to LinkedIn Share to Facebook Share to Mastodon Share Post via..</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- A deep dive into Jev, TypeSafe&amp;#x27;s System One model</div>
+<p>  https://flaviocopes.com/jev/</p>
+<div class="li">- GitHub - AbdelStark/awesome-typesafe: A curated list of official ...</div>
+<p>  https://github.com/AbdelStark/awesome-typesafe</p>
+<div class="li">- How to Use Jev: A practical guide to TypeSafe&amp;#x27;s System One model</div>
+<p>  https://dev.to/valyuai/how-to-use-jev-a-practical-guide-to-typesafes-system-one-model-g5e</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/jevlike.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-18T11:46:35.000Z" data-updated="2026-09-18T11:46:35.000Z" data-name="jianying-headless-private-source-preview auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>jianying-headless-private-source-preview</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-18 11:46 · updated 2026-09-18 11:46</div>
@@ -2877,6 +2906,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- Windows: prefer ABSOLUTE command paths if bare names fail (see skill text).</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/mcp.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-18" data-updated="2026-09-18" data-name="mural-the-language-app-you-eventually-de auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>mural-the-language-app-you-eventually-de</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-18  · updated 2026-09-18 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: mural The language app you eventually delete. A native iPhone companion for learning through conversation.</h2>
+
+<p>Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions mural The language app you eventually delete. A native iPhone companion for learning through conversation..</p>
+
+<h3>Steps</h3>
+<p>1. Install with a local AI agent If Codex or another coding agent has access to your Mac's files and terminal, paste the prompt below</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - Chuloo/mural: The language app you eventually delete. A native ...</div>
+<p>  https://github.com/Chuloo/mural</p>
+<div class="li">- Mural — The language app you eventually delete</div>
+<p>  https://mural.chat/</p>
+<div class="li">- Chuloo/mural: The language app you eventually delete. A native iPhone ...</div>
+<p>  https://guides.thetempleofdoom.com/articles/chuloo-mural-language-app-eventually-delete-native-iphone-co</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/mural-the-language-app-you-eventually-de.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T13:47:44.000Z" data-updated="2026-09-17T13:47:44.000Z" data-name="office-docs researched from microsoft graph docs, python-docx/openpyxl/python-pptx guides,">
   <h2>office-docs</h2><span class="badge task">task-built playbook</span><p class="desc">Researched from Microsoft Graph docs, python-docx/openpyxl/python-pptx guides,</p>
   <div class="dates">added 2026-09-17 13:47 · updated 2026-09-17 13:47</div>
