@@ -5,7 +5,7 @@
   "description": "Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — >.",
   "origin": "imported",
   "added": "2026-09-17T15:08:54.000Z",
-  "updated": "2026-09-18T00:43:12.000Z",
+  "updated": "2026-09-18T05:44:41.000Z",
   "triggers": [
    "academy",
    "guide",
@@ -26,7 +26,7 @@
   "description": "WinAgent is one brain with six bodies. Pick per task; combine for speed.",
   "origin": "auto",
   "added": "2026-09-17T12:32:16.000Z",
-  "updated": "2026-09-18T00:43:12.000Z",
+  "updated": "2026-09-18T05:44:41.000Z",
   "triggers": [
    "mode",
    "daemon",
@@ -568,6 +568,35 @@
   ]
  },
  {
+  "name": "fast-jev-compaction-claude-code-plugin-t",
+  "title": "fast-jev-compaction Claude Code plugin that replaces the compaction summary with",
+  "description": "Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-18",
+  "updated": "2026-09-18",
+  "triggers": [
+   "fast",
+   "jev",
+   "compaction",
+   "claude",
+   "code",
+   "plugin",
+   "replaces",
+   "summary",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
   "name": "file-fetch-upload",
   "title": "file-fetch-upload — fetch ANY file (even locked/in-use) and upload it",
   "description": "File Manager parity: if Explorer can see it, you can fetch it. Locked SQLite",
@@ -714,6 +743,30 @@
    "pass",
    "ask",
    "refresh",
+   "key",
+   "configured"
+  ]
+ },
+ {
+  "name": "jev-ultrafast-i-am-speed",
+  "title": "jev-ultrafast i. am. speed.",
+  "description": "Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-18",
+  "updated": "2026-09-18",
+  "triggers": [
+   "jev",
+   "ultrafast",
+   "speed",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
    "key",
    "configured"
   ]

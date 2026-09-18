@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">59 skills (6 auto · 16 imported · 37 built)</span><span class="pill">generated 2026-09-18</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">61 skills (6 auto · 16 imported · 39 built)</span><span class="pill">generated 2026-09-18</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="imported" data-added="2026-09-17T15:08:54.000Z" data-updated="2026-09-18T00:43:12.000Z" data-name="academy-guide imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/academy-guide/skill.md) — &gt;.">
+<div class="grid" id="grid"><article class="card" data-origin="imported" data-added="2026-09-17T15:08:54.000Z" data-updated="2026-09-18T05:44:41.000Z" data-name="academy-guide imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/academy-guide/skill.md) — &gt;.">
   <h2>academy-guide</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/anthropics/skills">anthropics/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — &gt;.</p>
-  <div class="dates">added 2026-09-17 15:08 · updated 2026-09-18 00:43</div>
+  <div class="dates">added 2026-09-17 15:08 · updated 2026-09-18 05:44</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: academy-guide</h2>
 
 <p>Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — &gt;.</p>
@@ -272,9 +272,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/academy-guide.md">view source on GitHub</a></article>
-<article class="card" data-origin="auto" data-added="2026-09-17T12:32:16.000Z" data-updated="2026-09-18T00:43:12.000Z" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
+<article class="card" data-origin="auto" data-added="2026-09-17T12:32:16.000Z" data-updated="2026-09-18T05:44:41.000Z" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
   <h2>agent-modes</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from its own run modes + parallel discipline</div><p class="desc">WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
-  <div class="dates">added 2026-09-17 12:32 · updated 2026-09-18 00:43</div>
+  <div class="dates">added 2026-09-17 12:32 · updated 2026-09-18 05:44</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: agent-modes — run modes and how to work them in parallel</h2>
 
 <p>WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
@@ -2000,6 +2000,36 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- Never start implementation on main/master branch without explicit user consent</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/executing-plans.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-18" data-updated="2026-09-18" data-name="fast-jev-compaction-claude-code-plugin-t auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>fast-jev-compaction-claude-code-plugin-t</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-18  · updated 2026-09-18 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: fast-jev-compaction Claude Code plugin that replaces the compaction summary with Jev decisions: every tool call and resu</h2>
+
+<p>Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions fast-jev-compaction Claude Code plugin that replaces the compaction summary with Jev decisions: every tool call and resu.</p>
+
+<h3>Steps</h3>
+<p>1. How it works Every tool_use is paired with its tool_result by tool_use_id</p>
+<p>2. Install and set up fast-jev-compaction (git-clone project) into my current project</p>
+<p>3. Install and usage copy npm install fast-jev-compaction export TYPESAFE_API_KEY=..</p>
+<p>4. copy import { compactMessages, reductionRatio, type Message } from &amp;#x27;fast-jev-compaction&amp;#x27; ; const transcript : Message [] = [ { role : &amp;#x27;user&amp;#x27; , text : &amp;#x27;Fix the failing test</p>
+<p>5. Run any coding agent with your own subscription</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - Manojbhat09/fast-jev-compaction-cc: Claude Code plugin that ...</div>
+<p>  https://github.com/Manojbhat09/fast-jev-compaction-cc</p>
+<div class="li">- fast-jev-compaction — Claude Plugins | Claudeers</div>
+<p>  https://claudeers.com/fast-jev-compaction</p>
+<div class="li">- tamaratran/fast-jev-compaction - gitstars.io</div>
+<p>  https://www.gitstars.io/repo/github/tamaratran/fast-jev-compaction</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/fast-jev-compaction-claude-code-plugin-t.md">view source on GitHub</a></article>
 <article class="card" data-origin="auto" data-added="2026-09-17T11:36:17.000Z" data-updated="2026-09-17T11:36:17.000Z" data-name="file-fetch-upload file manager parity: if explorer can see it, you can fetch it. locked sqlite">
   <h2>file-fetch-upload</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from locked-file + upload research</div><p class="desc">File Manager parity: if Explorer can see it, you can fetch it. Locked SQLite</p>
   <div class="dates">added 2026-09-17 11:36 · updated 2026-09-17 11:36</div>
@@ -2383,6 +2413,30 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://developers.google.com/tech-writing/two/llms</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/how-to-write-with-an-llm.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-18" data-updated="2026-09-18" data-name="jev-ultrafast-i-am-speed auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>jev-ultrafast-i-am-speed</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-18  · updated 2026-09-18 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: jev-ultrafast i. am. speed.</h2>
+
+<p>Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions jev-ultrafast i. am. speed..</p>
+
+<h3>Steps</h3>
+<p>1. To add a project, open a pull request or file an issue</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- jev-ultrafast/docs/performance-prepared.md at main - GitHub</div>
+<p>  https://github.com/browser-use/jev-ultrafast/blob/main/docs/performance-prepared.md</p>
+<div class="li">- awesome-jev-hellogumbo/README.md at main · ikkun1222/awesome ... - GitHub</div>
+<p>  https://github.com/ikkun1222/awesome-jev-hellogumbo/blob/main/README.md</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/jev-ultrafast-i-am-speed.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T14:48:22.000Z" data-updated="2026-09-17T14:48:22.000Z" data-name="keyboard-shortcuts auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>keyboard-shortcuts</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-17 14:48 · updated 2026-09-17 14:48</div>
