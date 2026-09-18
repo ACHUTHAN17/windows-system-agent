@@ -356,8 +356,8 @@
   "title": "Claude Code now reads AGENTS.md if there is no Claude.md",
   "description": "Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-18",
-  "updated": "2026-09-18",
+  "added": "2026-09-18T21:10:54.000Z",
+  "updated": "2026-09-18T21:10:54.000Z",
   "triggers": [
    "claude",
    "code",
@@ -992,8 +992,8 @@
   "title": "Photon-Emission-Guided Laser Fault Injection Enables RP2350 Secure Debug",
   "description": "Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-18",
-  "updated": "2026-09-18",
+  "added": "2026-09-18T21:10:54.000Z",
+  "updated": "2026-09-18T21:10:54.000Z",
   "triggers": [
    "photon",
    "emission",
