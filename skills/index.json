@@ -5,7 +5,7 @@
   "description": "Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — >.",
   "origin": "imported",
   "added": "2026-09-17T15:08:54.000Z",
-  "updated": "2026-09-18T05:44:41.000Z",
+  "updated": "2026-09-18T10:59:43.000Z",
   "triggers": [
    "academy",
    "guide",
@@ -26,7 +26,7 @@
   "description": "WinAgent is one brain with six bodies. Pick per task; combine for speed.",
   "origin": "auto",
   "added": "2026-09-17T12:32:16.000Z",
-  "updated": "2026-09-18T05:44:41.000Z",
+  "updated": "2026-09-18T10:59:43.000Z",
   "triggers": [
    "mode",
    "daemon",
@@ -758,6 +758,36 @@
    "jev",
    "ultrafast",
    "speed",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
+  "name": "jianying-headless-private-source-preview",
+  "title": "jianying-headless Private source preview: native Jianying drafts, isolated editi",
+  "description": "Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-18",
+  "updated": "2026-09-18",
+  "triggers": [
+   "jianying",
+   "headless",
+   "private",
+   "source",
+   "preview",
+   "native",
+   "drafts",
+   "isolated",
+   "editi",
    "auto",
    "learned",
    "2026",
@@ -1551,6 +1581,35 @@
    "content",
    "plugins",
    "live"
+  ]
+ },
+ {
+  "name": "zcode-the-glm-coding-agent-silently-uplo",
+  "title": "ZCode, the GLM coding agent, silently uploads your Git history",
+  "description": "Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-18",
+  "updated": "2026-09-18",
+  "triggers": [
+   "zcode",
+   "glm",
+   "coding",
+   "agent",
+   "silently",
+   "uploads",
+   "git",
+   "history",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
   ]
  }
 ]
