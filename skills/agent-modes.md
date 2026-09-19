@@ -414,3 +414,36 @@ When the task mentions refresh and verify the agent-modes skill.
 - Azure Agent Skills | Microsoft Learn
   https://learn.microsoft.com/en-us/training/support/agent-skills
 
+
+
+---
+## Field update 2026-09-19
+# Skill: refresh and verify the agent-modes skill
+
+Auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the agent-modes skill.
+
+## Steps
+1. Use when creating or modifying ClickHouse migrations
+2. Use when you need to run backend tests and `uv sync` fails due to Python version mismatch
+3. Download Microsoft Edge More info about Internet Explorer and Microsoft Edge Table of contents Exit editor mode Ask Learn Ask Learn Reading mode Table of contents Read in English Add Add to Plans Edit Copy Markdown Print Note Access to this page requires authorization
+4. Use Agent Skills when you want to: Package domain expertise - Capture specialized knowledge (expense policies, legal workflows, data analysis pipelines) as reusable, portable packages
+5. Enable interoperability - Reuse the same skill across different Agent Skills-compatible products
+6. Use when asked about expense submissions, reimbursement rules, or spending limits
+7. Run scripts (as needed) - The agent calls the run_skill_script tool to execute scripts bundled with a skill
+8. Note load_skill is always advertised
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- implementing-agent-modes by PostHog — Agent Skill
+  https://agentskills.codes/skills/implementing-agent-modes
+- Agent Skills | Microsoft Learn
+  https://learn.microsoft.com/en-us/agent-framework/agents/skills
+- Hands On: VS 2026 Insiders Adds Guided Skill Building in Agent Mode
+  https://visualstudiomagazine.com/articles/2026/05/15/building-a-custom-copilot-skill-a-hands-on-guide-to-agent-mode-in-visual-studio-2026.aspx
+
