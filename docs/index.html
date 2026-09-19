@@ -17,7 +17,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">78 skills (6 auto · 17 imported · 55 built)</span><span class="pill">generated 2026-09-19</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">80 skills (6 auto · 17 imported · 57 built)</span><span class="pill">generated 2026-09-19</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
@@ -3324,6 +3324,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.geeksforgeeks.org/computer-science-fundamentals/computer-shortcut-keys/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/keyboard-shortcuts.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-19" data-updated="2026-09-19" data-name="laya auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>laya</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-19  · updated 2026-09-19 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: laya</h2>
+
+<p>Auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions laya.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Documentation Home · LayaAir3.3 Engine Documentation · LAYABOX</div>
+<p>  https://www.layaair.com/3.x/doc-en/</p>
+<div class="li">- Laya — Docs</div>
+<p>  https://laya.aay.sh/docs.html</p>
+<div class="li">- Getting Started - laya docs</div>
+<p>  https://radicazz.github.io/laya/getting-started/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/laya.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T14:28:22.000Z" data-updated="2026-09-17T14:28:22.000Z" data-name="llm-master-llm-prompt-engineering-rag-ai auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>llm-master-llm-prompt-engineering-rag-ai</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-17 14:28 · updated 2026-09-17 14:28</div>
@@ -3418,6 +3444,33 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://guides.thetempleofdoom.com/articles/chuloo-mural-language-app-eventually-delete-native-iphone-co</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/mural-the-language-app-you-eventually-de.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-19" data-updated="2026-09-19" data-name="nanojev-a-nano-replica-of-jev-parallel-d auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>nanojev-a-nano-replica-of-jev-parallel-d</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-19  · updated 2026-09-19 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: NanoJev A nano replica of Jev: parallel decisions, dynamic candidates, and an end-to-end training pipeline.</h2>
+
+<p>Auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions NanoJev A nano replica of Jev: parallel decisions, dynamic candidates, and an end-to-end training pipeline..</p>
+
+<h3>Steps</h3>
+<p>1. Download the exact model for either showcase: from pathlib import Path from huggingface_hub import snapshot_download variant = "local_atomic_seed17" # Use "games_gold_seed17" for Snake</p>
+<p>2. Use new output directories for each run</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - TianyuCodings/NanoJev: A nano replica of Jev: parallel ...</div>
+<p>  https://github.com/TianyuCodings/NanoJev</p>
+<div class="li">- C-Tianyu/NanoJev · Hugging Face</div>
+<p>  https://huggingface.co/C-Tianyu/NanoJev</p>
+<div class="li">- NanoJev/research/pipeline_runbook.md at main - GitHub</div>
+<p>  https://github.com/TianyuCodings/NanoJev/blob/main/research/pipeline_runbook.md</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/nanojev-a-nano-replica-of-jev-parallel-d.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T13:47:44.000Z" data-updated="2026-09-17T13:47:44.000Z" data-name="office-docs researched from microsoft graph docs, python-docx/openpyxl/python-pptx guides,">
   <h2>office-docs</h2><span class="badge task">task-built playbook</span><p class="desc">Researched from Microsoft Graph docs, python-docx/openpyxl/python-pptx guides,</p>
   <div class="dates">added 2026-09-17 13:47 · updated 2026-09-17 13:47</div>
