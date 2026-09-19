@@ -17,7 +17,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">71 skills (6 auto · 16 imported · 49 built)</span><span class="pill">generated 2026-09-19</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">72 skills (6 auto · 17 imported · 49 built)</span><span class="pill">generated 2026-09-19</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
@@ -1641,6 +1641,131 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- One task at a time (409 busy otherwise). Daemon/idle modes stay in terminal.</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/dashboard.md">view source on GitHub</a></article>
+<article class="card" data-origin="imported" data-added="2026-09-19" data-updated="2026-09-19" data-name="diagnosing-superpowers imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/diagnosing-superpowers/skill.md) — use when a superpow">
+  <h2>diagnosing-superpowers</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/diagnosing-superpowers/SKILL.md) — Use when a superpow</p>
+  <div class="dates">added 2026-09-19  · updated 2026-09-19 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: diagnosing-superpowers</h2>
+
+<p>Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/diagnosing-superpowers/SKILL.md) — Use when a superpowers session went wrong and your human partner wants to know why — repeated work, ignored plans, stumbles, poor results, a skill that didn't fire, "it took too long", "why is it so e.</p>
+<p>Adapted to WinAgent tools where possible; verify tool names before use.</p>
+
+<h2>Diagnosing Superpowers</h2>
+
+<h3>Overview</h3>
+
+<p>Pin down with your human partner what went wrong in a session, read the</p>
+<p>transcripts on disk, and report what happened with evidence. You report;</p>
+<p>you do not diagnose superpowers. Whoever triages the bundle or the issue</p>
+<p>decides whether superpowers changes.</p>
+
+<p><strong>Core principle:</strong> Every finding cites <code>path:line</code>. No citation, no</p>
+<p>finding. Every number comes from the transcript or from a command you ran,</p>
+<p>never from memory.</p>
+
+<h3>Workflow</h3>
+
+<p>Create a todo per step. Steps 5–7 run only on their stated condition.</p>
+
+<p>1. <strong>Problem intake.</strong> Ask one question at a time until you can write a</p>
+<p>   statement naming the session(s), the turn range if known, what your</p>
+<p>   partner expected, what happened, and the observable they care about</p>
+<p>   (wall-clock, tokens, repeated actions, one specific action). "It took</p>
+<p>   too long" is a complaint, not a problem statement. Note whether the</p>
+<p>   goal is a superpowers bug report.</p>
+<p>2. <strong>Locate.</strong> Resolve each session to verified absolute filesystem paths using</p>
+<p>   <code>references/session-discovery.md</code>. Confirm a past session by quoting its</p>
+<p>   first prompt and timestamp, and list every candidate you rejected with the</p>
+<p>   reason, or "none". Enumerate subagent transcripts. Create</p>
+<p>   <code>~/.superpowers/diagnosing-superpowers/&lt;session-id&gt;/</code>, tell your</p>
+<p>   partner the path, and fill <code>templates/case.md</code> there, following its</p>
+<p>   provenance rules for environment and skill observations.</p>
+<p>3. <strong>Triage.</strong> Read the region around the reported problem yourself. Then</p>
+<p>   dispatch one analyst subagent per dimension in parallel, each given the</p>
+<p>   case file path, <code>prompts/analyst-common.md</code>, and one dimension file from</p>
+<p>   <code>prompts/</code>: <code>skill-timeline.md</code>,</p>
+<p>   <code>plan-adherence.md</code>, <code>repeated-work.md</code>, <code>stumbles.md</code>,</p>
+<p>   <code>quality-evidence.md</code>, <code>request-conflicts.md</code>, <code>cost-and-time.md</code>.</p>
+<p>   Split a dimension by turn range when the transcript is long. Discard</p>
+<p>   any returned finding without <code>path:line</code>.</p>
+<p>4. <strong>Report.</strong> Fill every section of <code>templates/report.md</code> in order, write</p>
+<p>   it to the workspace, show it, and give the path. Check what cited content</p>
+<p>   actually proves and preserve the supporting case; a symlink alias is not a</p>
+<p>   redundant copy.</p>
+<p>5. <strong>GitHub issues</strong> — when report §7 says possible or likely, or your</p>
+<p>   partner asks. Search open and closed issues for the symptoms per</p>
+<p>   <code>references/github-issues.md</code>. Show matches and suggest adding the</p>
+<p>   report to the closest. If none match, fill <code>templates/issue.md</code>, write</p>
+<p>   it to the workspace, show the exact text, and create the issue only</p>
+<p>   after approval. <code>gh</code> cannot attach files; if a bundle exists, give</p>
+<p>   your partner its path to attach in the browser.</p>
+<p>6. <strong>Export</strong> — only when your partner asks for a bundle; never build one</p>
+<p>   unprompted. If the intake goal was a bug report, say once that a</p>
+<p>   scrubbed bundle is available on request, then wait. Ask the redaction</p>
+<p>   level, stating what each includes: skeleton (no tool-result bodies),</p>
+<p>   evidence (bodies only for cited events), full. Build the bundle per</p>
+<p>   <code>templates/bundle-README.md</code>, dispatch <code>prompts/scrub.md</code>, then</p>
+<p>   <code>prompts/scrub-audit.md</code>, repeating both until the audit returns CLEAN.</p>
+<p>   Complete the bundle template's evidence check and reconciliation before</p>
+<p>   showing the final scrub log, file list, and privacy and evidence outcomes.</p>
+<p>   Archive (<code>zip -r</code> or <code>tar -czf</code>) only after approval. With the archive</p>
+<p>   path, state what it contains, point at the scrub log for replacements, and</p>
+<p>   say scrubbing can miss things: they must review every file before sharing.</p>
+<p>7. <strong>Similar sessions</strong> — when asked. Turn confirmed findings into a</p>
+<p>   signature, list candidates by mtime and size, find marker line numbers,</p>
+<p>   dispatch <code>prompts/similar-session.md</code> per candidate in parallel, and</p>
+<p>   append report §9.</p>
+
+<h3>Quick reference</h3>
+
+<p>All seven analysts always run. This table says which region to read</p>
+<p>yourself in step 3 and which findings to lead with in the verdict.</p>
+
+<p>| Complaint | Read first, lead with |</p>
+<p>|---|---|</p>
+<p>| "It took too long" | cost-and-time, stumbles |</p>
+<p>| "Why did it do this extra work?" | repeated-work, plan-adherence |</p>
+<p>| "Why is it so expensive?" | cost-and-time |</p>
+<p>| "What the hell is it doing?" (still running) | skill-timeline; note in-progress in coverage |</p>
+<p>| "It ignored the plan" | plan-adherence, compaction lines first |</p>
+<p>| "Skill X never fired" | skill-timeline |</p>
+
+<h3>Hard rules</h3>
+
+<div class="li">- <strong>Context safety.</strong> One transcript line can be a megabyte. Follow</div>
+<p>  <code>references/context-safety.md</code> on every session file, every time.</p>
+<div class="li">- <strong>Read-only.</strong> Never modify, move, or delete a session file.</div>
+<div class="li">- <strong>Exact paths to subagents.</strong> A subagent's "current session" is its</div>
+<p>  own. Pass absolute paths and ids.</p>
+<div class="li">- <strong>Human prompts only.</strong> Hook output, system reminders, and tool results</div>
+<p>  are not your partner's words. In a subagent transcript, "user" is the</p>
+<p>  parent agent.</p>
+<div class="li">- <strong>No superpowers diagnosis.</strong> Report §7 states involvement and stops.</div>
+<p>  Never name a defect in a skill or propose a change. Your partner</p>
+<p>  pressing for a fix does not waive this; point at the issue step and</p>
+<p>  mention that a bundle is available on request. No advice to your</p>
+<p>  partner either.</p>
+<div class="li">- <strong>Approval gates.</strong> No archive before your partner has seen the scrub</div>
+<p>  log and file list. No issue or comment before they approve the exact</p>
+<p>  text.</p>
+<div class="li">- <strong>Intake before analysis.</strong> Nothing in steps 2–7 starts until your</div>
+<p>  partner has answered. If they are away, write the questions and stop.</p>
+<p>  A statement you reconstructed for them is not an answer. An</p>
+<p>  already-scoped request — one specific event, what is running now, or</p>
+<p>  the analysis to run — is itself the statement: answer it, then ask.</p>
+<p>  A whole-session "why" is a complaint.</p>
+
+<h3>Red Flags</h3>
+
+<p>| Thought | Reality |</p>
+<p>|---------|---------|</p>
+<p>| "The problem is obvious, skip intake" | The problem statement scopes everything. Ask. |</p>
+<p>| "They're away, so I'll reconstruct the statement" | You cannot reconstruct what they wanted. Write the questions and stop. |</p>
+<p>| "I'll sweep everything now and ask at the end" | An unscoped sweep spends their budget on the wrong question. Ask first. |</p>
+<p>| "They want a bug report, so I'll build the bundle now" | The bundle is their session data, packaged. Build it only when they ask for it. |</p>
+<p>| "Small, targeted edit, no restructuring needed" | Not your call, however small. Report the evidence; the triager decides. |</p>
+<p>| "The price per token is well known" | Numbers you did not compute from the transcript are invented. Cite or drop. |</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/diagnosing-superpowers.md">view source on GitHub</a></article>
 <article class="card" data-origin="imported" data-added="2026-09-17T16:04:50.000Z" data-updated="2026-09-17T16:04:50.000Z" data-name="discernment-nudge imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/discernment-nudge/skill.md) — &gt;.">
   <h2>discernment-nudge</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/ACHUTHAN17/skills">ACHUTHAN17/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/discernment-nudge/SKILL.md) — &gt;.</p>
   <div class="dates">added 2026-09-17 16:04 · updated 2026-09-17 16:04</div>

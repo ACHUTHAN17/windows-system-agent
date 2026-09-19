@@ -94,5 +94,11 @@
     "repo": "https://github.com/obra/superpowers",
     "file": "skills/systematic-debugging/SKILL.md",
     "at": "2026-09-17"
+  },
+  "diagnosing-superpowers.md": {
+    "origin": "imported",
+    "repo": "https://github.com/obra/superpowers",
+    "file": "skills/diagnosing-superpowers/SKILL.md",
+    "at": "2026-09-19"
   }
 }

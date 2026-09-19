@@ -456,6 +456,28 @@
   ]
  },
  {
+  "name": "diagnosing-superpowers",
+  "title": "diagnosing-superpowers",
+  "description": "Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/diagnosing-superpowers/SKILL.md) — Use when a superpow",
+  "origin": "imported",
+  "added": "2026-09-19",
+  "updated": "2026-09-19",
+  "triggers": [
+   "diagnosing",
+   "superpowers",
+   "imported",
+   "obra",
+   "https",
+   "github",
+   "com",
+   "blob",
+   "head",
+   "skills",
+   "skill",
+   "superpow"
+  ]
+ },
+ {
   "name": "discernment-nudge",
   "title": "discernment-nudge",
   "description": "Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/discernment-nudge/SKILL.md) — >.",
