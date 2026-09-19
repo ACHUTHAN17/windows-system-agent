@@ -453,3 +453,31 @@ When the task mentions refresh and verify the academy-guide skill.
 - Docs Refresh Claude Code Skill | Automated Documentation
   https://mcpmarket.com/tools/skills/documentation-refresh
 
+
+
+---
+## Field update 2026-09-19
+# Skill: refresh and verify the academy-guide skill
+
+Auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the academy-guide skill.
+
+## Steps
+1. Use it when the user is learning how to use a feature or product — not when they are mid-task and just want the task done
+2. Use cases — worked examples of applying Claude to a concrete task, usually with a prompt to try
+3. How to get Started To get started, all you need is a level 60+ character
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- skills/skills/academy-guide/SKILL.md at main · anthropics/skills
+  https://github.com/anthropics/skills/blob/main/skills/academy-guide/SKILL.md
+- academy-guide Skill | AI SkillHub
+  https://baizhi.cloud/landing/skillhub/detail/anthropics/skills/academy-guide
+- Olvia Academy Guide - BDFoundry - Black Desert Foundry
+  https://www.blackdesertfoundry.com/olvia-academy-guide/
+
