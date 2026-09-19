@@ -396,3 +396,32 @@ When the task mentions refresh and verify the academy-guide skill.
 - Agent Skills | Microsoft Learn
   https://learn.microsoft.com/en-us/agent-framework/agents/skills
 
+
+
+---
+## Field update 2026-09-19
+# Skill: refresh and verify the academy-guide skill
+
+Auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the academy-guide skill.
+
+## Steps
+1. Use it when the user is learning how to use a feature or product — not when they are mid-task and just want the task done
+2. Use cases — worked examples of applying Claude to a concrete task, usually with a prompt to try
+3. How do I vet a specific Skill? Use the following risk assessment and review checklist
+4. Run scripts in a sandboxed environment and confirm outputs align with the Skill&#x27;s description
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- academy-guide Skill | AI SkillHub
+  https://baizhi.cloud/landing/skillhub/detail/anthropics/skills/academy-guide
+- skills/skills/academy-guide/SKILL.md at main · anthropics/skills
+  https://github.com/anthropics/skills/blob/main/skills/academy-guide/SKILL.md
+- Skills for enterprise - Claude Platform Docs
+  https://platform.claude.com/docs/en/agents-and-tools/agent-skills/enterprise
+
