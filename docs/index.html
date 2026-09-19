@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">81 skills (6 auto · 17 imported · 58 built)</span><span class="pill">generated 2026-09-19</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">83 skills (6 auto · 17 imported · 60 built)</span><span class="pill">generated 2026-09-19</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="imported" data-added="2026-09-17T15:08:54.000Z" data-updated="2026-09-19T16:43:40.000Z" data-name="academy-guide imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/academy-guide/skill.md) — &gt;.">
+<div class="grid" id="grid"><article class="card" data-origin="imported" data-added="2026-09-17T15:08:54.000Z" data-updated="2026-09-19T19:15:58.000Z" data-name="academy-guide imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/academy-guide/skill.md) — &gt;.">
   <h2>academy-guide</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/anthropics/skills">anthropics/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — &gt;.</p>
-  <div class="dates">added 2026-09-17 15:08 · updated 2026-09-19 16:43</div>
+  <div class="dates">added 2026-09-17 15:08 · updated 2026-09-19 19:15</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: academy-guide</h2>
 
 <p>Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — &gt;.</p>
@@ -564,9 +564,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/academy-guide.md">view source on GitHub</a></article>
-<article class="card" data-origin="auto" data-added="2026-09-17T12:32:16.000Z" data-updated="2026-09-19T16:43:40.000Z" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
+<article class="card" data-origin="auto" data-added="2026-09-17T12:32:16.000Z" data-updated="2026-09-19T19:15:58.000Z" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
   <h2>agent-modes</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from its own run modes + parallel discipline</div><p class="desc">WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
-  <div class="dates">added 2026-09-17 12:32 · updated 2026-09-19 16:43</div>
+  <div class="dates">added 2026-09-17 12:32 · updated 2026-09-19 19:15</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: agent-modes — run modes and how to work them in parallel</h2>
 
 <p>WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
@@ -4299,6 +4299,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/cactus-compute/needle</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-cactus-needle-3-8-29mb-automatio.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-19" data-updated="2026-09-19" data-name="show-hn-cua-s1-a-system-one-model-for-co auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-cua-s1-a-system-one-model-for-co</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-19  · updated 2026-09-19 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: CUA-S1 – A System One Model for Computer Use</h2>
+
+<p>Auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: CUA-S1 – A System One Model for Computer Use.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- cua-ai/cua-s1-forms · Hugging Face</div>
+<p>  https://huggingface.co/cua-ai/cua-s1-forms</p>
+<div class="li">- GitHub - trycua/cua: Scale computer-use 2.0 with open-source drivers ...</div>
+<p>  https://github.com/trycua/cua</p>
+<div class="li">- Cua on X: "1/ Introducing CUA-S1: a family of System One Models, small ...</div>
+<p>  https://x.com/trycua/status/2101014004927729737</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-cua-s1-a-system-one-model-for-co.md">view source on GitHub</a></article>
 <article class="card" data-origin="imported" data-added="2026-09-17T19:36:25.000Z" data-updated="2026-09-17T19:36:25.000Z" data-name="subagent-driven-development imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/subagent-driven-development/skill.md) — use when execu">
   <h2>subagent-driven-development</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/subagent-driven-development/SKILL.md) — Use when execu</p>
   <div class="dates">added 2026-09-17 19:36 · updated 2026-09-17 19:36</div>
@@ -5313,6 +5339,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://research.eye.security/wp2shell-defenders-guide/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/wp2shell-poc-cve-2026-63030-cve-2026-601.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-19" data-updated="2026-09-19" data-name="wx-cli-again-wechat-local-data-cli-query auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>wx-cli-again-wechat-local-data-cli-query</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-19  · updated 2026-09-19 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: wx-cli-again WeChat local data CLI (query/decrypt/export) — fresh start from wx-cli</h2>
+
+<p>Auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions wx-cli-again WeChat local data CLI (query/decrypt/export) — fresh start from wx-cli.</p>
+
+<h3>Steps</h3>
+<p>1. Select the account you're currently using (the default is the first one): If you're unsure which WeChat account is currently active, navigate to the data folder and sort by modification date to find out: macOS: Grant Full Disk Access to Terminal Before running init , m</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - newtry/wx-cli: A CLI tool to query your local WeChat data ...</div>
+<p>  https://github.com/newtry/wx-cli</p>
+<div class="li">- GitHub - pandorafuture/wx-cli: WeChat macOS database decryption and ...</div>
+<p>  https://github.com/pandorafuture/wx-cli</p>
+<div class="li">- wx-cli 0.1.1 - Docs.rs</div>
+<p>  https://docs.rs/crate/wx-cli/latest</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/wx-cli-again-wechat-local-data-cli-query.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-18T11:46:35.000Z" data-updated="2026-09-18T11:46:35.000Z" data-name="zcode-the-glm-coding-agent-silently-uplo auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>zcode-the-glm-coding-agent-silently-uplo</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-18 11:46 · updated 2026-09-18 11:46</div>
