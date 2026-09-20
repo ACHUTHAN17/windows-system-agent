@@ -17,7 +17,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">86 skills (6 auto · 17 imported · 63 built)</span><span class="pill">generated 2026-09-20</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">88 skills (6 auto · 17 imported · 65 built)</span><span class="pill">generated 2026-09-20</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
@@ -3673,6 +3673,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://repobay.vercel.app/repo/mcncarl-jianying-headless</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/jianying-headless-private-source-preview.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-20" data-updated="2026-09-20" data-name="kev-tiny-jev-like-model-built-on-top-of- auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>kev-tiny-jev-like-model-built-on-top-of-</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-20  · updated 2026-09-20 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: kev tiny Jev-like model built on top of Qwen2.5-0.5B you can train and run on your MacBook</h2>
+
+<p>Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions kev tiny Jev-like model built on top of Qwen2.5-0.5B you can train and run on your MacBook.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- kev: Jev-like model built on Qwen2.5-0.5B - GitHub</div>
+<p>  https://github.com/jaredpalmer/kev</p>
+<div class="li">- Open-source Kev-0.5B: a tiny Qwen2.5-0.5B… · AGI Hunt</div>
+<p>  https://agihunt.info/en/p/1a0b6e2426005ee3bcbe432b9e4</p>
+<div class="li">- kev · Awesome Jev</div>
+<p>  https://awesomejev.vercel.app/p/kev/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/kev-tiny-jev-like-model-built-on-top-of-.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T14:48:22.000Z" data-updated="2026-09-17T14:48:22.000Z" data-name="keyboard-shortcuts auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>keyboard-shortcuts</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-17 14:48 · updated 2026-09-17 14:48</div>
@@ -4034,6 +4060,44 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://courk.cc/rp2350-challenge-laser</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/photon-emission-guided-laser-fault-injec.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-20T06:43:10.000Z" data-updated="2026-09-20T06:43:10.000Z" data-name="powershell_echo_output use when displaying messages, debugging variables, or returning pipeline data in powershell command-line interfaces or scripts.">
+  <h2>powershell_echo_output</h2><span class="badge task">task-built playbook</span><p class="desc">Use when displaying messages, debugging variables, or returning pipeline data in PowerShell command-line interfaces or scripts.</p>
+  <div class="dates">added 2026-09-20 06:43 · updated 2026-09-20 06:43</div>
+  <details><summary>read full skill</summary><div class="body"><h2>PowerShell Text Output (Echo)</h2>
+
+<h3>When to Use</h3>
+<p>Use when displaying messages, debugging variables, or returning pipeline data in PowerShell command-line interfaces or scripts.</p>
+
+<h3>Methods</h3>
+
+<p>1. <strong>Standard Pipeline Output (<code>Write-Output</code> / <code>echo</code>):</strong></p>
+<p>   ```powershell</p>
+<p>   Write-Output "Hello, World!"</p>
+<p>   # Or using built-in alias:</p>
+<p>   echo "Hello, World!"</p>
+<p>   ```</p>
+<div class="li">   - Sends output to the PowerShell pipeline. Output can be piped to other cmdlets or captured in variables (e.g., <code>$val = Write-Output "Hello"</code>).</div>
+
+<p>2. <strong>Direct Console Output (<code>Write-Host</code>):</strong></p>
+<p>   ```powershell</p>
+<p>   Write-Host "Hello, World!"</p>
+<p>   ```</p>
+<div class="li">   - Writes directly to the host console interface. Does not send data through the standard pipeline stream.</div>
+
+<p>3. <strong>Implicit Expression Output:</strong></p>
+<p>   ```powershell</p>
+<p>   "Hello, World!"</p>
+<p>   ```</p>
+
+<p>4. <strong>Redirecting Output to a File:</strong></p>
+<p>   ```powershell</p>
+<p>   echo "Hello, World!" &gt; log.txt</p>
+<p>   ```</p>
+
+<h3>Safety and Best Practices</h3>
+<div class="li">- Prefer <code>Write-Output</code> (or implicit output) inside functions when return values are intended for downstream processing.</div>
+<div class="li">- Use <code>Write-Host</code> primarily for console UI messaging or when colored text output is explicitly needed (<code>-ForegroundColor</code>).</div></div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/powershell_echo_output.md">view source on GitHub</a></article>
 <article class="card" data-origin="imported" data-added="2026-09-17T19:36:25.000Z" data-updated="2026-09-17T19:36:25.000Z" data-name="receiving-code-review imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/receiving-code-review/skill.md) — use when receiving c">
   <h2>receiving-code-review</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/receiving-code-review/SKILL.md) — Use when receiving c</p>
   <div class="dates">added 2026-09-17 19:36 · updated 2026-09-17 19:36</div>
@@ -5417,9 +5481,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.aiezz.com/en/tutorial/tutorial-caa6f8cd65b9c21ee06f75bd</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/viserys-agent.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-20" data-updated="2026-09-20" data-name="weeping-whales-stillborn-humpback-whale- auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-20T06:36:52.000Z" data-updated="2026-09-20T06:36:52.000Z" data-name="weeping-whales-stillborn-humpback-whale- auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>weeping-whales-stillborn-humpback-whale-</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-20  · updated 2026-09-20 </div>
+  <div class="dates">added 2026-09-20 06:36 · updated 2026-09-20 06:36</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: Weeping whales: Stillborn humpback whale grieving documented</h2>
 
 <p>Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
