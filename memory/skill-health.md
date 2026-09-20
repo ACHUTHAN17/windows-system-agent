@@ -1,6 +1,6 @@
 # Skill health — 2026-09-20
 
-91 skills audited, 25 links probed, 0 dead.
+93 skills audited, 25 links probed, 0 dead.
 6 need attention:
 
 ## agent-overlay.md (3676 chars)
