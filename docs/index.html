@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">88 skills (6 auto · 17 imported · 65 built)</span><span class="pill">generated 2026-09-20</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">90 skills (6 auto · 17 imported · 67 built)</span><span class="pill">generated 2026-09-20</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="imported" data-added="2026-09-17T15:08:54.000Z" data-updated="2026-09-20T14:19:44.000Z" data-name="academy-guide imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/academy-guide/skill.md) — &gt;.">
+<div class="grid" id="grid"><article class="card" data-origin="imported" data-added="2026-09-17T15:08:54.000Z" data-updated="2026-09-20T17:36:55.000Z" data-name="academy-guide imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/academy-guide/skill.md) — &gt;.">
   <h2>academy-guide</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/anthropics/skills">anthropics/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — &gt;.</p>
-  <div class="dates">added 2026-09-17 15:08 · updated 2026-09-20 14:19</div>
+  <div class="dates">added 2026-09-17 15:08 · updated 2026-09-20 17:36</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: academy-guide</h2>
 
 <p>Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — &gt;.</p>
@@ -726,9 +726,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/academy-guide.md">view source on GitHub</a></article>
-<article class="card" data-origin="auto" data-added="2026-09-17T12:32:16.000Z" data-updated="2026-09-20T14:19:44.000Z" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
+<article class="card" data-origin="auto" data-added="2026-09-17T12:32:16.000Z" data-updated="2026-09-20T17:36:55.000Z" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
   <h2>agent-modes</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from its own run modes + parallel discipline</div><p class="desc">WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
-  <div class="dates">added 2026-09-17 12:32 · updated 2026-09-20 14:19</div>
+  <div class="dates">added 2026-09-17 12:32 · updated 2026-09-20 17:36</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: agent-modes — run modes and how to work them in parallel</h2>
 
 <p>WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
@@ -3847,6 +3847,34 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.geeksforgeeks.org/computer-science-fundamentals/computer-shortcut-keys/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/keyboard-shortcuts.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-20" data-updated="2026-09-20" data-name="laya-mlx-native-mlx-runtime-for-laya-typ auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>laya-mlx-native-mlx-runtime-for-laya-typ</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-20  · updated 2026-09-20 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: laya-mlx Native MLX runtime for Laya typed decision models — 7–14 ms short decisions on M3 Max. No text generation, PyTo</h2>
+
+<p>Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions laya-mlx Native MLX runtime for Laya typed decision models — 7–14 ms short decisions on M3 Max. No text generation, PyTo.</p>
+
+<h3>Steps</h3>
+<p>1. First load downloads the checkpoint; later inference is fully local</p>
+<p>2. Run the terminal demo: pip install ' laya-mlx[demo] ' hf download aac6fef/laya-multilingual-mlx laya-snake Download once before the offline demo</p>
+<p>3. Use a terminal at least 104 × 35 cells</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - mizorewww/laya-mlx: Native MLX runtime for Laya typed decision ...</div>
+<p>  https://github.com/mizorewww/laya-mlx</p>
+<div class="li">- laya-mlx · PyPI</div>
+<p>  https://pypi.org/project/laya-mlx/</p>
+<div class="li">- What Is Laya-MLX? Local System One AI for Apple Silicon</div>
+<p>  https://aiidelist.com/blog/what-is-laya-mlx</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/laya-mlx-native-mlx-runtime-for-laya-typ.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-19T14:00:24.000Z" data-updated="2026-09-19T14:00:24.000Z" data-name="laya auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>laya</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-19 14:00 · updated 2026-09-19 14:00</div>
@@ -4771,6 +4799,33 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/mudler/LocalAI</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-i-created-an-open-source-locally.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-20" data-updated="2026-09-20" data-name="show-hn-radius-a-meetup-com-alternative auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-radius-a-meetup-com-alternative</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-20  · updated 2026-09-20 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Radius – A Meetup.com Alternative</h2>
+
+<p>Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: Radius – A Meetup.com Alternative.</p>
+
+<h3>Steps</h3>
+<p>1. Then you have another subset of groups which host their own website&amp;#x2F;mailing list and may only advertise an event on -insert social network- and you never know about it until it&amp;#x27;s too late</p>
+<p>2. Then there&amp;#x27;s the fact that their search experience is just terrible</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Nuxt HN | Show HN: Radius - A Meetup.com alternative</div>
+<p>  https://hn.nuxt.dev/item/40717398</p>
+<div class="li">- Show HN: Radius - A Meetup.com Alternative | Hacker News</div>
+<p>  https://news.ycombinator.com/item?id=49777539</p>
+<div class="li">- Show HN: Radius - A Meetup.com alternative | Hacker News</div>
+<p>  https://news.ycombinator.com/item?id=40717398</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-radius-a-meetup-com-alternative.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-20T14:55:36.000Z" data-updated="2026-09-20T14:55:36.000Z" data-name="show-hn-sigabrt-dev-cronjob-monitor-with auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-sigabrt-dev-cronjob-monitor-with</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-20 14:55 · updated 2026-09-20 14:55</div>
