@@ -1206,8 +1206,8 @@
   "title": "nimble Local typed decisions, contrastive data curation, and model evaluation.",
   "description": "Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-20",
-  "updated": "2026-09-20",
+  "added": "2026-09-20T14:55:36.000Z",
+  "updated": "2026-09-20T14:55:36.000Z",
   "triggers": [
    "nimble",
    "local",
@@ -1659,8 +1659,8 @@
   "title": "Show HN: Sigabrt.dev – cronjob monitor with an SSH TUI",
   "description": "Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-20",
-  "updated": "2026-09-20",
+  "added": "2026-09-20T14:55:36.000Z",
+  "updated": "2026-09-20T14:55:36.000Z",
   "triggers": [
    "show",
    "sigabrt",
