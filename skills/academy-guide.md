@@ -564,3 +564,30 @@ When the task mentions refresh and verify the academy-guide skill.
 - source-command-ccguide-refresh-docs: Refresh Codex docs to keep ...
   https://skills.rest/skill/source-command-ccguide-refresh-docs
 
+
+
+---
+## Field update 2026-09-20
+# Skill: refresh and verify the academy-guide skill
+
+Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the academy-guide skill.
+
+## Steps
+1. Use it when the user is learning how to use a feature or product — not when they are mid-task and just want the task done
+2. Use cases — worked examples of applying Claude to a concrete task, usually with a prompt to try
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- academy-guide Skill | AI SkillHub
+  https://baizhi.cloud/landing/skillhub/detail/anthropics/skills/academy-guide
+- skills/skills/academy-guide/SKILL.md at main · anthropics/skills
+  https://github.com/anthropics/skills/blob/main/skills/academy-guide/SKILL.md
+- Is academy-guide safe? Skill security audit & score
+  https://tarai.dev/en/skill/academy-guide/
+
