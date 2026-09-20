@@ -698,3 +698,29 @@ When the task mentions refresh and verify the academy-guide skill.
 - anthropics/skills | DeepWiki
   https://deepwiki.com/anthropics/skills
 
+
+
+---
+## Field update 2026-09-20
+# Skill: refresh and verify the academy-guide skill
+
+Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the academy-guide skill.
+
+## Steps
+1. See sources below and follow the official docs.
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- GitHub - anthropics/skills: Public repository for Agent Skills
+  https://github.com/anthropics/skills
+- Academy Guide (Skill) — Claude Ecosystem | Claude Digest
+  https://www.claudedigest.com/ecosystem/anthropic-skill-academy-guide
+- skills/skills/academy-guide at main · anthropics/skills · GitHub
+  https://github.com/anthropics/skills/tree/main/skills/academy-guide
+
