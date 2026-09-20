@@ -20,3 +20,4 @@
 - [2026-09-17] PUSHED to GitHub (admin run): gh device flow as ACHUTHAN17,
   credential helper wired, remote boilerplate README merged with -X ours,
   all commits live at github.com/ACHUTHAN17/windows-system-agent (main).
+- [2026-09-20] learned skill skills/powershell_echo_output.md about: how to echo hello in powershell
