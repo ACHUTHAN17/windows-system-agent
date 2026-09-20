@@ -2,7 +2,10 @@
 // WinAgent CLI: `node src/index.js "your task" [--yes] [--selftest] [--once]`
 // Zero dependencies. Works with API models, local Ollama/LM Studio, or any custom
 // OpenAI-compatible endpoint — set via .env / config.json (see .env.example).
+import { spawn, execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import readline from 'node:readline';
+const execFileAsync = promisify(execFile);
 import fs from 'node:fs';
 import path from 'node:path';
 import { loadConfig, printActiveModel } from './config.js';
@@ -99,21 +102,34 @@ function skillPrompt(loaded) {
 }
 
 async function runTool(name, args) {
+  await execFileAsync('node', [path.join(cfg.root, 'overlay-control.js'), 'show']);
   const tool = byName[name];
-  if (!tool) return { ok: false, error: `unknown tool: ${name}`, hint: `Valid: ${Object.keys(byName).join(', ')}` };
+  if (!tool) {
+    await execFileAsync('node', [path.join(cfg.root, 'overlay-control.js'), 'hide']);
+    return { ok: false, error: `unknown tool: ${name}`, hint: `Valid: ${Object.keys(byName).join(', ')}` };
+  }
   const appNeed = needsAppApproval(cfg, name, args);
   if (appNeed) {
     audit(cfg, `APPROVAL-ASK-APP ${appNeed}`);
     const how = await requestAppApproval(cfg, appNeed);
-    if (!how) { audit(cfg, `APPROVAL-DENY-APP ${appNeed}`); return { ok: false, error: 'denied by user', hint: 'User declined app approval. Use an allowed app or stop.' }; }
+    if (!how) {
+        await execFileAsync('node', [path.join(cfg.root, 'overlay-control.js'), 'hide']);
+        audit(cfg, `APPROVAL-DENY-APP ${appNeed}`);
+        return { ok: false, error: 'denied by user', hint: 'User declined app approval. Use an allowed app or stop.' };
+    }
     if (how === 'always') { cfg._appGrants = cfg._appGrants || new Set(); cfg._appGrants.add(appNeed); }
   }
   if (needsApproval(cfg, name)) {
     audit(cfg, `APPROVAL-ASK ${name} ${JSON.stringify(args).slice(0, 400)}`);
     const how2 = await requestApproval(cfg, `Allow ${name} ${JSON.stringify(args).slice(0, 300)}?`);
-    if (!how2) { audit(cfg, `APPROVAL-DENY ${name}`); return { ok: false, error: 'denied by user', hint: 'User declined approval. Explain and stop or propose a read-only alternative.' }; }
+    if (!how2) {
+        await execFileAsync('node', [path.join(cfg.root, 'overlay-control.js'), 'hide']);
+        audit(cfg, `APPROVAL-DENY ${name}`);
+        return { ok: false, error: 'denied by user', hint: 'User declined approval. Explain and stop or propose a read-only alternative.' };
+    }
   }
   const res = await tool.run(args || {}, { cfg });
+  await execFileAsync('node', [path.join(cfg.root, 'overlay-control.js'), 'hide']);
   audit(cfg, `TOOL ${name} args=${JSON.stringify(args).slice(0, 300)} -> ${JSON.stringify(res).slice(0, 500)}`);
   return res;
 }
