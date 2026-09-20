@@ -1565,6 +1565,36 @@
   ]
  },
  {
+  "name": "show-hn-i-created-an-open-source-locally",
+  "title": "Show HN: I created an open source locally usable full fledged AI platform",
+  "description": "Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-20",
+  "updated": "2026-09-20",
+  "triggers": [
+   "show",
+   "created",
+   "open",
+   "source",
+   "locally",
+   "usable",
+   "full",
+   "fledged",
+   "platform",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
   "name": "subagent-driven-development",
   "title": "subagent-driven-development",
   "description": "Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/subagent-driven-development/SKILL.md) — Use when execu",
