@@ -724,3 +724,31 @@ When the task mentions refresh and verify the academy-guide skill.
 - skills/skills/academy-guide at main · anthropics/skills · GitHub
   https://github.com/anthropics/skills/tree/main/skills/academy-guide
 
+
+
+---
+## Field update 2026-09-20
+# Skill: refresh and verify the academy-guide skill
+
+Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the academy-guide skill.
+
+## Steps
+1. Use cases — worked examples of applying Claude to a concrete task, usually with a prompt to try
+2. Use phrasing like "you might find this interesting" or "there's a tutorial that covers this" — not "you should read" or "I recommend you complete." - Use the exact URLs from the catalog
+3. Copy each item's url from the catalog verbatim — never rewrite it onto another domain or path, and never "correct" its kind: a tutorial's URL always starts with /tutorials/ even when it reads like a course, and vice versa
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- GitHub - anthropics/skills: Public repository for Agent Skills
+  https://github.com/anthropics/skills
+- skills/skills/academy-guide at main · anthropics/skills · GitHub
+  https://github.com/anthropics/skills/tree/main/skills/academy-guide
+- academy-guide - AI Agent Skill | BrowserAct SkillHub
+  https://skills.browseract.com/skills/anthropics-skills-academy-guide
+
