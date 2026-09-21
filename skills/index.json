@@ -888,8 +888,8 @@
   "title": "Google's Open Agentic Orchestrator",
   "description": "Auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-21",
-  "updated": "2026-09-21",
+  "added": "2026-09-21T00:28:26.000Z",
+  "updated": "2026-09-21T00:28:26.000Z",
   "triggers": [
    "google",
    "open",
@@ -2101,8 +2101,8 @@
   "title": "typesafe-computer-use Computer use for about $0.0002 a step: OCR the screen, cla",
   "description": "Auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-21",
-  "updated": "2026-09-21",
+  "added": "2026-09-21T00:28:26.000Z",
+  "updated": "2026-09-21T00:28:26.000Z",
   "triggers": [
    "typesafe",
    "computer",
