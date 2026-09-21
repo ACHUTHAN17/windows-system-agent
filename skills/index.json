@@ -1019,8 +1019,8 @@
   "title": "jev-ultrafast Fastest and cheapest web agent",
   "description": "Auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-21",
-  "updated": "2026-09-21",
+  "added": "2026-09-21T16:39:31.000Z",
+  "updated": "2026-09-21T16:39:31.000Z",
   "triggers": [
    "jev",
    "ultrafast",
@@ -1849,8 +1849,8 @@
   "title": "Show HN: Foremerge – Catch Intent Conflicts Between Parallel Coding Agents",
   "description": "Auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-21",
-  "updated": "2026-09-21",
+  "added": "2026-09-21T16:39:31.000Z",
+  "updated": "2026-09-21T16:39:31.000Z",
   "triggers": [
    "show",
    "foremerge",
