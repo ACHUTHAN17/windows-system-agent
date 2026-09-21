@@ -241,8 +241,8 @@
   "title": "AX – Google’s Open Agentic Orchestrator",
   "description": "Auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-21",
-  "updated": "2026-09-21",
+  "added": "2026-09-21T07:14:53.000Z",
+  "updated": "2026-09-21T07:14:53.000Z",
   "triggers": [
    "google",
    "open",
@@ -965,8 +965,8 @@
   "title": "Grim Fandango Puzzle Document (1996) [pdf]",
   "description": "Auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-21",
-  "updated": "2026-09-21",
+  "added": "2026-09-21T07:14:53.000Z",
+  "updated": "2026-09-21T07:14:53.000Z",
   "triggers": [
    "grim",
    "fandango",
