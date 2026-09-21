@@ -17,7 +17,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">97 skills (6 auto · 17 imported · 74 built)</span><span class="pill">generated 2026-09-21</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">99 skills (6 auto · 17 imported · 76 built)</span><span class="pill">generated 2026-09-21</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
@@ -4041,6 +4041,34 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://x.com/jarrodwatts/status/2100405097029148890</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/jev-trader-one-ai-trade-decision-every-m.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-21" data-updated="2026-09-21" data-name="jev-ultrafast-fastest-and-cheapest-web-a auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>jev-ultrafast-fastest-and-cheapest-web-a</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-21  · updated 2026-09-21 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: jev-ultrafast Fastest and cheapest web agent</h2>
+
+<p>Auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions jev-ultrafast Fastest and cheapest web agent.</p>
+
+<h3>Steps</h3>
+<p>1. Choose next pauses before execution</p>
+<p>2. Run uv run browser-harness --doctor if it needs connecting</p>
+<p>3. Open the source Details Author Browser Use Use case Agents and browsers Added Sep 16, 2026 Stars ~2.9k browser agent open source tool choice All figures come from the author</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - browser-use/jev-ultrafast: i. am. speed. · GitHub</div>
+<p>  https://github.com/browser-use/jev-ultrafast</p>
+<div class="li">- GitHub - browser-use/jev-ultrafast: i. am. speed. · GitHub</div>
+<p>  https://github.com/browser-use/jev-ultrafast/tree/main</p>
+<div class="li">- jev-ultrafast — Made with Jev</div>
+<p>  https://madewithjev.com/builds/jev-ultrafast</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/jev-ultrafast-fastest-and-cheapest-web-a.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-18T06:35:28.000Z" data-updated="2026-09-18T06:35:28.000Z" data-name="jev-ultrafast-i-am-speed auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>jev-ultrafast-i-am-speed</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-18 06:35 · updated 2026-09-18 06:35</div>
@@ -5193,6 +5221,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/mudler/LocalAI</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-i-created-an-open-source-locally.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-21" data-updated="2026-09-21" data-name="show-hn-lossless-memory-a-personal-ai-me auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-lossless-memory-a-personal-ai-me</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-21  · updated 2026-09-21 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Lossless-memory – a personal AI memory that never summarizes</h2>
+
+<p>Auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: Lossless-memory – a personal AI memory that never summarizes.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Aru open-sourced lossless-memory, an AI memory that refuses to summarize</div>
+<p>  https://runtimewire.com/article/aru-lossless-memory-ai-never-summarizes</p>
+<div class="li">- GitHub - aru-labs/lossless-memory: Lossless long-term memory for a ...</div>
+<p>  https://github.com/aru-labs/lossless-memory</p>
+<div class="li">- Show HN: Lossless-memory —— 一个从不进行摘要的个人 AI 记忆库</div>
+<p>  https://memedata.com/post/147025</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-lossless-memory-a-personal-ai-me.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-20T19:51:47.000Z" data-updated="2026-09-20T19:51:47.000Z" data-name="show-hn-radius-a-meetup-com-alternative auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-radius-a-meetup-com-alternative</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-20 19:51 · updated 2026-09-20 19:51</div>
