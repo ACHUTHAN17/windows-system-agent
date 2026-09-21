@@ -915,8 +915,8 @@
   "title": "Google's Open Agentic Orchestrator",
   "description": "Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-20",
-  "updated": "2026-09-20",
+  "added": "2026-09-20T23:49:06.000Z",
+  "updated": "2026-09-20T23:49:06.000Z",
   "triggers": [
    "google",
    "open",
