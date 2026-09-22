@@ -17,7 +17,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">105 skills (6 auto · 17 imported · 82 built)</span><span class="pill">generated 2026-09-22</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">107 skills (6 auto · 17 imported · 84 built)</span><span class="pill">generated 2026-09-22</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
@@ -4543,6 +4543,33 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.jetbrains.com/help/air/project-instructions.html</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/jetbrains-air-a-system-of-products-for-a.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-22" data-updated="2026-09-22" data-name="jev-a-curation-of-jev-demos-on-x-tools-s auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>jev-a-curation-of-jev-demos-on-x-tools-s</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-22  · updated 2026-09-22 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Jev – a curation of Jev demos on X, tools, skills, and integrations</h2>
+
+<p>Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Jev – a curation of Jev demos on X, tools, skills, and integrations.</p>
+
+<h3>Steps</h3>
+<p>1. Navigate: Quick start · Choose a path · CUA &amp; drivers · Reviewed picks · OpenRouter winners · Watch demos · Search the catalog · Contribute Source-reviewed does not mean security-audited</p>
+<p>2. Use it for bounded decisions such as routing, ranking, or selecting an agent's next action; use a generative LLM when you need new prose, code, or an open-ended plan</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - Amal-David/awesome-jev</div>
+<p>  https://github.com/Amal-David/awesome-jev</p>
+<div class="li">- GitHub - yibie/awesome-jev: A curated list of public projects ...</div>
+<p>  https://github.com/yibie/awesome-jev</p>
+<div class="li">- Jev resources: 75 guides and docs — Made with Jev</div>
+<p>  https://madewithjev.com/resources</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/jev-a-curation-of-jev-demos-on-x-tools-s.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-22T01:15:07.000Z" data-updated="2026-09-22T01:15:07.000Z" data-name="jev-chat-jarvis-qq-x-hook auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>jev-chat-jarvis-qq-x-hook</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-22 01:15 · updated 2026-09-22 01:15</div>
@@ -5749,6 +5776,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://x.com/trycua/status/2101014004927729737</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-cua-s1-a-system-one-model-for-co.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-22" data-updated="2026-09-22" data-name="show-hn-drop-a-rootless-linux-sandbox-wi auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-drop-a-rootless-linux-sandbox-wi</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-22  · updated 2026-09-22 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Drop – a rootless Linux sandbox with gVisor support</h2>
+
+<p>Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: Drop – a rootless Linux sandbox with gVisor support.</p>
+
+<h3>Steps</h3>
+<p>1. How it works Disposable, isolated environments Inspired by Python&amp;rsquo;s virtualenv, Drop lets you create and enter easily disposable environments</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Drop sandbox for Linux</div>
+<p>  https://droprun.sh/</p>
+<div class="li">- Nuxt HN | Show HN: Drop - a rootless Linux sandbox with gVisor support</div>
+<p>  https://hn.nuxt.dev/item/49801329</p>
+<div class="li">- GitHub - wrr/drop: productivity-focused sandboxing for Linux</div>
+<p>  https://github.com/wrr/drop</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-drop-a-rootless-linux-sandbox-wi.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-20T01:25:43.000Z" data-updated="2026-09-20T01:25:43.000Z" data-name="show-hn-i-created-an-open-source-locally auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-i-created-an-open-source-locally</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-20 01:25 · updated 2026-09-20 01:25</div>
