@@ -1419,6 +1419,35 @@
   ]
  },
  {
+  "name": "launch-hn-coverage-cat-yc-s22-umbrella-i",
+  "title": "Launch HN: Coverage Cat (YC S22) – Umbrella insurance via your personal agent",
+  "description": "Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-22",
+  "updated": "2026-09-22",
+  "triggers": [
+   "launch",
+   "coverage",
+   "cat",
+   "s22",
+   "umbrella",
+   "insurance",
+   "personal",
+   "agent",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
   "name": "laya-mlx-native-mlx-runtime-for-laya-typ",
   "title": "laya-mlx Native MLX runtime for Laya typed decision models — 7–14 ms short decis",
   "description": "Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
@@ -2706,6 +2735,34 @@
    "content",
    "plugins",
    "live"
+  ]
+ },
+ {
+  "name": "wordpress-unauthenticated-path-traversal",
+  "title": "WordPress: Unauthenticated path traversal leading to conditional RCE",
+  "description": "Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-22",
+  "updated": "2026-09-22",
+  "triggers": [
+   "wordpress",
+   "unauthenticated",
+   "path",
+   "traversal",
+   "leading",
+   "conditional",
+   "rce",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
   ]
  },
  {
