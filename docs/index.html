@@ -17,7 +17,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">103 skills (6 auto · 17 imported · 80 built)</span><span class="pill">generated 2026-09-21</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">104 skills (6 auto · 17 imported · 81 built)</span><span class="pill">generated 2026-09-22</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
@@ -4312,6 +4312,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://developers.google.com/tech-writing/two/llms</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/how-to-write-with-an-llm.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-22" data-updated="2026-09-22" data-name="jev-chat-jarvis-qq-x-hook auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>jev-chat-jarvis-qq-x-hook</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-22  · updated 2026-09-22 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: jev-chat-jarvis 装在手机上的对话副驾：在微信 / QQ / X / 飞书里读懂对方、给出候选回复、一键填入输入框，发不发由你。非侵入，只读屏幕，不 hook 不改包。</h2>
+
+<p>Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions jev-chat-jarvis 装在手机上的对话副驾：在微信 / QQ / X / 飞书里读懂对方、给出候选回复、一键填入输入框，发不发由你。非侵入，只读屏幕，不 hook 不改包。.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - silentlytao/jev-chat-JARVIS · GitHub</div>
+<p>  https://github.com/silentlytao/jev-chat-JARVIS</p>
+<div class="li">- 李岳 on X: "这个App值得一个卧槽 Jev 聊天助手可以读懂你屏幕上的聊天内容，来辅助回复，不管是微信，QQ，飞书等都支持。 简直是 ...</div>
+<p>  https://x.com/liyue_ai/status/2102053238161985747</p>
+<div class="li">- Finderchangchang/jev-chat-JARVIS — GitHub trending stats &amp; insights</div>
+<p>  https://trendshift.io/repositories/251374</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/jev-chat-jarvis-qq-x-hook.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-19T01:17:13.000Z" data-updated="2026-09-19T01:17:13.000Z" data-name="jev-trader-one-ai-trade-decision-every-m auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>jev-trader-one-ai-trade-decision-every-m</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-19 01:17 · updated 2026-09-19 01:17</div>
