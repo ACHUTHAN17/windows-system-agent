@@ -1126,8 +1126,8 @@
   "title": "jev-chat-jarvis 装在手机上的对话副驾：在微信 / QQ / X / 飞书里读懂对方、给出候选回复、一键填入输入框，发不发由你。非侵入，只读屏幕，",
   "description": "Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-22",
-  "updated": "2026-09-22",
+  "added": "2026-09-22T01:15:07.000Z",
+  "updated": "2026-09-22T01:15:07.000Z",
   "triggers": [
    "jev",
    "chat",
