@@ -1069,3 +1069,40 @@ When the task mentions refresh and verify the agent-modes skill.
 - implementing-agent-modes by PostHog — Agent Skill
   https://agentskills.codes/skills/implementing-agent-modes
 
+
+
+---
+## Field update 2026-09-22
+# Skill: refresh and verify the agent-modes skill
+
+Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the agent-modes skill.
+
+## Steps
+1. Download Microsoft Edge More info about Internet Explorer and Microsoft Edge Table of contents Exit editor mode Ask Learn Ask Learn Reading mode Table of contents Read in English Add Add to Plans Edit Copy Markdown Print Note Access to this page requires authorization
+2. Use Agent Skills when you want to: Package domain expertise - Capture specialized knowledge (expense policies, legal workflows, data analysis pipelines) as reusable, portable packages
+3. Enable interoperability - Reuse the same skill across different Agent Skills-compatible products
+4. Use when asked about expense submissions, reimbursement rules, or spending limits
+5. Run scripts (as needed) - The agent calls the run_skill_script tool to execute scripts bundled with a skill
+6. Note load_skill is always advertised
+7. Use Agent Mode - Visual Studio (Windows) | Microsoft Learn Skip to main content Skip to Ask Learn chat experience This browser is no longer supported
+8. Use agent mode In agent mode, Copilot operates autonomously and determines the relevant context for your prompt
+9. Enter your prompt, and then select Send or select the Enter key to submit it
+10. To review individual code changes that the agent made, review the specific change at each step
+11. To review individual code changes that the agent made, use one of the following options: Review the specific change at each step
+12. To view and manage the tools that are available in agent mode, select the Tools icon in the chat window
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Agent Skills | Microsoft Learn
+  https://learn.microsoft.com/en-us/agent-framework/agents/skills
+- Use Agent Skills in VS Code
+  https://code.visualstudio.com/docs/agent-customization/agent-skills
+- Use Agent Mode - Visual Studio (Windows) | Microsoft Learn
+  https://learn.microsoft.com/en-us/visualstudio/ide/copilot-agent-mode?view=visualstudio
+
