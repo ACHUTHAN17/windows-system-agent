@@ -32,8 +32,8 @@
   "title": "refresh and verify the a-wordpress-vulnerability-scored-9-2-10- skill",
   "description": "Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-22",
-  "updated": "2026-09-22",
+  "added": "2026-09-22T17:44:05.000Z",
+  "updated": "2026-09-22T17:44:05.000Z",
   "triggers": [
    "refresh",
    "verify",
@@ -59,7 +59,7 @@
   "description": "Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — >.",
   "origin": "imported",
   "added": "2026-09-17T15:08:54.000Z",
-  "updated": "2026-09-22T13:18:43.000Z",
+  "updated": "2026-09-22T17:44:05.000Z",
   "triggers": [
    "academy",
    "guide",
