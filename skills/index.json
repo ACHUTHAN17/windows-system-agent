@@ -26,7 +26,7 @@
   "description": "WinAgent is one brain with six bodies. Pick per task; combine for speed.",
   "origin": "auto",
   "added": "2026-09-17T12:32:16.000Z",
-  "updated": "2026-09-22T13:16:45.000Z",
+  "updated": "2026-09-22T17:43:15.000Z",
   "triggers": [
    "mode",
    "daemon",

@@ -1,7 +1,7 @@
 # Skill health — 2026-09-22
 
-105 skills audited, 25 links probed, 0 dead.
-6 need attention:
+107 skills audited, 25 links probed, 0 dead.
+7 need attention:
 
 ## agent-overlay.md (3676 chars)
 - unknown tool refs: click, drag, type, file
@@ -21,5 +21,8 @@
 ## powershell_echo_output.md (1164 chars)
 - missing `# Skill:` title
 - unknown tool refs: echo
+
+## self-learn.md (2068 chars)
+- unknown tool refs: tools
 
 _Audited automatically. Fix via refresh cycles or chat-teach._
