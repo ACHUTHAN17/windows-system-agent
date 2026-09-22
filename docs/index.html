@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">107 skills (6 auto · 17 imported · 84 built)</span><span class="pill">generated 2026-09-22</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">108 skills (6 auto · 17 imported · 85 built)</span><span class="pill">generated 2026-09-22</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-22" data-updated="2026-09-22" data-name="a-wordpress-vulnerability-scored-9-2-10- auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-22T16:57:10.000Z" data-updated="2026-09-22T16:57:10.000Z" data-name="a-wordpress-vulnerability-scored-9-2-10- auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-wordpress-vulnerability-scored-9-2-10-</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-22  · updated 2026-09-22 </div>
+  <div class="dates">added 2026-09-22 16:57 · updated 2026-09-22 16:57</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A WordPress vulnerability scored 9.2/10 is present in all versions since 2016</h2>
 
 <p>Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -49,6 +49,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://askarlabs.com/cve/wordpress/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-wordpress-vulnerability-scored-9-2-10-.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-22" data-updated="2026-09-22" data-name="a-wordpress-vulnerability-scored-9-2-10 auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>a-wordpress-vulnerability-scored-9-2-10</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-22  · updated 2026-09-22 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: refresh and verify the a-wordpress-vulnerability-scored-9-2-10- skill</h2>
+
+<p>Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions refresh and verify the a-wordpress-vulnerability-scored-9-2-10- skill.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- WPVulnerability - WordPress plugin | WordPress.org</div>
+<p>  https://wordpress.org/plugins/wpvulnerability/</p>
+<div class="li">- WPVulnerability Plugin — WordPress.com</div>
+<p>  https://wordpress.com/plugins/wpvulnerability</p>
+<div class="li">- Vulnerability Summary for the Week of September 14, 2026 - CISA</div>
+<p>  https://www.cisa.gov/news-events/bulletins/sb26-264</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-wordpress-vulnerability-scored-9-2-10.md">view source on GitHub</a></article>
 <article class="card" data-origin="imported" data-added="2026-09-17T15:08:54.000Z" data-updated="2026-09-22T13:18:43.000Z" data-name="academy-guide imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/academy-guide/skill.md) — &gt;.">
   <h2>academy-guide</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/anthropics/skills">anthropics/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — &gt;.</p>
   <div class="dates">added 2026-09-17 15:08 · updated 2026-09-22 13:18</div>
@@ -975,6 +1001,39 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/anthropics/skills/blob/main/skills/academy-guide/SKILL.md</p>
 <div class="li">- Agent Skills: Why SKILL.md Won&amp;#x27;t Load + Fix Guide</div>
 <p>  https://smartscope.blog/en/blog/agent-skills-guide/</p>
+
+
+
+<p>---</p>
+<h3>Field update 2026-09-22</h3>
+<h2>Skill: refresh and verify the academy-guide skill</h2>
+
+<p>Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions refresh and verify the academy-guide skill.</p>
+
+<h3>Steps</h3>
+<p>1. Use it when the user is learning how to use a feature or product — not when they are mid-task and just want the task done</p>
+<p>2. Use cases — worked examples of applying Claude to a concrete task, usually with a prompt to try</p>
+<p>3. Download Microsoft Edge More info about Internet Explorer and Microsoft Edge Table of contents Exit editor mode Ask Learn Ask Learn Reading mode Table of contents Read in English Add Add to Plans Edit Copy Markdown Print Note Access to this page requires authorization</p>
+<p>4. Use Agent Skills when you want to: Package domain expertise - Capture specialized knowledge (expense policies, legal workflows, data analysis pipelines) as reusable, portable packages</p>
+<p>5. Enable interoperability - Reuse the same skill across different Agent Skills-compatible products</p>
+<p>6. Use when asked about expense submissions, reimbursement rules, or spending limits</p>
+<p>7. Run scripts (as needed) - The agent calls the run_skill_script tool to execute scripts bundled with a skill</p>
+<p>8. Note load_skill is always advertised</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- skills/skills/academy-guide at main · anthropics/skills · GitHub</div>
+<p>  https://github.com/anthropics/skills/tree/main/skills/academy-guide</p>
+<div class="li">- skills/skills/academy-guide/SKILL.md at main · anthropics/skills</div>
+<p>  https://github.com/anthropics/skills/blob/main/skills/academy-guide/SKILL.md</p>
+<div class="li">- Agent Skills | Microsoft Learn</div>
+<p>  https://learn.microsoft.com/en-us/agent-framework/agents/skills</p>
 
 
 
@@ -6935,9 +6994,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://research.eye.security/wp2shell-defenders-guide/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/wp2shell-poc-cve-2026-63030-cve-2026-601.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-22" data-updated="2026-09-22" data-name="writing-rust-code-that-s-fast-by-asking- auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-22T16:57:10.000Z" data-updated="2026-09-22T16:57:10.000Z" data-name="writing-rust-code-that-s-fast-by-asking- auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>writing-rust-code-that-s-fast-by-asking-</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-22  · updated 2026-09-22 </div>
+  <div class="dates">added 2026-09-22 16:57 · updated 2026-09-22 16:57</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: Writing Rust code that's fast by asking agents to make the code faster</h2>
 
 <p>Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
