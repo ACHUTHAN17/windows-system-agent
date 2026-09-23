@@ -17,7 +17,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">115 skills (6 auto · 17 imported · 92 built)</span><span class="pill">generated 2026-09-23</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">117 skills (6 auto · 17 imported · 94 built)</span><span class="pill">generated 2026-09-23</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
@@ -49,9 +49,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://askarlabs.com/cve/wordpress/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-wordpress-vulnerability-scored-9-2-10-.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-22T17:44:05.000Z" data-updated="2026-09-23T04:24:54.000Z" data-name="a-wordpress-vulnerability-scored-9-2-10 auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-22T17:44:05.000Z" data-updated="2026-09-23T09:29:05.000Z" data-name="a-wordpress-vulnerability-scored-9-2-10 auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-wordpress-vulnerability-scored-9-2-10</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-22 17:44 · updated 2026-09-23 04:24</div>
+  <div class="dates">added 2026-09-22 17:44 · updated 2026-09-23 09:29</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: refresh and verify the a-wordpress-vulnerability-scored-9-2-10- skill</h2>
 
 <p>Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -5155,6 +5155,34 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://aiidelist.com/blog/what-is-laya-mlx</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/laya-mlx-native-mlx-runtime-for-laya-typ.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-23" data-updated="2026-09-23" data-name="laya-non-autoregressive-system-1-decisio auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>laya-non-autoregressive-system-1-decisio</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-23  · updated 2026-09-23 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: laya Non-autoregressive System 1 decision engine. Typed choice, score and yes/no decisions over any text in a single for</h2>
+
+<p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions laya Non-autoregressive System 1 decision engine. Typed choice, score and yes/no decisions over any text in a single for.</p>
+
+<h3>Steps</h3>
+<p>1. Run them from your project directory; the explicit Python paths keep installation and verification in the same environment</p>
+<p>2. Then a Frontier Lab Called It a "Breakthrough"</p>
+<p>3. Then in September 2025, I published a second paper ( arXiv:2510.01237 ), formalizing the framework for schema-based decisions guided by reinforcement learning</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - NandhaKishorM/laya · GitHub</div>
+<p>  https://github.com/NandhaKishorM/laya</p>
+<div class="li">- laya · PyPI</div>
+<p>  https://pypi.org/project/laya/</p>
+<div class="li">- Laya — 33ms Multilingual System 1 Decision Engine</div>
+<p>  https://laya.convaiinnovations.com/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/laya-non-autoregressive-system-1-decisio.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-19T14:00:24.000Z" data-updated="2026-09-19T14:00:24.000Z" data-name="laya auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>laya</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-19 14:00 · updated 2026-09-19 14:00</div>
@@ -6160,6 +6188,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/mudler/LocalAI</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-i-created-an-open-source-locally.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-23" data-updated="2026-09-23" data-name="show-hn-npunlock-run-custom-c-kernels-fo auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-npunlock-run-custom-c-kernels-fo</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-23  · updated 2026-09-23 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Npunlock – Run custom C kernels for Intel NPUs</h2>
+
+<p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: Npunlock – Run custom C kernels for Intel NPUs.</p>
+
+<h3>Steps</h3>
+<p>1. input ( "x" , shape = ( 1 , N ), dtype = "f32" ) y = npu</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - hsfzxjy/npunlock: Write and run custom C kernels for Intel ...</div>
+<p>  https://github.com/hsfzxjy/npunlock</p>
+<div class="li">- Show HN: Npunlock - Run custom C kernels for Intel NPUs | Hacker News</div>
+<p>  https://news.ycombinator.com/item?id=49800513</p>
+<div class="li">- Show HN: Npunlock - Run custom C kernels for Intel NPUs</div>
+<p>  https://outspeaker.com/post/14749</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-npunlock-run-custom-c-kernels-fo.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-20T17:55:57.000Z" data-updated="2026-09-20T17:55:57.000Z" data-name="show-hn-radius-a-meetup-com-alternative auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-radius-a-meetup-com-alternative</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-20 17:55 · updated 2026-09-20 17:55</div>
