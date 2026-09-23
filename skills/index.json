@@ -213,6 +213,33 @@
   ]
  },
  {
+  "name": "apk-reverse-suitable-for-android-apk-rev",
+  "title": "apk-reverse Suitable for Android APK reverse engineering analysis",
+  "description": "Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-23",
+  "updated": "2026-09-23",
+  "triggers": [
+   "apk",
+   "reverse",
+   "suitable",
+   "android",
+   "engineering",
+   "analysis",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
   "name": "apple-copland-d11e4-booting-in-the-brows",
   "title": "Apple Copland D11E4 Booting in the Browser",
   "description": "Auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
@@ -2554,6 +2581,32 @@
    "automation",
    "prefer",
    "screen"
+  ]
+ },
+ {
+  "name": "unreal-agent-async-first-agent-harness",
+  "title": "unreal-agent Async-first agent harness",
+  "description": "Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-23",
+  "updated": "2026-09-23",
+  "triggers": [
+   "unreal",
+   "agent",
+   "async",
+   "first",
+   "harness",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
   ]
  },
  {

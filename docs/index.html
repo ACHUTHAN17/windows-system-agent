@@ -17,7 +17,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">111 skills (6 auto · 17 imported · 88 built)</span><span class="pill">generated 2026-09-22</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">113 skills (6 auto · 17 imported · 90 built)</span><span class="pill">generated 2026-09-23</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
@@ -2507,6 +2507,34 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://agentic-design.ai/news-hub/an-empirical-study-harness-design-coding-agents-1ad77a</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/an-empirical-study-of-harness-design-for.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-23" data-updated="2026-09-23" data-name="apk-reverse-suitable-for-android-apk-rev auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>apk-reverse-suitable-for-android-apk-rev</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-23  · updated 2026-09-23 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: apk-reverse Suitable for Android APK reverse engineering analysis</h2>
+
+<p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions apk-reverse Suitable for Android APK reverse engineering analysis.</p>
+
+<h3>Steps</h3>
+<p>1. Step 1: Decompile with jadx jadx -d output/ target.apk jadx decompiles DEX bytecode to readable Java source</p>
+<p>2. Step 2: Disassemble with apktool apktool d target.apk -o disassembled/ apktool produces smali (Dalvik assembly) and decoded resources</p>
+<p>3. Use this when you need to modify and rebuild the APK</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Android APK Reverse Engineering: From APK to Source</div>
+<p>  https://robinx0.github.io/blogs/mobile-security/apk-reverse-engineering/</p>
+<div class="li">- Comprehensive Guide to Android App Reverse Engineering</div>
+<p>  https://github.com/aslamalkarywk7/AndroidReverseEngineering-Guide</p>
+<div class="li">- From APK to Source: Complete Android Reverse Engineering Workflow</div>
+<p>  https://www.marginaldeer.com/blog/apk-reverse-engineering-workflow/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/apk-reverse-suitable-for-android-apk-rev.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-21T22:47:06.000Z" data-updated="2026-09-21T22:47:06.000Z" data-name="apple-copland-d11e4-booting-in-the-brows auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>apple-copland-d11e4-booting-in-the-brows</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-21 22:47 · updated 2026-09-21 22:47</div>
@@ -6879,6 +6907,33 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>display scale before coordinate clicking. Skip windows with no MainWindowHandle.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/uia-click.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-23" data-updated="2026-09-23" data-name="unreal-agent-async-first-agent-harness auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>unreal-agent-async-first-agent-harness</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-23  · updated 2026-09-23 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: unreal-agent Async-first agent harness</h2>
+
+<p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions unreal-agent Async-first agent harness.</p>
+
+<h3>Steps</h3>
+<p>1. Enable JavaScript, or visit the source repo for the raw JSON</p>
+<p>2. First, it always allows users to steer the agent without the need to wait for tool calls to finish</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Unreal Agent - Async-First Coding-Agent Harness from Unreal Labs</div>
+<p>  https://ai-tldr.dev/tools/unreal-agent/</p>
+<div class="li">- Unreal Agent — Unreal Labs</div>
+<p>  https://unreallabs.ai/blog/unreal-agent/</p>
+<div class="li">- Unreal Agent Harness - GitHub</div>
+<p>  https://github.com/per-simmons/unreal-agent-harness</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/unreal-agent-async-first-agent-harness.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-22T22:14:03.000Z" data-updated="2026-09-22T22:14:03.000Z" data-name="unreal-agent auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>unreal-agent</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-22 22:14 · updated 2026-09-22 22:14</div>
