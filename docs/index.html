@@ -17,7 +17,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">111 skills (6 auto · 17 imported · 88 built)</span><span class="pill">generated 2026-09-23</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">113 skills (6 auto · 17 imported · 90 built)</span><span class="pill">generated 2026-09-23</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
@@ -6734,6 +6734,36 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://duckduckgo.com/y.js?ad_domain=grammarly.com&amp;ad_provider=bingv7aa&amp;ad_type=txad&amp;click_metadata=MM9yI%2Dbs4INBBn0rzlzOwacuabbDffv8Pj7zEuE6mVCKwRpFDrnfW5dGl8bjeunVm2RE8JNSiJ_uz4uvThUNOhN4l_gg4j4%2DAM9rw9yMzbtBmFTZdWxn4z1zBFUO48fHGp4A_BiNp%2DGoH0Zul0MeBj9odeXKCSVPfcPylXvEUfA.eHyeSowsmNvM3%2DAPfw%2DkKg&amp;rut=a4dae326907e43769350eedd28c1a770ffb9e8fb8715ccf364f6f639cd685994&amp;u3=https%3A%2F%2Fwww.bing.com%2Faclick%3Fld%3De8Bn1zCVPSjznoBMugv3RnijVUCUwHukzEVP7eg6MnINzl5XcYaqeHXfYPJpHEiMOa3azkebJEJEuAHGAKxSuN1gMqKRgofmNvTYog3lSrmUQv7ZjwHACpzlvctBIAMPdj30HLWdBEeaP6y5oXUDU7s19b7og9X66uMS38WlHs_7SSw%2DhiWM01yMZGY_DeIMI1DO2csctJbBthbSFyE0Kw19MoAfU%26u%3DaHR0cHMlM2ElMmYlMmZ3d3cuZ3JhbW1hcmx5LmNvbSUyZmFpLWh1bWFuaXplciUzZnV0bV9zb3VyY2UlM2RiaW5nJTI2dXRtX21lZGl1bSUzZGNwYyUyNnV0bV9jYW1wYWlnbiUzZDYyNzIxNzcwNiUyNnV0bV9jb250ZW50JTNkODE0MzI3MTcwMDczOTclMjZ1dG1fdGVybSUzZGNoYXRncHQlMjUyMGh1bWFuaXplciUyNnV0bV9idSUzZGNvcnAlMjZrZXl3b3JkaWQlM2Q4MTQzMjk1MjIwMzYyNCUyNnRhcmdldGlkJTNka3dkLTgxNDMyOTUyMjAzNjI0JTNhbG9jLTE5MCUyNmFkZ3JvdXAlM2QxMzAyOTIyNTA0NzkzNTQzJTI2ZGV2aWNlJTNkYyUyNm1hdGNodHlwZSUzZHAlMjZuZXR3b3JrJTNkcyUyNmV4dGVuc2lvbiUzZCUyNmNsaWNraWQlM2RhYWU1OGIyYjQ2ZGYxNDUyMGUxOGUxODU2MjBkYzEwNiUyNmdjbGlkJTNkYWFlNThiMmI0NmRmMTQ1MjBlMThlMTg1NjIwZGMxMDYlMjZtc2Nsa2lkJTNkYWFlNThiMmI0NmRmMTQ1MjBlMThlMTg1NjIwZGMxMDY%26rlid%3Daae58b2b46df14520e18e185620dc106&amp;vqd=4-213263133726527915910052295238291890834&amp;iurl=%7B1%7DIG%3D556527A6A5A04632B183050B1E020D9B%26CID%3D2218E9A8722966BE0168FE71736567E5%26ID%3DDevEx%2C5037.1</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/text-humanizer-text-humanizer-is-an-open.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-23" data-updated="2026-09-23" data-name="the-new-cc-an-ai-agent-built-for-familie auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>the-new-cc-an-ai-agent-built-for-familie</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-23  · updated 2026-09-23 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: The new CC, an AI agent built for families</h2>
+
+<p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions The new CC, an AI agent built for families.</p>
+
+<h3>Steps</h3>
+<p>1. To automate sharing, users can pick the email senders whose messages they always want to share with CC going forward, like schools, travel companies, clubs, or sports teams</p>
+<p>2. How does the six-member family setup work? Google says the new CC can be managed and used by up to six members</p>
+<p>3. How to set up Google CC for a family or household Google has not published a long technical installation process</p>
+<p>4. Open CC on web or mobile using an eligible U.S</p>
+<p>5. Choose email senders to auto-share , such as a school, travel provider, sports center or other recurring source</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- CC is an AI agent for families and groups - The Keyword</div>
+<p>  https://blog.google/innovation-and-ai/models-and-research/google-labs/cc-expanding-to-groups/</p>
+<div class="li">- Google&amp;#x27;s new &amp;#x27;CC&amp;#x27; is an AI agent that helps families run their ...</div>
+<p>  https://techcrunch.com/2026/09/18/googles-new-cc-is-an-ai-agent-that-helps-families-run-their-households/</p>
+<div class="li">- Google CC Family AI Agent: Access, Setup and Privacy Controls</div>
+<p>  https://beevaults.com/google-cc-family-ai/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/the-new-cc-an-ai-agent-built-for-familie.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-21T00:28:26.000Z" data-updated="2026-09-21T00:28:26.000Z" data-name="typesafe-computer-use-computer-use-for-a auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>typesafe-computer-use-computer-use-for-a</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-21 00:28 · updated 2026-09-21 00:28</div>
@@ -6841,6 +6871,33 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>display scale before coordinate clicking. Skip windows with no MainWindowHandle.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/uia-click.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-23" data-updated="2026-09-23" data-name="unreal-agent-async-first-agent-harness auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>unreal-agent-async-first-agent-harness</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-23  · updated 2026-09-23 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: unreal-agent Async-first agent harness</h2>
+
+<p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions unreal-agent Async-first agent harness.</p>
+
+<h3>Steps</h3>
+<p>1. First, it always allows users to steer the agent without the need to wait for tool calls to finish</p>
+<p>2. Enable JavaScript, or visit the source repo for the raw JSON</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Unreal Agent — Unreal Labs</div>
+<p>  https://unreallabs.ai/blog/unreal-agent/</p>
+<div class="li">- Unreal Agent - Async-First Coding-Agent Harness from Unreal Labs</div>
+<p>  https://ai-tldr.dev/tools/unreal-agent/</p>
+<div class="li">- Unreal Agent Harness - GitHub</div>
+<p>  https://github.com/per-simmons/unreal-agent-harness</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/unreal-agent-async-first-agent-harness.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-18T01:33:14.000Z" data-updated="2026-09-18T01:33:14.000Z" data-name="video-generator-client-async-python-wrap auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>video-generator-client-async-python-wrap</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-18 01:33 · updated 2026-09-18 01:33</div>
