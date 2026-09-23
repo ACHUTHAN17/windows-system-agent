@@ -5,7 +5,7 @@
   "description": "Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — >.",
   "origin": "imported",
   "added": "2026-09-17T15:08:54.000Z",
-  "updated": "2026-09-22T23:44:45.000Z",
+  "updated": "2026-09-23T04:16:26.000Z",
   "triggers": [
    "academy",
    "guide",
@@ -26,7 +26,7 @@
   "description": "WinAgent is one brain with six bodies. Pick per task; combine for speed.",
   "origin": "auto",
   "added": "2026-09-17T12:32:16.000Z",
-  "updated": "2026-09-22T23:44:45.000Z",
+  "updated": "2026-09-23T04:16:26.000Z",
   "triggers": [
    "mode",
    "daemon",
@@ -150,6 +150,29 @@
    "18+",
    "jailbreak",
    "required",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
+  "name": "aircard-windows",
+  "title": "AirCard-Windows",
+  "description": "Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-23",
+  "updated": "2026-09-23",
+  "triggers": [
+   "aircard",
+   "windows",
    "auto",
    "learned",
    "2026",
@@ -1728,6 +1751,36 @@
    "openpyxl",
    "pptx",
    "guides"
+  ]
+ },
+ {
+  "name": "open-glean-an-open-source-ai-platform-fo",
+  "title": "open-glean An open-source AI platform for knowledge work. Connect your apps, fin",
+  "description": "Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-23",
+  "updated": "2026-09-23",
+  "triggers": [
+   "open",
+   "glean",
+   "source",
+   "platform",
+   "knowledge",
+   "work",
+   "connect",
+   "apps",
+   "fin",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
   ]
  },
  {
