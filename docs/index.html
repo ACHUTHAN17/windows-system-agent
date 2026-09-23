@@ -17,7 +17,7 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">113 skills (6 auto · 17 imported · 90 built)</span><span class="pill">generated 2026-09-23</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">115 skills (6 auto · 17 imported · 92 built)</span><span class="pill">generated 2026-09-23</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
@@ -2449,6 +2449,34 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/Mak5er/AirCard/blob/main/README.md</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/aircard-apple-wallet-card-skinner-for-io.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-23" data-updated="2026-09-23" data-name="aircard-windows auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>aircard-windows</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-23  · updated 2026-09-23 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: AirCard-Windows</h2>
+
+<p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions AirCard-Windows.</p>
+
+<h3>Steps</h3>
+<p>1. Click Repair Now and wait for the Apple driver reinstallation to finish</p>
+<p>2. Install a signed Sierra Wireless driver package, preferably version 2.0 or newer when that version supports the card and operating system</p>
+<p>3. Open the adapter properties and ensure it is enabled</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - Lumid-Off/AirCard-Windows</div>
+<p>  https://github.com/Lumid-Off/AirCard-Windows</p>
+<div class="li">- AirCard-Windows/README.md at main · Lumid-Off/AirCard-Windows - GitHub</div>
+<p>  https://github.com/Lumid-Off/AirCard-Windows/blob/main/README.md</p>
+<div class="li">- Netbook AirCard (Cellular WWAN Configuration) - LaptopJudge</div>
+<p>  https://laptopjudge.com/netbook-aircard/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/aircard-windows.md">view source on GitHub</a></article>
 <article class="card" data-origin="imported" data-added="2026-09-17T15:41:17.000Z" data-updated="2026-09-17T15:41:17.000Z" data-name="algorithmic-art imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/algorithmic-art/skill.md) — creating algorithmic art">
   <h2>algorithmic-art</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/anthropics/skills">anthropics/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/algorithmic-art/SKILL.md) — Creating algorithmic art</p>
   <div class="dates">added 2026-09-17 15:41 · updated 2026-09-17 15:41</div>
@@ -2584,6 +2612,34 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://agentic-design.ai/news-hub/an-empirical-study-harness-design-coding-agents-1ad77a</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/an-empirical-study-of-harness-design-for.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-23" data-updated="2026-09-23" data-name="apk-reverse-suitable-for-android-apk-rev auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>apk-reverse-suitable-for-android-apk-rev</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-23  · updated 2026-09-23 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: apk-reverse Suitable for Android APK reverse engineering analysis</h2>
+
+<p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions apk-reverse Suitable for Android APK reverse engineering analysis.</p>
+
+<h3>Steps</h3>
+<p>1. Step 1: Decompile with jadx jadx -d output/ target.apk jadx decompiles DEX bytecode to readable Java source</p>
+<p>2. Step 2: Disassemble with apktool apktool d target.apk -o disassembled/ apktool produces smali (Dalvik assembly) and decoded resources</p>
+<p>3. Use this when you need to modify and rebuild the APK</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Android APK Reverse Engineering: From APK to Source</div>
+<p>  https://robinx0.github.io/blogs/mobile-security/apk-reverse-engineering/</p>
+<div class="li">- Comprehensive Guide to Android App Reverse Engineering</div>
+<p>  https://github.com/aslamalkarywk7/AndroidReverseEngineering-Guide</p>
+<div class="li">- From APK to Source: Complete Android Reverse Engineering Workflow</div>
+<p>  https://www.marginaldeer.com/blog/apk-reverse-engineering-workflow/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/apk-reverse-suitable-for-android-apk-rev.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T15:02:13.000Z" data-updated="2026-09-17T15:02:13.000Z" data-name="auto-learn-new-skills auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>auto-learn-new-skills</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-17 15:02 · updated 2026-09-17 15:02</div>
