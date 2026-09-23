@@ -1246,3 +1246,40 @@ When the task mentions refresh and verify the agent-modes skill.
 - Use Agent Mode - Visual Studio (Windows) | Microsoft Learn
   https://learn.microsoft.com/en-us/visualstudio/ide/copilot-agent-mode?view=visualstudio
 
+
+
+---
+## Field update 2026-09-23
+# Skill: refresh and verify the agent-modes skill
+
+Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the agent-modes skill.
+
+## Steps
+1. Download Microsoft Edge More info about Internet Explorer and Microsoft Edge Table of contents Exit editor mode Ask Learn Ask Learn Reading mode Table of contents Read in English Add Add to Plans Edit Copy Markdown Print Note Access to this page requires authorization
+2. Use Agent Skills when you want to: Package domain expertise - Capture specialized knowledge (expense policies, legal workflows, data analysis pipelines) as reusable, portable packages
+3. Enable interoperability - Reuse the same skill across different Agent Skills-compatible products
+4. Use when asked about expense submissions, reimbursement rules, or spending limits
+5. Run scripts (as needed) - The agent calls the run_skill_script tool to execute scripts bundled with a skill
+6. Note load_skill is always advertised
+7. Use Agent Skills with GitHub Copilot - Visual Studio (Windows) | Microsoft Learn Skip to main content Skip to Ask Learn chat experience This browser is no longer supported
+8. Use Agent Skills with GitHub Copilot Feedback Summarize this article for me In this article Agent skills are reusable sets of instructions that teach Copilot agents how to perform specific tasks, like running a build pipeline, generating boilerplate, or following your team's coding standards
+9. Use built-in .NET and Azure skills Visual Studio includes built-in skills created by experts from the .NET and Azure teams
+10. To review and manage them, select the Tools icon in Copilot Chat to open the tool picker, and then expand Built-in
+11. To inspect the complete skill or its folder, use the ..
+12. Enable only the skills that apply to your tasks
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Agent Skills | Microsoft Learn
+  https://learn.microsoft.com/en-us/agent-framework/agents/skills
+- Use Agent Skills with GitHub Copilot - Visual Studio (Windows)
+  https://learn.microsoft.com/en-us/visualstudio/ide/copilot-agent-skills?view=visualstudio
+- implementing-agent-modes by PostHog — Agent Skill
+  https://agentskills.codes/skills/implementing-agent-modes
+
