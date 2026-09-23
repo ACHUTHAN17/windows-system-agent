@@ -5,7 +5,7 @@
   "description": "Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-09-23T19:03:42.000Z",
-  "updated": "2026-09-23T19:03:42.000Z",
+  "updated": "2026-09-23T22:10:25.000Z",
   "triggers": [
    "brief",
    "history",
@@ -60,7 +60,7 @@
   "description": "Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-09-22T17:44:05.000Z",
-  "updated": "2026-09-23T18:34:06.000Z",
+  "updated": "2026-09-23T22:10:25.000Z",
   "triggers": [
    "refresh",
    "verify",
@@ -2156,6 +2156,34 @@
   ]
  },
  {
+  "name": "show-hn-an-atlas-of-system-designs-with-",
+  "title": "Show HN: An atlas of system designs with interactive architecture diagrams",
+  "description": "Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-23",
+  "updated": "2026-09-23",
+  "triggers": [
+   "show",
+   "atlas",
+   "system",
+   "designs",
+   "interactive",
+   "architecture",
+   "diagrams",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
   "name": "show-hn-ax-check-com-can-agents-use-your",
   "title": "Show HN: Ax-check.com – Can agents use your product?",
   "description": "Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
@@ -2854,6 +2882,31 @@
   "triggers": [
    "viserys",
    "agent",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
+  "name": "vscode-s-ssh-agent-is-bananas",
+  "title": "VSCode's SSH Agent Is Bananas",
+  "description": "Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-23",
+  "updated": "2026-09-23",
+  "triggers": [
+   "vscode",
+   "ssh",
+   "agent",
+   "bananas",
    "auto",
    "learned",
    "2026",
