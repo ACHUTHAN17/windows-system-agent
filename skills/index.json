@@ -2462,8 +2462,8 @@
   "title": "The new CC, an AI agent built for families",
   "description": "Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-23",
-  "updated": "2026-09-23",
+  "added": "2026-09-23T01:05:05.000Z",
+  "updated": "2026-09-23T01:05:05.000Z",
   "triggers": [
    "new",
    "agent",
@@ -2569,8 +2569,8 @@
   "title": "unreal-agent Async-first agent harness",
   "description": "Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-23",
-  "updated": "2026-09-23",
+  "added": "2026-09-23T01:05:05.000Z",
+  "updated": "2026-09-23T01:05:05.000Z",
   "triggers": [
    "unreal",
    "agent",
