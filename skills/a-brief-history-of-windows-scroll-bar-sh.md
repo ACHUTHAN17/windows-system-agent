@@ -45,3 +45,32 @@ When the task mentions refresh and verify the a-brief-history-of-windows-scroll-
 - A History of the Windows Taskbar From 1985 to 2023 - MUO
   https://www.makeuseof.com/history-windows-taskbar/
 
+
+
+---
+## Field update 2026-09-24
+# Skill: refresh and verify the a-brief-history-of-windows-scroll-bar-sh skill
+
+Auto-learned 2026-09-24 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-brief-history-of-windows-scroll-bar-sh skill.
+
+## Steps
+1. Open Settings app from Start Menu or by pressing WIN+I keys together
+2. set to off by default which makes the scrollbars hidden
+3. Set the toggle button given next to the option to ON
+4. STEP 2: Restore Full Classic Scrollbar in Windows 11 The scrollbar is displayed using the current theme applied in Windows
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- A brief history of Windows scroll bar shortcuts | Hacker News
+  https://news.ycombinator.com/item?id=49820065
+- A History of the Windows Taskbar From 1985 to 2023 - MUO
+  https://www.makeuseof.com/history-windows-taskbar/
+- [TIP] How to Restore Full Classic Scrollbar in Windows 11
+  https://www.askvg.com/tip-how-to-restore-full-classic-scrollbar-in-windows-11/
+
