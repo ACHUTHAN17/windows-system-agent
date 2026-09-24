@@ -1,7 +1,7 @@
 # Skill health — 2026-09-24
 
-127 skills audited, 25 links probed, 0 dead.
-7 need attention:
+129 skills audited, 25 links probed, 0 dead.
+8 need attention:
 
 ## agent-overlay.md (3676 chars)
 - unknown tool refs: click, drag, type, file
@@ -17,6 +17,9 @@
 
 ## office-docs.md (3731 chars)
 - unknown tool refs: python-docx
+
+## open-models.md (3125 chars)
+- unknown tool refs: openai
 
 ## powershell_echo_output.md (1164 chars)
 - missing `# Skill:` title
