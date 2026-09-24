@@ -121,3 +121,27 @@ When the task mentions refresh and verify the a-brief-history-of-windows-scroll-
 - A brief history of Windows scroll bar shortcuts | Hasty Briefs
   https://hb.int2inf.com/en/s/item/Vy4cr9GWu7Pty62Ea8TBXf-windows-scroll-bar-features-and-shortcuts
 
+
+
+---
+## Field update 2026-09-24
+# Skill: refresh and verify the a-brief-history-of-windows-scroll-bar-sh skill
+
+Auto-learned 2026-09-24 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-brief-history-of-windows-scroll-bar-sh skill.
+
+## Steps
+1. Download Microsoft Edge More info about Internet Explorer and Microsoft Edge Windows technical documentation for developers and IT pros
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- A brief history of Windows scroll bar shortcuts
+  https://devblogs.microsoft.com/oldnewthing/20260922-00/?p=112719/
+- Windows Documentation | Microsoft Learn
+  https://learn.microsoft.com/en-us/windows/
+
