@@ -679,6 +679,39 @@
   ]
  },
  {
+  "name": "cleanupper-free-open-source-macos-disk-c",
+  "title": "cleanupper 🧹 Free, open-source macOS disk cleanup CLI. Scan & safely remove cac",
+  "description": "Auto-learned 2026-09-24 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-24",
+  "updated": "2026-09-24",
+  "triggers": [
+   "cleanupper",
+   "free",
+   "open",
+   "source",
+   "macos",
+   "disk",
+   "cleanup",
+   "cli",
+   "scan",
+   "safely",
+   "remove",
+   "cac",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
   "name": "coding",
   "title": "coding",
   "description": "Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
@@ -2108,6 +2141,35 @@
    "skills",
    "memory",
    "run"
+  ]
+ },
+ {
+  "name": "search-a-small-fast-webkit-browser-for-m",
+  "title": "Search A small, fast WebKit browser for macOS, by Office Commun.",
+  "description": "Auto-learned 2026-09-24 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-24",
+  "updated": "2026-09-24",
+  "triggers": [
+   "search",
+   "small",
+   "fast",
+   "webkit",
+   "browser",
+   "macos",
+   "office",
+   "commun",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
   ]
  },
  {
