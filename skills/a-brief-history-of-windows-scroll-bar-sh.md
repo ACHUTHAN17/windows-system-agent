@@ -74,3 +74,27 @@ When the task mentions refresh and verify the a-brief-history-of-windows-scroll-
 - [TIP] How to Restore Full Classic Scrollbar in Windows 11
   https://www.askvg.com/tip-how-to-restore-full-classic-scrollbar-in-windows-11/
 
+
+
+---
+## Field update 2026-09-24
+# Skill: refresh and verify the a-brief-history-of-windows-scroll-bar-sh skill
+
+Auto-learned 2026-09-24 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-brief-history-of-windows-scroll-bar-sh skill.
+
+## Steps
+1. See sources below and follow the official docs.
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- A Brief History of Windows From 1985 to Present Day
+  https://www.thetechedvocate.org/a-brief-history-of-windows-from-1985-to-present-day/
+- A brief history of Windows scroll bar shortcuts
+  https://devblogs.microsoft.com/oldnewthing/20260922-00/?p=112719/
+
