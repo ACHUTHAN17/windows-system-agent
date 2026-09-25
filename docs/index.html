@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">135 skills (6 auto · 17 imported · 112 built)</span><span class="pill">generated 2026-09-24</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">137 skills (6 auto · 17 imported · 114 built)</span><span class="pill">generated 2026-09-25</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-09-24T20:22:51.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-09-24T23:21:27.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 19:03 · updated 2026-09-24 20:22</div>
+  <div class="dates">added 2026-09-23 19:03 · updated 2026-09-24 23:21</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -258,9 +258,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://askarlabs.com/cve/wordpress/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-wordpress-vulnerability-scored-9-2-10-.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-22T17:44:05.000Z" data-updated="2026-09-24T20:22:51.000Z" data-name="a-wordpress-vulnerability-scored-9-2-10 auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-22T17:44:05.000Z" data-updated="2026-09-24T23:21:27.000Z" data-name="a-wordpress-vulnerability-scored-9-2-10 auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-wordpress-vulnerability-scored-9-2-10</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-22 17:44 · updated 2026-09-24 20:22</div>
+  <div class="dates">added 2026-09-22 17:44 · updated 2026-09-24 23:21</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: refresh and verify the a-wordpress-vulnerability-scored-9-2-10- skill</h2>
 
 <p>Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -3995,6 +3995,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- One task at a time (409 busy otherwise). Daemon/idle modes stay in terminal.</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/dashboard.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-25" data-updated="2026-09-25" data-name="deepopen-system-1-deepopen-multilingual- auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>deepopen-system-1-deepopen-multilingual-</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-25  · updated 2026-09-25 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: deepopen 非自回归System 1决策引擎，专为结构化类型决策场景设计  DeepOpen Multilingual, non-autoregressive System 1 decision engine.</h2>
+
+<p>Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions deepopen 非自回归System 1决策引擎，专为结构化类型决策场景设计  DeepOpen Multilingual, non-autoregressive System 1 decision engine..</p>
+
+<h3>Steps</h3>
+<p>1. Step-by-step setup for each platform, CPU-only or GPU PyTorch builds, and troubleshooting are in Installation details</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- deepopen-com/deepopen — GitHub trending stats &amp; insights | Trendshift</div>
+<p>  https://trendshift.io/repositories/253721</p>
+<div class="li">- deepopen:基于非自回归 BERT 的多语言结构化决策引擎项目</div>
+<p>  https://gitcode.com/gh_mirrors/de/deepopen</p>
+<div class="li">- GitHub - NandhaKishorM/laya: Non-autoregressive System 1 decision ...</div>
+<p>  https://github.com/NandhaKishorM/laya</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/deepopen-system-1-deepopen-multilingual-.md">view source on GitHub</a></article>
 <article class="card" data-origin="imported" data-added="2026-09-19T01:00:48.000Z" data-updated="2026-09-19T01:00:48.000Z" data-name="diagnosing-superpowers imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/diagnosing-superpowers/skill.md) — use when a superpow">
   <h2>diagnosing-superpowers</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/diagnosing-superpowers/SKILL.md) — Use when a superpow</p>
   <div class="dates">added 2026-09-19 01:00 · updated 2026-09-19 01:00</div>
@@ -5740,6 +5766,30 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.geeksforgeeks.org/computer-science-fundamentals/computer-shortcut-keys/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/keyboard-shortcuts.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-25" data-updated="2026-09-25" data-name="kryvora-node-reference-client-daemon-and auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>kryvora-node-reference-client-daemon-and</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-25  · updated 2026-09-25 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: kryvora-node Reference client daemon and verification worker for Kryvora Network nodes.</h2>
+
+<p>Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions kryvora-node Reference client daemon and verification worker for Kryvora Network nodes..</p>
+
+<h3>Steps</h3>
+<p>1. Close all issues, pull requests, and discussions opened by this user Content in all repositories owned by your account will be closed</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - kryvora-network/kryvora-network: Profile overview for Kryvora ...</div>
+<p>  https://github.com/kryvora-network/kryvora-network</p>
+<div class="li">- Kryvora Network kryvora-core - GitHub</div>
+<p>  https://github.com/kryvora-core</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/kryvora-node-reference-client-daemon-and.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-22T20:01:35.000Z" data-updated="2026-09-22T20:01:35.000Z" data-name="launch-hn-coverage-cat-yc-s22-umbrella-i auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>launch-hn-coverage-cat-yc-s22-umbrella-i</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-22 20:01 · updated 2026-09-22 20:01</div>

@@ -5,7 +5,7 @@
   "description": "Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-09-23T19:03:42.000Z",
-  "updated": "2026-09-24T20:22:51.000Z",
+  "updated": "2026-09-24T23:21:27.000Z",
   "triggers": [
    "brief",
    "history",
@@ -60,7 +60,7 @@
   "description": "Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-09-22T17:44:05.000Z",
-  "updated": "2026-09-24T20:22:51.000Z",
+  "updated": "2026-09-24T23:21:27.000Z",
   "triggers": [
    "refresh",
    "verify",
@@ -814,6 +814,32 @@
    "http",
    "127",
    "loopback"
+  ]
+ },
+ {
+  "name": "deepopen-system-1-deepopen-multilingual-",
+  "title": "deepopen 非自回归System 1决策引擎，专为结构化类型决策场景设计  DeepOpen Multilingual, non-autoregressi",
+  "description": "Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-25",
+  "updated": "2026-09-25",
+  "triggers": [
+   "deepopen",
+   "system",
+   "multilingual",
+   "non",
+   "autoregressi",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
   ]
  },
  {
@@ -1643,6 +1669,35 @@
   "triggers": [
    "keyboard",
    "shortcuts",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
+  "name": "kryvora-node-reference-client-daemon-and",
+  "title": "kryvora-node Reference client daemon and verification worker for Kryvora Network",
+  "description": "Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-25",
+  "updated": "2026-09-25",
+  "triggers": [
+   "kryvora",
+   "node",
+   "reference",
+   "client",
+   "daemon",
+   "verification",
+   "worker",
+   "network",
    "auto",
    "learned",
    "2026",
