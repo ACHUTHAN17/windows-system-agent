@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">140 skills (6 auto · 17 imported · 117 built)</span><span class="pill">generated 2026-09-25</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">142 skills (6 auto · 17 imported · 119 built)</span><span class="pill">generated 2026-09-25</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T21:45:46.000Z" data-updated="2026-09-25T12:56:31.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T21:45:46.000Z" data-updated="2026-09-25T17:53:39.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 21:45 · updated 2026-09-25 12:56</div>
+  <div class="dates">added 2026-09-23 21:45 · updated 2026-09-25 17:53</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -323,9 +323,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-windows-scroll-bar-sh.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17T15:08:54.000Z" data-updated="2026-09-25T12:56:31.000Z" data-name="academy-guide imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/academy-guide/skill.md) — &gt;.">
+<article class="card" data-origin="imported" data-added="2026-09-17T15:08:54.000Z" data-updated="2026-09-25T17:53:39.000Z" data-name="academy-guide imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/academy-guide/skill.md) — &gt;.">
   <h2>academy-guide</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/anthropics/skills">anthropics/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — &gt;.</p>
-  <div class="dates">added 2026-09-17 15:08 · updated 2026-09-25 12:56</div>
+  <div class="dates">added 2026-09-17 15:08 · updated 2026-09-25 17:53</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: academy-guide</h2>
 
 <p>Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — &gt;.</p>
@@ -4676,6 +4676,33 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  or how it compares to the user's own data. *"How do these CPL</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/discernment-nudge.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-25" data-updated="2026-09-25" data-name="disktree-a-treemap-for-finding-and-remov auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>disktree-a-treemap-for-finding-and-remov</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-25  · updated 2026-09-25 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: disktree A treemap for finding and removing what fills your disk, for Omarchy. Rust + GPUI.</h2>
+
+<p>Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions disktree A treemap for finding and removing what fills your disk, for Omarchy. Rust + GPUI..</p>
+
+<h3>Steps</h3>
+<p>1. Install Download disktree-*-x86_64-linux.tar.gz ( aarch64-linux on ARM) from the latest release , unpack it, and run ./install.sh inside (or just copy disktree onto your PATH )</p>
+<p>2. use disktree::index::{ScanProgress, scan}; let progress = ScanProgress::default(); let tree = scan(dir.clone(), &amp; progress); // The root aggregates its whole subtree</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - tobi/disktree: A treemap for finding and removing what fills ...</div>
+<p>  https://github.com/tobi/disktree</p>
+<div class="li">- disktree/AGENTS.md at main · tobi/disktree · GitHub</div>
+<p>  https://github.com/tobi/disktree/blob/main/AGENTS.md</p>
+<div class="li">- disktree - Rust - Docs.rs</div>
+<p>  https://docs.rs/disktree/latest/disktree/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/disktree-a-treemap-for-finding-and-remov.md">view source on GitHub</a></article>
 <article class="card" data-origin="imported" data-added="2026-09-17T19:36:25.000Z" data-updated="2026-09-17T19:36:25.000Z" data-name="dispatching-parallel-agents imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/dispatching-parallel-agents/skill.md) — use when facin">
   <h2>dispatching-parallel-agents</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/dispatching-parallel-agents/SKILL.md) — Use when facin</p>
   <div class="dates">added 2026-09-17 19:36 · updated 2026-09-17 19:36</div>
@@ -7395,6 +7422,33 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://x.com/trycua/status/2101014004927729737</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-cua-s1-a-system-one-model-for-co.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-25" data-updated="2026-09-25" data-name="show-hn-doom-or-bloom-map-your-ai-worldv auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-doom-or-bloom-map-your-ai-worldv</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-25  · updated 2026-09-25 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Doom or Bloom, map your AI worldview with Jev</h2>
+
+<p>Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: Doom or Bloom, map your AI worldview with Jev.</p>
+
+<h3>Steps</h3>
+<p>1. Open the original using the link above</p>
+<p>2. Use the play control to watch here, or open the original video above</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - transitive-bullshit/doom-or-bloom: Doom or Bloom: map your AI ...</div>
+<p>  https://github.com/transitive-bullshit/doom-or-bloom</p>
+<div class="li">- Jev AI API Guide: Tutorials, Examples &amp; Tools</div>
+<p>  https://jev-typesafe.org/</p>
+<div class="li">- JEV AI — Get started</div>
+<p>  https://jevai.info/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-doom-or-bloom-map-your-ai-worldv.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-22T15:45:46.000Z" data-updated="2026-09-22T15:45:46.000Z" data-name="show-hn-drop-a-rootless-linux-sandbox-wi auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-drop-a-rootless-linux-sandbox-wi</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-22 15:45 · updated 2026-09-22 15:45</div>
