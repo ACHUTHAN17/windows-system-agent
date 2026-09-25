@@ -5,7 +5,7 @@
   "description": "Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-09-23T21:45:46.000Z",
-  "updated": "2026-09-24T23:20:42.000Z",
+  "updated": "2026-09-25T01:47:40.000Z",
   "triggers": [
    "brief",
    "history",
@@ -32,7 +32,7 @@
   "description": "Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — >.",
   "origin": "imported",
   "added": "2026-09-17T15:08:54.000Z",
-  "updated": "2026-09-24T23:20:42.000Z",
+  "updated": "2026-09-25T01:47:40.000Z",
   "triggers": [
    "academy",
    "guide",
@@ -665,6 +665,30 @@
    "reads",
    "agents",
    "telemetry",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
+  "name": "claude-opus-5-5-demo-claude-opus-5-5-dem",
+  "title": "claude-opus-5-5-demo claude-opus-5-5-demo",
+  "description": "Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-25",
+  "updated": "2026-09-25",
+  "triggers": [
+   "claude",
+   "opus",
+   "demo",
    "auto",
    "learned",
    "2026",
@@ -1951,6 +1975,37 @@
    "playwright",
    "filesystem",
    "becomes"
+  ]
+ },
+ {
+  "name": "mini-agi-continual-learning-model-traine",
+  "title": "mini-AGI Continual learning model trained from scratch on 8GB VRAM laptop with b",
+  "description": "Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-25",
+  "updated": "2026-09-25",
+  "triggers": [
+   "mini",
+   "agi",
+   "continual",
+   "learning",
+   "model",
+   "trained",
+   "scratch",
+   "8gb",
+   "vram",
+   "laptop",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
   ]
  },
  {
