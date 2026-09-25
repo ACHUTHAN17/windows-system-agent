@@ -5,7 +5,7 @@
   "description": "Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-09-23T19:03:42.000Z",
-  "updated": "2026-09-25T13:33:42.000Z",
+  "updated": "2026-09-25T18:26:27.000Z",
   "triggers": [
    "brief",
    "history",
@@ -60,7 +60,7 @@
   "description": "Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-09-22T17:44:05.000Z",
-  "updated": "2026-09-25T13:33:42.000Z",
+  "updated": "2026-09-25T18:26:27.000Z",
   "triggers": [
    "refresh",
    "verify",
@@ -958,6 +958,34 @@
    "blob",
    "head",
    "skill"
+  ]
+ },
+ {
+  "name": "disktree-a-treemap-for-finding-and-remov",
+  "title": "disktree A treemap for finding and removing what fills your disk, for Omarchy. R",
+  "description": "Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-25",
+  "updated": "2026-09-25",
+  "triggers": [
+   "disktree",
+   "treemap",
+   "finding",
+   "removing",
+   "fills",
+   "disk",
+   "omarchy",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
   ]
  },
  {
