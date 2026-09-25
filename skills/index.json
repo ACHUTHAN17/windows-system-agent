@@ -5,7 +5,7 @@
   "description": "Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-09-23T19:03:42.000Z",
-  "updated": "2026-09-24T23:21:27.000Z",
+  "updated": "2026-09-25T01:48:37.000Z",
   "triggers": [
    "brief",
    "history",
@@ -60,7 +60,7 @@
   "description": "Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-09-22T17:44:05.000Z",
-  "updated": "2026-09-24T23:21:27.000Z",
+  "updated": "2026-09-25T01:48:37.000Z",
   "triggers": [
    "refresh",
    "verify",
@@ -680,6 +680,30 @@
   ]
  },
  {
+  "name": "claude-opus-5-5-demo-claude-opus-5-5-dem",
+  "title": "claude-opus-5-5-demo claude-opus-5-5-demo",
+  "description": "Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-25",
+  "updated": "2026-09-25",
+  "triggers": [
+   "claude",
+   "opus",
+   "demo",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
   "name": "cleanupper-free-open-source-macos-disk-c",
   "title": "cleanupper 🧹 Free, open-source macOS disk cleanup CLI. Scan & safely remove cac",
   "description": "Auto-learned 2026-09-24 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
@@ -699,6 +723,28 @@
    "safely",
    "remove",
    "cac",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
+  "name": "clm",
+  "title": "CLM",
+  "description": "Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-25",
+  "updated": "2026-09-25",
+  "triggers": [
+   "clm",
    "auto",
    "learned",
    "2026",

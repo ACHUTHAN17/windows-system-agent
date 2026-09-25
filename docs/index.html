@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">137 skills (6 auto · 17 imported · 114 built)</span><span class="pill">generated 2026-09-25</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">139 skills (6 auto · 17 imported · 116 built)</span><span class="pill">generated 2026-09-25</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-09-24T23:21:27.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-09-25T01:48:37.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 19:03 · updated 2026-09-24 23:21</div>
+  <div class="dates">added 2026-09-23 19:03 · updated 2026-09-25 01:48</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -284,9 +284,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://askarlabs.com/cve/wordpress/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-wordpress-vulnerability-scored-9-2-10-.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-22T17:44:05.000Z" data-updated="2026-09-24T23:21:27.000Z" data-name="a-wordpress-vulnerability-scored-9-2-10 auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-22T17:44:05.000Z" data-updated="2026-09-25T01:48:37.000Z" data-name="a-wordpress-vulnerability-scored-9-2-10 auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-wordpress-vulnerability-scored-9-2-10</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-22 17:44 · updated 2026-09-24 23:21</div>
+  <div class="dates">added 2026-09-22 17:44 · updated 2026-09-25 01:48</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: refresh and verify the a-wordpress-vulnerability-scored-9-2-10- skill</h2>
 
 <p>Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -3885,6 +3885,34 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.eesel.ai/blog/claude-code-agents-md</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/claude-code-reads-agents-md-only-when-te.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-25" data-updated="2026-09-25" data-name="claude-opus-5-5-demo-claude-opus-5-5-dem auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>claude-opus-5-5-demo-claude-opus-5-5-dem</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-25  · updated 2026-09-25 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: claude-opus-5-5-demo claude-opus-5-5-demo</h2>
+
+<p>Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions claude-opus-5-5-demo claude-opus-5-5-demo.</p>
+
+<h3>Steps</h3>
+<p>1. Input and output tokens are $4 and $20 per million, 20% less than Opus 5</p>
+<p>2. HOW TO ASK Say what “done” looks like, then let it run What to do</p>
+<p>3. Then look at what it chose instead</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Claude Opus 5.5 - Claude Platform Docs</div>
+<p>  https://platform.claude.com/docs/en/models/opus-5-5/overview</p>
+<div class="li">- Introducing Claude Opus 5.5 \ Anthropic</div>
+<p>  https://www.anthropic.com/claude-opus-5-5</p>
+<div class="li">- Getting the most out of Opus 5.5 in Claude and Claude Code</div>
+<p>  https://claude.dev/blog/getting-the-most-out-of-opus-5-5/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/claude-opus-5-5-demo-claude-opus-5-5-dem.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-24T00:31:46.000Z" data-updated="2026-09-24T00:31:46.000Z" data-name="cleanupper-free-open-source-macos-disk-c auto-learned 2026-09-24 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>cleanupper-free-open-source-macos-disk-c</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-24 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-24 00:31 · updated 2026-09-24 00:31</div>
@@ -3911,6 +3939,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/nttrung9x/cleaner-macos-for-dev-cli</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/cleanupper-free-open-source-macos-disk-c.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-25" data-updated="2026-09-25" data-name="clm auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>clm</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-25  · updated 2026-09-25 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: CLM</h2>
+
+<p>Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions CLM.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Documentation | Community Earth System Model</div>
+<p>  https://www.cesm.ucar.edu/models/clm/docs</p>
+<div class="li">- 1.1. Overview — ctsm release-clm5.0 documentation - GitHub Pages</div>
+<p>  https://escomp.github.io/CTSM/release-clm5.0/users_guide/overview/index.html</p>
+<div class="li">- PDF Community Land Model (CLM5.0) Documentation</div>
+<p>  https://files.cesm.ucar.edu/models/clm/5.0/CLM50_Tech_Note.pdf</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/clm.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T15:19:44.000Z" data-updated="2026-09-17T15:19:44.000Z" data-name="coding auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>coding</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-17 15:19 · updated 2026-09-17 15:19</div>
