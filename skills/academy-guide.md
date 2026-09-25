@@ -1387,3 +1387,31 @@ When the task mentions refresh and verify the academy-guide skill.
 - Tutorials · Claude Academy
   https://academy.claude.com/tutorials
 
+
+
+---
+## Field update 2026-09-25
+# Skill: refresh and verify the academy-guide skill
+
+Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the academy-guide skill.
+
+## Steps
+1. Use it when the user is learning how to use a feature or product — not when they are mid-task and just want the task done
+2. Use cases — worked examples of applying Claude to a concrete task, usually with a prompt to try
+3. Download skill Security Scan What are Skills? · How to Install Related MCPs View all
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Academy Guide (Skill) — Claude Ecosystem | Claude Digest
+  https://www.claudedigest.com/ecosystem/anthropic-skill-academy-guide
+- skills/skills/academy-guide/SKILL.md at main · anthropics/skills
+  https://github.com/anthropics/skills/blob/main/skills/academy-guide/SKILL.md
+- Docs Refresh Claude Code Skill | Automated Documentation
+  https://mcpmarket.com/tools/skills/documentation-refresh
+
