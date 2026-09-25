@@ -219,3 +219,29 @@ When the task mentions refresh and verify the a-brief-history-of-windows-scroll-
 - A brief history of Windows scroll bar shortcuts
   https://blog.yuyins.com/reading-list/a-brief-history-of-windows-scroll-bar-shortcuts-6soe/
 
+
+
+---
+## Field update 2026-09-25
+# Skill: refresh and verify the a-brief-history-of-windows-scroll-bar-sh skill
+
+Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-brief-history-of-windows-scroll-bar-sh skill.
+
+## Steps
+1. See sources below and follow the official docs.
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- A brief history of Windows scroll bar shortcuts
+  https://devblogs.microsoft.com/oldnewthing/20260922-00/?p=112719/
+- A brief history of Windows scroll bar shortcuts
+  https://blog.yuyins.com/reading-list/a-brief-history-of-windows-scroll-bar-shortcuts-6soe/
+- A brief history of Windows scroll bar shortcuts | Hacker News
+  https://news.ycombinator.com/item?id=49820065
+
