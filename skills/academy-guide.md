@@ -1415,3 +1415,31 @@ When the task mentions refresh and verify the academy-guide skill.
 - Docs Refresh Claude Code Skill | Automated Documentation
   https://mcpmarket.com/tools/skills/documentation-refresh
 
+
+
+---
+## Field update 2026-09-25
+# Skill: refresh and verify the academy-guide skill
+
+Auto-learned 2026-09-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the academy-guide skill.
+
+## Steps
+1. Use it when the user is learning how to use a feature or product — not when they are mid-task and just want the task done
+2. Use cases — worked examples of applying Claude to a concrete task, usually with a prompt to try
+3. Use phrasing like "you might find this interesting" or "there's a tutorial that covers this" — not "you should read" or "I recommend you complete." Use the exact URLs from the catalog
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- GitHub - anthropics/skills: Public repository for Agent Skills
+  https://github.com/anthropics/skills
+- skills/skills/academy-guide at main · anthropics/skills · GitHub
+  https://github.com/anthropics/skills/tree/main/skills/academy-guide
+- academy-guide by anthropics · skilld
+  https://skilld.dev/gh/anthropics/skills/academy-guide
+
