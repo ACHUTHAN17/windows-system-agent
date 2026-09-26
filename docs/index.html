@@ -21,9 +21,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-09-26T10:08:48.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-09-26T14:41:43.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 19:03 · updated 2026-09-26 10:08</div>
+  <div class="dates">added 2026-09-23 19:03 · updated 2026-09-26 14:41</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -488,9 +488,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://askarlabs.com/cve/wordpress/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-wordpress-vulnerability-scored-9-2-10-.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-22T17:44:05.000Z" data-updated="2026-09-26T10:08:48.000Z" data-name="a-wordpress-vulnerability-scored-9-2-10 auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-22T17:44:05.000Z" data-updated="2026-09-26T14:41:43.000Z" data-name="a-wordpress-vulnerability-scored-9-2-10 auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-wordpress-vulnerability-scored-9-2-10</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-22 17:44 · updated 2026-09-26 10:08</div>
+  <div class="dates">added 2026-09-22 17:44 · updated 2026-09-26 14:41</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: refresh and verify the a-wordpress-vulnerability-scored-9-2-10- skill</h2>
 
 <p>Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -1219,9 +1219,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-wordpress-vulnerability-scored-9-2-10.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17T15:08:54.000Z" data-updated="2026-09-22T17:44:05.000Z" data-name="academy-guide imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/academy-guide/skill.md) — &gt;.">
+<article class="card" data-origin="imported" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-22T17:44:05.000Z" data-name="academy-guide imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/academy-guide/skill.md) — &gt;.">
   <h2>academy-guide</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/anthropics/skills">anthropics/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — &gt;.</p>
-  <div class="dates">added 2026-09-17 15:08 · updated 2026-09-22 17:44</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-22 17:44</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: academy-guide</h2>
 
 <p>Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SKILL.md) — &gt;.</p>
@@ -2247,9 +2247,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/academy-guide.md">view source on GitHub</a></article>
-<article class="card" data-origin="auto" data-added="2026-09-17T12:32:16.000Z" data-updated="2026-09-22T13:18:43.000Z" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
+<article class="card" data-origin="auto" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-22T13:18:43.000Z" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
   <h2>agent-modes</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from its own run modes + parallel discipline</div><p class="desc">WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
-  <div class="dates">added 2026-09-17 12:32 · updated 2026-09-22 13:18</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-22 13:18</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: agent-modes — run modes and how to work them in parallel</h2>
 
 <p>WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
@@ -3360,9 +3360,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/agent-modes.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T14:28:22.000Z" data-updated="2026-09-17T14:28:22.000Z" data-name="agentverse-os-personal-cloud-os-for-a-de auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="agentverse-os-personal-cloud-os-for-a-de auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>agentverse-os-personal-cloud-os-for-a-de</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 14:28 · updated 2026-09-17 14:28</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: AgentVerse-OS Personal cloud OS for a developer and their AI agents on a single server. One-command install on Ubuntu, t</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -3386,9 +3386,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.claudemap.org/en/explore/agentverse-os</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/agentverse-os-personal-cloud-os-for-a-de.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T16:11:38.000Z" data-updated="2026-09-17T16:11:38.000Z" data-name="ai-data-extractor-free-open-source-extra auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="ai-data-extractor-free-open-source-extra auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>ai-data-extractor-free-open-source-extra</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 16:11 · updated 2026-09-17 16:11</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: ai-data-extractor Free open-source extractor for AI coding assistant chat histories. Supports Claude Code, Cursor, Winds</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -3495,9 +3495,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://laptopjudge.com/netbook-aircard/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/aircard-windows.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17T15:41:17.000Z" data-updated="2026-09-17T15:41:17.000Z" data-name="algorithmic-art imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/algorithmic-art/skill.md) — creating algorithmic art">
+<article class="card" data-origin="imported" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="algorithmic-art imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/algorithmic-art/skill.md) — creating algorithmic art">
   <h2>algorithmic-art</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/anthropics/skills">anthropics/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/algorithmic-art/SKILL.md) — Creating algorithmic art</p>
-  <div class="dates">added 2026-09-17 15:41 · updated 2026-09-17 15:41</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: algorithmic-art</h2>
 
 <p>Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/algorithmic-art/SKILL.md) — Creating algorithmic art using p5.js with seeded randomness and interactive parameter exploration. Use this when users request creating art using code, generative art, algorithmic art, flow fields, or.</p>
@@ -3604,9 +3604,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <h3>⚠️ STEP 0: READ THE TEMPLATE FIRST</h3>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/algorithmic-art.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-18T15:12:54.000Z" data-updated="2026-09-18T15:12:54.000Z" data-name="an-empirical-study-of-harness-design-for auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="an-empirical-study-of-harness-design-for auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>an-empirical-study-of-harness-design-for</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-18 15:12 · updated 2026-09-18 15:12</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: An Empirical Study of Harness Design for Coding Agents</h2>
 
 <p>Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -3685,9 +3685,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.marginaldeer.com/blog/apk-reverse-engineering-workflow/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/apk-reverse-suitable-for-android-apk-rev.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T15:02:13.000Z" data-updated="2026-09-17T15:02:13.000Z" data-name="auto-learn-new-skills auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="auto-learn-new-skills auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>auto-learn-new-skills</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 15:02 · updated 2026-09-17 15:02</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: auto learn new skills</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -3821,9 +3821,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://explainx.ai/blog/google-ax-agentic-orchestrator-kubernetes-2026</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/ax-google-s-open-agentic-orchestrator.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T15:35:27.000Z" data-updated="2026-09-17T15:35:27.000Z" data-name="blitzstrike-blitz-strike-a-universal-mcp auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="blitzstrike-blitz-strike-a-universal-mcp auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>blitzstrike-blitz-strike-a-universal-mcp</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 15:35 · updated 2026-09-17 15:35</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: blitzstrike ⚡ Blitz Strike — a universal MCP penetration-testing toolbelt. Structured methodology: reconnaissance &amp; atta</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -3845,9 +3845,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/shinthink/blitzstrike</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/blitzstrike-blitz-strike-a-universal-mcp.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17T19:36:25.000Z" data-updated="2026-09-17T19:36:25.000Z" data-name="brainstorming imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/brainstorming/skill.md) — "you must use this before an">
+<article class="card" data-origin="imported" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="brainstorming imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/brainstorming/skill.md) — "you must use this before an">
   <h2>brainstorming</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/brainstorming/SKILL.md) — "You MUST use this before an</p>
-  <div class="dates">added 2026-09-17 19:36 · updated 2026-09-17 19:36</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: brainstorming</h2>
 
 <p>Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/brainstorming/SKILL.md) — "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation.".</p>
@@ -3995,9 +3995,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>    "User reviews spec?"</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/brainstorming.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17T15:41:17.000Z" data-updated="2026-09-17T15:41:17.000Z" data-name="brand-guidelines imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/brand-guidelines/skill.md) — applies anthropic's off">
+<article class="card" data-origin="imported" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="brand-guidelines imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/brand-guidelines/skill.md) — applies anthropic's off">
   <h2>brand-guidelines</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/anthropics/skills">anthropics/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/brand-guidelines/SKILL.md) — Applies Anthropic's off</p>
-  <div class="dates">added 2026-09-17 15:41 · updated 2026-09-17 15:41</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: brand-guidelines</h2>
 
 <p>Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/brand-guidelines/SKILL.md) — Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand colors or style guidelines, visual formatting.</p>
@@ -4072,9 +4072,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- Maintains color fidelity across different systems</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/brand-guidelines.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T13:16:19.000Z" data-updated="2026-09-17T13:16:19.000Z" data-name="browser-dom cdp tabs expose the dom: query it, click/select/fill by selector, fall back to">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="browser-dom cdp tabs expose the dom: query it, click/select/fill by selector, fall back to">
   <h2>browser-dom</h2><span class="badge task">task-built playbook</span><p class="desc">CDP tabs expose the DOM: query it, click/select/fill by selector, fall back to</p>
-  <div class="dates">added 2026-09-17 13:16 · updated 2026-09-17 13:16</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: browser-dom — drive pages by structure, not pixels (Gemini-style)</h2>
 
 <p>CDP tabs expose the DOM: query it, click/select/fill by selector, fall back to</p>
@@ -4095,9 +4095,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- Logins/payments: stay present, one step at a time, staging before production.</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/browser-dom.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17T15:41:17.000Z" data-updated="2026-09-17T15:41:17.000Z" data-name="canvas-design imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/canvas-design/skill.md) — create beautiful visual ar">
+<article class="card" data-origin="imported" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="canvas-design imported from [anthropics/skills](https://github.com/anthropics/skills/blob/head/skills/canvas-design/skill.md) — create beautiful visual ar">
   <h2>canvas-design</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/anthropics/skills">anthropics/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/canvas-design/SKILL.md) — Create beautiful visual ar</p>
-  <div class="dates">added 2026-09-17 15:41 · updated 2026-09-17 15:41</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: canvas-design</h2>
 
 <p>Imported from [anthropics/skills](https://github.com/anthropics/skills/blob/HEAD/skills/canvas-design/SKILL.md) — Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a poster, piece of art, design, or other static piece. Create ori.</p>
@@ -4205,9 +4205,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>To create museum or magazine quality work, use the design philosophy as the foundation. Create one single page, highly visual, design-forward PDF or PNG output (unless asked for more pages). Generally use repeating patterns and perfect shapes. Treat the abstract philosophical design as if it were a scientific bible, borrowing the visual language of systematic observation—dense accumulation of marks, repeated elements, or layered patterns that build meaning through patient repetition and reward sustained viewing. Add sparse, clinical typography and systematic reference markers that suggest this could be a diagram from an imaginary discipline, treating the invisible subject with the same reverence typically reserved for documenting observable p</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/canvas-design.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T14:03:47.000Z" data-updated="2026-09-17T14:03:47.000Z" data-name="chat-telegram talk to the agent from your phone like chatgpt mobile: message → it works →">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="chat-telegram talk to the agent from your phone like chatgpt mobile: message → it works →">
   <h2>chat-telegram</h2><span class="badge task">task-built playbook</span><p class="desc">Talk to the agent from your phone like ChatGPT mobile: message → it works →</p>
-  <div class="dates">added 2026-09-17 14:03 · updated 2026-09-17 14:03</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: chat-telegram — the agent in your pocket (ChatGPT-mobile parity)</h2>
 
 <p>Talk to the agent from your phone like ChatGPT mobile: message → it works →</p>
@@ -4233,9 +4233,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- Long jobs: ask for progress ("status?") — or use <code>--every</code>/daemon + check back.</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/chat-telegram.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17T16:04:50.000Z" data-updated="2026-09-17T16:04:50.000Z" data-name="claude-api imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/claude-api/skill.md) — |-.">
+<article class="card" data-origin="imported" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="claude-api imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/claude-api/skill.md) — |-.">
   <h2>claude-api</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/ACHUTHAN17/skills">ACHUTHAN17/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/claude-api/SKILL.md) — |-.</p>
-  <div class="dates">added 2026-09-17 16:04 · updated 2026-09-17 16:04</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: claude-api</h2>
 
 <p>Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/claude-api/SKILL.md) — |-.</p>
@@ -4295,9 +4295,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>| <code>upgrade</code> | Upgrade the project's Anthropic SDK dependency across a major version - currently the Python SDK, <code>anthropic</code> 0.x -&gt; 1.x. Trailing words may name the language and/or a scope (<code>upgrade python</code>, <code>upgrade python sdk src/</code>). <strong>Read <code>python/claude-api/sdk-upgrade.md</code> immediately</strong> and follow it in order: Step 0 (confirm scope, then establish the current and target versions - a published 1.x must exist before you write a pin), the Step 1 inventory, each numbered section, then verification and the report. Do not summarize the guide - execute it. If the detected or named language has no <code>sdk-upgrade.md</code> in this skill, say that no major-version upgrade guide is bundled for that SDK yet and point the user at that SDK's CHANGELOG (repositories in <code>shared/live-sources.md</code>); do not improvise one from the Python guide. This is not model</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/claude-api.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-18T21:10:54.000Z" data-updated="2026-09-18T21:10:54.000Z" data-name="claude-code-now-reads-agents-md-if-there auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="claude-code-now-reads-agents-md-if-there auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>claude-code-now-reads-agents-md-if-there</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-18 21:10 · updated 2026-09-18 21:10</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: Claude Code now reads AGENTS.md if there is no Claude.md</h2>
 
 <p>Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -4429,9 +4429,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://files.cesm.ucar.edu/models/clm/5.0/CLM50_Tech_Note.pdf</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/clm.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T15:19:44.000Z" data-updated="2026-09-17T15:19:44.000Z" data-name="coding auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="coding auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>coding</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 15:19 · updated 2026-09-17 15:19</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: coding</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -4480,9 +4480,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://natrongithub.github.io/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/compositor-the-photoshop-alternative-for.md">view source on GitHub</a></article>
-<article class="card" data-origin="auto" data-added="2026-09-17T11:53:58.000Z" data-updated="2026-09-17T11:53:58.000Z" data-name="computer-use faithful mirror of the computer use model (chatgpt desktop, windows): an agent">
+<article class="card" data-origin="auto" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="computer-use faithful mirror of the computer use model (chatgpt desktop, windows): an agent">
   <h2>computer-use</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from OpenAI Computer Use docs (live web research)</div><p class="desc">Faithful mirror of the Computer Use model (ChatGPT desktop, Windows): an agent</p>
-  <div class="dates">added 2026-09-17 11:53 · updated 2026-09-17 11:53</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: computer-use — see + operate GUIs exactly like OpenAI Computer Use</h2>
 
 <p>Faithful mirror of the Computer Use model (ChatGPT desktop, Windows): an agent</p>
@@ -4541,9 +4541,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  must be reviewable on disk.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/computer-use.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T13:16:19.000Z" data-updated="2026-09-17T13:16:19.000Z" data-name="dashboard `node src/index.js --ui 8080` → open http://127.0.0.1:8080 (loopback only).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="dashboard `node src/index.js --ui 8080` → open http://127.0.0.1:8080 (loopback only).">
   <h2>dashboard</h2><span class="badge task">task-built playbook</span><p class="desc">`node src/index.js --ui 8080` → open http://127.0.0.1:8080 (loopback only).</p>
-  <div class="dates">added 2026-09-17 13:16 · updated 2026-09-17 13:16</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: dashboard — the web UI (chat, live stream, click-to-approve)</h2>
 
 <p><code>node src/index.js --ui 8080</code> → open http://127.0.0.1:8080 (loopback only).</p>
@@ -4716,9 +4716,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>| "The price per token is well known" | Numbers you did not compute from the transcript are invented. Cite or drop. |</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/diagnosing-superpowers.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17T16:04:50.000Z" data-updated="2026-09-17T16:04:50.000Z" data-name="discernment-nudge imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/discernment-nudge/skill.md) — &gt;.">
+<article class="card" data-origin="imported" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="discernment-nudge imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/discernment-nudge/skill.md) — &gt;.">
   <h2>discernment-nudge</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/ACHUTHAN17/skills">ACHUTHAN17/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/discernment-nudge/SKILL.md) — &gt;.</p>
-  <div class="dates">added 2026-09-17 16:04 · updated 2026-09-17 16:04</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: discernment-nudge</h2>
 
 <p>Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/discernment-nudge/SKILL.md) — &gt;.</p>
@@ -4908,9 +4908,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://docs.rs/disktree/latest/disktree/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/disktree-a-treemap-for-finding-and-remov.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17T19:36:25.000Z" data-updated="2026-09-17T19:36:25.000Z" data-name="dispatching-parallel-agents imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/dispatching-parallel-agents/skill.md) — use when facin">
+<article class="card" data-origin="imported" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="dispatching-parallel-agents imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/dispatching-parallel-agents/skill.md) — use when facin">
   <h2>dispatching-parallel-agents</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/dispatching-parallel-agents/SKILL.md) — Use when facin</p>
-  <div class="dates">added 2026-09-17 19:36 · updated 2026-09-17 19:36</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: dispatching-parallel-agents</h2>
 
 <p>Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/dispatching-parallel-agents/SKILL.md) — Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies.</p>
@@ -5080,9 +5080,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>4. <strong>Spot check</strong> - Agents can make systematic errors</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/dispatching-parallel-agents.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17T16:04:50.000Z" data-updated="2026-09-17T16:04:50.000Z" data-name="doc-coauthoring imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/doc-coauthoring/skill.md) — guide users through a st">
+<article class="card" data-origin="imported" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="doc-coauthoring imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/doc-coauthoring/skill.md) — guide users through a st">
   <h2>doc-coauthoring</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/ACHUTHAN17/skills">ACHUTHAN17/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/doc-coauthoring/SKILL.md) — Guide users through a st</p>
-  <div class="dates">added 2026-09-17 16:04 · updated 2026-09-17 16:04</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: doc-coauthoring</h2>
 
 <p>Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/doc-coauthoring/SKILL.md) — Guide users through a structured workflow for co-authoring documentation. Use when user wants to write documentation, proposals, technical specs, decision docs, or similar structured content. This wor.</p>
@@ -5263,9 +5263,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>-</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/doc-coauthoring.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17T16:04:50.000Z" data-updated="2026-09-17T16:04:50.000Z" data-name="docx imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/docx/skill.md) — "use this skill whenever the user w">
+<article class="card" data-origin="imported" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="docx imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/docx/skill.md) — "use this skill whenever the user w">
   <h2>docx</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/ACHUTHAN17/skills">ACHUTHAN17/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/docx/SKILL.md) — "Use this skill whenever the user w</p>
-  <div class="dates">added 2026-09-17 16:04 · updated 2026-09-17 16:04</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: docx</h2>
 
 <p>Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/docx/SKILL.md) — "Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx files) or Word templates (.dotx files). Triggers include: any mention of 'Word doc', 'word document',.</p>
@@ -5358,9 +5358,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p><code>docx</code> (npm, preinstalled — install only if <code>require('docx')</code> fails) · <code>pandoc</code> · LibreOffice (<code>soffice</code>) · <code>pdftoppm</code> (Poppler)</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/docx.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T11:28:22.000Z" data-updated="2026-09-17T11:28:22.000Z" data-name="drag-drop `screen_drag {x1,y1,x2,y2}` moves with the left button held, in smooth steps.">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="drag-drop `screen_drag {x1,y1,x2,y2}` moves with the left button held, in smooth steps.">
   <h2>drag-drop</h2><span class="badge task">task-built playbook</span><p class="desc">`screen_drag {x1,y1,x2,y2}` moves with the left button held, in smooth steps.</p>
-  <div class="dates">added 2026-09-17 11:28 · updated 2026-09-17 11:28</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: drag-drop — mouse drags, sliders, selections, drag-and-drop on Windows</h2>
 
 <p><code>screen_drag {x1,y1,x2,y2}</code> moves with the left button held, in smooth steps.</p>
@@ -5444,9 +5444,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.noxalis-lab.io/activites-precoces-dagents-ia-rebelles-et-tentatives-de-piratage-via-urlquery-net/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/early-rogue-ai-agent-activity-and-attemp.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T12:50:03.000Z" data-updated="2026-09-17T12:50:03.000Z" data-name="essential-windows-run-commands auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="essential-windows-run-commands auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>essential-windows-run-commands</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 12:50 · updated 2026-09-17 12:50</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: essential windows run commands</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -5492,9 +5492,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.windowslatest.com/2026/09/25/microsoft-is-breaking-a-decades-old-excel-rule-one-cell-can-now-hold-an-entire-list/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/excel-now-supports-multiple-values-in-a-.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17T19:36:25.000Z" data-updated="2026-09-17T19:36:25.000Z" data-name="executing-plans imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/executing-plans/skill.md) — use when you have a writte">
+<article class="card" data-origin="imported" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="executing-plans imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/executing-plans/skill.md) — use when you have a writte">
   <h2>executing-plans</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/executing-plans/SKILL.md) — Use when you have a writte</p>
-  <div class="dates">added 2026-09-17 19:36 · updated 2026-09-17 19:36</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: executing-plans</h2>
 
 <p>Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/executing-plans/SKILL.md) — Use when you have a written implementation plan to execute in a separate session with review checkpoints.</p>
@@ -5561,9 +5561,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- Never start implementation on main/master branch without explicit user consent</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/executing-plans.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-18T06:35:28.000Z" data-updated="2026-09-18T06:35:28.000Z" data-name="fast-jev-compaction-claude-code-plugin-t auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="fast-jev-compaction-claude-code-plugin-t auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>fast-jev-compaction-claude-code-plugin-t</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-18 06:35 · updated 2026-09-18 06:35</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: fast-jev-compaction Claude Code plugin that replaces the compaction summary with Jev decisions: every tool call and resu</h2>
 
 <p>Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -5591,9 +5591,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.gitstars.io/repo/github/tamaratran/fast-jev-compaction</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/fast-jev-compaction-claude-code-plugin-t.md">view source on GitHub</a></article>
-<article class="card" data-origin="auto" data-added="2026-09-17T11:36:17.000Z" data-updated="2026-09-17T11:36:17.000Z" data-name="file-fetch-upload file manager parity: if explorer can see it, you can fetch it. locked sqlite">
+<article class="card" data-origin="auto" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="file-fetch-upload file manager parity: if explorer can see it, you can fetch it. locked sqlite">
   <h2>file-fetch-upload</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from locked-file + upload research</div><p class="desc">File Manager parity: if Explorer can see it, you can fetch it. Locked SQLite</p>
-  <div class="dates">added 2026-09-17 11:36 · updated 2026-09-17 11:36</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: file-fetch-upload — fetch ANY file (even locked/in-use) and upload it</h2>
 
 <p>File Manager parity: if Explorer can see it, you can fetch it. Locked SQLite</p>
@@ -5626,9 +5626,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>branch before the first push of a session.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/file-fetch-upload.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17T19:36:25.000Z" data-updated="2026-09-17T19:36:25.000Z" data-name="finishing-a-development-branch imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/finishing-a-development-branch/skill.md) — use when im">
+<article class="card" data-origin="imported" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="finishing-a-development-branch imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/finishing-a-development-branch/skill.md) — use when im">
   <h2>finishing-a-development-branch</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/finishing-a-development-branch/SKILL.md) — Use when im</p>
-  <div class="dates">added 2026-09-17 19:36 · updated 2026-09-17 19:36</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: finishing-a-development-branch</h2>
 
 <p>Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/finishing-a-development-branch/SKILL.md) — Use when implementation is complete, all tests pass, and you need to decide how to integrate the work.</p>
@@ -5882,9 +5882,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://lobste.rs/s/ah5jnf/forging_1024_bit_rsa_signatures_nearly</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/forging-1024-bit-rsa-signatures-in-nearl.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T23:42:51.000Z" data-updated="2026-09-17T23:42:51.000Z" data-name="fujitsu-launches-made-in-japan-next-gene auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="fujitsu-launches-made-in-japan-next-gene auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>fujitsu-launches-made-in-japan-next-gene</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 23:42 · updated 2026-09-17 23:42</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: Fujitsu launches made-in-Japan next-generation CPU FUJITSU-MONAKA</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -5904,9 +5904,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.prnewswire.com/news-releases/fujitsu-launches-made-in-japan-next-generation-cpu-fujitsu-monaka-and-fujitsu-monaka-server-for-sovereign-ai-infrastructure-302877394.html</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/fujitsu-launches-made-in-japan-next-gene.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T14:36:51.000Z" data-updated="2026-09-17T14:36:51.000Z" data-name="github-readme-badges-with-shields-io auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="github-readme-badges-with-shields-io auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>github-readme-badges-with-shields-io</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 14:36 · updated 2026-09-17 14:36</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: github readme badges with shields.io</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -5931,9 +5931,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://readmewriter.swiftlabs.dev/blog/github-readme-badges</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/github-readme-badges-with-shields-io.md">view source on GitHub</a></article>
-<article class="card" data-origin="auto" data-added="2026-09-17T12:32:16.000Z" data-updated="2026-09-17T12:32:16.000Z" data-name="github self-learned from github docs + deverrors + cli/cli (see memory note). this is">
+<article class="card" data-origin="auto" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="github self-learned from github docs + deverrors + cli/cli (see memory note). this is">
   <h2>github</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from GitHub docs + real push failures</div><p class="desc">Self-learned from GitHub docs + DevErrors + cli/cli (see memory note). This is</p>
-  <div class="dates">added 2026-09-17 12:32 · updated 2026-09-17 12:32</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: github — push itself, multi-account auth, device flow (researched live)</h2>
 
 <p>Self-learned from GitHub docs + DevErrors + cli/cli (see memory note). This is</p>
@@ -6114,9 +6114,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://llm-stats.com/blog/research/best-practices-llms-coding</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/how-to-keep-enjoying-programming-in-a-wo.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T23:42:51.000Z" data-updated="2026-09-17T23:42:51.000Z" data-name="how-to-write-with-an-llm auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="how-to-write-with-an-llm auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>how-to-write-with-an-llm</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 23:42 · updated 2026-09-17 23:42</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: How to Write with an LLM</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -6253,9 +6253,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://madewithjev.com/builds/jev-ultrafast</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/jev-ultrafast-fastest-and-cheapest-web-a.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-18T06:35:28.000Z" data-updated="2026-09-18T06:35:28.000Z" data-name="jev-ultrafast-i-am-speed auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="jev-ultrafast-i-am-speed auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>jev-ultrafast-i-am-speed</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-18 06:35 · updated 2026-09-18 06:35</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: jev-ultrafast i. am. speed.</h2>
 
 <p>Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -6306,9 +6306,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://dev.to/valyuai/how-to-use-jev-a-practical-guide-to-typesafes-system-one-model-g5e</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/jevlike.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-18T11:46:35.000Z" data-updated="2026-09-18T11:46:35.000Z" data-name="jianying-headless-private-source-preview auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="jianying-headless-private-source-preview auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>jianying-headless-private-source-preview</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-18 11:46 · updated 2026-09-18 11:46</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: jianying-headless Private source preview: native Jianying drafts, isolated editing/export, and standalone Agent Skill.</h2>
 
 <p>Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -6384,9 +6384,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://x.com/jaredpalmer/status/2101028325472841920</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/kev-tiny-jev-like-model-built-on-top-of-.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T14:48:22.000Z" data-updated="2026-09-17T14:48:22.000Z" data-name="keyboard-shortcuts auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="keyboard-shortcuts auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>keyboard-shortcuts</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 14:48 · updated 2026-09-17 14:48</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: keyboard shortcuts</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -6575,9 +6575,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://radicazz.github.io/laya/getting-started/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/laya.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T14:28:22.000Z" data-updated="2026-09-17T14:28:22.000Z" data-name="llm-master-llm-prompt-engineering-rag-ai auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="llm-master-llm-prompt-engineering-rag-ai auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>llm-master-llm-prompt-engineering-rag-ai</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 14:28 · updated 2026-09-17 14:28</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: llm-master 大模型（LLM）全栈学习路线与中文教程🔥：覆盖 Prompt Engineering、RAG、AI Agent、MCP、微调、模型部署、Transformer、AI 编程与大厂面试，从入门到生产实践。</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -6636,9 +6636,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://usemagpie.ai/docs/start</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/magpie-every-agent-s-model-one-place-cod.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T13:16:19.000Z" data-updated="2026-09-17T14:03:47.000Z" data-name="mcp any mcp server (sqlite, postgres, github, playwright, filesystem…) becomes">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="mcp any mcp server (sqlite, postgres, github, playwright, filesystem…) becomes">
   <h2>mcp</h2><span class="badge task">task-built playbook</span><p class="desc">Any MCP server (SQLite, Postgres, GitHub, Playwright, filesystem…) becomes</p>
-  <div class="dates">added 2026-09-17 13:16 · updated 2026-09-17 14:03</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: mcp — plug the whole MCP ecosystem in as tools</h2>
 
 <p>Any MCP server (SQLite, Postgres, GitHub, Playwright, filesystem…) becomes</p>
@@ -6757,9 +6757,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://zentor.ai/blog/bespoke-nimble</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/nimble-local-typed-decisions-contrastive.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T13:47:44.000Z" data-updated="2026-09-17T13:47:44.000Z" data-name="office-docs researched from microsoft graph docs, python-docx/openpyxl/python-pptx guides,">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="office-docs researched from microsoft graph docs, python-docx/openpyxl/python-pptx guides,">
   <h2>office-docs</h2><span class="badge task">task-built playbook</span><p class="desc">Researched from Microsoft Graph docs, python-docx/openpyxl/python-pptx guides,</p>
-  <div class="dates">added 2026-09-17 13:47 · updated 2026-09-17 13:47</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: office-docs — generate Word/Excel/PowerPoint/PDF locally AND on M365</h2>
 
 <p>Researched from Microsoft Graph docs, python-docx/openpyxl/python-pptx guides,</p>
@@ -6854,9 +6854,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.glean.com/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/open-glean-an-open-source-ai-platform-fo.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T16:11:09.000Z" data-updated="2026-09-17T16:11:09.000Z" data-name="open-models researched from opencode (sst/opencode, mit ~170k stars), openrouter docs,">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="open-models researched from opencode (sst/opencode, mit ~170k stars), openrouter docs,">
   <h2>open-models</h2><span class="badge task">task-built playbook</span><p class="desc">Researched from OpenCode (sst/opencode, MIT ~170k stars), OpenRouter docs,</p>
-  <div class="dates">added 2026-09-17 16:11 · updated 2026-09-17 16:11</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: open-models — the LLM landscape, free tiers, omni-routing (researched live)</h2>
 
 <p>Researched from OpenCode (sst/opencode, MIT ~170k stars), OpenRouter docs,</p>
@@ -6993,9 +6993,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/3hs4n/pdoomvideo/blob/main/README.md</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/pdoomvideo-source-code-for-the-claude-op.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-18T21:10:54.000Z" data-updated="2026-09-18T21:10:54.000Z" data-name="photon-emission-guided-laser-fault-injec auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="photon-emission-guided-laser-fault-injec auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>photon-emission-guided-laser-fault-injec</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-18 21:10 · updated 2026-09-18 21:10</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: Photon-Emission-Guided Laser Fault Injection Enables RP2350 Secure Debug</h2>
 
 <p>Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -7019,9 +7019,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://courk.cc/rp2350-challenge-laser</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/photon-emission-guided-laser-fault-injec.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17T19:36:25.000Z" data-updated="2026-09-17T19:36:25.000Z" data-name="receiving-code-review imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/receiving-code-review/skill.md) — use when receiving c">
+<article class="card" data-origin="imported" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="receiving-code-review imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/receiving-code-review/skill.md) — use when receiving c">
   <h2>receiving-code-review</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/receiving-code-review/SKILL.md) — Use when receiving c</p>
-  <div class="dates">added 2026-09-17 19:36 · updated 2026-09-17 19:36</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: receiving-code-review</h2>
 
 <p>Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/receiving-code-review/SKILL.md) — Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionable - requires technical rigor and verification, not performative.</p>
@@ -7229,9 +7229,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>When replying to inline review comments on GitHub, reply in the comment thread (<code>gh api repos/{owner}/{repo}/pulls/{pr}/comments/{id}/replies</code>), not as a top-level PR comment.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/receiving-code-review.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T21:42:23.000Z" data-updated="2026-09-17T21:42:23.000Z" data-name="reelbench-skills-learning-notes-and-tool auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="reelbench-skills-learning-notes-and-tool auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>reelbench-skills-learning-notes-and-tool</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 21:42 · updated 2026-09-17 21:42</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: reelbench-skills Learning notes and tooling skills for AI video - AI 视频相关的学习与工具 skill</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -7257,9 +7257,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://skillsllm.com/skill/reelbench-skills</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/reelbench-skills-learning-notes-and-tool.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17T19:36:25.000Z" data-updated="2026-09-17T19:36:25.000Z" data-name="requesting-code-review imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/requesting-code-review/skill.md) — use when completing">
+<article class="card" data-origin="imported" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="requesting-code-review imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/requesting-code-review/skill.md) — use when completing">
   <h2>requesting-code-review</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/requesting-code-review/SKILL.md) — Use when completing</p>
-  <div class="dates">added 2026-09-17 19:36 · updated 2026-09-17 19:36</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: requesting-code-review</h2>
 
 <p>Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/requesting-code-review/SKILL.md) — Use when completing tasks, implementing major features, or before merging to verify work meets requirements.</p>
@@ -7383,9 +7383,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.technologyreview.com/2026/08/26/1143013/the-inside-story-on-why-openai-agents-hacked-hugging-face/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/revealing-the-details-of-how-openai-agen.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T14:03:47.000Z" data-updated="2026-09-17T14:03:47.000Z" data-name="schedule three schedulers, pick by need. all re-read skills + memory each run.">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="schedule three schedulers, pick by need. all re-read skills + memory each run.">
   <h2>schedule</h2><span class="badge task">task-built playbook</span><p class="desc">Three schedulers, pick by need. All re-read skills + memory each run.</p>
-  <div class="dates">added 2026-09-17 14:03 · updated 2026-09-17 14:03</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: schedule — recurring + event-driven tasks (ChatGPT-Schedules parity)</h2>
 
 <p>Three schedulers, pick by need. All re-read skills + memory each run.</p>
@@ -7440,9 +7440,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://gitcode.com/gh_mirrors/search59/Search</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/search-a-small-fast-webkit-browser-for-m.md">view source on GitHub</a></article>
-<article class="card" data-origin="auto" data-added="2026-09-17T12:00:26.000Z" data-updated="2026-09-17T12:00:26.000Z" data-name="self-learn when a task needs knowledge you don't have (new app, new site, new api, stale">
+<article class="card" data-origin="auto" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="self-learn when a task needs knowledge you don't have (new app, new site, new api, stale">
   <h2>self-learn</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned — the research-install-verify loop itself</div><p class="desc">When a task needs knowledge you don't have (new app, new site, new API, stale</p>
-  <div class="dates">added 2026-09-17 12:00 · updated 2026-09-17 12:00</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: self-learn — teach yourself new skills from the web, live, mid-task</h2>
 
 <p>When a task needs knowledge you don't have (new app, new site, new API, stale</p>
@@ -7480,9 +7480,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <div class="li">- If research contradicts twice, stop and ask the user instead of a 3rd guess.</div>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/self-learn.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-18T15:12:54.000Z" data-updated="2026-09-18T15:12:54.000Z" data-name="semif-semantic-ifs-from-open-models-on-a auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="semif-semantic-ifs-from-open-models-on-a auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>semif-semantic-ifs-from-open-models-on-a</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-18 15:12 · updated 2026-09-18 15:12</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: SemIf Semantic ifs from open models, on a 3090 at home. Independent; not affiliated with Jev or TypeSafe.</h2>
 
 <p>Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -7560,9 +7560,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://news.ycombinator.com/item?id=47149586</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-a-competition-for-small-neural-n.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T18:33:56.000Z" data-updated="2026-09-17T18:33:56.000Z" data-name="show-hn-aclif-agent-cli-framework-one-gr auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="show-hn-aclif-agent-cli-framework-one-gr auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-aclif-agent-cli-framework-one-gr</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 18:33 · updated 2026-09-17 18:33</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Aclif – Agent CLI framework: one grammar, canonical names across SaaS</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -7612,9 +7612,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://hn.nuxt.dev/item/49799241</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-an-atlas-of-system-designs-with-.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-18T18:31:03.000Z" data-updated="2026-09-18T18:31:03.000Z" data-name="show-hn-ax-check-com-can-agents-use-your auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="show-hn-ax-check-com-can-agents-use-your auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-ax-check-com-can-agents-use-your</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-18 18:31 · updated 2026-09-18 18:31</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Ax-check.com – Can agents use your product?</h2>
 
 <p>Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -7666,9 +7666,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://hn.nuxt.dev/item/49784873</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-bitcoin-rs-an-ai-assisted-bitcoi.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-18T18:31:03.000Z" data-updated="2026-09-18T18:31:03.000Z" data-name="show-hn-cactus-needle-3-8-29mb-automatio auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="show-hn-cactus-needle-3-8-29mb-automatio auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-cactus-needle-3-8-29mb-automatio</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-18 18:31 · updated 2026-09-18 18:31</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Cactus Needle 3: 8-29MB automation models can match DeepSeek V4 Flash</h2>
 
 <p>Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -7954,9 +7954,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.simpleprog.com/news/show-hn-whiteboard-yc-w26-an-open-source-ide-for-thoughtful-software-d-8634cc1b</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-whiteboard-yc-w26-an-open-source.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17T19:36:25.000Z" data-updated="2026-09-17T19:36:25.000Z" data-name="subagent-driven-development imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/subagent-driven-development/skill.md) — use when execu">
+<article class="card" data-origin="imported" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="subagent-driven-development imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/subagent-driven-development/skill.md) — use when execu">
   <h2>subagent-driven-development</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/subagent-driven-development/SKILL.md) — Use when execu</p>
-  <div class="dates">added 2026-09-17 19:36 · updated 2026-09-17 19:36</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: subagent-driven-development</h2>
 
 <p>Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/subagent-driven-development/SKILL.md) — Use when executing implementation plans with independent tasks in the current session.</p>
@@ -8087,9 +8087,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>Never start implementation on a m</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/subagent-driven-development.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T11:28:22.000Z" data-updated="2026-09-17T11:28:22.000Z" data-name="system-control you are the operator: windows, processes, services, registry, power, clipboard.">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="system-control you are the operator: windows, processes, services, registry, power, clipboard.">
   <h2>system-control</h2><span class="badge task">task-built playbook</span><p class="desc">You are the operator: windows, processes, services, registry, power, clipboard.</p>
-  <div class="dates">added 2026-09-17 11:28 · updated 2026-09-17 11:28</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: system-control — take whole-system control of this Windows machine</h2>
 
 <p>You are the operator: windows, processes, services, registry, power, clipboard.</p>
@@ -8127,9 +8127,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>5. One change → verify → next change. Never chain blind destructive steps.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/system-control.md">view source on GitHub</a></article>
-<article class="card" data-origin="imported" data-added="2026-09-17T19:36:25.000Z" data-updated="2026-09-17T19:36:25.000Z" data-name="systematic-debugging imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/systematic-debugging/skill.md) — use when encountering">
+<article class="card" data-origin="imported" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="systematic-debugging imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/systematic-debugging/skill.md) — use when encountering">
   <h2>systematic-debugging</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/systematic-debugging/SKILL.md) — Use when encountering</p>
-  <div class="dates">added 2026-09-17 19:36 · updated 2026-09-17 19:36</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: systematic-debugging</h2>
 
 <p>Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/systematic-debugging/SKILL.md) — Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes.</p>
@@ -8387,9 +8387,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>| "One more fix attempt" (after 2+ failures) | 3+</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/systematic-debugging.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T16:38:04.000Z" data-updated="2026-09-17T16:38:04.000Z" data-name="teach-agentic-browsing auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="teach-agentic-browsing auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>teach-agentic-browsing</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 16:38 · updated 2026-09-17 16:38</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: teach/agentic browsing</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -8417,9 +8417,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://blog.gyrence.com/blog/what-is-agentic-web-browsing-a-developers-guide</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/teach-agentic-browsing.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T15:41:44.000Z" data-updated="2026-09-17T15:41:44.000Z" data-name="teach-auto-learn-new-skills auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="teach-auto-learn-new-skills auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>teach-auto-learn-new-skills</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 15:41 · updated 2026-09-17 15:41</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: auto learn new skills</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -8448,9 +8448,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://opencode.ai/docs/skills/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/teach-auto-learn-new-skills.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T15:37:41.000Z" data-updated="2026-09-17T15:37:41.000Z" data-name="teach-coding-what-should-the-agent-learn auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="teach-coding-what-should-the-agent-learn auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>teach-coding-what-should-the-agent-learn</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 15:37 · updated 2026-09-17 15:37</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: coding ### What should the agent learn?</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -8480,9 +8480,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://tweag.github.io/agentic-coding-handbook/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/teach-coding-what-should-the-agent-learn.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T16:05:20.000Z" data-updated="2026-09-17T16:05:20.000Z" data-name="teach-keyboard-shortcuts auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="teach-keyboard-shortcuts auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>teach-keyboard-shortcuts</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 16:05 · updated 2026-09-17 16:05</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: keyboard shortcuts</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -8512,9 +8512,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.geeksforgeeks.org/computer-science-fundamentals/computer-shortcut-keys/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/teach-keyboard-shortcuts.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T18:33:56.000Z" data-updated="2026-09-17T18:33:56.000Z" data-name="teach-teach-agentic-browsing auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="teach-teach-agentic-browsing auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>teach-teach-agentic-browsing</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 18:33 · updated 2026-09-17 18:33</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: teach/agentic browsing</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -8542,9 +8542,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://developer.chrome.com/docs/lighthouse/agentic-browsing/scoring</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/teach-teach-agentic-browsing.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T16:08:07.000Z" data-updated="2026-09-17T16:08:07.000Z" data-name="teach-what-should-the-agent-learn-teach- auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="teach-what-should-the-agent-learn-teach- auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>teach-what-should-the-agent-learn-teach-</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 16:08 · updated 2026-09-17 16:08</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: ### What should the agent learn?</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -8573,9 +8573,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://developers.openai.com/tracks/building-agents</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/teach-what-should-the-agent-learn-teach-.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T15:29:49.000Z" data-updated="2026-09-17T15:29:49.000Z" data-name="teach-windows-snipping-tool-screenshots- auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="teach-windows-snipping-tool-screenshots- auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>teach-windows-snipping-tool-screenshots-</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 15:29 · updated 2026-09-17 15:29</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: windows snipping tool screenshots How to capture, annotate, and save screenshots with Snipping Tool (Win+Shift+S) and wh</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -8744,9 +8744,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://enterprisedna.co/resources/ai-pulse/ai-pulse-2026-09-17-computer-use-agent-claims-0-0002-a-step/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/typesafe-computer-use-computer-use-for-a.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T11:28:22.000Z" data-updated="2026-09-17T11:28:22.000Z" data-name="typing-editing text entry without a dom: keyboard injection + clipboard. needs an interactive">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="typing-editing text entry without a dom: keyboard injection + clipboard. needs an interactive">
   <h2>typing-editing</h2><span class="badge task">task-built playbook</span><p class="desc">Text entry without a DOM: keyboard injection + clipboard. Needs an interactive</p>
-  <div class="dates">added 2026-09-17 11:28 · updated 2026-09-17 11:28</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: typing-editing — type, edit text and drive inputs anywhere on Windows</h2>
 
 <p>Text entry without a DOM: keyboard injection + clipboard. Needs an interactive</p>
@@ -8779,9 +8779,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p><code>.env</code>. Always confirm focus with a screenshot before any keystroke run.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/typing-editing.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T11:28:22.000Z" data-updated="2026-09-17T11:28:22.000Z" data-name="uia-click windows exposes every button to ui automation. prefer this over `screen_click`">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="uia-click windows exposes every button to ui automation. prefer this over `screen_click`">
   <h2>uia-click</h2><span class="badge task">task-built playbook</span><p class="desc">Windows exposes every button to UI Automation. Prefer this over `screen_click`</p>
-  <div class="dates">added 2026-09-17 11:28 · updated 2026-09-17 11:28</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: uia-click — trigger ANY button by name (no coordinates, no focus tricks)</h2>
 
 <p>Windows exposes every button to UI Automation. Prefer this over <code>screen_click</code></p>
@@ -8874,9 +8874,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/per-simmons/unreal-agent-harness</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/unreal-agent-async-first-agent-harness.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-18T01:33:14.000Z" data-updated="2026-09-18T01:33:14.000Z" data-name="video-generator-client-async-python-wrap auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="video-generator-client-async-python-wrap auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>video-generator-client-async-python-wrap</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-18 01:33 · updated 2026-09-18 01:33</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: video-generator-client Async Python wrapper for Seedance, Kling, MiniMax and Wan video generation. Supports CLI and a lo</h2>
 
 <p>Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -8900,9 +8900,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://cpu3d.com/en/aivideo/video-generator-client/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/video-generator-client-async-python-wrap.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T21:42:23.000Z" data-updated="2026-09-17T21:42:23.000Z" data-name="viserys-agent auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="viserys-agent auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>viserys-agent</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 21:42 · updated 2026-09-17 21:42</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: viserys-agent</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -9063,9 +9063,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.capsulesecurity.io/blog-post/why-mcp-gateways-are-a-bad-idea-and-what-to-do-instead</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/why-mcp-was-always-a-bad-idea.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-18T01:33:14.000Z" data-updated="2026-09-18T01:33:14.000Z" data-name="window-sweaters-a-macos-menu-bar-app-tha auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="window-sweaters-a-macos-menu-bar-app-tha auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>window-sweaters-a-macos-menu-bar-app-tha</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-18 01:33 · updated 2026-09-18 01:33</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: window-sweaters A macOS menu-bar app that dresses your windows in knitted borders.</h2>
 
 <p>Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -9087,9 +9087,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://x.com/saragordic/status/2098916110787916219</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/window-sweaters-a-macos-menu-bar-app-tha.md">view source on GitHub</a></article>
-<article class="card" data-origin="auto" data-added="2026-09-17T12:49:32.000Z" data-updated="2026-09-17T12:49:32.000Z" data-name="windows-clipboard-history auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="auto" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="windows-clipboard-history auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>windows-clipboard-history</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from Microsoft docs (chat request)</div><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 12:49 · updated 2026-09-17 12:49</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: windows clipboard history</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -9124,9 +9124,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.microsoft.com/en-us/windows/learning-center/how-to-use-clipboard-history-in-windows-11</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/windows-clipboard-history.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T14:52:21.000Z" data-updated="2026-09-17T14:52:21.000Z" data-name="windows-god-mode auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="windows-god-mode auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>windows-god-mode</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 14:52 · updated 2026-09-17 14:52</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: windows god mode folder</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -9152,9 +9152,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.majorgeeks.com/content/page/god_mode_windows.html</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/windows-god-mode.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T14:46:27.000Z" data-updated="2026-09-17T14:46:27.000Z" data-name="windows-snipping-tool-screenshots auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="windows-snipping-tool-screenshots auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>windows-snipping-tool-screenshots</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-17 14:46 · updated 2026-09-17 14:46</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: windows snipping tool screenshots</h2>
 
 <p>Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -9189,9 +9189,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.microsoft.com/en-us/windows/learning-center/how-to-use-snipping-tool-on-windows-screenshots-shortcuts-and-screen-recordings</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/windows-snipping-tool-screenshots.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T11:28:22.000Z" data-updated="2026-09-17T11:28:22.000Z" data-name="wordpress-build you build complete wordpress sites: install, theme, content, plugins, go-live.">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="wordpress-build you build complete wordpress sites: install, theme, content, plugins, go-live.">
   <h2>wordpress-build</h2><span class="badge task">task-built playbook</span><p class="desc">You build complete WordPress sites: install, theme, content, plugins, go-live.</p>
-  <div class="dates">added 2026-09-17 11:28 · updated 2026-09-17 11:28</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: wordpress-build — build WordPress sites on the web (Windows host)</h2>
 
 <p>You build complete WordPress sites: install, theme, content, plugins, go-live.</p>
@@ -9340,9 +9340,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://docs.rs/crate/wx-cli/latest</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/wx-cli-again-wechat-local-data-cli-query.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-18T11:46:35.000Z" data-updated="2026-09-18T11:46:35.000Z" data-name="zcode-the-glm-coding-agent-silently-uplo auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-18T23:02:34.000Z" data-updated="2026-09-18T23:02:34.000Z" data-name="zcode-the-glm-coding-agent-silently-uplo auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>zcode-the-glm-coding-agent-silently-uplo</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-18 11:46 · updated 2026-09-18 11:46</div>
+  <div class="dates">added 2026-09-18 23:02 · updated 2026-09-18 23:02</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: ZCode, the GLM coding agent, silently uploads your Git history</h2>
 
 <p>Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
