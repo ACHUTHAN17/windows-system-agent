@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">66 tools</span><span class="pill">149 skills (6 auto · 17 imported · 126 built)</span><span class="pill">generated 2026-09-26</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">66 tools</span><span class="pill">151 skills (6 auto · 17 imported · 128 built)</span><span class="pill">generated 2026-09-26</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-09-26T05:23:52.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-09-26T10:08:48.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 19:03 · updated 2026-09-26 05:23</div>
+  <div class="dates">added 2026-09-23 19:03 · updated 2026-09-26 10:08</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -462,9 +462,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://askarlabs.com/cve/wordpress/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-wordpress-vulnerability-scored-9-2-10-.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-22T17:44:05.000Z" data-updated="2026-09-26T05:23:52.000Z" data-name="a-wordpress-vulnerability-scored-9-2-10 auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-22T17:44:05.000Z" data-updated="2026-09-26T10:08:48.000Z" data-name="a-wordpress-vulnerability-scored-9-2-10 auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-wordpress-vulnerability-scored-9-2-10</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-22 17:44 · updated 2026-09-26 05:23</div>
+  <div class="dates">added 2026-09-22 17:44 · updated 2026-09-26 10:08</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: refresh and verify the a-wordpress-vulnerability-scored-9-2-10- skill</h2>
 
 <p>Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -6032,6 +6032,36 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://jevfast.com/hermes-jev-skills/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/hermes-jev-skills-jev-powered-model-rout.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-26" data-updated="2026-09-26" data-name="how-to-keep-enjoying-programming-in-a-wo auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>how-to-keep-enjoying-programming-in-a-wo</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-26  · updated 2026-09-26 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: How to keep enjoying programming in a world of LLMs</h2>
+
+<p>Auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions How to keep enjoying programming in a world of LLMs.</p>
+
+<h3>Steps</h3>
+<p>1. How to Use LLMs for Coding Without Losing Your Mind: A Pragmatic Guide - DEV Community Skip to content Navigation menu Search Powered by Algolia Search Log in Create account DEV Community Close Add reaction Like Unicorn Exploding Head Raised Hands Fire Jump to Comments Save Boost Pick as gem More..</p>
+<p>2. Copy link Copy link Copied to Clipboard Share to X Share to LinkedIn Share to Facebook Share to Mastodon Share Post via..</p>
+<p>3. Input Discipline (Before You Ask Anything) Rule: Never Prompt Raw Thought LLMs amplify ambiguity</p>
+<p>4. Enter fullscreen mode Exit fullscreen mode Good input: Context: - PHP 8.2 - Existing service RefundService - Amounts are integers (cents) - Manual approval required above 500 EUR Constraints: - Do not change</p>
+<p>5. Use tools like a todo tool, or better even markdown files wit</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- How to Use LLMs for Coding Without Losing Your Mind: A Pragmatic Guide</div>
+<p>  https://dev.to/suckup_de/how-to-use-llms-for-coding-without-losing-your-mind-a-pragmatic-guide-1dap</p>
+<div class="li">- How to keep enjoying programming in a world of LLMs</div>
+<p>  https://discourse.haskell.org/t/how-to-keep-enjoying-programming-in-a-world-of-llms/14705</p>
+<div class="li">- Best Practices for Coding LLMs: Top Tips &amp; Models</div>
+<p>  https://llm-stats.com/blog/research/best-practices-llms-coding</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/how-to-keep-enjoying-programming-in-a-wo.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T23:42:51.000Z" data-updated="2026-09-17T23:42:51.000Z" data-name="how-to-write-with-an-llm auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>how-to-write-with-an-llm</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-17 23:42 · updated 2026-09-17 23:42</div>
@@ -8528,6 +8558,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://windowsforum.com/tutorials/using-windows-snipping-tool-for-fast-annotated-screenshots.382467/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/teach-windows-snipping-tool-screenshots-.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-26" data-updated="2026-09-26" data-name="text-humanizer-a-completely-free-open-so auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>text-humanizer-a-completely-free-open-so</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-26  · updated 2026-09-26 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: text-humanizer A completely free open-sourced project designed to humanize AI-generated text through a multilingual LLM-</h2>
+
+<p>Auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions text-humanizer A completely free open-sourced project designed to humanize AI-generated text through a multilingual LLM-.</p>
+
+<h3>Steps</h3>
+<p>1. Step 2 carries Step 1 as conversation history for coherent humanization</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- text-humanizer · GitHub Topics · GitHub</div>
+<p>  https://github.com/topics/text-humanizer</p>
+<div class="li">- GitHub - dixon2004/ai-humanizer: AI Humanizer is a free, open-source ...</div>
+<p>  https://github.com/dixon2004/ai-humanizer</p>
+<div class="li">- Humanize-Text: Open-Source AI Text Humanizer That Bypasses GPTZero and ...</div>
+<p>  https://aibit.im/en/article/humanize-text-open-source-ai-text-humanizer</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/text-humanizer-a-completely-free-open-so.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-19T05:59:50.000Z" data-updated="2026-09-19T05:59:50.000Z" data-name="text-humanizer-text-humanizer-is-an-open auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>text-humanizer-text-humanizer-is-an-open</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-19 05:59 · updated 2026-09-19 05:59</div>
