@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">144 skills (6 auto · 17 imported · 121 built)</span><span class="pill">generated 2026-09-26</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">146 skills (6 auto · 17 imported · 123 built)</span><span class="pill">generated 2026-09-26</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-09-25T21:47:05.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-09-26T00:29:04.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 19:03 · updated 2026-09-25 21:47</div>
+  <div class="dates">added 2026-09-23 19:03 · updated 2026-09-26 00:29</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -414,9 +414,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://askarlabs.com/cve/wordpress/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-wordpress-vulnerability-scored-9-2-10-.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-22T17:44:05.000Z" data-updated="2026-09-25T21:47:05.000Z" data-name="a-wordpress-vulnerability-scored-9-2-10 auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-22T17:44:05.000Z" data-updated="2026-09-26T00:29:04.000Z" data-name="a-wordpress-vulnerability-scored-9-2-10 auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-wordpress-vulnerability-scored-9-2-10</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-22 17:44 · updated 2026-09-25 21:47</div>
+  <div class="dates">added 2026-09-22 17:44 · updated 2026-09-26 00:29</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: refresh and verify the a-wordpress-vulnerability-scored-9-2-10- skill</h2>
 
 <p>Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -6391,6 +6391,41 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://notes.kamacoder.com/llm/intro/llm_master_github.html</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/llm-master-llm-prompt-engineering-rag-ai.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-26" data-updated="2026-09-26" data-name="magpie-every-agent-s-model-one-place-cod auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>magpie-every-agent-s-model-one-place-cod</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-26  · updated 2026-09-26 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: magpie Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar.</h2>
+
+<p>Auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions magpie Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar..</p>
+
+<h3>Steps</h3>
+<p>1. Click a value to change it; magpie rewrites that agent’s config — only the key you changed — and the next session uses it</p>
+<p>2. Pick the native model and magpie puts back exactly what was there before</p>
+<p>3. Pick a model for each agent Click the agent’s model, choose one</p>
+<p>4. Pick a tile, or type a vendor’s name to find it</p>
+<p>5. Click the tile and magpie opens the vendor’s own sign-in page in your browser; the account shows up as soon as you finish (Copilot gives you a code to enter on GitHub’s page)</p>
+<p>6. Click the Claude or ChatGPT tile again to add another; each is listed under the provider, one click from being the one in use</p>
+<p>7. Pick one, paste the key ( Get a key ↗ links to the vendor’s key page), save</p>
+<p>8. Pick a model from any provider; profiles switch everything at once</p>
+<p>9. Click the model to open the picker</p>
+<p>10. Type to filter, or type any model id that is not listed</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - yetone/magpie: Every agent&amp;#x27;s model. One place. Codex on ...</div>
+<p>  https://github.com/yetone/magpie</p>
+<div class="li">- magpie - Every agent&amp;#x27;s model.</div>
+<p>  https://usemagpie.ai/</p>
+<div class="li">- Get started · magpie docs</div>
+<p>  https://usemagpie.ai/docs/start</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/magpie-every-agent-s-model-one-place-cod.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T13:16:19.000Z" data-updated="2026-09-17T14:03:47.000Z" data-name="mcp any mcp server (sqlite, postgres, github, playwright, filesystem…) becomes">
   <h2>mcp</h2><span class="badge task">task-built playbook</span><p class="desc">Any MCP server (SQLite, Postgres, GitHub, Playwright, filesystem…) becomes</p>
   <div class="dates">added 2026-09-17 13:16 · updated 2026-09-17 14:03</div>
@@ -8635,6 +8670,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://fly.io/blog/vscode-ssh-wtf/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/vscode-s-ssh-agent-is-bananas.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-26" data-updated="2026-09-26" data-name="wechatbridge-ai-agent-obsidian-macos auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>wechatbridge-ai-agent-obsidian-macos</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-26  · updated 2026-09-26 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: WeChatBridge 微信聊天记录一键转发到 AI Agent 与 Obsidian 的原生 macOS 工具</h2>
+
+<p>Auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions WeChatBridge 微信聊天记录一键转发到 AI Agent 与 Obsidian 的原生 macOS 工具.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - freestylefly/WeChatBridge: 微信聊天记录一键转发到 AI Agent 与 Obsidian 的原生 ...</div>
+<p>  https://github.com/freestylefly/WeChatBridge</p>
+<div class="li">- GitHub - xinqinew/wechatbridge: 微信聊天记录一键转发到 AI Agent 与 Obsidian 的原生 ...</div>
+<p>  https://github.com/xinqinew/wechatbridge</p>
+<div class="li">- WeChatBridge 教程：把微信聊天记录转发给 AI Agent 与 Obsidian</div>
+<p>  https://www.aiezz.com/tutorial/tutorial-e487840ed8e3706bb6bc2f03</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/wechatbridge-ai-agent-obsidian-macos.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-20T06:39:07.000Z" data-updated="2026-09-20T06:39:07.000Z" data-name="weeping-whales-stillborn-humpback-whale- auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>weeping-whales-stillborn-humpback-whale-</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-20 06:39 · updated 2026-09-20 06:39</div>
