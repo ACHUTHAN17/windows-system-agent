@@ -107,7 +107,7 @@ ollama pull llama3.1
 :: .env: MODEL_API_URL=http://localhost:1234/v1  MODEL_API_KEY=lm-studio  MODEL_NAME=<shown in LM Studio>
 ```
 
-## 3. Tools (63)
+## 3. Tools (65)
 
 Files: `file_list, file_read, file_write, file_edit, file_mkdir, file_delete, file_move, file_copy, file_search`
 Apps/system: `app_launch, app_open, app_list, app_kill, window_list, shell_exec, sys_info`
@@ -126,6 +126,7 @@ DOM: `browser_dom, browser_click_sel, browser_fill_sel` (structure-first browsin
 MCP: `mcp_<server>_<tool>` (any MCP server via `MCP_SERVERS` JSON)
 Delegate: `task_delegate` (fresh-loop subtasks, depth-capped fan-out)
 Router: `skill_load` (pull any playbook mid-task — usually automatic)
+Self-improvement: `self_status` (what I know/have built), `tool_create` (write and load a brand-new tool at runtime, not a sandbox — see §4a)
 Documents: `office_run` (Word/Excel/PowerPoint via COM, hidden) + `doc_pdf` (any tab → PDF)
 Safety extras: auto `.bak` rollback on file writes · `--plan` approve-before-run · `--ui 8080` web dashboard with click approvals
 
@@ -181,6 +182,25 @@ Shipped skills (`skills/`, load with `--skill a,b` or `SKILLS=a,b`):
 `chat-telegram` (phone chat UI), `schedule` (interval/cloud/event triggers).
 Add your own: any `skills/<name>.md` works the same way.
 
+### Self-awareness & self-improvement (§4a)
+
+The agent tracks its own growth in `memory/SELF.md` — one line per skill
+learned, tool staged/created, or model integrated — which auto-loads into
+every prompt the same way `MEMORY.md` does, so it always knows what it's
+recently picked up. Call `self_status` any time for a live snapshot (tool/skill
+counts, pending tool candidates, current model + fallback chain, recent log).
+Mid-task, when nothing in the tool list or skill catalog covers what's
+needed, the `self-learn` skill covers researching a new *skill* live; the
+`tool_create` tool is the same idea for a new *tool* — it writes
+`tools-imported/self-authored/<name>.js` and the tool is usable immediately,
+then auto-loads in every future run, no human wiring it in. This is **not a
+sandbox**: generated code runs with full process privileges, same as every
+built-in tool — the safety net is the file itself (git history), not
+confinement. Free models `model-scout.js` verifies (`docs/models.json`) join
+the agent's own `chat()` fallback chain automatically too, fastest first —
+if the primary model is unreachable, it tries a model it found itself before
+giving up (`USE_SCOUTED_MODELS=false` to disable).
+
 **Skills load from GitHub first — no local files needed.** `SKILL_SOURCE=auto`
 (default) fetches each skill live from this repo on every run, so the agent
 always learns the latest version; local `skills/` is only the offline fallback
@@ -229,11 +249,29 @@ pushes are the heartbeat now): scans Hacker News top stories + trending repos
 + open issues, learns the top new interest, pushes. Dedup guards make quiet
 periods converge to no-ops instead of loops. Schedules remain as backup.
 
-### Crawl: learns other repos' skills freely — 24/7, every 5 min
-`skill-crawler` scans YOUR repos first (`ACHUTHAN17/skills` outranks everything),
-then seeds + discovery — imports EVERYTHING new (up to 10/run), rescans until
-dry. Rate-limit guard backs off quietly on low budget. Proven: 4 skills in one
-round from your own collection. Provenance in `skills/sources.json`.
+### Crawl: learns other repos' skills + stages tool candidates — daily
+`repo-crawl` (was `skill-crawl`, now runs once a day instead of every 5 min)
+runs three crawlers back to back:
+- `skill-crawler.js` scans YOUR repos first (`ACHUTHAN17/skills` outranks
+  everything), then seeds + discovery — imports EVERYTHING new (up to
+  10/run), rescans until dry. Provenance in `skills/sources.json`.
+- `tool-crawler.js` does the same repo discovery (GitHub's repo/code search)
+  but for candidate **tool** modules (files matching the
+  `{name, description, args, run(...)}` shape).
+- `tool-web-scout.js` discovers the same kind of tool candidates but via
+  general web search instead — same DuckDuckGo HTML approach as
+  `agent-learn.js`, so it catches things GitHub's own search misses (blog
+  posts, "awesome" lists, launch posts): it extracts any GitHub repos those
+  pages link to, then stages matches the same way.
+
+Tool candidates from either script are **staged only**, under
+`tools-imported/candidates/`, and are never loaded or executed by the agent —
+a tool runs with the agent's full privileges (files/shell/registry/browser),
+unlike a skill, which is inert markdown the LLM just reads. Promoting a
+staged candidate into a real tool is a manual, read-it-first step — see
+`tools-imported/README.md`.
+
+Rate-limit guard backs off quietly on low keyless budget either way.
 
 ### Think + act hourly (`agent-act.yml`)
 Every hour the agent: bulk-crawls, refreshes free models, AUDITS every skill

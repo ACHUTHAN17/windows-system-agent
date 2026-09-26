@@ -7,6 +7,7 @@
 //   candidates: [{url,why,status}] }
 import fs from 'node:fs';
 import path from 'node:path';
+import { logSelf } from './self-log.js';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')), '..');
 const OUT = path.join(ROOT, 'docs', 'models.json');
@@ -127,6 +128,10 @@ async function main() {
     console.log(`[scout] candidate: ${c.url} (${c.status})`);
   }
   const reg = { updated: new Date().toISOString(), live, candidates: candidates.slice(0, 20) };
+  const prevLiveIds = new Set((prev.live || []).map(l => l.id));
+  for (const l of live) {
+    if (!prevLiveIds.has(l.id)) logSelf(ROOT, `found free model "${l.label}" (${l.latencyMs}ms, keyless) — added to my own fallback chain`);
+  }
   fs.mkdirSync(path.join(ROOT, 'docs'), { recursive: true });
   fs.writeFileSync(OUT, JSON.stringify(reg, null, 2), 'utf8');
   console.log(`[scout] registry: ${live.length} live, ${reg.candidates.length} candidates -> docs/models.json`);

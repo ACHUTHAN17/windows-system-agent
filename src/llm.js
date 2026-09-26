@@ -4,24 +4,45 @@
 //  - "anthropic": native Anthropic Messages API.
 // Uses global fetch (Node 18+). No SDK dependencies.
 export async function chat(cfg, messages) {
-  try {
-    if (cfg.provider === 'anthropic') return await chatAnthropic(cfg, messages);
-    return await chatOpenAICompatible(cfg, messages);
-  } catch (e) {
-    // Omni-route: one automatic retry on a fallback endpoint (opt-in).
-    // Free default: LLM_FALLBACK_URL=https://text.pollinations.ai/openai
-    const fb = (cfg.fallbackUrl || process.env.LLM_FALLBACK_URL || '').replace(/\/+$/, '');
-    if (!fb || cfg._fallbackUsed) throw e;
-    cfg._fallbackUsed = true;
+  const chain = buildChain(cfg);
+  let lastErr;
+  for (let i = 0; i < chain.length; i++) {
+    const c = chain[i];
     try {
-      return await chatOpenAICompatible({
-        ...cfg,
-        apiUrl: fb,
-        model: cfg.fallbackModel || process.env.LLM_FALLBACK_MODEL || 'openai',
-        apiKey: cfg.fallbackKey ?? process.env.LLM_FALLBACK_KEY ?? '',
-      }, messages);
-    } finally { cfg._fallbackUsed = false; }
+      const text = c.provider === 'anthropic' ? await chatAnthropic(c, messages) : await chatOpenAICompatible(c, messages);
+      if (i > 0) console.log(`  [llm] primary failed — answered via fallback #${i}: ${c.model} @ ${c.apiUrl}`);
+      return text;
+    } catch (e) {
+      lastErr = e;
+      if (i < chain.length - 1) console.log(`  [llm] ${c.model} @ ${c.apiUrl} failed (${String(e.message).split('\n')[0]}) — trying next in chain...`);
+    }
   }
+  throw lastErr;
+}
+
+// Builds the ordered list of endpoints to try: the configured primary model,
+// then the single explicit LLM_FALLBACK_* endpoint (if set), then any free
+// models the agent has discovered and verified itself via model-scout.js
+// (docs/models.json) — fastest first. This is what makes model discovery
+// "self-improving": a model the agent finds on its own becomes something it
+// can actually fall back on, with no human editing .env. Set
+// USE_SCOUTED_MODELS=false to opt out of the self-discovered tier.
+function buildChain(cfg) {
+  const chain = [cfg];
+  const fb = (cfg.fallbackUrl || process.env.LLM_FALLBACK_URL || '').replace(/\/+$/, '');
+  if (fb) {
+    chain.push({
+      ...cfg, provider: 'openai-compatible', apiUrl: fb,
+      model: cfg.fallbackModel || process.env.LLM_FALLBACK_MODEL || 'openai',
+      apiKey: cfg.fallbackKey ?? process.env.LLM_FALLBACK_KEY ?? '',
+    });
+  }
+  if (cfg.useScoutedModels !== false) {
+    for (const m of (cfg.scoutedModels || [])) {
+      chain.push({ ...cfg, provider: 'openai-compatible', apiUrl: m.url, model: m.model, apiKey: '' });
+    }
+  }
+  return chain;
 }
 
 async function chatOpenAICompatible(cfg, messages) {

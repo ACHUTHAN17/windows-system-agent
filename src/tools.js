@@ -13,6 +13,7 @@ const execFileAsync = promisify(execFile);
 
 function ok(data) { return { ok: true, ...data }; }
 function fail(error, hint) { return { ok: false, error: String(error), hint }; }
+const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
 
 async function ps(command, timeout = 20000) {
   // Single choke point for PowerShell so audit + allowlist stay in one place.
@@ -952,6 +953,120 @@ public class WinDbl { [DllImport("user32.dll")] public static extern bool SetCur
             return ok({ forgotLine: Number(a.line) });
           }
           return fail('provide topic or line');
+        } catch (e) { return fail(e.message); }
+      },
+    },
+    {
+      name: 'self_status',
+      description: 'Check what you currently know and have built for yourself: skill/tool counts, recent self-authored '
+        + 'tools, tool candidates still awaiting human review, the model fallback chain, and the last few learning-log '
+        + 'entries. Use this before tool_create or a live web/GitHub search, so you don\'t rebuild something you already have.',
+      args: {},
+      async run(_a, ctx) {
+        try {
+          const cfg = ctx.cfg;
+          const root = cfg.root;
+          let skillCount = 0;
+          try { skillCount = JSON.parse(await fsp.readFile(path.join(root, 'skills', 'index.json'), 'utf8')).length; } catch {}
+          let selfAuthored = [];
+          try { selfAuthored = (await fsp.readdir(path.join(root, 'tools-imported', 'self-authored'))).filter(f => f.endsWith('.js')); } catch {}
+          let pendingCandidates = 0;
+          try { pendingCandidates = Object.keys(JSON.parse(await fsp.readFile(path.join(root, 'tools-imported', 'candidates', 'sources.json'), 'utf8'))).length; } catch {}
+          let recentLearning = [];
+          try {
+            const text = await fsp.readFile(path.join(root, 'memory', 'SELF.md'), 'utf8');
+            recentLearning = text.split('\n').filter(l => l.startsWith('- [')).slice(-8);
+          } catch {}
+          let scoutedModels = [];
+          try { scoutedModels = (JSON.parse(await fsp.readFile(path.join(root, 'docs', 'models.json'), 'utf8')).live || []).map(m => `${m.label} (${m.latencyMs}ms)`); } catch {}
+          return ok({
+            builtInTools: tools.length,
+            selfAuthoredTools: selfAuthored.map(f => f.replace(/\.js$/, '')),
+            toolCandidatesPendingReview: pendingCandidates,
+            skillsAvailable: skillCount,
+            currentModel: `${cfg.model} [${cfg.provider}] @ ${cfg.apiUrl}`,
+            scoutedFallbackModels: scoutedModels,
+            recentLearning,
+          });
+        } catch (e) { return fail(e.message); }
+      },
+    },
+    {
+      name: 'tool_create',
+      description: 'Create a brand-new tool at runtime when the task needs a capability none of the current tools cover. '
+        + 'Writes tools-imported/self-authored/<name>.js and loads it immediately: usable for the rest of THIS task, '
+        + 'and auto-loaded in every future run from then on (same as the built-in tools) — no human needed to wire it in. '
+        + 'NOT A SANDBOX: the code runs with the same full process privileges as every built-in tool (file system, '
+        + 'shell, network) — there is no confinement, only an audit trail (the file itself, committed to git). '
+        + 'Prefer safeReadFile(path)/safeWriteFile(path, content) over raw fs for file I/O — they are the only part '
+        + 'of this that actually enforces ALLOWED_ROOTS/BLOCKED_PATHS. Only reach for this after checking the '
+        + 'existing tool list and skill catalog — most tasks are already covered.',
+      args: {
+        name: 'lowercase-slug (letters, numbers, underscore) — becomes the tool name other steps call',
+        description: 'one line: what it does and when to use it',
+        code: 'JS statements forming the body of an async function(args, ctx). In scope: args, ctx, ok, fail, fs, fsp, '
+          + 'path, ps (ps(command) runs one PowerShell command, {stdout,stderr}), fetch, os, safeReadFile, safeWriteFile. '
+          + 'End with `return ok({...})` on success or `return fail(error, hint)` on failure.',
+      },
+      async run(a, ctx) {
+        try {
+          const slug = String(a.name || '').toLowerCase().replace(/[^a-z0-9_]/g, '').slice(0, 40);
+          if (!slug) return fail('name is required', 'give the new tool a lowercase slug, e.g. "battery_status"');
+          if (tools.some(t => t.name === slug)) return fail(`"${slug}" is already a tool name`, 'pick a different, more specific name');
+          const description = String(a.description || '').trim().slice(0, 300);
+          if (!description) return fail('description is required');
+          const code = String(a.code || '');
+          if (!code.trim()) return fail('code is required');
+          if (code.length > 6000) return fail('code too long (max 6000 chars)', 'keep the tool to one focused capability');
+          // Syntax-validate against the exact param list the real module will provide, so a
+          // broken body is caught here instead of failing silently on next load.
+          try {
+            new AsyncFunction('args', 'ctx', 'ok', 'fail', 'fs', 'fsp', 'path', 'ps', 'fetch', 'os', 'safeReadFile', 'safeWriteFile', code);
+          } catch (e) { return fail('syntax error in generated code: ' + e.message, 'fix the JS and try again'); }
+          const cfg = ctx.cfg;
+          const dir = path.join(cfg.root, 'tools-imported', 'self-authored');
+          await fsp.mkdir(dir, { recursive: true });
+          const filePath = path.join(dir, slug + '.js');
+          let safetyRel = path.relative(dir, path.join(cfg.root, 'src', 'safety.js')).split(path.sep).join('/');
+          if (!safetyRel.startsWith('.')) safetyRel = './' + safetyRel;
+          const readmePath = path.join(cfg.root, 'tools-imported', 'README.md');
+          if (!fs.existsSync(readmePath)) {
+            await fsp.mkdir(path.dirname(readmePath), { recursive: true });
+            await fsp.writeFile(readmePath, '# tools-imported/\n\nSee `self-authored/` for tools the agent wrote itself at runtime, '
+              + 'and `candidates/` for tools discovered on GitHub/the web and staged for manual review.\n', 'utf8');
+          }
+          const source = `// SELF-AUTHORED TOOL — written by the agent at runtime, not by a human.\n`
+            + `// NOT A SANDBOX: this file runs with full process privileges, exactly like every\n`
+            + `// built-in tool in src/tools.js. Read it before trusting it on a sensitive machine.\n`
+            + `// Created: ${new Date().toISOString()}\n`
+            + `// Description: ${description}\n\n`
+            + `import fsMod from 'node:fs';\n`
+            + `import fspMod from 'node:fs/promises';\n`
+            + `import pathMod from 'node:path';\n`
+            + `import osMod from 'node:os';\n`
+            + `import { execFile } from 'node:child_process';\n`
+            + `import { promisify } from 'node:util';\n`
+            + `import { isPathAllowed } from '${safetyRel}';\n\n`
+            + `const execFileAsyncGen = promisify(execFile);\n`
+            + `async function psGen(command, timeout = 20000) {\n`
+            + `  const { stdout, stderr } = await execFileAsyncGen('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', command], { timeout, windowsHide: true, maxBuffer: 8 * 1024 * 1024 });\n`
+            + `  return { stdout: stdout.trim(), stderr: stderr.trim() };\n`
+            + `}\n`
+            + `function okGen(data) { return { ok: true, ...data }; }\n`
+            + `function failGen(error, hint) { return { ok: false, error: String(error), hint }; }\n\n`
+            + `export const name = ${JSON.stringify(slug)};\n`
+            + `export const description = ${JSON.stringify(description)};\n`
+            + `export const args = {};\n`
+            + `export async function run(args, ctx) {\n`
+            + `  const cfg = ctx && ctx.cfg;\n`
+            + `  const safeReadFile = async (p) => { const chk = isPathAllowed(cfg, p); if (!chk.ok) throw new Error('blocked by safety policy: ' + chk.reason); return fspMod.readFile(p, 'utf8'); };\n`
+            + `  const safeWriteFile = async (p, content) => { const chk = isPathAllowed(cfg, p); if (!chk.ok) throw new Error('blocked by safety policy: ' + chk.reason); await fspMod.mkdir(pathMod.dirname(p), { recursive: true }); return fspMod.writeFile(p, content, 'utf8'); };\n`
+            + `  const ok = okGen, fail = failGen, fs = fsMod, fsp = fspMod, path = pathMod, os = osMod, ps = psGen;\n`
+            + `  ${code}\n`
+            + `}\n`;
+          await fsp.writeFile(filePath, source, 'utf8');
+          try { const { logSelf } = await import('./self-log.js'); logSelf(cfg.root, `created new tool "${slug}": ${description}`); } catch {}
+          return ok({ created: slug, filePath, note: 'registering now for this run; auto-loads in every future run too' });
         } catch (e) { return fail(e.message); }
       },
     },

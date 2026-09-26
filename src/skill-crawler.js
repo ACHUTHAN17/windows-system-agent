@@ -5,6 +5,7 @@
 // Env: MAX_IMPORT (default 10), SEED_REPOS (comma, opt).
 import fs from 'node:fs';
 import path from 'node:path';
+import { logSelf } from './self-log.js';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')), '..');
 const SKILLS = path.join(ROOT, 'skills');
@@ -112,6 +113,7 @@ async function main() {
           done.push({ slug, repo });
           roundNew++;
           console.log(`[crawl] IMPORTED ${slug}.md from ${repo}/${c.path}`);
+          logSelf(ROOT, `learned skill "${slug}" from ${repo}/${c.path}`);
         } catch (e) { console.log(`[crawl] skip ${c.path}: ${e.message}`); }
       }
       if (done.length >= MAX) break;

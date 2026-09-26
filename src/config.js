@@ -32,6 +32,20 @@ function loadJsonConfig(root) {
   return {};
 }
 
+function loadScoutedModels(root) {
+  // Self-improvement: models model-scout.js found and verified LIVE (see
+  // docs/models.json, refreshed daily/30-min on GitHub Actions) become part
+  // of the agent's own resilience chain automatically — no human needs to
+  // edit .env. Sorted fastest-first. See USE_SCOUTED_MODELS to opt out.
+  try {
+    const p = path.join(root, 'docs', 'models.json');
+    if (!fs.existsSync(p)) return [];
+    const j = JSON.parse(fs.readFileSync(p, 'utf8'));
+    return (j.live || []).filter(m => m.kind === 'openai-post' || m.kind === 'openai-get')
+      .slice().sort((a, b) => (a.latencyMs || 9e9) - (b.latencyMs || 9e9));
+  } catch { return []; }
+}
+
 export function loadConfig(argv = {}) {
   const envFile = loadDotEnv(ROOT);
   const json = loadJsonConfig(ROOT);
@@ -74,6 +88,8 @@ export function loadConfig(argv = {}) {
     fallbackUrl: env('LLM_FALLBACK_URL', json.fallbackUrl ?? ''),
     fallbackModel: env('LLM_FALLBACK_MODEL', json.fallbackModel ?? 'openai'),
     fallbackKey: env('LLM_FALLBACK_KEY', json.fallbackKey ?? ''),
+    useScoutedModels: String(env('USE_SCOUTED_MODELS', json.useScoutedModels ?? true)) !== 'false',
+    scoutedModels: loadScoutedModels(ROOT),
     shellAllowlist: json.shellAllowlist ?? ['powershell.exe', 'cmd.exe', 'pwsh.exe', 'tasklist.exe', 'taskkill.exe'],
   };
   cfg.apiUrl = String(cfg.apiUrl).replace(/\/+$/, '');

@@ -19,6 +19,28 @@ try {
   for (const t of await discoverMcp(cfg)) { tools.push(t); byName[t.name] = t; }
 } catch (e) { console.log(`  [mcp] discovery skipped: ${e.message}`); }
 
+// Self-authored tools: anything tool_create wrote (this run or a past one)
+// auto-loads here, exactly like MCP tools above — no human needs to wire
+// them into src/tools.js. See tools-imported/README.md for what this is
+// and is NOT (not a sandbox — same process privileges as every built-in tool).
+async function registerSelfAuthored(filePath) {
+  try {
+    const { pathToFileURL } = await import('node:url');
+    const mod = await import(pathToFileURL(filePath).href + '?t=' + Date.now());
+    if (!mod.name || typeof mod.run !== 'function') { console.log(`  [self-tool] ${filePath}: missing name/run export, skipped`); return; }
+    if (byName[mod.name]) { console.log(`  [self-tool] ${mod.name}: name collision with an existing tool, keeping the existing one`); return; }
+    const t = { name: mod.name, description: mod.description || '(self-authored, no description given)', args: mod.args || {}, run: mod.run };
+    tools.push(t); byName[t.name] = t;
+    console.log(`  [self-tool] ${t.name} <- tools-imported/self-authored (loaded)`);
+  } catch (e) { console.log(`  [self-tool] ${filePath}: load failed: ${e.message}`); }
+}
+try {
+  const dir = path.join(cfg.root, 'tools-imported', 'self-authored');
+  for (const f of fs.readdirSync(dir).filter(f => f.endsWith('.js'))) {
+    await registerSelfAuthored(path.join(dir, f));
+  }
+} catch { /* no self-authored tools yet */ }
+
 function parseArgs(raw) {
   const o = { _: [] };
   for (let i = 0; i < raw.length; i++) {
@@ -115,6 +137,9 @@ async function runTool(name, args) {
   }
   const res = await tool.run(args || {}, { cfg });
   audit(cfg, `TOOL ${name} args=${JSON.stringify(args).slice(0, 300)} -> ${JSON.stringify(res).slice(0, 500)}`);
+  if (name === 'tool_create' && res && res.ok && res.filePath) {
+    await registerSelfAuthored(res.filePath);
+  }
   return res;
 }
 

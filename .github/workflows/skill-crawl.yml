@@ -1,14 +1,20 @@
-name: skill-crawl (learns other repos' skills — 24/7, no human)
-# Every 5 min on GitHub's runners: scans known skill repos + discovery search,
-# imports EVERYTHING new (bulk + rescan until dry), rebuilds docs, pushes.
-# Rate-limit guard exits quietly when the keyless API budget runs low.
+name: repo-crawl (learns other repos' skills + stages tool candidates — daily, no human)
+# Once a day on GitHub's runners: scans known skill repos + discovery search,
+# imports EVERYTHING new skill-wise (bulk + rescan until dry). Separately
+# stages any candidate tool modules it finds — via GitHub repo/code search
+# (tool-crawler.js) AND via general web search (tool-web-scout.js, same
+# DuckDuckGo HTML approach as agent-learn.js, so it turns up things GitHub's
+# own search misses: blog posts, awesome-lists, launch posts) — under
+# tools-imported/candidates/ for human review (never auto-wired into
+# src/tools.js — see tools-imported/README.md and src/tool-stage.js for why).
+# Rebuilds docs, pushes. Rate-limit guard exits quietly on low keyless budget.
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '17 6 * * *'
   workflow_dispatch:
     inputs:
       max:
-        description: 'Max skills to import (default 10, max 20)'
+        description: 'Max skills/tool-candidates to import per crawler (default 10, max 20)'
         required: false
 concurrency:
   group: skill-crawl
@@ -33,13 +39,24 @@ jobs:
         if: steps.budget.outputs.go == 'true'
         env:
           MAX_IMPORT: ${{ inputs.max }}
-        run: |
-          node src/skill-crawler.js
-          node src/build-docs.js
+        run: node src/skill-crawler.js
+      - name: crawl + stage tool candidates from GitHub search (review-only)
+        if: steps.budget.outputs.go == 'true'
+        env:
+          MAX_IMPORT: ${{ inputs.max }}
+        run: node src/tool-crawler.js
+      - name: crawl + stage tool candidates from web search (review-only)
+        if: steps.budget.outputs.go == 'true'
+        env:
+          MAX_IMPORT: ${{ inputs.max }}
+        run: node src/tool-web-scout.js
+      - name: rebuild docs
+        if: steps.budget.outputs.go == 'true'
+        run: node src/build-docs.js
       - name: commit + push if changed
         if: steps.budget.outputs.go == 'true'
         run: |
           git config user.name "winagent-bot"
           git config user.email "winagent-bot@users.noreply.github.com"
-          git add skills docs
-          git diff --cached --quiet && echo "nothing new to import" || { git commit -m "crawl: imported skills from GitHub"; for i in 1 2 3; do git pull --rebase --autostash && break; git checkout --theirs -- docs/index.html 2>/dev/null || true; node src/build-docs.js 2>/dev/null || true; git add -A; GIT_EDITOR=true git rebase --continue 2>/dev/null || git rebase --abort; sleep 5; done; git push; }
+          git add skills docs tools-imported memory
+          git diff --cached --quiet && echo "nothing new to import" || { git commit -m "crawl: imported skills + staged tool candidates (github + web) from GitHub"; for i in 1 2 3; do git pull --rebase --autostash && break; git checkout --theirs -- docs/index.html 2>/dev/null || true; node src/build-docs.js 2>/dev/null || true; git add -A; GIT_EDITOR=true git rebase --continue 2>/dev/null || git rebase --abort; sleep 5; done; git push; }
