@@ -1,9 +1,9 @@
 # Skill health — 2026-09-26
 
-143 skills audited, 25 links probed, 1 dead.
+145 skills audited, 25 links probed, 1 dead.
 9 need attention:
 
-## a-brief-history-of-windows-scroll-bar-sh.md (11978 chars)
+## a-brief-history-of-windows-scroll-bar-sh.md (12884 chars)
 - dead link (429): https://news.ycombinator.com/item?id=49820065
 
 ## agent-overlay.md (3676 chars)
