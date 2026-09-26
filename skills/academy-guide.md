@@ -1498,3 +1498,30 @@ When the task mentions refresh and verify the academy-guide skill.
 - anthropics/academy-guide | SkillRepo
   https://skillrepo.dev/skills/anthropics/academy-guide
 
+
+
+---
+## Field update 2026-09-26
+# Skill: refresh and verify the academy-guide skill
+
+Auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the academy-guide skill.
+
+## Steps
+1. Use Case : After implementing a new feature, this Skill guides you through updating the CHANGELOG.md , creating a new feature guide, and ensuring API documentation is auto-generated from your Python docstrings, all while validating internal links
+2. How do I get a diff preview after updating my documentation snapshot? ▼ After refreshing the docs snapshot, a quick diff preview against the baseline is automatically prepared for assessment
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- skills/skills/academy-guide at main · anthropics/skills · GitHub
+  https://github.com/anthropics/skills/tree/main/skills/academy-guide
+- documentation-guide: Define documentation standards and automate ...
+  https://skills.rest/skill/documentation-guide
+- source-command-ccguide-refresh-docs: Refresh Codex docs to keep ...
+  https://skills.rest/skill/source-command-ccguide-refresh-docs
+
