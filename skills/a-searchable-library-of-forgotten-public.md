@@ -115,3 +115,27 @@ When the task mentions refresh and verify the a-searchable-library-of-forgotten-
 - Librarian Game Guide: Walkthrough, Map, Book Locations & 399/400 Fixes
   https://librariangame.com/
 
+
+
+---
+## Field update 2026-09-27
+# Skill: refresh and verify the a-searchable-library-of-forgotten-public skill
+
+Auto-learned 2026-09-27 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-searchable-library-of-forgotten-public skill.
+
+## Steps
+1. Install them with a single command to enhance your agents with access to procedural knowledge
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Welcome to Open Library | Open Library
+  https://openlibrary.org/
+- The Agent Skills Directory
+  https://www.skills.sh/
+
