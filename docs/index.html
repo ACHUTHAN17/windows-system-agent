@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">162 skills (6 auto · 17 imported · 139 built)</span><span class="pill">generated 2026-09-27</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">164 skills (6 auto · 17 imported · 141 built)</span><span class="pill">generated 2026-09-27</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T21:45:46.000Z" data-updated="2026-09-27T19:12:29.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T21:45:46.000Z" data-updated="2026-09-27T22:30:19.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 21:45 · updated 2026-09-27 19:12</div>
+  <div class="dates">added 2026-09-23 21:45 · updated 2026-09-27 22:30</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -659,9 +659,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-windows-scroll-bar-sh.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-26T20:09:57.000Z" data-updated="2026-09-27T19:12:29.000Z" data-name="a-searchable-library-of-forgotten-public auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-26T20:09:57.000Z" data-updated="2026-09-27T22:30:19.000Z" data-name="a-searchable-library-of-forgotten-public auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-searchable-library-of-forgotten-public</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-26 20:09 · updated 2026-09-27 19:12</div>
+  <div class="dates">added 2026-09-26 20:09 · updated 2026-09-27 22:30</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A searchable library of forgotten public-domain film clips from 1915 onward</h2>
 
 <p>Auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -6989,6 +6989,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://repobay.vercel.app/repo/mcncarl-jianying-headless</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/jianying-headless-private-source-preview.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-27" data-updated="2026-09-27" data-name="jizura-pv auto-learned 2026-09-27 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>jizura-pv</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-27 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-27  · updated 2026-09-27 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: JIZURA 歌詞から文字PVを自動で組み立てるブラウザアプリ</h2>
+
+<p>Auto-learned 2026-09-27 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions JIZURA 歌詞から文字PVを自動で組み立てるブラウザアプリ.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - 852wa/JIZURA: 歌詞から文字PVを自動で組み立てるブラウザアプリ</div>
+<p>  https://github.com/852wa/JIZURA</p>
+<div class="li">- GitHub - cg9x11/jizura: 歌詞から文字PVを自動で組み立てるブラウザアプリ</div>
+<p>  https://github.com/cg9x11/jizura/tree/main</p>
+<div class="li">- 文字pv風動画自動生成ツール「Jizura 字面」を公開しました（バリエーション倍増・Ae / Cep 対応・英語対応）</div>
+<p>  https://note.com/852wa/n/nf46712c8746b</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/jizura-pv.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-20T19:51:47.000Z" data-updated="2026-09-20T19:51:47.000Z" data-name="kev-tiny-jev-like-family-of-decision-mod auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>kev-tiny-jev-like-family-of-decision-mod</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-20 19:51 · updated 2026-09-20 19:51</div>
@@ -9519,6 +9545,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://docs.github.com/en/communities/documenting-your-project-with-wikis</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/the-github-wiki-is-an-anti-pattern.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-27" data-updated="2026-09-27" data-name="there-is-more-to-code-review-than-automa auto-learned 2026-09-27 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>there-is-more-to-code-review-than-automa</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-27 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-27  · updated 2026-09-27 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: There is more to code review than (automatable) detection</h2>
+
+<p>Auto-learned 2026-09-27 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions There is more to code review than (automatable) detection.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- There is more to code review than (automatable) detection</div>
+<p>  https://www.adaptivecapacitylabs.com/2026/08/24/there-is-more-to-code-review-than-automatable-detection/</p>
+<div class="li">- There is more to code review than (automatable) detection | Hacker News</div>
+<p>  https://news.ycombinator.com/item?id=49857281</p>
+<div class="li">- The End of Code Review: Coding Agents Supersede Human Inspection</div>
+<p>  https://arxiv.org/pdf/2606.13175</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/there-is-more-to-code-review-than-automa.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-27T00:57:09.000Z" data-updated="2026-09-27T00:57:09.000Z" data-name="tidewater-coastal-town-built-with-opus-5 auto-learned 2026-09-27 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>tidewater-coastal-town-built-with-opus-5</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-27 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-27 00:57 · updated 2026-09-27 00:57</div>
