@@ -143,3 +143,27 @@ When the task mentions refresh and verify the a-searchable-library-of-forgotten-
 - The Agent Skills Directory
   https://www.skills.sh/
 
+
+
+---
+## Field update 2026-09-27
+# Skill: refresh and verify the a-searchable-library-of-forgotten-public skill
+
+Auto-learned 2026-09-27 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-searchable-library-of-forgotten-public skill.
+
+## Steps
+1. Install a practical starter library Choose a curated platform bundle Installs 151–154 top-level skills plus skill-library-router for progressive discovery
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Welcome to Open Library | Open Library
+  https://openlibrary.org/
+- GitHub - yigityildiz0/universal-ai-skill-library: 531 searchable AI ...
+  https://github.com/yigityildiz0/universal-ai-skill-library
+
