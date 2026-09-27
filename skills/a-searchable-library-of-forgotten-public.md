@@ -167,3 +167,25 @@ When the task mentions refresh and verify the a-searchable-library-of-forgotten-
 - GitHub - yigityildiz0/universal-ai-skill-library: 531 searchable AI ...
   https://github.com/yigityildiz0/universal-ai-skill-library
 
+
+
+---
+## Field update 2026-09-27
+# Skill: refresh and verify the a-searchable-library-of-forgotten-public skill
+
+Auto-learned 2026-09-27 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-searchable-library-of-forgotten-public skill.
+
+## Steps
+1. First run Beginner Guide Start with the first quests, defensive keys, recovery, and a saved checklist
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Forgotten Stories Wiki: Guides, Items, Bosses & Stats
+  https://forgottenstories.org/wiki/
+
