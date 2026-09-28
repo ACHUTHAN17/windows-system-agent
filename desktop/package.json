@@ -1,7 +1,7 @@
 {
   "name": "winagent-desktop",
   "productName": "WinAgent",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "WinAgent desktop app: a ChatGPT/Codex-style window for the WinAgent system-control agent",
   "main": "main.js",
   "author": "ACHUTHAN17",
@@ -61,8 +61,7 @@
             "x64"
           ]
         }
-      ],
-      "artifactName": "WinAgent-${version}-${target}.${ext}"
+      ]
     },
     "nsis": {
       "oneClick": false,
@@ -70,7 +69,11 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "WinAgent"
+      "shortcutName": "WinAgent",
+      "artifactName": "WinAgent-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "WinAgent-Portable-${version}.${ext}"
     }
   }
 }

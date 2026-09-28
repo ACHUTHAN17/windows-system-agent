@@ -11,9 +11,9 @@ carries its own runtime).
 1. Push this folder to GitHub (or merge the patch), then open **Actions → desktop-build → Run workflow**
    (it also runs automatically when `desktop/**` or `src/**` change on `main`).
 2. When it finishes, download the **WinAgent-windows** artifact and run
-   `WinAgent-<version>-nsis.exe` (installer, per-user, no admin rights needed) or
-   `WinAgent-<version>-portable.exe` (single file).
-3. Tag `desktop-v1.0.0` and push it to publish the same files as a GitHub Release.
+   `WinAgent-Setup-<version>.exe` (installer, per-user, no admin rights needed) or
+   `WinAgent-Portable-<version>.exe` (single file).
+3. Tag `desktop-v<version>` (same as `"version"` in `desktop/package.json`) and push it to publish the same files as a GitHub Release.
 
 Builds are **unsigned**: Windows SmartScreen will say "unknown publisher" → *More info → Run anyway*.
 
@@ -25,7 +25,7 @@ cd desktop
 npm install
 npm test            # 19 tests: parser, runner, sync, UI, and the REAL engine end-to-end
 npm start           # run in development
-npm run dist        # -> desktop\dist\WinAgent-1.0.0-nsis.exe and -portable.exe
+npm run dist        # -> desktop\dist\WinAgent-Setup-1.0.1.exe and WinAgent-Portable-1.0.1.exe
 ```
 
 ## What you get

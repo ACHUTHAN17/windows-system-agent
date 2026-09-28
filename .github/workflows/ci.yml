@@ -34,7 +34,7 @@ jobs:
   # so every push also grows one new interest. Dedup guards make it converge
   # to a no-op instead of looping. Scheduled workflows remain as backup.
   autonomy:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/')
     runs-on: ubuntu-latest
     permissions:
       contents: write
