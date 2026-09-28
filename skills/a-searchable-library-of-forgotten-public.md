@@ -239,3 +239,25 @@ When the task mentions refresh and verify the a-searchable-library-of-forgotten-
 - GitHub - yigityildiz0/universal-ai-skill-library: 531 searchable AI ...
   https://github.com/yigityildiz0/universal-ai-skill-library
 
+
+
+---
+## Field update 2026-09-28
+# Skill: refresh and verify the a-searchable-library-of-forgotten-public skill
+
+Auto-learned 2026-09-28 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-searchable-library-of-forgotten-public skill.
+
+## Steps
+1. See sources below and follow the official docs.
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Welcome to Open Library | Open Library
+  https://openlibrary.org/
+
