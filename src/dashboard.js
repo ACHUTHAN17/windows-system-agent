@@ -138,6 +138,15 @@ export async function startDashboard(port) {
     return true;
   }
   const server = http.createServer((req, res) => {
+    // Hardening: this server drives an agent that controls the PC. Refuse DNS-rebinding
+    // (unexpected Host) and cross-site requests (a web page POSTing to 127.0.0.1).
+    const host = String(req.headers.host || '');
+    const origin = req.headers.origin;
+    if (!(host === `127.0.0.1:${port}` || host === `localhost:${port}`) || (origin && origin !== `http://${host}`)) {
+      res.writeHead(403, { 'Content-Type': 'text/plain' });
+      res.end('forbidden');
+      return;
+    }
     const url = new URL(req.url, 'http://x');
     if (req.method === 'GET' && url.pathname === '/') {
       res.writeHead(200, { 'Content-Type': 'text/html' });

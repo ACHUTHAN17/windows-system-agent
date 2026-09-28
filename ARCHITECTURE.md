@@ -105,3 +105,13 @@ not just accumulate skills passively in the background:
 - **Free model**: add seed in `model-scout.js` → scout validates → registry (`docs/models.json`) →
   chat dropdown AND the live agent's own `chat()` fallback chain (`src/config.js` + `src/llm.js`), all automatic.
 - **Cloud job**: new workflow from the rebase-push template + dispatch trigger for manual runs.
+
+## Desktop app (desktop/)
+
+Electron shell around the SAME engine: `desktop/lib/runner.js` spawns `src/index.js --once "<task>"`
+(via `ELECTRON_RUN_AS_NODE=1`, so no system Node), parses stdout (`[step]`, `[tool]`, approval prompts —
+which have NO trailing newline — and the `@@WINAGENT_ANSWER@@` block) into events for a sandboxed
+renderer. The engine is copied to `%APPDATA%\WinAgent\agent` (writable); `lib/sync.js` pulls
+skills/docs/memory from GitHub and NEVER `tools-imported/`. Settings/keys: `lib/settings.js`
+(DPAPI via safeStorage, injected as env vars). Tests: `cd desktop && npm test` (includes a real-engine
+end-to-end against a mock LLM). Build: `.github/workflows/desktop-build.yml` on windows-latest.

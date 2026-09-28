@@ -504,7 +504,9 @@ async function main() {
   if (argv.once) audit(cfg, `TASK: ${task}`);
   try {
     const answer = await agentTask(task);
-    console.log('\n' + answer);
+    // Desktop app (desktop/): machine-readable answer boundaries so multi-line answers parse cleanly.
+    if (process.env.WINAGENT_EVENTS === '1') console.log(`\n@@WINAGENT_ANSWER@@\n${answer}\n@@WINAGENT_END@@`);
+    else console.log('\n' + answer);
   } catch (e) {
     console.error('\nERROR: ' + e.message);
     console.error('Fix: copy .env.example -> .env (Ollama default) or set MODEL_API_URL/KEY/NAME for your provider.');

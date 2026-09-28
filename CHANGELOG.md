@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.22.0 — 2026-09-28
+- **WinAgent Desktop** (`desktop/`): native Windows app (Electron) — ChatGPT/Codex-style chat, live tool
+  activity, inline approval cards, tray + Ctrl+Alt+Space, full-control switch, model presets,
+  DPAPI-encrypted API key, GitHub sync of skills/models/memory. Windows installer built by
+  `.github/workflows/desktop-build.yml`. No Node.js needed on the user's PC.
+- Engine: `WINAGENT_EVENTS=1` prints the final answer between `@@WINAGENT_ANSWER@@` / `@@WINAGENT_END@@`.
+- Security: the `--ui` dashboard now rejects unexpected Host/Origin (DNS-rebinding / cross-site POST).
+
 ## 1.21.0 — 2026-09-17
 - Learned LLMs/OpenCode/OpenRouter/open-source world → `open-models` skill.
 - Omni-route fallback: one automatic retry on LLM_FALLBACK_URL (proven live).

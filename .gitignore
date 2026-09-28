@@ -20,3 +20,7 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# desktop app build output
+desktop/node_modules/
+desktop/dist/

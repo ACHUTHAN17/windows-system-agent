@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WinAgent</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <aside id="sidebar">
+    <div class="brand drag"><span class="logo">&gt;_</span><span>WinAgent</span></div>
+    <button id="newChat" class="primary wide nodrag">＋ New chat</button>
+    <div id="chatList" class="chatlist nodrag"></div>
+    <nav class="nav nodrag">
+      <button data-view="skills">Skills <small id="skillCount"></small></button>
+      <button data-view="memory">Memory</button>
+      <button data-view="tools">Tools <small id="toolCount"></small></button>
+      <button data-view="settings">Settings</button>
+    </nav>
+    <button id="syncBtn" class="sync nodrag" title="Pull the latest skills, memory and model list from GitHub">
+      <span>↻ Sync from GitHub</span><small id="syncState">not synced yet</small>
+    </button>
+  </aside>
+
+  <main id="main">
+    <header class="topbar drag">
+      <span id="title">New chat</span>
+      <span class="spacer"></span>
+      <span id="modelPill" class="pill nodrag" title="Active model">model: default</span>
+      <button id="modeBadge" class="pill mode nodrag" title="Click to switch approval mode"></button>
+    </header>
+
+    <section id="view-chat" class="view">
+      <div id="messages"></div>
+      <div id="composerWrap">
+        <div id="composer">
+          <textarea id="input" rows="1" placeholder="Ask WinAgent to do something on this PC…  (Enter to send, Shift+Enter for a new line)"></textarea>
+          <button id="send" class="send" title="Send">➤</button>
+          <button id="stop" class="send stop" title="Stop" hidden>■</button>
+        </div>
+        <div class="hint">WinAgent can control this computer. Review approvals carefully.</div>
+      </div>
+    </section>
+
+    <section id="view-skills" class="view pane" hidden>
+      <div class="list-col"><input id="skillSearch" placeholder="Search skills…"><div id="skillList"></div></div>
+      <div class="detail-col"><div id="skillDetail" class="md"><p class="dim">Select a skill to read it.</p></div></div>
+    </section>
+
+    <section id="view-memory" class="view pane" hidden>
+      <div class="list-col"><div id="memList"></div><button id="memFolder" class="ghost wide">Open agent folder</button></div>
+      <div class="detail-col"><textarea id="memText" spellcheck="false" placeholder="Select a memory file"></textarea><div class="row"><button id="memSave" class="primary">Save</button><span id="memState" class="dim"></span></div></div>
+    </section>
+
+    <section id="view-tools" class="view pane" hidden>
+      <div class="list-col wide-col"><input id="toolSearch" placeholder="Search tools…"><div id="toolList"></div></div>
+    </section>
+
+    <section id="view-settings" class="view" hidden>
+      <div class="settings">
+        <h2>Model</h2>
+        <label>Provider preset <select id="sPreset"></select></label>
+        <div id="customFields">
+          <label>API URL <input id="sUrl" placeholder="https://…/v1"></label>
+          <label>Model name <input id="sModel" placeholder="e.g. gpt-4o-mini"></label>
+          <label>API key <input id="sKey" type="password" placeholder="" autocomplete="off"></label>
+          <div class="dim" id="keyNote"></div>
+        </div>
+        <div class="row"><button id="sTest" class="ghost">Test model in a new chat</button><button id="sSelftest" class="ghost">Run agent self-test</button></div>
+
+        <h2>Control</h2>
+        <label class="check"><input id="sFull" type="checkbox"> Full control — act without asking for approval</label>
+        <label>Allowed folders (comma-separated, empty = anywhere except protected system paths)
+          <div class="row"><input id="sRoots" placeholder="C:\Users\you\Documents, D:\Projects"><button id="sPick" class="ghost">Add folder…</button></div></label>
+
+        <h2>App</h2>
+        <label>Global hotkey to show/hide <input id="sHotkey" placeholder="Control+Alt+Space"></label>
+        <label class="check"><input id="sStart" type="checkbox"> Start WinAgent when I sign in to Windows</label>
+        <label class="check"><input id="sTray" type="checkbox"> Keep running in the tray when the window is closed</label>
+
+        <h2>GitHub sync</h2>
+        <label class="check"><input id="sSyncStart" type="checkbox"> Sync skills, model list and docs when the app starts</label>
+        <label class="check"><input id="sSyncMem" type="checkbox"> Also merge memory from GitHub (adds new notes, never overwrites yours)</label>
+        <label class="check"><input id="sSyncEng" type="checkbox"> Also update the agent engine (src/) from GitHub — runs new code with full access, off by default</label>
+
+        <div class="row"><button id="sSave" class="primary">Save settings</button><span id="sState" class="dim"></span></div>
+        <div class="dim" id="aboutLine"></div>
+      </div>
+    </section>
+  </main>
+</div>
+<script src="markdown.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

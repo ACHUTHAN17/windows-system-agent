@@ -1,0 +1,76 @@
+{
+  "name": "winagent-desktop",
+  "productName": "WinAgent",
+  "version": "1.0.0",
+  "description": "WinAgent desktop app: a ChatGPT/Codex-style window for the WinAgent system-control agent",
+  "main": "main.js",
+  "author": "ACHUTHAN17",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test",
+    "dist": "electron-builder --win --publish never",
+    "pack": "electron-builder --win --dir --publish never"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "jsdom": "^25.0.1"
+  },
+  "build": {
+    "appId": "com.achuthan17.winagent",
+    "productName": "WinAgent",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "lib/**/*",
+      "renderer/**/*",
+      "build/icon.png",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "..",
+        "to": "agent",
+        "filter": [
+          "src/**/*",
+          "skills/**/*",
+          "docs/**/*",
+          "memory/**/*",
+          "package.json"
+        ]
+      }
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "WinAgent-${version}-${target}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "WinAgent"
+    }
+  }
+}

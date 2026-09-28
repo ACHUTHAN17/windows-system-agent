@@ -36,6 +36,12 @@ mouse uses YOUR foreground — say the word and it stops), pixel grounding
 quality depends on your model, not us. Benchmarks (OSWorld/GAIA) measure their
 models; this harness just aims to waste none of it.
 
+## 0. Desktop app (Windows) — the easy way
+
+A native app with a ChatGPT/Codex-style chat, live tool activity, approval cards, tray icon and
+`Ctrl+Alt+Space` hotkey. No Node.js needed. Get the installer from **Actions → desktop-build**
+(or build it yourself). Details, security notes and build steps: [`desktop/README.md`](desktop/README.md).
+
 ## 1. Fresh-machine setup (copy-paste, ~5 min, Windows PowerShell)
 
 ```powershell
