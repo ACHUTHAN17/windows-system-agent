@@ -234,3 +234,27 @@ When the task mentions refresh and verify the a-searchable-library-of-forgotten-
 - Welcome to Open Library | Open Library
   https://openlibrary.org/
 
+
+
+---
+## Field update 2026-09-28
+# Skill: refresh and verify the a-searchable-library-of-forgotten-public skill
+
+Auto-learned 2026-09-28 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-searchable-library-of-forgotten-public skill.
+
+## Steps
+1. First run Beginner Guide Start with the first quests, defensive keys, recovery, and a saved checklist
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Forgotten Stories Wiki: Guides, Items, Bosses & Stats
+  https://forgottenstories.org/wiki/
+- Forgotten Library - Diggy&#x27;s Adventure | Diggy&#x27;s Guide
+  https://www.diggysguide.com/egypt/forgotten-library
+
