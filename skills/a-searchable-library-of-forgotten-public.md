@@ -261,3 +261,35 @@ When the task mentions refresh and verify the a-searchable-library-of-forgotten-
 - Welcome to Open Library | Open Library
   https://openlibrary.org/
 
+
+
+---
+## Field update 2026-09-28
+# Skill: refresh and verify the a-searchable-library-of-forgotten-public skill
+
+Auto-learned 2026-09-28 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-searchable-library-of-forgotten-public skill.
+
+## Steps
+1. Note: Videos are not translated
+2. Download Microsoft Edge More info about Internet Explorer and Microsoft Edge Table of contents Exit editor mode Ask Learn Ask Learn Reading mode Table of contents Read in English Add Add to Plans Edit Copy Markdown Print Note Access to this page requires authorization
+3. To view, add, or delete the skills that you selected from the out-of-the-box library, follow these steps: Navigate to the People Skills setup page and select Skills * to manage your skills library
+4. To add skills, select Add Skills
+5. To delete skills, select the skills you want to delete
+6. Select Delete again to confirm you want to delete the selected skills
+7. Note Deleting skills removes the skills and associated skills data from your organization and from your users' experience
+8. Note This control is only available to tenants with at least one Microsoft Copilot license
+9. How to turn-on AI inferencing for Microsoft 365 E3/E5 users See instructions
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Workday Documentation
+  https://doc.workday.com/
+- Manage your skills library in People Skills | Microsoft Learn
+  https://learn.microsoft.com/en-us/microsoft-365/copilot/people-skills-manage-skills-library
+
