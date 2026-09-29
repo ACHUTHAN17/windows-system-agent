@@ -1,6 +1,6 @@
-# Skill health — 2026-09-28
+# Skill health — 2026-09-29
 
-176 skills audited, 25 links probed, 0 dead.
+177 skills audited, 25 links probed, 0 dead.
 5 need attention:
 
 ## claude-api.md (8208 chars)
