@@ -17,3 +17,27 @@ When the task mentions A Privacy Analysis of Web and Mobile Conversational AI Ag
   https://jorgegarciaherrero.com/wp-content/interactivos/20260916-Prompt-like-a-butterfly-sting-like-a-tracker-(clean).pdf
 - Protecting Users From Themselves: Safeguarding Contextual Privacy in ...
   https://arxiv.org/pdf/2502.18509v2
+
+
+---
+## Field update 2026-09-29
+# Skill: refresh and verify the a-privacy-analysis-of-web-and-mobile-con skill
+
+Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-privacy-analysis-of-web-and-mobile-con skill.
+
+## Steps
+1. See sources below and follow the official docs.
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Google Keep
+  https://keep.google.com/
+- Google Help
+  https://support.google.com/?hl=en
+
