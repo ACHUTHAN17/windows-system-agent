@@ -44,3 +44,16 @@ test('Settings: free preset sends no model env; key is encrypted at rest and onl
   s.update({ apiKey: null }); assert.strictEqual(s.agentEnv().MODEL_API_KEY, undefined);
   assert.strictEqual(new Settings(dir, fakeSS).data.model, 'gpt-4o-mini');
 });
+
+test('Settings: GitHub PAT is stored/encrypted separately from the model key and never in publicView', () => {
+  const dir = tmp(); const s = new Settings(dir, fakeSS);
+  assert.strictEqual(s.githubPat(), '');
+  s.update({ apiKey: 'sk-model', githubPat: 'ghp_secret', githubRepo: 'me/repo', autoPushLearned: true });
+  assert.strictEqual(s.githubPat(), 'ghp_secret');
+  assert.strictEqual(s._key(), 'sk-model');
+  const view = s.publicView();
+  assert.ok(!JSON.stringify(view).includes('ghp_secret')); assert.ok(!JSON.stringify(view).includes('sk-model'));
+  assert.strictEqual(view.hasGithubPat, true); assert.strictEqual(view.githubRepo, 'me/repo'); assert.strictEqual(view.autoPushLearned, true);
+  s.update({ githubPat: null });
+  assert.strictEqual(s.githubPat(), ''); assert.strictEqual(s.publicView().hasGithubPat, false);
+});

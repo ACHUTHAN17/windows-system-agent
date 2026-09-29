@@ -108,6 +108,21 @@ not just accumulate skills passively in the background:
 
 ## Desktop app (desktop/)
 
+Self-improvement pathway (both opt-in, both gated behind a user-supplied GitHub token in Settings,
+`desktop/lib/settings.js` stores it DPAPI-encrypted): `lib/github-push.js` pushes newly learned
+skills/self-authored-tools/`SELF.md` to an `agent-learned` branch (Contents API, one file per commit,
+idempotent via a local `.push-state.json` hash cache) — never `main`. `lib/self-improve.js` turns a
+staged `self-improvements/<id>.json` (written by the `self_improve_propose` tool in `src/tools.js`,
+which never touches the live `src/`) into a branch + pull request against `main` — never auto-merged.
+Both run after every task (`main.js`'s `afterRun()`), fire-and-forget, logged but never blocking the UI.
+Attachments: 📎 opens a native dialog, main process copies files into `agentDir/uploads/` (25 MB cap,
+extension allow-list decides text-inline vs path-reference) — renderer never touches the filesystem
+directly. Generated/attached images render via a `[[image:relPath]]` marker the model is told to emit;
+`image:read` IPC validates the path stays under `agentDir` before returning a base64 data URL — the
+renderer only ever receives bytes over IPC, never a filesystem path or a live URL (keeps the strict CSP
+intact and keeps path traversal out of reach from model output).
+
+
 Electron shell around the SAME engine: `desktop/lib/runner.js` spawns `src/index.js --once "<task>"`
 (via `ELECTRON_RUN_AS_NODE=1`, so no system Node), parses stdout (`[step]`, `[tool]`, approval prompts —
 which have NO trailing newline — and the `@@WINAGENT_ANSWER@@` block) into events for a sandboxed

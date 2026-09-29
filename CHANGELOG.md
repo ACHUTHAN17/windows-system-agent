@@ -1,4 +1,23 @@
 # Changelog
+## 1.23.0 — 2026-09-28
+- **Image generation**: new `image_generate` tool (free, keyless, pollinations.ai). Desktop app renders
+  `[[image:...]]` markers inline (images delivered via IPC as base64, never a raw filesystem/network path
+  in the renderer).
+- **Self-improvement, with a review gate**: new `self_improve_propose` tool stages a full replacement for
+  one of the agent's own `src/*.js` files (rationale + new content) under `self-improvements/` — this does
+  **not** touch the running engine. Desktop `lib/self-improve.js` can turn a pending proposal into a
+  branch + GitHub pull request automatically (opt-in, needs a token) — merging is always manual.
+- **Auto-push what the agent learns**: `desktop/lib/github-push.js` pushes new skills, self-authored tools,
+  and `memory/SELF.md` to a dedicated `agent-learned` branch (never `main`), opt-in, via a user-supplied
+  GitHub token (encrypted with DPAPI, same as the model key).
+- **File/image attachments**: desktop app (📎 button, native file dialog, copied into
+  `%APPDATA%\WinAgent\agent\uploads\`) and the web chat (`docs/chat.html`, small text inlined /
+  larger files committed to `uploads/` via the Contents API) can both hand the agent a file to work from.
+- **Desktop UI**: chat content area widened (~1100px/92vw cap, was a fixed 780px) so a maximized window is
+  actually used; window itself was already freely resizable/maximizable (no code change needed there).
+- 34 desktop tests (was 19): github-push, self-improve, attachments, inline images, and chat.html's
+  attachment logic (loaded and exercised directly from `docs/chat.html` in jsdom).
+
 
 ## 1.22.0 — 2026-09-28
 - **WinAgent Desktop** (`desktop/`): native Windows app (Electron) — ChatGPT/Codex-style chat, live tool

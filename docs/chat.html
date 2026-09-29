@@ -23,7 +23,12 @@
 #in,#doin{flex:1;padding:11px;border-radius:8px;border:1px solid #30363d;background:#0d1117;color:#e6edf3;font-size:14px}
 button{padding:10px 14px;border-radius:8px;border:1px solid #30363d;background:#1f6feb;color:#fff;font-weight:700;cursor:pointer;font-size:13px}
 button.ghost{background:#21262d}button:disabled{opacity:.35}button.mode-on{outline:2px solid #3fb950}
-.spin{display:inline-block;width:12px;height:12px;border:2px solid #30363d;border-top-color:#58a6ff;border-radius:50%;animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}</style></head>
+.spin{display:inline-block;width:12px;height:12px;border:2px solid #30363d;border-top-color:#58a6ff;border-radius:50%;animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+#attach{display:flex;flex-wrap:wrap;gap:6px;max-width:860px;margin:0 auto 8px}
+.achip{display:flex;align-items:center;gap:6px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:4px 6px 4px 10px;font-size:12.5px}
+.achip button{border:0;background:none;color:#8b949e;padding:0 4px;font-size:13px;cursor:pointer}
+.achip.err{border-color:#f85149;color:#f85149}
+</style></head>
 <body>
 <div class="top"><b>WinAgent online chat</b>
 <a href="./">skills library</a><a href="https://github.com/ACHUTHAN17/windows-system-agent">repo</a>
@@ -40,10 +45,11 @@ button.ghost{background:#21262d}button:disabled{opacity:.35}button.mode-on{outli
 <input id="pat" type="password" placeholder="GitHub PAT — repo + workflow + models scopes">
 <button class="ghost" id="test">Test GitHub connection</button>
 </div>
-<div id="chat"><div class="warn">✅ Pick a blue box above (Free needs nothing), optionally pick a model, type, Send. <b>Teach / Run</b> use the second box — no popups. Keys stay in this browser only.</div></div>
+<div id="chat"><div class="warn">✅ Pick a blue box above (Free needs nothing), optionally pick a model, type, Send. <b>Teach / Run</b> use the second box — no popups. 📎 attach files/images for <b>⚙️ Run</b> to build tools/skills against (small text files inline; others are committed to your repo's uploads/ folder — needs a PAT). Keys stay in this browser only.</div></div>
 <div id="bar">
 <div class="row"><input id="in" placeholder="chat with the agent…" autocomplete="off"><button id="send">Send</button></div>
-<div class="row"><input id="doin" placeholder="skill or task, e.g. keyboard shortcuts…" autocomplete="off"><button class="ghost" id="teach">🧠 Teach</button><button class="ghost" id="teachfree">📝 Issue</button><button class="ghost" id="dotask">⚙️ Run</button><button class="ghost" id="test2">🧪 Test</button></div>
+<div id="attach"></div>
+<div class="row"><input id="doin" placeholder="skill or task, e.g. keyboard shortcuts…" autocomplete="off"><input id="file" type="file" multiple style="display:none"><button class="ghost" id="clip" title="Attach files or images — used by ⚙️ Run">📎</button><button class="ghost" id="teach">🧠 Teach</button><button class="ghost" id="teachfree">📝 Issue</button><button class="ghost" id="dotask">⚙️ Run</button><button class="ghost" id="test2">🧪 Test</button></div>
 </div>
 <script>
 const $=id=>document.getElementById(id);
@@ -181,6 +187,45 @@ async function waitRun(since,file){
   }
   throw new Error('timed out — watch it here: https://github.com/'+store.get('repo')+'/actions');
 }
+const TEXT_EXT=/\.(txt|md|csv|json|log|js|ts|py|html|css|yml|yaml)$/i;
+let attachments=[];
+function renderAttach(){
+  const box=$('attach');box.innerHTML='';
+  attachments.forEach((a,i)=>{
+    const c=document.createElement('div');c.className='achip'+(a.error?' err':'');
+    c.innerHTML=(a.error?'⚠ ':(a.isImage?'🖼️ ':'📄 '))+esc(a.name)+(a.error?' — '+esc(a.error):'')+' <button>✕</button>';
+    c.querySelector('button').onclick=()=>{attachments.splice(i,1);renderAttach();};
+    box.appendChild(c);
+  });
+}
+function b64(buf){let bin='';const bytes=new Uint8Array(buf);for(let i=0;i<bytes.length;i++)bin+=String.fromCharCode(bytes[i]);return btoa(bin);}
+async function handleFiles(files){
+  for(const f of Array.from(files).slice(0,6)){
+    if(f.size>15*1024*1024){attachments.push({name:f.name,error:'too large (15 MB max)'});continue;}
+    const isImage=/\.(png|jpe?g|gif|webp)$/i.test(f.name);
+    if(TEXT_EXT.test(f.name)&&f.size<50000){
+      const text=await f.text();
+      attachments.push({name:f.name,inline:text,isImage:false});
+    }else{
+      if(!(await needPat())){continue;}
+      try{
+        const buf=await f.arrayBuffer();
+        const rel='uploads/'+Date.now()+'-'+f.name.replace(/[^A-Za-z0-9._-]/g,'_');
+        await gh('/contents/'+rel,{method:'PUT',body:JSON.stringify({message:'chat upload: '+f.name,content:b64(buf),branch:'main'})});
+        attachments.push({name:f.name,path:rel,isImage});
+      }catch(e){attachments.push({name:f.name,error:e.message});}
+    }
+  }
+  renderAttach();
+}
+$('clip').onclick=()=>$('file').click();
+$('file').onchange=(e)=>{handleFiles(e.target.files);e.target.value='';};
+function attachmentsSuffix(){
+  return attachments.filter(a=>!a.error).map(a=>{
+    if(a.inline)return '\n\n[Attached file "'+a.name+'"]\n\`\`\`\n'+a.inline.slice(0,4000)+'\n\`\`\`';
+    return '\n\n[Attached '+(a.isImage?'image':'file')+' "'+a.name+'" committed at '+a.path+' in this repo — use file tools on that path]';
+  }).join('');
+}
 function slugify(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40);}
 async function needPat(){if(store.get('pat'))return true;$('cfg').style.display='grid';bubble('agent','⚠ Paste your GitHub PAT in ⚙ keys first (or use 📝 Issue — no token).');return false;}
 async function doAction(kind){
@@ -188,7 +233,9 @@ async function doAction(kind){
   const t=$('doin').value.trim();
   if(kind!=='test'&&!t){bubble('agent','⚠ Type the skill/topic in the box first.');$('doin').focus();return;}
   const file=kind==='teach'?'learn-skill.yml':kind==='task'?'agent-task.yml':'daily-sandbox.yml';
-  const inputs=kind==='teach'?{topic:t}:kind==='task'?{task:t}:{};
+  const fullTask=kind==='task'?t+attachmentsSuffix():t;
+  const inputs=kind==='teach'?{topic:t}:kind==='task'?{task:fullTask}:{};
+  if(kind==='task'){attachments=[];renderAttach();}
   const prog=busyBubble('dispatched '+file+' — watching GitHub…');
   try{
     const since=Date.now();await dispatch(file,inputs);const run=await waitRun(since,file);

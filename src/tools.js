@@ -85,6 +85,63 @@ async function backupIfExists(p) {
 export function buildTools() {
   const tools = [
     {
+      name: 'image_generate',
+      description: 'Generate an image from a text prompt (free, keyless — pollinations.ai). Saves it under '
+        + 'generated/ next to memory/skills and returns a marker; put that EXACT marker in your final answer '
+        + '(on its own line) so the app can display the image inline — do not describe the marker, just include it.',
+      args: { prompt: 'what to draw, in detail', width: 'px, default 1024 (opt)', height: 'px, default 1024 (opt)' },
+      async run(a, ctx) {
+        try {
+          const prompt = String(a.prompt || '').trim();
+          if (!prompt) return fail('prompt is required');
+          const w = Math.max(64, Math.min(1536, Number(a.width) || 1024));
+          const h = Math.max(64, Math.min(1536, Number(a.height) || 1024));
+          const seed = Math.floor(Math.random() * 1e9);
+          const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${w}&height=${h}&seed=${seed}&nologo=true`;
+          const res = await fetch(url, { signal: AbortSignal.timeout(60000) });
+          if (!res.ok) return fail(`image generation HTTP ${res.status}`, 'Try a shorter/simpler prompt, or retry once.');
+          const buf = Buffer.from(await res.arrayBuffer());
+          if (buf.length < 500) return fail('image service returned an empty/invalid image', 'Try a different prompt.');
+          const dir = path.join(ctx.cfg.root, 'generated');
+          await fsp.mkdir(dir, { recursive: true });
+          const slug = prompt.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 40).replace(/^-+|-+$/g, '') || 'image';
+          const rel = `generated/${Date.now()}-${slug}.png`;
+          await fsp.writeFile(path.join(ctx.cfg.root, rel), buf);
+          return ok({ path: rel, bytes: buf.length, marker: `[[image:${rel}]]`, note: 'Include that exact [[image:...]] marker on its own line in your final answer.' });
+        } catch (e) { return fail(e.message); }
+      },
+    },
+    {
+      name: 'self_improve_propose',
+      description: 'Propose a change to your OWN engine source code to improve yourself. Does NOT modify the '
+        + 'running engine — it stages the proposal under self-improvements/ with the full new file content and '
+        + 'your rationale. A human (or the desktop app, if the person has enabled it) turns this into a GitHub '
+        + 'pull request for review — it is never merged automatically. Use this for genuine improvements to '
+        + 'src/*.js, not for new capabilities (use tool_create for those instead).',
+      args: {
+        targetFile: 'relative path under src/, e.g. "src/llm.js"',
+        rationale: 'what this improves and why, one paragraph',
+        newContent: 'the COMPLETE new content of the file (not a diff)',
+      },
+      async run(a, ctx) {
+        try {
+          const target = String(a.targetFile || '').replace(/\\/g, '/');
+          if (!/^src\/[a-zA-Z0-9_\-./]+\.js$/.test(target) || target.includes('..')) return fail('targetFile must be an existing src/*.js path');
+          const rationale = String(a.rationale || '').trim().slice(0, 2000);
+          if (!rationale) return fail('rationale is required');
+          const newContent = String(a.newContent || '');
+          if (!newContent.trim()) return fail('newContent is required');
+          if (newContent.length > 200000) return fail('newContent too large (max 200000 chars)');
+          const dir = path.join(ctx.cfg.root, 'self-improvements');
+          await fsp.mkdir(dir, { recursive: true });
+          const id = `${Date.now()}-${target.replace(/[\/.]/g, '-')}`;
+          const file = path.join(dir, id + '.json');
+          await fsp.writeFile(file, JSON.stringify({ targetFile: target, rationale, newContent, createdAt: new Date().toISOString(), status: 'pending-review' }, null, 2), 'utf8');
+          return ok({ proposed: target, file: `self-improvements/${id}.json`, note: 'Staged only. Not applied to the running engine. A human reviews this as a GitHub pull request before it takes effect.' });
+        } catch (e) { return fail(e.message); }
+      },
+    },
+    {
       name: 'sys_info', description: 'OS, CPU, memory, uptime, user, hostname.',
       args: {},
       async run() {

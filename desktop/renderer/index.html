@@ -35,7 +35,9 @@
     <section id="view-chat" class="view">
       <div id="messages"></div>
       <div id="composerWrap">
+        <div id="attachRow" class="attachrow" hidden></div>
         <div id="composer">
+          <button id="attachBtn" class="clip" title="Attach files or images">📎</button>
           <textarea id="input" rows="1" placeholder="Ask WinAgent to do something on this PC…  (Enter to send, Shift+Enter for a new line)"></textarea>
           <button id="send" class="send" title="Send">➤</button>
           <button id="stop" class="send stop" title="Stop" hidden>■</button>
@@ -84,6 +86,13 @@
         <label class="check"><input id="sSyncStart" type="checkbox"> Sync skills, model list and docs when the app starts</label>
         <label class="check"><input id="sSyncMem" type="checkbox"> Also merge memory from GitHub (adds new notes, never overwrites yours)</label>
         <label class="check"><input id="sSyncEng" type="checkbox"> Also update the agent engine (src/) from GitHub — runs new code with full access, off by default</label>
+
+        <h2>Self-improvement</h2>
+        <label>GitHub repo (owner/name) <input id="sRepo" placeholder="you/your-fork"></label>
+        <label>GitHub token <input id="sPat" type="password" placeholder="" autocomplete="off"><span class="dim">Needs the "repo" scope. Used only for the two things below.</span></label>
+        <label class="check"><input id="sAutoPush" type="checkbox"> Push skills/tools the agent learns to the <code>agent-learned</code> branch automatically</label>
+        <label class="check"><input id="sSelfImprove" type="checkbox"> Let the agent open pull requests proposing changes to its own code (never merges — you review on GitHub)</label>
+        <div class="dim" id="learnState"></div>
 
         <div class="row"><button id="sSave" class="primary">Save settings</button><span id="sState" class="dim"></span></div>
         <div class="dim" id="aboutLine"></div>

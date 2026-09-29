@@ -15,6 +15,9 @@ const DEFAULTS = {
   syncOnStart: true,
   syncMemory: true,
   syncEngine: false,
+  githubRepo: '',
+  autoPushLearned: false,
+  autoSelfImprove: false,
 };
 
 // Persists settings in the user's profile. The API key is encrypted with Electron's
@@ -32,32 +35,33 @@ class Settings {
     fs.writeFileSync(this.file, JSON.stringify(this.data, null, 2), 'utf8');
   }
   publicView() {
-    const { apiKeyEnc, apiKeyPlain, ...rest } = this.data;
-    return { ...rest, hasKey: !!(apiKeyEnc || apiKeyPlain), keyEncrypted: !!apiKeyEnc };
+    const { apiKeyEnc, apiKeyPlain, githubPatEnc, githubPatPlain, ...rest } = this.data;
+    return { ...rest, hasKey: !!(apiKeyEnc || apiKeyPlain), keyEncrypted: !!apiKeyEnc, hasGithubPat: !!(githubPatEnc || githubPatPlain) };
   }
   // patch may contain apiKey ('' = leave unchanged, null = clear)
   update(patch) {
     const allowed = Object.keys(DEFAULTS);
     for (const k of allowed) if (k in patch) this.data[k] = patch[k];
-    if ('apiKey' in patch) {
-      if (patch.apiKey === null) { delete this.data.apiKeyEnc; delete this.data.apiKeyPlain; }
-      else if (String(patch.apiKey).trim()) {
-        const key = String(patch.apiKey).trim();
-        if (this.ss && this.ss.isEncryptionAvailable()) {
-          this.data.apiKeyEnc = this.ss.encryptString(key).toString('base64');
-          delete this.data.apiKeyPlain;
-        } else { this.data.apiKeyPlain = key; delete this.data.apiKeyEnc; }
-      }
-    }
+    this._setSecret('apiKey', 'apiKeyEnc', 'apiKeyPlain', patch);
+    this._setSecret('githubPat', 'githubPatEnc', 'githubPatPlain', patch);
     this._save();
     return this.publicView();
   }
-  _key() {
-    try {
-      if (this.data.apiKeyEnc && this.ss) return this.ss.decryptString(Buffer.from(this.data.apiKeyEnc, 'base64'));
-    } catch { /* unreadable (other Windows user) */ }
-    return this.data.apiKeyPlain || '';
+  _setSecret(field, encKey, plainKey, patch) {
+    if (!(field in patch)) return;
+    if (patch[field] === null) { delete this.data[encKey]; delete this.data[plainKey]; return; }
+    const val = String(patch[field] || '').trim();
+    if (!val) return;
+    if (this.ss && this.ss.isEncryptionAvailable()) { this.data[encKey] = this.ss.encryptString(val).toString('base64'); delete this.data[plainKey]; }
+    else { this.data[plainKey] = val; delete this.data[encKey]; }
   }
+  _secret(encKey, plainKey) {
+    try { if (this.data[encKey] && this.ss) return this.ss.decryptString(Buffer.from(this.data[encKey], 'base64')); }
+    catch { /* unreadable (other Windows user) */ }
+    return this.data[plainKey] || '';
+  }
+  _key() { return this._secret('apiKeyEnc', 'apiKeyPlain'); }
+  githubPat() { return this._secret('githubPatEnc', 'githubPatPlain'); }
   // Environment for the agent child. Empty values are omitted so the engine's own
   // defaults (and the free-model fallback chain) still apply.
   agentEnv() {

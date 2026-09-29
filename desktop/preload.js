@@ -28,6 +28,10 @@ contextBridge.exposeInMainWorld('winagent', {
   sessionsLoad: () => invoke('sessions:load'),
   sessionsSave: (list) => invoke('sessions:save', list),
   pickFolder: () => invoke('dialog:folder'),
+  attachFiles: () => invoke('dialog:attachFiles'),
+  readImage: (path) => invoke('image:read', path),
+  onLearned: (cb) => listen('learn:pushed', cb),
+  onSelfImprove: (cb) => listen('learn:pr', cb),
   openAgentDir: () => invoke('shell:openAgentDir'),
   openExternal: (url) => invoke('shell:openExternal', url),
 });

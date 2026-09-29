@@ -8,8 +8,8 @@ const { JSDOM } = require('jsdom');
 
 function boot() {
   const calls = { run: [], approve: [], stop: 0, settings: [] };
-  let listener = () => {}; let syncListener = () => {};
-  const settings = { preset: 'free', provider: 'openai-compatible', apiUrl: '', model: '', allowedRoots: '', fullAuto: false, hotkey: 'Control+Alt+Space', startWithWindows: false, closeToTray: true, syncOnStart: true, syncMemory: true, syncEngine: false, hasKey: false, keyEncrypted: false };
+  let listener = () => {}; let syncListener = () => {}; let learnedListener = () => {}; let prListener = () => {};
+  const settings = { preset: 'free', provider: 'openai-compatible', apiUrl: '', model: '', allowedRoots: '', fullAuto: false, hotkey: 'Control+Alt+Space', startWithWindows: false, closeToTray: true, syncOnStart: true, syncMemory: true, syncEngine: false, hasKey: false, keyEncrypted: false, githubRepo: '', autoPushLearned: false, autoSelfImprove: false, hasGithubPat: false };
   const fake = {
     info: async () => ({ version: '1.0.0', agentDir: 'C:\\agent' }),
     getSettings: async () => ({ ...settings }),
@@ -25,9 +25,12 @@ function boot() {
     memoryList: async () => [{ name: 'MEMORY.md', text: '- a note' }], memorySave: async () => true,
     sessionsLoad: async () => [], sessionsSave: async () => true,
     pickFolder: async () => 'C:\\Docs', openAgentDir: async () => '', openExternal: async () => {},
+    attachFiles: async () => calls.attachFiles || [],
+    readImage: async (p) => calls.images && calls.images[p] || null,
+    onLearned: (cb) => { learnedListener = cb; return () => {}; }, onSelfImprove: (cb) => { prListener = cb; return () => {}; },
   };
   const dom = new JSDOM('', { url: 'file:///x' });
-  return { fake, calls, emit: (e) => listener(e), sync: (s) => syncListener(s), settings };
+  return { fake, calls, emit: (e) => listener(e), sync: (s) => syncListener(s), settings, learned: (r) => learnedListener(r), pr: (r) => prListener(r) };
 }
 
 async function load(fakeBundle) {
@@ -101,4 +104,67 @@ test('errors are shown, settings save incl. key, views open', async () => {
   assert.ok(d.querySelector('#memList .item')); d.querySelector('[data-view=tools]').click(); await tick();
   assert.ok(d.getElementById('toolList').textContent.includes('file_list'));
   b.sync({ state: 'done', text: 'Updated 3 file(s)' }); assert.ok(d.getElementById('syncState').textContent.includes('Updated 3'));
+});
+
+test('attachments: pick, chip renders, removable, sent with the task and shown on the user bubble', async () => {
+  const b = boot(); const dom = await load(b); const d = dom.window.document;
+  b.calls.attachFiles = [
+    { name: 'notes.txt', path: 'uploads/1-notes.txt', isImage: false, preview: 'hello world', bytes: 11 },
+    { name: 'photo.png', path: 'uploads/2-photo.png', isImage: true, bytes: 5000 },
+    { name: 'huge.bin', error: 'too large (25 MB max)' },
+  ];
+  d.getElementById('attachBtn').click(); await tick();
+  const chips = d.querySelectorAll('#attachRow .attachchip');
+  assert.strictEqual(chips.length, 3);
+  assert.ok(chips[2].classList.contains('err'));
+  assert.strictEqual(d.getElementById('attachRow').hidden, false);
+
+  chips[2].querySelector('button').click(); await tick(); // remove the errored one
+  assert.strictEqual(d.querySelectorAll('#attachRow .attachchip').length, 2);
+
+  d.getElementById('input').value = 'look at these';
+  d.getElementById('send').click(); await tick();
+
+  const sentText = b.calls.run[0].text;
+  assert.ok(sentText.startsWith('look at these'));
+  assert.ok(sentText.includes('uploads/1-notes.txt') && sentText.includes('hello world'));
+  assert.ok(sentText.includes('uploads/2-photo.png') && sentText.includes('image'));
+  assert.ok(!sentText.includes('huge.bin'), 'errored attachment excluded from the task text');
+
+  assert.ok(d.querySelector('.msg.user .chips').textContent.includes('notes.txt'));
+  assert.ok(d.querySelector('.msg.user .chips').textContent.includes('photo.png'));
+  assert.strictEqual(d.getElementById('attachRow').hidden, true, 'attach row clears after sending');
+});
+
+test('inline generated images: marker becomes an <img>, loads via IPC, missing image shows a fallback', async () => {
+  const b = boot(); const dom = await load(b); const d = dom.window.document;
+  b.fake.readImage = async (p) => (p === 'generated/ok.png' ? 'data:image/png;base64,AAAA' : null);
+  d.getElementById('input').value = 'draw something'; d.getElementById('send').click(); await tick();
+  b.emit({ t: 'answer', text: 'Here you go:\n[[image:generated/ok.png]]\nand a broken one:\n[[image:generated/missing.png]]' });
+  b.emit({ t: 'done', code: 0 }); await tick(); await tick();
+  const imgs = d.querySelectorAll('.answer img.gen-img');
+  assert.strictEqual(imgs.length, 1, 'the loaded image remains an <img>');
+  assert.strictEqual(imgs[0].getAttribute('src'), 'data:image/png;base64,AAAA');
+  assert.ok(!imgs[0].classList.contains('loading'));
+  assert.ok(d.querySelector('.answer').textContent.includes('image unavailable'), 'missing image degrades to text, not a broken <img>');
+});
+
+test('settings: GitHub repo/token/toggles round-trip, and enabling self-improve is a distinct patch', async () => {
+  const b = boot(); const dom = await load(b); const d = dom.window.document;
+  d.querySelector('[data-view=settings]').click(); await tick();
+  d.getElementById('sRepo').value = 'me/fork';
+  d.getElementById('sPat').value = 'ghp_abc';
+  d.getElementById('sAutoPush').checked = true;
+  d.getElementById('sSelfImprove').checked = true;
+  d.getElementById('sSave').click(); await tick();
+  const patch = b.calls.settings.pop();
+  assert.strictEqual(patch.githubRepo, 'me/fork');
+  assert.strictEqual(patch.githubPat, 'ghp_abc');
+  assert.strictEqual(patch.autoPushLearned, true);
+  assert.strictEqual(patch.autoSelfImprove, true);
+
+  b.learned({ pushed: ['skills/a.md'], errors: [] });
+  assert.ok(d.getElementById('learnState').textContent.includes('Pushed 1'));
+  b.pr({ opened: [{ file: 'a.json', url: 'https://github.com/me/fork/pull/3' }], errors: [] });
+  assert.ok(d.getElementById('learnState').textContent.includes('pull/3'));
 });

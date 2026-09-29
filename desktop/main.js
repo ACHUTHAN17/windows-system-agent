@@ -6,6 +6,8 @@ const { ensureAgentDir } = require('./lib/agentdir');
 const { Settings } = require('./lib/settings');
 const { AgentRunner } = require('./lib/runner');
 const { syncFromGitHub } = require('./lib/sync');
+const { pushLearned, listCandidates } = require('./lib/github-push');
+const { submitPending } = require('./lib/self-improve');
 
 const ICON = path.join(__dirname, 'build', 'icon.png');
 let win = null;
@@ -96,6 +98,24 @@ async function doSync() {
   } finally { syncing = false; }
 }
 
+async function afterRun() {
+  const repo = settings.data.githubRepo, pat = settings.githubPat();
+  if (settings.data.autoPushLearned && repo && pat) {
+    try {
+      const r = await pushLearned({ agentDir, repo, pat, candidates: listCandidates(agentDir) });
+      if (r.pushed.length) { send('learn:pushed', r); notify('WinAgent pushed what it learned', `${r.pushed.length} file(s) on the "agent-learned" branch`); }
+      if (r.errors.length) console.log('[push-learned]', r.errors.join(' | '));
+    } catch (e) { console.log('[push-learned] failed:', e.message); }
+  }
+  if (settings.data.autoSelfImprove && repo && pat) {
+    try {
+      const r = await submitPending({ agentDir, repo, pat });
+      if (r.opened.length) { send('learn:pr', r); notify('WinAgent proposed a self-improvement', `Review: ${r.opened[0].url}`); }
+      if (r.errors.length) console.log('[self-improve]', r.errors.join(' | '));
+    } catch (e) { console.log('[self-improve] failed:', e.message); }
+  }
+}
+
 function readSkills() {
   const dir = path.join(agentDir, 'skills');
   try {
@@ -136,6 +156,24 @@ function registerIpc() {
       });
       if (r.response !== 1) patch.fullAuto = false;
     }
+    if (patch.autoSelfImprove === true && !settings.data.autoSelfImprove) {
+      const r = await dialog.showMessageBox(win, {
+        type: 'warning', buttons: ['Cancel', 'Enable'], defaultId: 0, cancelId: 0, noLink: true,
+        title: 'Let the agent propose changes to its own code?',
+        message: 'The agent will be able to rewrite parts of its own engine and open GitHub pull requests for them automatically.',
+        detail: 'It never merges these itself and never changes the code that is currently running — each proposal is a PR on your repo that YOU must review and merge before it takes effect. Requires a GitHub repo + token above.',
+      });
+      if (r.response !== 1) patch.autoSelfImprove = false;
+    }
+    if (patch.autoPushLearned === true && !settings.data.autoPushLearned) {
+      const r = await dialog.showMessageBox(win, {
+        type: 'question', buttons: ['Cancel', 'Enable'], defaultId: 1, cancelId: 0, noLink: true,
+        title: 'Auto-push learned skills and tools?',
+        message: `New skills the agent picks up and tools it writes for itself will be pushed to the "agent-learned" branch of your repo automatically.`,
+        detail: 'Never pushed to main. Requires a GitHub repo + token above.',
+      });
+      if (r.response !== 1) patch.autoPushLearned = false;
+    }
     const view = settings.update(patch);
     let hotkeyOk = true;
     if ('hotkey' in patch) hotkeyOk = registerHotkey();
@@ -175,6 +213,42 @@ function registerIpc() {
     return true;
   });
   handle('dialog:folder', async () => { const r = await dialog.showOpenDialog(win, { properties: ['openDirectory'] }); return r.canceled ? null : r.filePaths[0]; });
+  handle('dialog:attachFiles', async () => {
+    const r = await dialog.showOpenDialog(win, { properties: ['openFile', 'multiSelections'] });
+    if (r.canceled) return [];
+    const dir = path.join(agentDir, 'uploads');
+    fs.mkdirSync(dir, { recursive: true });
+    const out = [];
+    for (const src of r.filePaths.slice(0, 10)) {
+      try {
+        const stat = fs.statSync(src);
+        if (stat.size > 25 * 1024 * 1024) { out.push({ name: path.basename(src), error: 'too large (25 MB max)' }); continue; }
+        const safeName = `${Date.now()}-${path.basename(src)}`.replace(/[^A-Za-z0-9._-]/g, '_');
+        const dest = path.join(dir, safeName);
+        fs.copyFileSync(src, dest);
+        const rel = path.join('uploads', safeName);
+        const ext = path.extname(src).toLowerCase();
+        const isText = ['.txt', '.md', '.json', '.csv', '.log', '.js', '.py', '.ts', '.html', '.css', '.yml', '.yaml'].includes(ext);
+        let preview = '';
+        if (isText) { try { preview = fs.readFileSync(dest, 'utf8').slice(0, 4000); } catch { /* binary despite extension */ } }
+        out.push({ name: path.basename(src), path: rel, bytes: stat.size, isImage: ['.png', '.jpg', '.jpeg', '.gif', '.webp'].includes(ext), preview });
+      } catch (e) { out.push({ name: path.basename(src), error: e.message }); }
+    }
+    return out;
+  });
+  handle('image:read', (relPath) => {
+    const rel = String(relPath || '').replace(/\\/g, '/');
+    if (!/^(generated|uploads)\/[A-Za-z0-9._-]+$/.test(rel)) return null;
+    const full = path.resolve(agentDir, rel);
+    if (!full.startsWith(path.resolve(agentDir) + path.sep)) return null;
+    try {
+      const stat = fs.statSync(full);
+      if (stat.size > 15 * 1024 * 1024) return null;
+      const ext = path.extname(full).slice(1).toLowerCase();
+      const mime = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', webp: 'image/webp' }[ext] || 'application/octet-stream';
+      return `data:${mime};base64,${fs.readFileSync(full).toString('base64')}`;
+    } catch { return null; }
+  });
   handle('shell:openAgentDir', () => shell.openPath(agentDir));
   handle('shell:openExternal', (url) => { if (/^https:\/\//.test(String(url))) shell.openExternal(String(url)); });
 }
@@ -193,7 +267,7 @@ function start() {
     runner.on('event', (ev) => {
       send('agent:event', ev);
       if (ev.t === 'approval') notify('WinAgent needs your approval', ev.label);
-      if (ev.t === 'done') notify('WinAgent finished', 'The task is complete.');
+      if (ev.t === 'done') { notify('WinAgent finished', 'The task is complete.'); afterRun(); }
     });
 
     registerIpc();

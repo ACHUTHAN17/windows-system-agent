@@ -32,14 +32,18 @@ npm run dist        # -> desktop\dist\WinAgent-Setup-1.0.1.exe and WinAgent-Port
 
 | | |
 |---|---|
-| **Chat** | Sessions saved locally, markdown answers, copy buttons, conversation context is passed to the agent |
+| **Chat** | Sessions saved locally, markdown answers, copy buttons, conversation context is passed to the agent. Content area now scales up to ~1100px / 92vw, so a maximized window is actually used |
 | **Live activity** | Every step and tool call the agent makes, streamed while it works; **Stop** kills the whole process tree |
 | **Approvals** | The agent asks before risky actions (write/delete/shell/registry/app control). Allow once / Always / Deny, with a Windows notification if the window is hidden. Auto-denies after 5 minutes |
 | **Full control** | Optional switch (top-right badge or Settings). Confirmation dialog first. The agent then acts without asking — only use with a model you trust |
 | **Models** | Default = free keyless models found by the model scout. Or OpenAI, Anthropic, OpenRouter, Ollama, or any OpenAI-compatible URL. API key is encrypted with Windows DPAPI and is passed to the agent only as a process environment variable — never written to a file |
-| **Allowed folders** | Optional allow-list (`ALLOWED_ROOTS`); protected system paths stay blocked either way |
+| **Allowed folders** | Optional allow-list (`ALLOWED_ROOTS`); protected system paths stay blocked either way. Leaving it empty means the agent can reach anywhere on the system except the built-in protected paths — this is "access my whole system" by default, not opt-in |
 | **GitHub sync** | ↻ button (and on start): pulls the latest **skills**, **docs/models.json** and merges **memory** from `ACHUTHAN17/windows-system-agent`. Memory is *merged* (new notes added, yours never overwritten) |
 | **Skills / Memory / Tools** | Browse and search skills, edit memory files, see every tool including ones the agent wrote itself |
+| **Attach files/images** | 📎 next to the composer. Small text files (`.txt .md .json .csv .log .js .py .html .css .yml`) are inlined into the task; anything else (images included) is copied to `%APPDATA%\WinAgent\agent\uploads\` and the agent is told the path so it can use `file_read`/`file_fetch`/vision on it |
+| **Image generation** | The agent has an `image_generate` tool (free, keyless — pollinations.ai). Generated images are saved under `generated/` and shown inline in the chat automatically. *Video generation is not included* — no free/keyless provider exists for it yet; wire one up in `src/tools.js` if you get a paid API key |
+| **Auto-push what it learns** | Settings → Self-improvement. New skills, self-authored tools (`tool_create`) and the `SELF.md` log get pushed to the **`agent-learned`** branch of your repo automatically — never to `main` — using a GitHub token you provide |
+| **Self-improvement PRs** | The agent can call `self_improve_propose` to draft a change to its own engine code. This is staged locally, never applied live. If you enable it, the desktop app turns pending proposals into a GitHub **pull request** (branch + PR, base `main`) automatically — but it is never merged automatically; you review the diff on GitHub. This is intentional: this agent has shell/registry/file/browser access, so a change to its own safety logic always goes through a visible review step, not a silent one |
 | **Tray + hotkey + autostart** | Closes to tray, `Ctrl+Alt+Space` shows/hides, optional start with Windows |
 
 ## How it works

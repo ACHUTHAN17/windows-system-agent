@@ -17,12 +17,33 @@
     ['Disk space report', 'Show free space on every drive and the top 10 largest folders on C:.'],
   ];
 
-  const S = { sessions: [], cur: null, view: 'chat', running: false, turn: null, settings: null, mode: 'task', skills: [], tools: [], saveT: null };
+  const S = { sessions: [], cur: null, view: 'chat', running: false, turn: null, settings: null, mode: 'task', skills: [], tools: [], saveT: null, attachments: [] };
 
   const uid = () => Math.random().toString(36).slice(2, 10);
   const cur = () => S.sessions.find(s => s.id === S.cur);
   const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
   const esc = window.MD.esc;
+
+  const IMAGE_MARKER = /\[\[image:([A-Za-z0-9._\/-]+)\]\]/g;
+  function renderAnswerWithImages(text) {
+    const parts = String(text).split(IMAGE_MARKER); // [text, path, text, path, ..., text]
+    let html = '';
+    for (let i = 0; i < parts.length; i++) {
+      if (i % 2 === 0) { if (parts[i]) html += window.MD.render(parts[i]); }
+      else html += `<div class="gen-img-wrap"><img class="gen-img loading" data-path="${esc(parts[i])}" alt="generated image"></div>`;
+    }
+    return html || window.MD.render(text);
+  }
+  async function loadPendingImages(root) {
+    const imgs = (root || document).querySelectorAll('.gen-img.loading');
+    for (const img of imgs) {
+      const p = img.dataset.path; if (!p) continue;
+      img.dataset.path = ''; // claim it so refreshTurn's re-render doesn't double-fetch
+      const data = await api.readImage(p);
+      if (data) { img.src = data; img.classList.remove('loading'); img.alt = p; }
+      else { img.replaceWith(el('div', 'dim', `(image unavailable: ${esc(p)})`)); }
+    }
+  }
 
   function saveSoon() { clearTimeout(S.saveT); S.saveT = setTimeout(() => api.sessionsSave(S.sessions.map(s => ({ ...s, messages: s.messages.slice(-200) }))), 400); }
 
@@ -71,14 +92,19 @@
       if (!a.resolved) html += `<div class="btns">${a.options.includes('once') ? '<button class="allow" data-d="once">Allow once</button>' : ''}${a.options.includes('always') ? '<button data-d="always">Always allow</button>' : ''}<button class="deny" data-d="deny">Deny</button></div>`;
       html += '</div>';
     }
-    if (m.text) html += `<div class="answer md">${window.MD.render(m.text)}</div>`;
+    if (m.text) html += `<div class="answer md">${renderAnswerWithImages(m.text)}</div>`;
     if (m.error) html += `<div class="err">${esc(m.error)}</div>`;
     if (!m.text && !m.error && !running && !m.approval) html += '<div class="dim">Done — no text answer was returned.</div>';
     html += '</div>';
     n.innerHTML = html;
     return n;
   }
-  function userNode(m) { const n = el('div', 'msg user'); n.innerHTML = `<div class="bubble">${esc(m.text)}</div>`; return n; }
+  function userNode(m) {
+    const n = el('div', 'msg user');
+    const chips = (m.attachments || []).map(a => `<div class="chip">${a.isImage ? '🖼️' : '📄'} ${esc(a.name)}</div>`).join('');
+    n.innerHTML = `<div class="bubble">${esc(m.text)}${chips ? `<div class="chips">${chips}</div>` : ''}</div>`;
+    return n;
+  }
 
   function renderMessages() {
     const box = $('messages'); const s = cur(); box.innerHTML = '';
@@ -91,6 +117,7 @@
     }
     for (const m of s.messages) box.appendChild(m.role === 'user' ? userNode(m) : assistantNode(m));
     box.scrollTop = box.scrollHeight;
+    loadPendingImages(box);
   }
   function refreshTurn() {
     const box = $('messages'); const nodes = box.querySelectorAll('.msg');
@@ -101,21 +128,46 @@
     const fresh = assistantNode(S.turn); const d = fresh.querySelector('details'); if (d && S.turn.status === 'running') d.open = wasOpen;
     box.replaceChild(fresh, last);
     if (near) box.scrollTop = box.scrollHeight;
+    loadPendingImages(fresh);
   }
 
   // ---------- running ----------
+  function attachmentsBlock() {
+    if (!S.attachments.length) return '';
+    const parts = S.attachments.filter(a => !a.error).map(a => {
+      if (a.preview) return `\n\n[Attached file "${a.name}" — saved at ${a.path}, use file_read/file_fetch on that path for the full content]\n\`\`\`\n${a.preview}\n\`\`\``;
+      return `\n\n[Attached ${a.isImage ? 'image' : 'file'} "${a.name}" saved at ${a.path} — use image analysis or file tools on that path as needed]`;
+    });
+    return parts.join('');
+  }
   async function send(text) {
     text = String(text || '').trim();
     if (!text || S.running) return;
     const s = cur() || (newSession(), cur());
     if (!s.messages.length) s.title = text.slice(0, 44);
     const history = s.messages.filter(m => m.text).map(m => ({ role: m.role, text: m.text }));
-    s.messages.push({ role: 'user', text });
+    const attachments = S.attachments.filter(a => !a.error).map(a => ({ name: a.name, path: a.path, isImage: a.isImage }));
+    const fullText = text + attachmentsBlock();
+    s.messages.push({ role: 'user', text, attachments });
     const turn = { role: 'assistant', text: '', activity: [], approval: null, error: '', status: 'running', kind: 'task' };
     s.messages.push(turn); s.updated = Date.now(); S.turn = turn;
-    $('input').value = ''; autosize(); setRunning(true); renderAll();
-    const r = await api.run(text, history);
+    $('input').value = ''; S.attachments = []; renderAttachRow(); autosize(); setRunning(true); renderAll();
+    const r = await api.run(fullText, history);
     if (!r || !r.ok) { turn.status = 'error'; turn.error = r && r.error === 'busy' ? 'The agent is already running a task.' : `Could not start the agent: ${r && r.error}`; endTurn(); }
+  }
+  function renderAttachRow() {
+    const row = $('attachRow'); row.innerHTML = '';
+    row.hidden = !S.attachments.length;
+    S.attachments.forEach((a, i) => {
+      const chip = el('div', 'attachchip' + (a.error ? ' err' : ''));
+      chip.innerHTML = `<span>${a.error ? '⚠ ' : (a.isImage ? '🖼️ ' : '📄 ')}${esc(a.name)}${a.error ? ' — ' + esc(a.error) : ''}</span><button title="Remove">✕</button>`;
+      chip.querySelector('button').onclick = () => { S.attachments.splice(i, 1); renderAttachRow(); };
+      row.appendChild(chip);
+    });
+  }
+  async function pickAttachments() {
+    const files = await api.attachFiles();
+    if (files && files.length) { S.attachments.push(...files); renderAttachRow(); }
   }
   async function selftest() {
     if (S.running) return;
@@ -186,6 +238,9 @@
     $('sFull').checked = !!s.fullAuto; $('sRoots').value = s.allowedRoots || ''; $('sHotkey').value = s.hotkey || '';
     $('sStart').checked = !!s.startWithWindows; $('sTray').checked = !!s.closeToTray;
     $('sSyncStart').checked = !!s.syncOnStart; $('sSyncMem').checked = !!s.syncMemory; $('sSyncEng').checked = !!s.syncEngine;
+    $('sRepo').value = s.githubRepo || ''; $('sPat').value = '';
+    $('sPat').placeholder = s.hasGithubPat ? '•••••••• saved (leave blank to keep)' : 'ghp_… (repo scope)';
+    $('sAutoPush').checked = !!s.autoPushLearned; $('sSelfImprove').checked = !!s.autoSelfImprove;
     $('customFields').hidden = s.preset === 'free'; updateMode();
   }
   async function loadSettings() { S.settings = await api.getSettings(); fillSettings(); const i = await api.info(); $('aboutLine').textContent = `WinAgent desktop ${i.version} · agent folder: ${i.agentDir}`; }
@@ -195,8 +250,10 @@
       preset: $('sPreset').value, provider: PRESETS[$('sPreset').value].provider, apiUrl: $('sUrl').value.trim(), model: $('sModel').value.trim(),
       fullAuto: $('sFull').checked, allowedRoots: $('sRoots').value.trim(), hotkey: $('sHotkey').value.trim(),
       startWithWindows: $('sStart').checked, closeToTray: $('sTray').checked, syncOnStart: $('sSyncStart').checked, syncMemory: $('sSyncMem').checked, syncEngine: $('sSyncEng').checked,
+      githubRepo: $('sRepo').value.trim(), autoPushLearned: $('sAutoPush').checked, autoSelfImprove: $('sSelfImprove').checked,
     };
     if ($('sKey').value.trim()) patch.apiKey = $('sKey').value.trim();
+    if ($('sPat').value.trim()) patch.githubPat = $('sPat').value.trim();
     const r = await api.setSettings(patch); S.settings = r.settings; fillSettings();
     $('sState').textContent = r.hotkeyOk ? 'Saved.' : 'Saved — but that hotkey could not be registered (already in use?).';
   }
@@ -224,7 +281,10 @@
     $('input').addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); send($('input').value); } });
     document.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key.toLowerCase() === 'n') { e.preventDefault(); newSession(); } });
     document.querySelectorAll('.nav button').forEach(b => { b.onclick = () => showView(S.view === b.dataset.view ? 'chat' : b.dataset.view); });
+    $('attachBtn').onclick = pickAttachments;
     $('syncBtn').onclick = () => api.sync();
+    api.onLearned((r) => { const t = `Pushed ${r.pushed.length} file(s) to agent-learned${r.errors.length ? ` (${r.errors.length} error(s))` : ''}.`; const e = $('learnState'); if (e) e.textContent = t; });
+    api.onSelfImprove((r) => { const t = r.opened.length ? `Opened ${r.opened.length} pull request(s) for review: ${r.opened.map(o => o.url).join(', ')}` : (r.errors[0] || ''); const e = $('learnState'); if (e) e.textContent = t; });
     $('skillSearch').oninput = loadSkills; $('toolSearch').oninput = loadTools;
     $('memSave').onclick = async () => { if (!memCur) return; await api.memorySave(memCur, $('memText').value); $('memState').textContent = 'Saved.'; };
     $('memFolder').onclick = () => api.openAgentDir();
