@@ -290,3 +290,28 @@ When the task mentions refresh and verify the a-searchable-library-of-forgotten-
 - Manage your skills library in People Skills | Microsoft Learn
   https://learn.microsoft.com/en-us/microsoft-365/copilot/people-skills-manage-skills-library
 
+
+
+---
+## Field update 2026-09-29
+# Skill: refresh and verify the a-searchable-library-of-forgotten-public skill
+
+Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-searchable-library-of-forgotten-public skill.
+
+## Steps
+1. Note: Videos are not translated
+2. Install them with a single command to enhance your agents with access to procedural knowledge
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Workday Documentation
+  https://doc.workday.com/
+- The Agent Skills Directory
+  https://www.skills.sh/
+
