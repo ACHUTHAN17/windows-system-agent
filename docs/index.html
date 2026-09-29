@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">66 tools</span><span class="pill">183 skills (6 auto · 17 imported · 160 built)</span><span class="pill">generated 2026-09-29</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">66 tools</span><span class="pill">185 skills (6 auto · 17 imported · 162 built)</span><span class="pill">generated 2026-09-29</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-09-29T16:26:53.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-09-29T20:59:52.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 19:03 · updated 2026-09-29 16:26</div>
+  <div class="dates">added 2026-09-23 19:03 · updated 2026-09-29 20:59</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -848,9 +848,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-windows-scroll-bar-sh.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-29T18:55:23.000Z" data-updated="2026-09-29T18:55:23.000Z" data-name="a-privacy-analysis-of-web-and-mobile-con auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-29T18:55:23.000Z" data-updated="2026-09-29T20:59:52.000Z" data-name="a-privacy-analysis-of-web-and-mobile-con auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-privacy-analysis-of-web-and-mobile-con</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-29 18:55 · updated 2026-09-29 18:55</div>
+  <div class="dates">added 2026-09-29 18:55 · updated 2026-09-29 20:59</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A Privacy Analysis of Web and Mobile Conversational AI Agents [pdf]</h2>
 
 <p>Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -9281,6 +9281,34 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://upstract.com/x/a2671f1c84479a16</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-raven-the-harness-of-harnesses-b.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-29" data-updated="2026-09-29" data-name="show-hn-real-time-solar-system-with-526k auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-real-time-solar-system-with-526k</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-29  · updated 2026-09-29 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Real-time Solar System with 526k asteroids and all tracked satellites</h2>
+
+<p>Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: Real-time Solar System with 526k asteroids and all tracked satellites.</p>
+
+<h3>Steps</h3>
+<p>1. How long did it take to make? reply wanick 2 minutes ago | parent | next [–] Thanks! It&amp;#x27;s a byproduct of another project, so hard to say exactly</p>
+<p>2. How Delhi cut electricity loss from 50 to 5 percent (spectrum.ieee.org) 405 points by rbanffy 10 hours ago | 238 comments | video | article ↗ 5</p>
+<p>3. Click a group name to highlight it, 👁 for orbits</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Show HN: Real-time Solar System with 526k asteroids and all tracked ...</div>
+<p>  https://news.ycombinator.com/item?id=49898778</p>
+<div class="li">- HN.watch | Hacker News with explainer videos</div>
+<p>  https://hn.watch/</p>
+<div class="li">- Space Now - Real-time Solar System · Hacker News | Zeli</div>
+<p>  https://zeli.app/story/49898778</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-real-time-solar-system-with-526k.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-26T23:12:40.000Z" data-updated="2026-09-26T23:12:40.000Z" data-name="show-hn-reladraw-a-diagram-language-wher auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-reladraw-a-diagram-language-wher</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-26 23:12 · updated 2026-09-26 23:12</div>
@@ -9357,6 +9385,34 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/hp6/ai-arena</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-tinyaiarena-watch-ai-agents-batt.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-29" data-updated="2026-09-29" data-name="show-hn-turbogpt-train-22kib-transformer auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-turbogpt-train-22kib-transformer</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-29  · updated 2026-09-29 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: TurboGPT: train 22KiB transformer in 13s</h2>
+
+<p>Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: TurboGPT: train 22KiB transformer in 13s.</p>
+
+<h3>Steps</h3>
+<p>1. How Delhi cut electricity loss from 50 to 5 percent (spectrum.ieee.org) 405 points by rbanffy 10 hours ago | 238 comments | video | article ↗ 5</p>
+<p>2. To maintain host integrity, nsl runs as a standard user without changing system permissions, while offering seamless integration through 127.0.0.1 port mapping, Wayland desktop support, and file access via /mnt/host</p>
+<p>3. To mitigate the latency introduced by the reasoning process, the repository includes a block-4 diffusion drafter that accelerates inference</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- HN.watch | Hacker News with explainer videos</div>
+<p>  https://hn.watch/</p>
+<div class="li">- The Front Page</div>
+<p>  https://thefrontpage.dev/</p>
+<div class="li">- Transformers · Hugging Face</div>
+<p>  https://huggingface.co/docs/transformers/index</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-turbogpt-train-22kib-transformer.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-24T22:17:59.000Z" data-updated="2026-09-24T22:17:59.000Z" data-name="show-hn-whiteboard-yc-w26-an-open-source auto-learned 2026-09-24 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-whiteboard-yc-w26-an-open-source</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-24 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-24 22:17 · updated 2026-09-24 22:17</div>
