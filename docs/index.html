@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">66 tools</span><span class="pill">177 skills (6 auto · 17 imported · 154 built)</span><span class="pill">generated 2026-09-29</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">66 tools</span><span class="pill">179 skills (6 auto · 17 imported · 156 built)</span><span class="pill">generated 2026-09-29</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-09-28T23:09:10.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-09-29T02:41:37.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 19:03 · updated 2026-09-28 23:09</div>
+  <div class="dates">added 2026-09-23 19:03 · updated 2026-09-29 02:41</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -776,9 +776,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-windows-scroll-bar-sh.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-26T20:50:50.000Z" data-updated="2026-09-28T23:09:10.000Z" data-name="a-searchable-library-of-forgotten-public auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-26T20:50:50.000Z" data-updated="2026-09-29T02:41:37.000Z" data-name="a-searchable-library-of-forgotten-public auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-searchable-library-of-forgotten-public</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-26 20:50 · updated 2026-09-28 23:09</div>
+  <div class="dates">added 2026-09-26 20:50 · updated 2026-09-29 02:41</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A searchable library of forgotten public-domain film clips from 1915 onward</h2>
 
 <p>Auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -4104,6 +4104,30 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://careerservices.upenn.edu/blog/2026/06/25/45-ai-engineer-interview-questions-answers-2026-guide/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/ai-engineering-interview-questions-compa.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-29" data-updated="2026-09-29" data-name="aihot auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>aihot</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-29  · updated 2026-09-29 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: AIHOT 一个自己找热点、自己写日报的网站框架。把信源和精选标准换成你的，它就是你的行业热点站。</h2>
+
+<p>Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions AIHOT 一个自己找热点、自己写日报的网站框架。把信源和精选标准换成你的，它就是你的行业热点站。.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - newbieYi/product-ai-hot: 一个自己找热点、自己写日报的网站框架。把信源和精选标准换成你的 ...</div>
+<p>  https://github.com/newbieYi/product-ai-hot</p>
+<div class="li">- 不想再做信息苦力？这个开源项目把找热点和写日报一起打包了 - 冯导ai工具研究院 | 冯导的ai工具箱</div>
+<p>  https://www.fengdaoai.com/articles/aihot-self-hosted-news-aggregator-20260929-vwjjg</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/aihot.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-21T20:36:44.000Z" data-updated="2026-09-21T20:36:44.000Z" data-name="aircard-apple-wallet-card-skinner-for-io auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>aircard-apple-wallet-card-skinner-for-io</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-21 20:36 · updated 2026-09-21 20:36</div>
@@ -8936,6 +8960,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://outspeaker.com/post/14749</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-npunlock-run-custom-c-kernels-fo.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-29" data-updated="2026-09-29" data-name="show-hn-pac-bench-how-well-can-models-on auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-pac-bench-how-well-can-models-on</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-29  · updated 2026-09-29 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Pac-Bench – How well can models one-shot a Pac-Man game?</h2>
+
+<p>Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: Pac-Bench – How well can models one-shot a Pac-Man game?.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Pac-Bench: which models can one-shot a Pac-Man… · AGI Hunt</div>
+<p>  https://agihunt.info/en/p/1a0eb6f820cb2085b6cdc4eb36b</p>
+<div class="li">- Show HN: Pac-Bench - How well can models one-shot a Pac-Man game ...</div>
+<p>  https://news.ycombinator.com/item?id=49885493</p>
+<div class="li">- PacBench - Benchmarking AI models · Hacker News | Zeli</div>
+<p>  https://zeli.app/story/49885493</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-pac-bench-how-well-can-models-on.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-28T15:55:58.000Z" data-updated="2026-09-28T15:55:58.000Z" data-name="show-hn-papermono-e-ink-fridge-magnet-sh auto-learned 2026-09-28 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-papermono-e-ink-fridge-magnet-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-28 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-28 15:55 · updated 2026-09-28 15:55</div>
