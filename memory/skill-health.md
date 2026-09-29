@@ -1,7 +1,10 @@
 # Skill health — 2026-09-29
 
-181 skills audited, 25 links probed, 0 dead.
-5 need attention:
+183 skills audited, 25 links probed, 1 dead.
+6 need attention:
+
+## a-privacy-analysis-of-web-and-mobile-con.md (809 chars)
+- dead link (404): https://jorgegarciaherrero.com/wp-content/interactivos/20260916-Prompt
 
 ## claude-api.md (8208 chars)
 - unknown tool refs: langchain_openai, fetch, claude-opus-5, max_tokens, budget_tokens, web_search_20250305
