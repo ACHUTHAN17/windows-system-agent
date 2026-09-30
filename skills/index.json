@@ -1895,8 +1895,8 @@
   "title": "hypoarena Scientific hypothesis-discovery workbench: grounded hypothesis-evidenc",
   "description": "Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-30",
-  "updated": "2026-09-30",
+  "added": "2026-09-30T07:28:33.000Z",
+  "updated": "2026-09-30T07:28:33.000Z",
   "triggers": [
    "hypoarena",
    "scientific",
@@ -2444,8 +2444,8 @@
   "title": "lemo-opuscar 43 film styles, each a reusable style prompt plus a short film made",
   "description": "Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-30",
-  "updated": "2026-09-30",
+  "added": "2026-09-30T07:28:33.000Z",
+  "updated": "2026-09-30T07:28:33.000Z",
   "triggers": [
    "lemo",
    "opuscar",

@@ -92,3 +92,25 @@ When the task mentions refresh and verify the a-privacy-analysis-of-web-and-mobi
 - Free GDPR + CCPA Compliance Scanner — Privacy & Security Audit Tool ...
   https://scancomply.com/
 
+
+
+---
+## Field update 2026-09-30
+# Skill: refresh and verify the a-privacy-analysis-of-web-and-mobile-con skill
+
+Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-privacy-analysis-of-web-and-mobile-con skill.
+
+## Steps
+1. See sources below and follow the official docs.
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Release notes | Claude Help Center
+  https://support.claude.com/en/articles/12138966-release-notes
+
