@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">183 skills (6 auto · 17 imported · 160 built)</span><span class="pill">generated 2026-09-30</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">185 skills (6 auto · 17 imported · 162 built)</span><span class="pill">generated 2026-09-30</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T21:45:46.000Z" data-updated="2026-09-30T11:19:09.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T21:45:46.000Z" data-updated="2026-09-30T16:58:49.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 21:45 · updated 2026-09-30 11:19</div>
+  <div class="dates">added 2026-09-23 21:45 · updated 2026-09-30 16:58</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -950,9 +950,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-windows-scroll-bar-sh.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-29T18:42:43.000Z" data-updated="2026-09-30T11:19:09.000Z" data-name="a-privacy-analysis-of-web-and-mobile-con auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-29T18:42:43.000Z" data-updated="2026-09-30T16:58:49.000Z" data-name="a-privacy-analysis-of-web-and-mobile-con auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-privacy-analysis-of-web-and-mobile-con</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-29 18:42 · updated 2026-09-30 11:19</div>
+  <div class="dates">added 2026-09-29 18:42 · updated 2026-09-30 16:58</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A Privacy Analysis of Web and Mobile Conversational AI Agents [pdf]</h2>
 
 <p>Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -6683,6 +6683,28 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.wired.com/story/openai-dots-always-on-ai-agents-that-proactively-help/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/dots-always-on-agents.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-30" data-updated="2026-09-30" data-name="dots-open-source-dots-for-the-web-an-ai- auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>dots-open-source-dots-for-the-web-an-ai-</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-30  · updated 2026-09-30 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: dots Open-source dots for the web: an AI agent with its own browser, one that does not get blocked.</h2>
+
+<p>Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions dots Open-source dots for the web: an AI agent with its own browser, one that does not get blocked..</p>
+
+<h3>Steps</h3>
+<p>1. To activate the best agent follow the guide here</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - AlbertRF147/dots-gptagent: An experimental open-source attempt ...</div>
+<p>  https://github.com/AlbertRF147/dots-gptagent</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/dots-open-source-dots-for-the-web-an-ai-.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T11:28:22.000Z" data-updated="2026-09-17T11:28:22.000Z" data-name="drag-drop `screen_drag {x1,y1,x2,y2}` moves with the left button held, in smooth steps.">
   <h2>drag-drop</h2><span class="badge task">task-built playbook</span><p class="desc">`screen_drag {x1,y1,x2,y2}` moves with the left button held, in smooth steps.</p>
   <div class="dates">added 2026-09-17 11:28 · updated 2026-09-17 11:28</div>
@@ -9912,6 +9934,34 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/13600k/Strata-for-daniel</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/strata-qwen3-8-flash-next-125b-moe-on-a-.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-30" data-updated="2026-09-30" data-name="strata-qwen3-8-flash-next-on-any-consume auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>strata-qwen3-8-flash-next-on-any-consume</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-30  · updated 2026-09-30 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Strata Qwen3.8-Flash-Next on any consumer hardware: one-click install for Windows / Linux. Strata inference engine, Open</h2>
+
+<p>Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Strata Qwen3.8-Flash-Next on any consumer hardware: one-click install for Windows / Linux. Strata inference engine, Open.</p>
+
+<h3>Steps</h3>
+<p>1. Copy On this page Models Qwen3.8-Flash-Next: How to Run Locally Guide to run Qwen3.8-Flash-Next locally</p>
+<p>2. To run the model, use our GGUFs via llama.cpp or Unsloth Desktop</p>
+<p>3. Run Qwen3.8-Flash Download Unsloth MTP is here! Run Qwen3.8-Flash 1.3-1.7x Faster in Unsloth Desktop ! 4-bit Qwen3.8-Flash running in Unsloth ⚙️ Usage Guide Whether you run Qwen3.8-Flash-Next on a CPU with system RAM or on a GPU with VRAM may make relatively little difference</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - Niko1221/Strata: Qwen3.8-Flash-Next (125B MoE) on a 8GB ...</div>
+<p>  https://github.com/Niko1221/Strata</p>
+<div class="li">- GitHub - kstevica/strata: Qwen3.8-Flash-Next (125B MoE) on a 8GB ...</div>
+<p>  https://github.com/kstevica/strata</p>
+<div class="li">- Qwen3.8-Flash-Next: How to Run Locally | Unsloth Documentation</div>
+<p>  https://unsloth.ai/docs/models/qwen3.8-next</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/strata-qwen3-8-flash-next-on-any-consume.md">view source on GitHub</a></article>
 <article class="card" data-origin="imported" data-added="2026-09-17T19:36:25.000Z" data-updated="2026-09-17T19:36:25.000Z" data-name="subagent-driven-development imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/subagent-driven-development/skill.md) — use when execu">
   <h2>subagent-driven-development</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/subagent-driven-development/SKILL.md) — Use when execu</p>
   <div class="dates">added 2026-09-17 19:36 · updated 2026-09-17 19:36</div>
