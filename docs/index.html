@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">66 tools</span><span class="pill">185 skills (6 auto · 17 imported · 162 built)</span><span class="pill">generated 2026-09-30</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">66 tools</span><span class="pill">187 skills (6 auto · 17 imported · 164 built)</span><span class="pill">generated 2026-09-30</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-09-29T20:59:52.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-09-30T00:20:51.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 19:03 · updated 2026-09-29 20:59</div>
+  <div class="dates">added 2026-09-23 19:03 · updated 2026-09-30 00:20</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -872,9 +872,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-windows-scroll-bar-sh.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-29T18:55:23.000Z" data-updated="2026-09-29T20:59:52.000Z" data-name="a-privacy-analysis-of-web-and-mobile-con auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-29T18:55:23.000Z" data-updated="2026-09-30T00:20:51.000Z" data-name="a-privacy-analysis-of-web-and-mobile-con auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-privacy-analysis-of-web-and-mobile-con</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-29 18:55 · updated 2026-09-29 20:59</div>
+  <div class="dates">added 2026-09-29 18:55 · updated 2026-09-30 00:20</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A Privacy Analysis of Web and Mobile Conversational AI Agents [pdf]</h2>
 
 <p>Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -4347,6 +4347,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://careerservices.upenn.edu/blog/2026/06/25/45-ai-engineer-interview-questions-answers-2026-guide/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/ai-engineering-interview-questions-compa.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-30" data-updated="2026-09-30" data-name="ai-system-design-ai-system-design-learn- auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>ai-system-design-ai-system-design-learn-</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-30  · updated 2026-09-30 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: ai-system-design AI System Design - Learn how to design AI systems built on LLMs, RAG, and AI Agents step by step.</h2>
+
+<p>Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions ai-system-design AI System Design - Learn how to design AI systems built on LLMs, RAG, and AI Agents step by step..</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- AI System Design Guide - GitHub</div>
+<p>  https://github.com/ombharatiya/ai-system-design-guide</p>
+<div class="li">- amitshekhariitbhu/ai-system-design: AI System Design - GitHub</div>
+<p>  https://github.com/amitshekhariitbhu/ai-system-design</p>
+<div class="li">- Generative AI System Design Free (updated 2026)</div>
+<p>  https://www.systemdesignhandbook.com/courses/generative-ai-system-design/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/ai-system-design-ai-system-design-learn-.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-29T06:57:47.000Z" data-updated="2026-09-29T06:57:47.000Z" data-name="aihot auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>aihot</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-29 06:57 · updated 2026-09-29 06:57</div>
@@ -7765,6 +7791,34 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://notes.kamacoder.com/llm/intro/llm_master_github.html</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/llm-master-llm-prompt-engineering-rag-ai.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-30" data-updated="2026-09-30" data-name="logo-design-skill-a-comprehensive-logo-d auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>logo-design-skill-a-comprehensive-logo-d</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-30  · updated 2026-09-30 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: logo-design-skill A comprehensive logo-design skill for Claude, Gemini CLI, Codex and other AI agents: principles, proce</h2>
+
+<p>Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions logo-design-skill A comprehensive logo-design skill for Claude, Gemini CLI, Codex and other AI agents: principles, proce.</p>
+
+<h3>Steps</h3>
+<p>1. To the maximum extent permitted by applicable law, SkillsLLM is not liable for losses arising from third-party software</p>
+<p>2. Use brand-discovery for brand positioning, audience, and voice work</p>
+<p>3. Use creative-direction for project-wide aesthetic direction</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Logo Design Skill for Claude &amp; AI Agents - GitHub</div>
+<p>  https://github.com/tpattivo/kaankiziltug-logo-design-skill</p>
+<div class="li">- logo-design-skill - AI Agents on GitHub | SkillsLLM</div>
+<p>  https://skillsllm.com/skill/logo-design-skill</p>
+<div class="li">- logo-design Skill by rampstackco | Claude Skills Hub</div>
+<p>  https://claudeskills.info/skills/rampstackco/claude-skills/logo-design/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/logo-design-skill-a-comprehensive-logo-d.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-26T00:50:13.000Z" data-updated="2026-09-26T00:50:13.000Z" data-name="magpie-every-agent-s-model-one-place-cod auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>magpie-every-agent-s-model-one-place-cod</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-26 00:50 · updated 2026-09-26 00:50</div>
