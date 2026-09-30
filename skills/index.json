@@ -5,7 +5,7 @@
   "description": "Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-09-23T21:45:46.000Z",
-  "updated": "2026-09-30T16:58:49.000Z",
+  "updated": "2026-09-30T21:23:31.000Z",
   "triggers": [
    "brief",
    "history",
@@ -32,7 +32,7 @@
   "description": "Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-09-29T18:42:43.000Z",
-  "updated": "2026-09-30T16:58:49.000Z",
+  "updated": "2026-09-30T21:23:31.000Z",
   "triggers": [
    "privacy",
    "analysis",
@@ -2380,6 +2380,35 @@
   ]
  },
  {
+  "name": "launch-hn-magnitude-yc-s25-self-optimizi",
+  "title": "Launch HN: Magnitude (YC S25) – Self-optimizing inference engine for agents",
+  "description": "Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-30",
+  "updated": "2026-09-30",
+  "triggers": [
+   "launch",
+   "magnitude",
+   "s25",
+   "self",
+   "optimizing",
+   "inference",
+   "engine",
+   "agents",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
   "name": "laya-coreml-local-laya-typed-decisions-o",
   "title": "laya-coreml Local Laya typed decisions on Apple Core ML and Neural Engine. Valid",
   "description": "Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
@@ -4497,6 +4526,36 @@
    "automation",
    "prefer",
    "screen"
+  ]
+ },
+ {
+  "name": "universal-modder-point-claude-at-any-gam",
+  "title": "universal-modder Point Claude at any game. Skills, tools and the fal MCP that le",
+  "description": "Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-09-30",
+  "updated": "2026-09-30",
+  "triggers": [
+   "universal",
+   "modder",
+   "point",
+   "claude",
+   "game",
+   "skills",
+   "tools",
+   "fal",
+   "mcp",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
   ]
  },
  {

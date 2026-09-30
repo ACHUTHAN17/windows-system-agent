@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">185 skills (6 auto · 17 imported · 162 built)</span><span class="pill">generated 2026-09-30</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">187 skills (6 auto · 17 imported · 164 built)</span><span class="pill">generated 2026-09-30</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T21:45:46.000Z" data-updated="2026-09-30T16:58:49.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-09-23T21:45:46.000Z" data-updated="2026-09-30T21:23:31.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 21:45 · updated 2026-09-30 16:58</div>
+  <div class="dates">added 2026-09-23 21:45 · updated 2026-09-30 21:23</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -974,9 +974,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-windows-scroll-bar-sh.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-29T18:42:43.000Z" data-updated="2026-09-30T16:58:49.000Z" data-name="a-privacy-analysis-of-web-and-mobile-con auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-29T18:42:43.000Z" data-updated="2026-09-30T21:23:31.000Z" data-name="a-privacy-analysis-of-web-and-mobile-con auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-privacy-analysis-of-web-and-mobile-con</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-29 18:42 · updated 2026-09-30 16:58</div>
+  <div class="dates">added 2026-09-29 18:42 · updated 2026-09-30 21:23</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A Privacy Analysis of Web and Mobile Conversational AI Agents [pdf]</h2>
 
 <p>Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -8053,6 +8053,34 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://fondo.com/blog/coverage-cat-launches</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/launch-hn-coverage-cat-yc-s22-umbrella-i.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-30" data-updated="2026-09-30" data-name="launch-hn-magnitude-yc-s25-self-optimizi auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>launch-hn-magnitude-yc-s25-self-optimizi</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-30  · updated 2026-09-30 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Launch HN: Magnitude (YC S25) – Self-optimizing inference engine for agents</h2>
+
+<p>Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Launch HN: Magnitude (YC S25) – Self-optimizing inference engine for agents.</p>
+
+<h3>Steps</h3>
+<p>1. Download Magnitude for macOS, Windows, or Linux ⭐ Help us reach more developers and grow the Magnitude community</p>
+<p>2. Choose a recommended model in Discover and download it</p>
+<p>3. Install Magnitude Download Magnitude , install it, and open the app</p>
+<p>4. Download a model Open Discover , select a recommendation, and click Download</p>
+<p>5. Open or restart the agent, select a Magnitude model, and start working</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - magnitudedev/magnitude: Open source inference engine for ...</div>
+<p>  https://github.com/magnitudedev/magnitude</p>
+<div class="li">- Quick start - Magnitude</div>
+<p>  https://docs.magnitude.dev/get-started</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/launch-hn-magnitude-yc-s25-self-optimizi.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-22T22:14:03.000Z" data-updated="2026-09-22T22:14:03.000Z" data-name="laya-coreml-local-laya-typed-decisions-o auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>laya-coreml-local-laya-typed-decisions-o</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-22 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-22 22:14 · updated 2026-09-22 22:14</div>
@@ -10875,6 +10903,35 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>display scale before coordinate clicking. Skip windows with no MainWindowHandle.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/uia-click.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-09-30" data-updated="2026-09-30" data-name="universal-modder-point-claude-at-any-gam auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>universal-modder-point-claude-at-any-gam</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-09-30  · updated 2026-09-30 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: universal-modder Point Claude at any game. Skills, tools and the fal MCP that let Claude Code mod almost any PC game you</h2>
+
+<p>Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions universal-modder Point Claude at any game. Skills, tools and the fal MCP that let Claude Code mod almost any PC game you.</p>
+
+<h3>Steps</h3>
+<p>1. How do I install universal-modder? Clone the repository with "git clone https://github.com/rehan-remade/universal-modder" and add it to your Claude Code skills directory (see the Installation section above)</p>
+<p>2. Open the MCP Servers category from the badge at the top of this page, or use the Related Skills and comparison links further down to weigh universal-modder against similar tools</p>
+<p>3. To the maximum extent permitted by applicable law, SkillsLLM is not liable for losses arising from third-party software</p>
+<p>4. Run an instant dependency check now instead</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Skills, tools and the fal MCP that let Claude Code mod almost any PC ...</div>
+<p>  https://github.com/rehan-remade/universal-modder</p>
+<div class="li">- GitHub - doritoman90000/universal-game-modder: One MCP server to ...</div>
+<p>  https://github.com/doritoman90000/universal-game-modder</p>
+<div class="li">- universal-modder - MCP Servers on GitHub | SkillsLLM</div>
+<p>  https://skillsllm.com/skill/universal-modder</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/universal-modder-point-claude-at-any-gam.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-23T00:35:36.000Z" data-updated="2026-09-23T00:35:36.000Z" data-name="unreal-agent-async-first-agent-harness auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>unreal-agent-async-first-agent-harness</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-23 00:35 · updated 2026-09-23 00:35</div>
