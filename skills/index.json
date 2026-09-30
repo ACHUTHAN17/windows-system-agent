@@ -2998,8 +2998,8 @@
   "title": "Pi.dev: You Said No MCP",
   "description": "Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-09-30",
-  "updated": "2026-09-30",
+  "added": "2026-09-30T14:07:39.000Z",
+  "updated": "2026-09-30T14:07:39.000Z",
   "triggers": [
    "dev",
    "said",
