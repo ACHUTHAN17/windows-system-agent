@@ -67,3 +67,28 @@ When the task mentions refresh and verify the a-privacy-analysis-of-web-and-mobi
 - WAVE Web Accessibility Evaluation Tools
   https://wave.webaim.org/
 
+
+
+---
+## Field update 2026-09-30
+# Skill: refresh and verify the a-privacy-analysis-of-web-and-mobile-con skill
+
+Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-privacy-analysis-of-web-and-mobile-con skill.
+
+## Steps
+1. Choose Your Compliance Scanner Each scanner performs specialized checks
+2. Run all three for complete coverage
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Google Keep
+  https://keep.google.com/
+- Free GDPR + CCPA Compliance Scanner — Privacy & Security Audit Tool ...
+  https://scancomply.com/
+
