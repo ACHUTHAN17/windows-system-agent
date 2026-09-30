@@ -9,7 +9,7 @@ const { JSDOM } = require('jsdom');
 function boot() {
   const calls = { run: [], approve: [], stop: 0, settings: [] };
   let listener = () => {}; let syncListener = () => {}; let learnedListener = () => {}; let prListener = () => {};
-  const settings = { preset: 'free', provider: 'openai-compatible', apiUrl: '', model: '', allowedRoots: '', fullAuto: false, hotkey: 'Control+Alt+Space', startWithWindows: false, closeToTray: true, syncOnStart: true, syncMemory: true, syncEngine: false, hasKey: false, keyEncrypted: false, githubRepo: '', autoPushLearned: false, autoSelfImprove: false, hasGithubPat: false };
+  const settings = { preset: 'free', provider: 'openai-compatible', apiUrl: '', model: '', allowedRoots: '', fullAuto: false, hotkey: 'Control+Alt+Space', startWithWindows: false, closeToTray: true, syncOnStart: true, syncMemory: true, syncEngine: false, hasKey: false, keyEncrypted: false, githubRepo: '', autoPushLearned: false, autoSelfImprove: false, hasGithubPat: false, useScoutedModels: true };
   const fake = {
     info: async () => ({ version: '1.0.0', agentDir: 'C:\\agent' }),
     getSettings: async () => ({ ...settings }),
@@ -167,4 +167,13 @@ test('settings: GitHub repo/token/toggles round-trip, and enabling self-improve 
   assert.ok(d.getElementById('learnState').textContent.includes('Pushed 1'));
   b.pr({ opened: [{ file: 'a.json', url: 'https://github.com/me/fork/pull/3' }], errors: [] });
   assert.ok(d.getElementById('learnState').textContent.includes('pull/3'));
+});
+
+test('settings: useScoutedModels checkbox reflects and saves state', async () => {
+  const b = boot(); const dom = await load(b); const d = dom.window.document;
+  d.querySelector('[data-view=settings]').click(); await tick();
+  assert.strictEqual(d.getElementById('sScouted').checked, true);
+  d.getElementById('sScouted').checked = false;
+  d.getElementById('sSave').click(); await tick();
+  assert.strictEqual(b.calls.settings.pop().useScoutedModels, false);
 });

@@ -5,7 +5,7 @@
 // Uses global fetch (Node 18+). No SDK dependencies.
 export async function chat(cfg, messages) {
   const chain = buildChain(cfg);
-  let lastErr;
+  const attempts = [];
   for (let i = 0; i < chain.length; i++) {
     const c = chain[i];
     try {
@@ -13,11 +13,18 @@ export async function chat(cfg, messages) {
       if (i > 0) console.log(`  [llm] primary failed — answered via fallback #${i}: ${c.model} @ ${c.apiUrl}`);
       return text;
     } catch (e) {
-      lastErr = e;
-      if (i < chain.length - 1) console.log(`  [llm] ${c.model} @ ${c.apiUrl} failed (${String(e.message).split('\n')[0]}) — trying next in chain...`);
+      attempts.push({ model: c.model, url: c.apiUrl, message: String(e.message).split('\n')[0] });
+      if (i < chain.length - 1) console.log(`  [llm] ${c.model} @ ${c.apiUrl} failed (${attempts[attempts.length - 1].message}) — trying next in chain...`);
     }
   }
-  throw lastErr;
+  // Every attempt failed. With more than one entry, name each one (which is primary vs.
+  // fallback) so the failure is diagnosable from the final error alone, not just whichever
+  // endpoint happened to be last in the chain.
+  if (attempts.length > 1) {
+    const lines = attempts.map((a, i) => `  ${i === 0 ? 'primary' : `fallback #${i}`} (${a.model} @ ${a.url}): ${a.message}`);
+    throw new Error(`All ${attempts.length} configured model(s) failed:\n${lines.join('\n')}`);
+  }
+  throw new Error(attempts[0].message);
 }
 
 // Builds the ordered list of endpoints to try: the configured primary model,

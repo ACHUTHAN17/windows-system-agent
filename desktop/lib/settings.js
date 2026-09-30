@@ -18,6 +18,7 @@ const DEFAULTS = {
   githubRepo: '',
   autoPushLearned: false,
   autoSelfImprove: false,
+  useScoutedModels: true,
 };
 
 // Persists settings in the user's profile. The API key is encrypted with Electron's
@@ -74,6 +75,7 @@ class Settings {
       const k = this._key();
       if (k) env.MODEL_API_KEY = k;
     }
+    if (d.useScoutedModels === false) env.USE_SCOUTED_MODELS = 'false';
     if (String(d.allowedRoots || '').trim()) env.ALLOWED_ROOTS = String(d.allowedRoots).trim();
     return env;
   }

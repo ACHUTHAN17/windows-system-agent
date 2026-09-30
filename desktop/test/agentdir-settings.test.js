@@ -57,3 +57,13 @@ test('Settings: GitHub PAT is stored/encrypted separately from the model key and
   s.update({ githubPat: null });
   assert.strictEqual(s.githubPat(), ''); assert.strictEqual(s.publicView().hasGithubPat, false);
 });
+
+test('Settings: useScoutedModels defaults true, only sets USE_SCOUTED_MODELS env when explicitly disabled', () => {
+  const dir = tmp(); const s = new Settings(dir, fakeSS);
+  assert.strictEqual(s.data.useScoutedModels, true);
+  assert.strictEqual(s.agentEnv().USE_SCOUTED_MODELS, undefined);
+  s.update({ useScoutedModels: false });
+  assert.strictEqual(s.agentEnv().USE_SCOUTED_MODELS, 'false');
+  s.update({ useScoutedModels: true });
+  assert.strictEqual(s.agentEnv().USE_SCOUTED_MODELS, undefined);
+});
