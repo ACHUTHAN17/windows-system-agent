@@ -1,6 +1,6 @@
 # Skill health — 2026-10-01
 
-193 skills audited, 25 links probed, 2 dead.
+195 skills audited, 25 links probed, 1 dead.
 10 need attention:
 
 ## a-privacy-analysis-of-web-and-mobile-con.md (7020 chars)
@@ -8,9 +8,6 @@
 
 ## agent-overlay.md (3676 chars)
 - unknown tool refs: click, drag, type, file
-
-## ai-companies-leak-data-to-advertisers-pd.md (858 chars)
-- dead link (429): https://news.ycombinator.com/item?id=49890226
 
 ## claude-api.md (8208 chars)
 - unknown tool refs: langchain_openai, fetch, claude-opus-5, max_tokens, budget_tokens, web_search_20250305
@@ -33,5 +30,8 @@
 
 ## self-learn.md (2068 chars)
 - unknown tool refs: tools
+
+## show-hn-open-source-model-routing-for-co.md (1013 chars)
+- unknown tool refs: model
 
 _Audited automatically. Fix via refresh cycles or chat-teach._
