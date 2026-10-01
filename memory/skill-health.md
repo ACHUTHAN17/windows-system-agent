@@ -1,6 +1,6 @@
-# Skill health — 2026-09-30
+# Skill health — 2026-10-01
 
-191 skills audited, 25 links probed, 1 dead.
+193 skills audited, 25 links probed, 1 dead.
 6 need attention:
 
 ## a-privacy-analysis-of-web-and-mobile-con.md (4815 chars)
