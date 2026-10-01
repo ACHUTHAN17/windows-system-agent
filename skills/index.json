@@ -5,7 +5,7 @@
   "description": "Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-09-23T19:03:42.000Z",
-  "updated": "2026-10-01T01:57:49.000Z",
+  "updated": "2026-10-01T08:44:59.000Z",
   "triggers": [
    "brief",
    "history",
@@ -32,7 +32,7 @@
   "description": "Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-09-29T18:55:23.000Z",
-  "updated": "2026-10-01T01:57:49.000Z",
+  "updated": "2026-10-01T08:44:59.000Z",
   "triggers": [
    "privacy",
    "analysis",
@@ -1110,6 +1110,35 @@
    "desktop",
    "windows",
    "agent"
+  ]
+ },
+ {
+  "name": "coucou-a-tiny-friend-that-lives-in-your-",
+  "title": "coucou A tiny friend that lives in your notch (macOS) or at the top of your scre",
+  "description": "Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-10-01",
+  "updated": "2026-10-01",
+  "triggers": [
+   "coucou",
+   "tiny",
+   "friend",
+   "lives",
+   "notch",
+   "macos",
+   "top",
+   "scre",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
   ]
  },
  {
@@ -5221,6 +5250,30 @@
    "export",
    "fresh",
    "start",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
+  "name": "yomiyasu-ai-agent-skill",
+  "title": "yomiyasu AI生成された文章の不自然さを取り除き、人間にとって自然な日本語へ書き直すためのAgent Skill",
+  "description": "Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-10-01",
+  "updated": "2026-10-01",
+  "triggers": [
+   "yomiyasu",
+   "agent",
+   "skill",
    "auto",
    "learned",
    "2026",
