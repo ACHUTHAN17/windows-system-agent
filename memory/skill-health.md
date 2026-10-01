@@ -1,17 +1,16 @@
 # Skill health — 2026-10-01
 
-191 skills audited, 25 links probed, 3 dead.
+193 skills audited, 25 links probed, 2 dead.
 10 need attention:
-
-## a-brief-history-of-windows-scroll-bar-sh.md (33527 chars)
-- dead link (429): https://news.ycombinator.com/item?id=49820065
 
 ## a-privacy-analysis-of-web-and-mobile-con.md (7020 chars)
 - dead link (404): https://jorgegarciaherrero.com/wp-content/interactivos/20260916-Prompt
-- dead link (ERR:ECONNREFUSED): https://dspace.networks.imdea.org/bitstream/handle/20.500.12761/2073/l
 
 ## agent-overlay.md (3676 chars)
 - unknown tool refs: click, drag, type, file
+
+## ai-companies-leak-data-to-advertisers-pd.md (858 chars)
+- dead link (429): https://news.ycombinator.com/item?id=49890226
 
 ## claude-api.md (8208 chars)
 - unknown tool refs: langchain_openai, fetch, claude-opus-5, max_tokens, budget_tokens, web_search_20250305
