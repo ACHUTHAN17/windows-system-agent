@@ -1,9 +1,9 @@
 # Skill health — 2026-10-01
 
-193 skills audited, 25 links probed, 1 dead.
+195 skills audited, 25 links probed, 1 dead.
 6 need attention:
 
-## a-privacy-analysis-of-web-and-mobile-con.md (4815 chars)
+## a-privacy-analysis-of-web-and-mobile-con.md (5493 chars)
 - dead link (404): https://jorgegarciaherrero.com/wp-content/interactivos/20260916-Prompt
 
 ## claude-api.md (8208 chars)
