@@ -1,7 +1,7 @@
 # Skill health — 2026-10-01
 
-200 skills audited, 25 links probed, 1 dead.
-6 need attention:
+202 skills audited, 25 links probed, 1 dead.
+7 need attention:
 
 ## a-privacy-analysis-of-web-and-mobile-con.md (6246 chars)
 - dead link (404): https://jorgegarciaherrero.com/wp-content/interactivos/20260916-Prompt
@@ -20,5 +20,8 @@
 
 ## open-models.md (3125 chars)
 - unknown tool refs: openai
+
+## show-hn-open-source-model-routing-for-co.md (1258 chars)
+- unknown tool refs: model
 
 _Audited automatically. Fix via refresh cycles or chat-teach._
