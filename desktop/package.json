@@ -1,7 +1,7 @@
 {
   "name": "winagent-desktop",
   "productName": "WinAgent",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "WinAgent desktop app: a ChatGPT/Codex-style window for the WinAgent system-control agent",
   "main": "main.js",
   "author": "ACHUTHAN17",

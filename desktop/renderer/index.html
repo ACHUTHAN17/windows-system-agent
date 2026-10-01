@@ -28,7 +28,10 @@
     <header class="topbar drag">
       <span id="title">New chat</span>
       <span class="spacer"></span>
-      <span id="modelPill" class="pill nodrag" title="Active model">model: default</span>
+      <div class="modelwrap nodrag">
+        <button id="modelPill" class="pill" title="Click to switch models">model: default</button>
+        <div id="modelPop" class="modelpop" hidden></div>
+      </div>
       <button id="modeBadge" class="pill mode nodrag" title="Click to switch approval mode"></button>
     </header>
 
@@ -38,6 +41,7 @@
         <div id="attachRow" class="attachrow" hidden></div>
         <div id="composer">
           <button id="attachBtn" class="clip" title="Attach files or images">📎</button>
+          <button id="micBtn" class="clip" title="Voice input">🎤</button>
           <textarea id="input" rows="1" placeholder="Ask WinAgent to do something on this PC…  (Enter to send, Shift+Enter for a new line)"></textarea>
           <button id="send" class="send" title="Send">➤</button>
           <button id="stop" class="send stop" title="Stop" hidden>■</button>
@@ -71,6 +75,10 @@
           <div class="dim" id="keyNote"></div>
         </div>
         <label class="check"><input id="sScouted" type="checkbox"> If my model fails, try free models the agent has found on its own</label>
+
+        <h2>Voice</h2>
+        <label class="check"><input id="sReadAloud" type="checkbox"> Read the agent's replies aloud automatically</label>
+        <div class="dim">🎤 next to the composer transcribes speech to text as you talk. 🔊 on any reply reads it aloud on demand. Both run fully in the app (Chromium's built-in voice engine) — no extra setup, but voice input needs an internet connection.</div>
         <div class="row"><button id="sTest" class="ghost">Test model in a new chat</button><button id="sSelftest" class="ghost">Run agent self-test</button></div>
 
         <h2>Control</h2>

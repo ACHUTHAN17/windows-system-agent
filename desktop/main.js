@@ -1,13 +1,15 @@
 'use strict';
 const path = require('node:path');
 const fs = require('node:fs');
-const { app, BrowserWindow, Tray, Menu, globalShortcut, ipcMain, dialog, shell, nativeImage, Notification, safeStorage } = require('electron');
+const { app, BrowserWindow, Tray, Menu, globalShortcut, ipcMain, dialog, shell, nativeImage, Notification, safeStorage, session } = require('electron');
 const { ensureAgentDir } = require('./lib/agentdir');
 const { Settings } = require('./lib/settings');
 const { AgentRunner } = require('./lib/runner');
 const { syncFromGitHub } = require('./lib/sync');
 const { pushLearned, listCandidates } = require('./lib/github-push');
 const { submitPending } = require('./lib/self-improve');
+const { tryLocalAction } = require('./lib/local-actions');
+const { attachFromPaths, saveBufferIntoUploads } = require('./lib/attachments');
 
 const ICON = path.join(__dirname, 'build', 'icon.png');
 let win = null;
@@ -33,9 +35,9 @@ function handle(channel, fn) {
 function createWindow(startHidden) {
   win = new BrowserWindow({
     width: 1180, height: 780, minWidth: 820, minHeight: 560,
-    show: false, backgroundColor: '#0f1115', title: 'WinAgent', icon: ICON,
+    show: false, backgroundColor: '#0e0f13', title: 'WinAgent', icon: ICON,
     titleBarStyle: 'hidden',
-    titleBarOverlay: { color: '#0f1115', symbolColor: '#e6e6e6', height: 40 },
+    titleBarOverlay: { color: '#0e0f13', symbolColor: '#ececf1', height: 44 },
     webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, sandbox: true, nodeIntegration: false },
   });
   win.setMenuBarVisibility(false);
@@ -180,7 +182,9 @@ function registerIpc() {
     if ('startWithWindows' in patch) app.setLoginItemSettings({ openAtLogin: !!patch.startWithWindows, args: ['--hidden'] });
     return { settings: view, hotkeyOk };
   });
-  handle('agent:run', ({ text, history }) => {
+  handle('agent:run', async ({ text, history }) => {
+    const local = await tryLocalAction({ text, agentDir, allowedRoots: settings.data.allowedRoots });
+    if (local) return { ok: true, instant: true, message: local.message, error: local.error };
     const r = runner.run({ text: buildTask(text, history), fullAuto: !!settings.data.fullAuto, env: settings.agentEnv() });
     return r;
   });
@@ -195,6 +199,9 @@ function registerIpc() {
     try { return fs.readFileSync(path.join(agentDir, 'skills', n + '.md'), 'utf8').slice(0, 200000); } catch { return ''; }
   });
   handle('tools:list', () => readTools());
+  handle('models:scouted', () => {
+    try { return JSON.parse(fs.readFileSync(path.join(agentDir, 'docs', 'models.json'), 'utf8')).live || []; } catch { return []; }
+  });
   handle('memory:list', () => {
     const dir = path.join(agentDir, 'memory');
     try { return fs.readdirSync(dir).filter(f => f.endsWith('.md')).map(f => ({ name: f, text: fs.readFileSync(path.join(dir, f), 'utf8').slice(0, 200000) })); } catch { return []; }
@@ -215,27 +222,10 @@ function registerIpc() {
   handle('dialog:folder', async () => { const r = await dialog.showOpenDialog(win, { properties: ['openDirectory'] }); return r.canceled ? null : r.filePaths[0]; });
   handle('dialog:attachFiles', async () => {
     const r = await dialog.showOpenDialog(win, { properties: ['openFile', 'multiSelections'] });
-    if (r.canceled) return [];
-    const dir = path.join(agentDir, 'uploads');
-    fs.mkdirSync(dir, { recursive: true });
-    const out = [];
-    for (const src of r.filePaths.slice(0, 10)) {
-      try {
-        const stat = fs.statSync(src);
-        if (stat.size > 25 * 1024 * 1024) { out.push({ name: path.basename(src), error: 'too large (25 MB max)' }); continue; }
-        const safeName = `${Date.now()}-${path.basename(src)}`.replace(/[^A-Za-z0-9._-]/g, '_');
-        const dest = path.join(dir, safeName);
-        fs.copyFileSync(src, dest);
-        const rel = path.join('uploads', safeName);
-        const ext = path.extname(src).toLowerCase();
-        const isText = ['.txt', '.md', '.json', '.csv', '.log', '.js', '.py', '.ts', '.html', '.css', '.yml', '.yaml'].includes(ext);
-        let preview = '';
-        if (isText) { try { preview = fs.readFileSync(dest, 'utf8').slice(0, 4000); } catch { /* binary despite extension */ } }
-        out.push({ name: path.basename(src), path: rel, bytes: stat.size, isImage: ['.png', '.jpg', '.jpeg', '.gif', '.webp'].includes(ext), preview });
-      } catch (e) { out.push({ name: path.basename(src), error: e.message }); }
-    }
-    return out;
+    return r.canceled ? [] : attachFromPaths(agentDir, r.filePaths);
   });
+  handle('attach:fromPaths', (paths) => attachFromPaths(agentDir, Array.isArray(paths) ? paths : []));
+  handle('attach:fromBuffer', ({ name, bytes }) => saveBufferIntoUploads(agentDir, name, Buffer.from(bytes)));
   handle('image:read', (relPath) => {
     const rel = String(relPath || '').replace(/\\/g, '/');
     if (!/^(generated|uploads)\/[A-Za-z0-9._-]+$/.test(rel)) return null;
@@ -257,6 +247,11 @@ function start() {
   app.setAppUserModelId('com.achuthan17.winagent');
   app.on('second-instance', showWindow);
   app.whenReady().then(() => {
+    // Voice input (renderer's SpeechRecognition) needs the OS mic permission granted at the
+    // Electron session level, or Chromium silently denies it. Nothing else needs a permission
+    // here (no camera/geolocation/etc. use in this app), so this is a narrow allow-list, not
+    // a blanket grant.
+    session.defaultSession.setPermissionRequestHandler((_wc, permission, callback) => callback(permission === 'media'));
     settings = new Settings(app.getPath('userData'), safeStorage);
     agentDir = path.join(app.getPath('userData'), 'agent');
     const version = app.isPackaged ? app.getVersion() : `${app.getVersion()}-dev-${Date.now()}`;

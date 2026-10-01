@@ -22,6 +22,7 @@ function boot() {
     skills: async () => [{ name: 'docx', title: 'docx', description: 'Word files', origin: 'imported' }, { name: 'pdf', title: 'pdf', description: 'PDF files', origin: '' }],
     skillRead: async (n) => `# ${n}\nsome **skill** text`,
     tools: async () => [{ name: 'file_list', description: 'List a folder', origin: 'built-in' }],
+    scoutedModels: async () => [],
     memoryList: async () => [{ name: 'MEMORY.md', text: '- a note' }], memorySave: async () => true,
     sessionsLoad: async () => [], sessionsSave: async () => true,
     pickFolder: async () => 'C:\\Docs', openAgentDir: async () => '', openExternal: async () => {},
@@ -176,4 +177,62 @@ test('settings: useScoutedModels checkbox reflects and saves state', async () =>
   d.getElementById('sScouted').checked = false;
   d.getElementById('sSave').click(); await tick();
   assert.strictEqual(b.calls.settings.pop().useScoutedModels, false);
+});
+
+test('model popover: opens with presets + scouted models, picking one switches settings and updates the pill', async () => {
+  const b = boot(); const dom = await load(b); const d = dom.window.document;
+  b.fake.scoutedModels = async () => [{ label: 'Pollinations · openai', url: 'https://gen.pollinations.ai/v1', model: 'openai', latencyMs: 300 }];
+  d.getElementById('modelPill').click(); await tick();
+  assert.strictEqual(d.getElementById('modelPop').hidden, false);
+  assert.ok(d.querySelectorAll('.mp-item[data-preset]').length >= 5, 'lists every preset');
+  assert.ok(d.querySelector('.mp-item[data-url]').textContent.includes('Pollinations'));
+
+  d.querySelector('.mp-item[data-preset="ollama"]').click(); await tick();
+  const patch = b.calls.settings.pop();
+  assert.strictEqual(patch.preset, 'ollama'); assert.strictEqual(patch.model, 'llama3.1');
+  assert.ok(d.getElementById('modelPill').textContent.includes('llama3.1'));
+  assert.strictEqual(d.getElementById('modelPop').hidden, true, 'closes after picking');
+});
+
+test('model popover closes on outside click without changing anything', async () => {
+  const b = boot(); const dom = await load(b); const d = dom.window.document;
+  d.getElementById('modelPill').click(); await tick();
+  assert.strictEqual(d.getElementById('modelPop').hidden, false);
+  d.getElementById('messages').click(); await tick();
+  assert.strictEqual(d.getElementById('modelPop').hidden, true);
+});
+
+test('instant local actions (open folder/app) render immediately with no Activity panel and no busy state', async () => {
+  const b = boot(); const dom = await load(b); const d = dom.window.document;
+  b.fake.run = async (text) => { calls2.push(text); return { ok: true, instant: true, message: 'Opened your Downloads folder' }; };
+  const calls2 = [];
+  d.getElementById('input').value = 'open downloads';
+  d.getElementById('send').click(); await tick();
+  assert.deepStrictEqual(calls2, ['open downloads']);
+  assert.strictEqual(d.getElementById('stop').hidden, true, 'never enters a busy state for an instant action');
+  assert.ok(!d.querySelector('.activity'), 'no Activity accordion for an instant action');
+  const msg = d.querySelector('.msg.assistant.instant');
+  assert.ok(msg, 'tagged as an instant message');
+  assert.strictEqual(msg.querySelector('.avatar').textContent, '⚡');
+  assert.ok(msg.textContent.includes('Opened your Downloads folder'));
+});
+
+test('instant action error surfaces like a normal error, still with no Activity panel', async () => {
+  const b = boot(); const dom = await load(b); const d = dom.window.document;
+  b.fake.run = async () => ({ ok: true, instant: true, error: "That's outside what I'm allowed to open right now." });
+  d.getElementById('input').value = 'open C:\\blocked\\x.txt';
+  d.getElementById('send').click(); await tick();
+  assert.ok(d.querySelector('.msg.assistant.instant .err').textContent.includes('outside what I'));
+});
+
+test('voice: gracefully disables the mic button when SpeechRecognition is unavailable (no throw)', async () => {
+  const b = boot(); const dom = await load(b); const d = dom.window.document;
+  assert.strictEqual(d.getElementById('micBtn').disabled, true);
+});
+
+test('voice: clicking read-aloud never throws when speechSynthesis is unavailable', async () => {
+  const b = boot(); const dom = await load(b); const d = dom.window.document;
+  d.getElementById('input').value = 'hi'; d.getElementById('send').click(); await tick();
+  b.emit({ t: 'answer', text: 'hello there' }); b.emit({ t: 'done', code: 0 }); await tick();
+  assert.doesNotThrow(() => d.querySelector('.mact.speak').click());
 });

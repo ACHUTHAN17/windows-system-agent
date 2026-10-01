@@ -19,6 +19,7 @@ const DEFAULTS = {
   autoPushLearned: false,
   autoSelfImprove: false,
   useScoutedModels: true,
+  readAloud: false,
 };
 
 // Persists settings in the user's profile. The API key is encrypted with Electron's

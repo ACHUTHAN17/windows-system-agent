@@ -130,3 +130,16 @@ renderer. The engine is copied to `%APPDATA%\WinAgent\agent` (writable); `lib/sy
 skills/docs/memory from GitHub and NEVER `tools-imported/`. Settings/keys: `lib/settings.js`
 (DPAPI via safeStorage, injected as env vars). Tests: `cd desktop && npm test` (includes a real-engine
 end-to-end against a mock LLM). Build: `.github/workflows/desktop-build.yml` on windows-latest.
+
+Instant local actions (`lib/local-actions.js`): a conservative regex+lookup matcher for
+"open X"-style messages (known special folders, a curated app-name list, or an explicit path) —
+short-circuits `agent:run` before the model is ever called, via `cmd.exe /c start`. Falls through
+to the normal AI path on anything with more than one step, an unrecognized target, or a message
+over 80 chars. File/folder targets still go through the engine's real `isPathAllowed`
+(dynamically imported from the seeded `agentDir/src/safety.js`), so `ALLOWED_ROOTS` applies here
+too. Attachments (`lib/attachments.js`) are a single shared module behind three entry points —
+the 📎 dialog, drag-and-drop onto `#view-chat`, and clipboard paste onto `#input` — so all three
+share one size cap, one text-inline-vs-path-reference rule, and one collision-safe naming scheme.
+Voice is both Web Speech APIs built into Chromium (`SpeechRecognition` for 🎤,
+`speechSynthesis` for 🔊) — zero dependencies, but `main.js` must narrowly grant the `media`
+permission via `setPermissionRequestHandler` or Chromium silently denies the mic.

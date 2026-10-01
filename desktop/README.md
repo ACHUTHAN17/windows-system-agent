@@ -25,7 +25,7 @@ cd desktop
 npm install
 npm test            # 19 tests: parser, runner, sync, UI, and the REAL engine end-to-end
 npm start           # run in development
-npm run dist        # -> desktop\dist\WinAgent-Setup-1.0.2.exe and WinAgent-Portable-1.0.2.exe
+npm run dist        # -> desktop\dist\WinAgent-Setup-1.0.3.exe and WinAgent-Portable-1.0.3.exe
 ```
 
 ## What you get
@@ -36,11 +36,14 @@ npm run dist        # -> desktop\dist\WinAgent-Setup-1.0.2.exe and WinAgent-Port
 | **Live activity** | Every step and tool call the agent makes, streamed while it works; **Stop** kills the whole process tree |
 | **Approvals** | The agent asks before risky actions (write/delete/shell/registry/app control). Allow once / Always / Deny, with a Windows notification if the window is hidden. Auto-denies after 5 minutes |
 | **Full control** | Optional switch (top-right badge or Settings). Confirmation dialog first. The agent then acts without asking — only use with a model you trust |
-| **Models** | Default = free keyless models found by the model scout. Or OpenAI, Anthropic, OpenRouter, Ollama, or any OpenAI-compatible URL. API key is encrypted with Windows DPAPI and is passed to the agent only as a process environment variable — never written to a file |
+| **Models** | Default = free keyless models found by the model scout. Or OpenAI, Anthropic, OpenRouter, Pollinations (needs a free key from `enter.pollinations.ai` — their anonymous/keyless access was restricted after this app first shipped), Ollama, or any OpenAI-compatible URL. API key is encrypted with Windows DPAPI and is passed to the agent only as a process environment variable — never written to a file |
 | **Allowed folders** | Optional allow-list (`ALLOWED_ROOTS`); protected system paths stay blocked either way. Leaving it empty means the agent can reach anywhere on the system except the built-in protected paths — this is "access my whole system" by default, not opt-in |
 | **GitHub sync** | ↻ button (and on start): pulls the latest **skills**, **docs/models.json** and merges **memory** from `ACHUTHAN17/windows-system-agent`. Memory is *merged* (new notes added, yours never overwritten) |
 | **Skills / Memory / Tools** | Browse and search skills, edit memory files, see every tool including ones the agent wrote itself |
-| **Attach files/images** | 📎 next to the composer. Small text files (`.txt .md .json .csv .log .js .py .html .css .yml`) are inlined into the task; anything else (images included) is copied to `%APPDATA%\WinAgent\agent\uploads\` and the agent is told the path so it can use `file_read`/`file_fetch`/vision on it |
+| **Attach files/images** | 📎 button, drag-and-drop anywhere onto the window, or paste (Ctrl+V) a screenshot straight into the composer — all three go through the same path. Small text files are inlined into the task; anything else (images included) is copied to `%APPDATA%\WinAgent\agent\uploads\` and the agent is told the path so it can use `file_read`/`file_fetch`/vision on it |
+| **Instant local actions** | "open downloads", "open notepad", "open C:\path\to\file" and similar run **immediately, with no AI call at all** — a small local matcher (`lib/local-actions.js`) recognizes common folders/apps/paths and launches them directly. Shown with a ⚡ icon instead of the usual activity log. Anything with extra steps ("open X and summarize it") still goes to the AI, never silently shortcut |
+| **Switch models mid-chat** | Click the model pill in the top bar for a popover: every configured preset, plus the specific free models the agent has found live (pick one directly instead of relying on the automatic fallback) |
+| **Voice** | 🎤 transcribes speech to text into the composer (Chromium's built-in speech recognition — needs internet, no extra setup). 🔊 on any reply reads it aloud on demand; "read replies aloud automatically" is a Settings toggle |
 | **Image generation** | The agent has an `image_generate` tool (free, keyless — pollinations.ai). Generated images are saved under `generated/` and shown inline in the chat automatically. *Video generation is not included* — no free/keyless provider exists for it yet; wire one up in `src/tools.js` if you get a paid API key |
 | **Auto-push what it learns** | Settings → Self-improvement. New skills, self-authored tools (`tool_create`) and the `SELF.md` log get pushed to the **`agent-learned`** branch of your repo automatically — never to `main` — using a GitHub token you provide |
 | **Self-improvement PRs** | The agent can call `self_improve_propose` to draft a change to its own engine code. This is staged locally, never applied live. If you enable it, the desktop app turns pending proposals into a GitHub **pull request** (branch + PR, base `main`) automatically — but it is never merged automatically; you review the diff on GitHub. This is intentional: this agent has shell/registry/file/browser access, so a change to its own safety logic always goes through a visible review step, not a silent one |

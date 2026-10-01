@@ -8,6 +8,7 @@
     openai: { label: 'OpenAI', provider: 'openai-compatible', apiUrl: 'https://api.openai.com/v1', model: 'gpt-4o-mini' },
     anthropic: { label: 'Anthropic Claude', provider: 'anthropic', apiUrl: 'https://api.anthropic.com', model: '' },
     openrouter: { label: 'OpenRouter', provider: 'openai-compatible', apiUrl: 'https://openrouter.ai/api/v1', model: '' },
+    pollinations: { label: 'Pollinations (needs a free key from enter.pollinations.ai)', provider: 'openai-compatible', apiUrl: 'https://gen.pollinations.ai/v1', model: 'openai' },
     custom: { label: 'Custom OpenAI-compatible', provider: 'openai-compatible', apiUrl: '', model: '' },
   };
   const STARTERS = [
@@ -34,6 +35,58 @@
     }
     return html || window.MD.render(text);
   }
+  function speak(text) {
+    if (!('speechSynthesis' in window) || !text) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(String(text).slice(0, 4000));
+    window.speechSynthesis.speak(u);
+  }
+  function speakIfEnabled(text) { if (S.settings && S.settings.readAloud) speak(text); }
+
+  let recognition = null, recording = false;
+  function initSpeech() {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { $('micBtn').disabled = true; $('micBtn').title = 'Voice input is not available in this build'; return; }
+    recognition = new SR();
+    recognition.continuous = false; recognition.interimResults = true; recognition.lang = navigator.language || 'en-US';
+    recognition.onresult = (e) => { let txt = ''; for (let i = 0; i < e.results.length; i++) txt += e.results[i][0].transcript; $('input').value = txt; autosize(); };
+    const stop = () => { recording = false; $('micBtn').classList.remove('recording'); };
+    recognition.onend = stop; recognition.onerror = stop;
+  }
+  function toggleMic() {
+    if (!recognition) return;
+    if (recording) { recognition.stop(); return; }
+    try { recognition.start(); recording = true; $('micBtn').classList.add('recording'); } catch { /* already running */ }
+  }
+
+  function modelLabel(s) {
+    if (!s) return 'model: default';
+    if (s.preset === 'free') return 'model: free (auto)';
+    return 'model: ' + (s.model || PRESETS[s.preset]?.label || s.preset);
+  }
+  async function switchModel(patch) {
+    const r = await api.setSettings(patch);
+    S.settings = r.settings;
+    $('modelPill').textContent = modelLabel(S.settings);
+    closeModelPop();
+  }
+  function closeModelPop() { $('modelPop').hidden = true; }
+  async function toggleModelPop() {
+    const pop = $('modelPop');
+    if (!pop.hidden) { closeModelPop(); return; }
+    const scouted = await api.scoutedModels();
+    let html = '<div class="mp-label">Quick switch</div>';
+    for (const [key, p] of Object.entries(PRESETS)) {
+      html += `<button class="mp-item" data-preset="${key}">${esc(p.label)}${S.settings && S.settings.preset === key ? ' ✓' : ''}</button>`;
+    }
+    if (scouted.length) {
+      html += '<div class="mp-label">Free models found by the agent</div>';
+      for (const m of scouted.slice(0, 8)) html += `<button class="mp-item" data-url="${esc(m.url)}" data-model="${esc(m.model)}">${esc(m.label)} <span class="dim">${m.latencyMs}ms</span></button>`;
+    }
+    pop.innerHTML = html;
+    pop.hidden = false;
+  }
+
   async function loadPendingImages(root) {
     const imgs = (root || document).querySelectorAll('.gen-img.loading');
     for (const img of imgs) {
@@ -79,11 +132,11 @@
     return `<div class="row-i"><span class="dot"></span><span class="txt">${esc(a.text)}</span></div>`;
   }
   function assistantNode(m) {
-    const n = el('div', 'msg assistant');
+    const n = el('div', 'msg assistant' + (m.instant ? ' instant' : ''));
     const steps = m.activity.filter(a => a.k === 'step' || a.k === 'tool').length;
     const running = m.status === 'running';
-    let html = '<div class="avatar">&gt;_</div><div class="bubble">';
-    if (m.activity.length || running) {
+    let html = `<div class="avatar">${m.instant ? '⚡' : '&gt;_'}</div><div class="bubble">`;
+    if (!m.instant && (m.activity.length || running)) {
       html += `<details class="activity" ${running ? 'open' : ''}><summary>${running ? '<span class="spinner"></span>Working…' : 'Activity'} (${steps} step${steps === 1 ? '' : 's'})</summary><div class="rows">${m.activity.map(activityRow).join('')}</div></details>`;
     }
     if (m.approval) {
@@ -93,6 +146,7 @@
       html += '</div>';
     }
     if (m.text) html += `<div class="answer md">${renderAnswerWithImages(m.text)}</div>`;
+    if (m.text && !running) html += `<div class="msgactions"><button class="mact speak" title="Read aloud">🔊</button><button class="mact copy2" title="Copy">⧉</button></div>`;
     if (m.error) html += `<div class="err">${esc(m.error)}</div>`;
     if (!m.text && !m.error && !running && !m.approval) html += '<div class="dim">Done — no text answer was returned.</div>';
     html += '</div>';
@@ -110,7 +164,7 @@
     const box = $('messages'); const s = cur(); box.innerHTML = '';
     if (!s || !s.messages.length) {
       const w = el('div', 'welcome');
-      w.innerHTML = `<h1>What should WinAgent do?</h1><p>${S.settings && S.settings.preset === 'free' ? 'Using free models by default — add your own key in Settings for better results.' : 'Describe a task. WinAgent will plan it and use its tools on this PC.'}</p><div class="cards"></div>`;
+      w.innerHTML = `<div class="logo">&gt;_</div><h1>What should WinAgent do?</h1><p>${S.settings && S.settings.preset === 'free' ? 'Using free models by default — add your own key in Settings for better results.' : 'Describe a task. WinAgent will plan it and use its tools on this PC.'}</p><div class="cards"></div>`;
       const cards = w.querySelector('.cards');
       for (const [t, p] of STARTERS) { const c = el('div', 'card', `<b>${esc(t)}</b><span>${esc(p)}</span>`); c.onclick = () => send(p); cards.appendChild(c); }
       box.appendChild(w); return;
@@ -153,7 +207,8 @@
     s.messages.push(turn); s.updated = Date.now(); S.turn = turn;
     $('input').value = ''; S.attachments = []; renderAttachRow(); autosize(); setRunning(true); renderAll();
     const r = await api.run(fullText, history);
-    if (!r || !r.ok) { turn.status = 'error'; turn.error = r && r.error === 'busy' ? 'The agent is already running a task.' : `Could not start the agent: ${r && r.error}`; endTurn(); }
+    if (!r || !r.ok) { turn.status = 'error'; turn.error = r && r.error === 'busy' ? 'The agent is already running a task.' : `Could not start the agent: ${r && r.error}`; endTurn(); return; }
+    if (r.instant) { turn.instant = true; turn.text = r.message || ''; turn.error = r.error || ''; turn.status = 'done'; S.turn = null; setRunning(false); saveSoon(); renderAll(); speakIfEnabled(turn.text); }
   }
   function renderAttachRow() {
     const row = $('attachRow'); row.innerHTML = '';
@@ -191,7 +246,7 @@
       case 'banner': $('modelPill').textContent = ev.text.replace(/\s*@\s*.*$/, '').slice(0, 60); $('modelPill').title = ev.text; break;
       case 'approval': t.approval = { id: ev.id, label: ev.label, options: ev.options, resolved: '' }; break;
       case 'resolved': if (t.approval) t.approval.resolved = ev.decision; break;
-      case 'answer': t.text = t.kind === 'selftest' ? '```\n' + ev.text + '\n```' : ev.text; break;
+      case 'answer': t.text = t.kind === 'selftest' ? '```\n' + ev.text + '\n```' : ev.text; if (t.kind !== 'selftest') speakIfEnabled(ev.text); break;
       case 'error': t.error = ev.text; t.status = 'error'; break;
       case 'done': endTurn(); return;
     }
@@ -240,7 +295,7 @@
     $('sSyncStart').checked = !!s.syncOnStart; $('sSyncMem').checked = !!s.syncMemory; $('sSyncEng').checked = !!s.syncEngine;
     $('sRepo').value = s.githubRepo || ''; $('sPat').value = '';
     $('sPat').placeholder = s.hasGithubPat ? '•••••••• saved (leave blank to keep)' : 'ghp_… (repo scope)';
-    $('sAutoPush').checked = !!s.autoPushLearned; $('sSelfImprove').checked = !!s.autoSelfImprove; $('sScouted').checked = s.useScoutedModels !== false;
+    $('sAutoPush').checked = !!s.autoPushLearned; $('sSelfImprove').checked = !!s.autoSelfImprove; $('sScouted').checked = s.useScoutedModels !== false; $('sReadAloud').checked = !!s.readAloud;
     $('customFields').hidden = s.preset === 'free'; updateMode();
   }
   async function loadSettings() { S.settings = await api.getSettings(); fillSettings(); const i = await api.info(); $('aboutLine').textContent = `WinAgent desktop ${i.version} · agent folder: ${i.agentDir}`; }
@@ -251,10 +306,12 @@
       fullAuto: $('sFull').checked, allowedRoots: $('sRoots').value.trim(), hotkey: $('sHotkey').value.trim(),
       startWithWindows: $('sStart').checked, closeToTray: $('sTray').checked, syncOnStart: $('sSyncStart').checked, syncMemory: $('sSyncMem').checked, syncEngine: $('sSyncEng').checked,
       githubRepo: $('sRepo').value.trim(), autoPushLearned: $('sAutoPush').checked, autoSelfImprove: $('sSelfImprove').checked, useScoutedModels: $('sScouted').checked,
+      readAloud: $('sReadAloud').checked,
     };
     if ($('sKey').value.trim()) patch.apiKey = $('sKey').value.trim();
     if ($('sPat').value.trim()) patch.githubPat = $('sPat').value.trim();
     const r = await api.setSettings(patch); S.settings = r.settings; fillSettings();
+    $('modelPill').textContent = modelLabel(S.settings);
     $('sState').textContent = r.hotkeyOk ? 'Saved.' : 'Saved — but that hotkey could not be registered (already in use?).';
   }
 
@@ -269,6 +326,8 @@
     if (!S.sessions.length) S.sessions.push({ id: uid(), title: 'New chat', messages: [], updated: Date.now() });
     S.cur = S.sessions[0].id;
     S.settings = await api.getSettings(); updateMode();
+    $('modelPill').textContent = modelLabel(S.settings);
+    initSpeech();
     api.skills().then(s => { $('skillCount').textContent = s.length || ''; }); api.tools().then(t => { $('toolCount').textContent = t.length || ''; });
 
     api.onEvent(onEvent);
@@ -282,6 +341,9 @@
     document.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key.toLowerCase() === 'n') { e.preventDefault(); newSession(); } });
     document.querySelectorAll('.nav button').forEach(b => { b.onclick = () => showView(S.view === b.dataset.view ? 'chat' : b.dataset.view); });
     $('attachBtn').onclick = pickAttachments;
+    $('micBtn').onclick = toggleMic;
+    $('modelPill').onclick = (e) => { e.stopPropagation(); toggleModelPop(); };
+    document.addEventListener('click', (e) => { if (!e.target.closest('.modelwrap')) closeModelPop(); });
     $('syncBtn').onclick = () => api.sync();
     api.onLearned((r) => { const t = `Pushed ${r.pushed.length} file(s) to agent-learned${r.errors.length ? ` (${r.errors.length} error(s))` : ''}.`; const e = $('learnState'); if (e) e.textContent = t; });
     api.onSelfImprove((r) => { const t = r.opened.length ? `Opened ${r.opened.length} pull request(s) for review: ${r.opened.map(o => o.url).join(', ')}` : (r.errors[0] || ''); const e = $('learnState'); if (e) e.textContent = t; });
@@ -298,6 +360,36 @@
       const a = e.target.closest('a[data-href]'); if (a) { e.preventDefault(); api.openExternal(a.dataset.href); return; }
       const cp = e.target.closest('.copy'); if (cp) { const code = cp.closest('.codeblock').querySelector('code').textContent; navigator.clipboard.writeText(code).then(() => { cp.textContent = 'Copied'; setTimeout(() => { cp.textContent = 'Copy'; }, 1200); }); return; }
       const b = e.target.closest('.approval .btns button'); if (b && S.turn && S.turn.approval) { api.approve(S.turn.approval.id, b.dataset.d); b.parentElement.querySelectorAll('button').forEach(x => { x.disabled = true; }); }
+      const spk = e.target.closest('.mact.speak'); if (spk) { const txt = spk.closest('.bubble').querySelector('.answer').innerText; speak(txt); return; }
+      const cp2 = e.target.closest('.mact.copy2'); if (cp2) { const txt = cp2.closest('.bubble').querySelector('.answer').innerText; navigator.clipboard.writeText(txt).then(() => { cp2.textContent = '✓'; setTimeout(() => { cp2.textContent = '⧉'; }, 1200); }); return; }
+      const mp = e.target.closest('.mp-item'); if (mp) {
+        if (mp.dataset.preset) { const p = PRESETS[mp.dataset.preset]; switchModel({ preset: mp.dataset.preset, provider: p.provider, apiUrl: p.apiUrl, model: p.model }); }
+        else if (mp.dataset.url) { switchModel({ preset: 'custom', provider: 'openai-compatible', apiUrl: mp.dataset.url, model: mp.dataset.model }); }
+        return;
+      }
+    });
+
+    // Drag-and-drop a file/image anywhere over the chat to attach it (same path as 📎).
+    const dropZone = $('view-chat');
+    ['dragenter', 'dragover'].forEach(evt => dropZone.addEventListener(evt, (e) => { e.preventDefault(); dropZone.classList.add('dragover'); }));
+    ['dragleave', 'drop'].forEach(evt => dropZone.addEventListener(evt, (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); }));
+    dropZone.addEventListener('drop', async (e) => {
+      const paths = Array.from(e.dataTransfer.files || []).map(f => f.path).filter(Boolean);
+      if (!paths.length) return;
+      const files = await api.attachPaths(paths);
+      if (files.length) { S.attachments.push(...files); renderAttachRow(); }
+    });
+
+    // Paste a screenshot/image directly into the composer (Ctrl+V), like ChatGPT desktop.
+    $('input').addEventListener('paste', async (e) => {
+      const item = Array.from(e.clipboardData.items || []).find(i => i.type.startsWith('image/'));
+      if (!item) return;
+      e.preventDefault();
+      const blob = item.getAsFile();
+      const bytes = new Uint8Array(await blob.arrayBuffer());
+      const name = `pasted-${Date.now()}.png`;
+      const r = await api.attachBuffer(name, bytes);
+      if (r) { S.attachments.push(r); renderAttachRow(); }
     });
     showView('chat'); renderAll();
     window.__winagentReady = true;

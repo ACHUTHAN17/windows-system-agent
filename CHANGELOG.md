@@ -1,4 +1,30 @@
 # Changelog
+## 1.24.0 — 2026-09-30
+- **UI**: full visual pass — refined dark palette, message/approval fade-in animation, smoother
+  button/hover states, nicer composer with focus glow, sidebar active-item accent bar, polished
+  settings/skills/tools panes. Not a rewrite of the structure, a real pass on how it all looks.
+- **Instant local actions**: "open downloads", "open notepad", "open C:\\path\\to\\file" and
+  similar now run immediately with **no model call** — `desktop/lib/local-actions.js` resolves a
+  small set of folders/apps/explicit paths with total confidence and launches them directly.
+  Deliberately conservative: a compound request ("open X and summarize it") always goes to the
+  normal AI path, never silently shortcut. Respects the same allowed-folders setting as everything
+  else via the engine's real `isPathAllowed`.
+- **Model switcher in chat**: the model pill in the top bar is now a popover — every preset, plus
+  the specific free models the agent has verified live, pick one without opening Settings.
+- **Pollinations preset**: added as a named provider option (needs a free key from
+  `enter.pollinations.ai` — their text API now requires one; the old anonymous access this app
+  relied on by default was restricted after 1.0.2 shipped).
+- **Voice**: 🎤 speech-to-text into the composer and 🔊 read-any-reply-aloud, both via Chromium's
+  built-in Web Speech APIs (no server, no extra install). "Read replies aloud automatically" toggle
+  in Settings. Mic permission is granted narrowly in `main.js` (media only).
+- **Drag-and-drop + paste-to-attach**: drop a file anywhere on the chat, or paste an image
+  (Ctrl+V) straight into the composer — both reuse the same `desktop/lib/attachments.js` path as
+  the 📎 button, so size caps/behavior are identical across all three.
+- 18 new tests (40 -> 58): local-actions detection (critically, that it never shortcuts a compound
+  task), the shared attachments module (including a same-filename-collision case), and UI coverage
+  for the model popover, instant-action rendering, and voice graceful-degradation when the APIs
+  aren't available.
+
 ## 1.23.0 — 2026-09-28
 - **Image generation**: new `image_generate` tool (free, keyless, pollinations.ai). Desktop app renders
   `[[image:...]]` markers inline (images delivered via IPC as base64, never a raw filesystem/network path
