@@ -186,3 +186,27 @@ When the task mentions refresh and verify the a-privacy-analysis-of-web-and-mobi
 - WAVE Web Accessibility Evaluation Tools
   https://wave.webaim.org/
 
+
+
+---
+## Field update 2026-10-01
+# Skill: refresh and verify the a-privacy-analysis-of-web-and-mobile-con skill
+
+Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-privacy-analysis-of-web-and-mobile-con skill.
+
+## Steps
+1. How to Prepare for a Privacy Audit? Successful privacy audits begin long before the first document is reviewed
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Privacy Guides
+  https://www.privacyguides.org/
+- Privacy Audit Guide: Checklist & Best Practices
+  https://www.privacyglobal.org/blog/privacy-audit-guide
+
