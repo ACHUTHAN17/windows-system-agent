@@ -1,13 +1,14 @@
 # Skill health — 2026-10-01
 
-189 skills audited, 25 links probed, 2 dead.
+191 skills audited, 25 links probed, 3 dead.
 10 need attention:
 
-## a-brief-history-of-windows-scroll-bar-sh.md (32774 chars)
+## a-brief-history-of-windows-scroll-bar-sh.md (33527 chars)
 - dead link (429): https://news.ycombinator.com/item?id=49820065
 
-## a-privacy-analysis-of-web-and-mobile-con.md (6342 chars)
+## a-privacy-analysis-of-web-and-mobile-con.md (7020 chars)
 - dead link (404): https://jorgegarciaherrero.com/wp-content/interactivos/20260916-Prompt
+- dead link (ERR:ECONNREFUSED): https://dspace.networks.imdea.org/bitstream/handle/20.500.12761/2073/l
 
 ## agent-overlay.md (3676 chars)
 - unknown tool refs: click, drag, type, file
