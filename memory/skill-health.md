@@ -1,10 +1,13 @@
 # Skill health — 2026-10-02
 
-204 skills audited, 25 links probed, 1 dead.
-7 need attention:
+205 skills audited, 25 links probed, 2 dead.
+8 need attention:
 
 ## a-privacy-analysis-of-web-and-mobile-con.md (6246 chars)
 - dead link (404): https://jorgegarciaherrero.com/wp-content/interactivos/20260916-Prompt
+
+## agentverse-os-personal-cloud-os-for-a-de.md (899 chars)
+- dead link (ERR:This operation was aborted): https://github.com/agentverse-os/AgentVerse-OS
 
 ## claude-api.md (8208 chars)
 - unknown tool refs: langchain_openai, fetch, claude-opus-5, max_tokens, budget_tokens, web_search_20250305
