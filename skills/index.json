@@ -3190,8 +3190,8 @@
   "title": "OpenDots Your always-on AI coworkers that move between text, calls, and Slack.",
   "description": "Auto-learned 2026-10-02 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-02",
-  "updated": "2026-10-02",
+  "added": "2026-10-02T21:00:28.000Z",
+  "updated": "2026-10-02T21:00:28.000Z",
   "triggers": [
    "opendots",
    "always",
@@ -4064,8 +4064,8 @@
   "title": "Show HN: Made an open-source Lego AI generator",
   "description": "Auto-learned 2026-10-02 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-02",
-  "updated": "2026-10-02",
+  "added": "2026-10-02T21:00:28.000Z",
+  "updated": "2026-10-02T21:00:28.000Z",
   "triggers": [
    "show",
    "made",

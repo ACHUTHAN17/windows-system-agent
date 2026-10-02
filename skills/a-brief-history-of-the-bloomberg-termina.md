@@ -171,3 +171,25 @@ When the task mentions refresh and verify the a-brief-history-of-the-bloomberg-t
 - A brief history of the Bloomberg terminal: Context, Claims, and Sources
   https://tech-trends-daily.vercel.app/guides/a-brief-history-of-the-bloomberg-terminal-49909583/
 
+
+
+---
+## Field update 2026-10-02
+# Skill: refresh and verify the a-brief-history-of-the-bloomberg-termina skill
+
+Auto-learned 2026-10-02 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-brief-history-of-the-bloomberg-termina skill.
+
+## Steps
+1. See sources below and follow the official docs.
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Alpha History
+  https://alphahistory.com/
+
