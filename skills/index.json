@@ -1975,8 +1975,8 @@
   "title": "GPT-6 Astra plays World of Warcraft for the first time with agent-wow",
   "description": "Auto-learned 2026-10-02 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-02",
-  "updated": "2026-10-02",
+  "added": "2026-10-02T16:41:59.000Z",
+  "updated": "2026-10-02T16:41:59.000Z",
   "triggers": [
    "gpt",
    "astra",
@@ -4801,8 +4801,8 @@
   "title": "The Legend of von Neumann (1973) [pdf]",
   "description": "Auto-learned 2026-10-02 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-02",
-  "updated": "2026-10-02",
+  "added": "2026-10-02T16:41:59.000Z",
+  "updated": "2026-10-02T16:41:59.000Z",
   "triggers": [
    "legend",
    "von",
