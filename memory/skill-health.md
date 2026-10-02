@@ -1,19 +1,22 @@
 # Skill health — 2026-10-02
 
-198 skills audited, 25 links probed, 3 dead.
-12 need attention:
+201 skills audited, 25 links probed, 4 dead.
+13 need attention:
+
+## a-brief-history-of-windows-scroll-bar-sh.md (36612 chars)
+- dead link (429): https://news.ycombinator.com/item?id=49820065
 
 ## a-privacy-analysis-of-web-and-mobile-con.md (7020 chars)
 - dead link (404): https://jorgegarciaherrero.com/wp-content/interactivos/20260916-Prompt
 
 ## academy-guide.md (70503 chars)
-- dead link (ERR:This operation was aborted): https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SK
+- dead link (503): https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SK
 
 ## agent-overlay.md (3676 chars)
 - unknown tool refs: click, drag, type, file
 
-## agentverse-os-personal-cloud-os-for-a-de.md (899 chars)
-- dead link (ERR:This operation was aborted): https://github.com/agentverse-os/AgentVerse-OS
+## ai-companies-leak-data-to-advertisers-pd.md (858 chars)
+- dead link (429): https://news.ycombinator.com/item?id=49890226
 
 ## claude-api.md (8208 chars)
 - unknown tool refs: langchain_openai, fetch, claude-opus-5, max_tokens, budget_tokens, web_search_20250305
