@@ -588,8 +588,8 @@
   "title": "Aweb – Communication for AI Agents",
   "description": "Auto-learned 2026-10-02 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-02",
-  "updated": "2026-10-02",
+  "added": "2026-10-02T00:08:17.000Z",
+  "updated": "2026-10-02T00:08:17.000Z",
   "triggers": [
    "aweb",
    "communication",
@@ -2724,8 +2724,8 @@
   "title": "mcp-extensions Build plugins that feel like native, first-class features of Chat",
   "description": "Auto-learned 2026-10-02 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-02",
-  "updated": "2026-10-02",
+  "added": "2026-10-02T00:08:17.000Z",
+  "updated": "2026-10-02T00:08:17.000Z",
   "triggers": [
    "mcp",
    "extensions",
