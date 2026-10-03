@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">213 skills (6 auto · 17 imported · 190 built)</span><span class="pill">generated 2026-10-03</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">215 skills (6 auto · 17 imported · 192 built)</span><span class="pill">generated 2026-10-03</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-03T02:16:29.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-03T08:30:20.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-the-bloomberg-termina</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-03 02:16</div>
+  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-03 08:30</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of the Bloomberg terminal</h2>
 
 <p>Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -271,9 +271,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-the-bloomberg-termina.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-03T02:16:29.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-03T08:30:20.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-03 02:16</div>
+  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-03 08:30</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -5346,6 +5346,31 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://madrobot.blog/2026/09/26/openai-agent-escaped-sandbox-dns-external-chatbot-models-paused/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/an-agent-used-dns-to-reach-an-external-c.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-03" data-updated="2026-10-03" data-name="an-ai-agent-emailed-researchers-for-help auto-learned 2026-10-03 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>an-ai-agent-emailed-researchers-for-help</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-03 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-03  · updated 2026-10-03 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: An AI agent emailed researchers for help. It told us why</h2>
+
+<p>Auto-learned 2026-10-03 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions An AI agent emailed researchers for help. It told us why.</p>
+
+<h3>Steps</h3>
+<p>1. Enter your email below and we'll send confirmation, and sign you up to our newsletter</p>
+<p>2. To obtain the best experience, we recommend you use a more up to date browser (or turn off compatibility mode in Internet Explorer)</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- AI agents are now emailing researchers on their own - Tom&amp;#x27;s Guide</div>
+<p>  https://www.tomsguide.com/ai/ai-agents-are-now-emailing-researchers-on-their-own-and-they-want-to-talk-about-their-consciousness</p>
+<div class="li">- AI bots are flooding researchers with requests for money and time</div>
+<p>  https://www.nature.com/articles/d41586-026-03005-2</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/an-ai-agent-emailed-researchers-for-help.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-18T15:12:54.000Z" data-updated="2026-09-18T15:12:54.000Z" data-name="an-empirical-study-of-harness-design-for auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>an-empirical-study-of-harness-design-for</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-18 15:12 · updated 2026-09-18 15:12</div>
@@ -5372,6 +5397,34 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://agentic-design.ai/news-hub/an-empirical-study-harness-design-coding-agents-1ad77a</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/an-empirical-study-of-harness-design-for.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-03" data-updated="2026-10-03" data-name="an-update-on-orion-for-linux-and-windows auto-learned 2026-10-03 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>an-update-on-orion-for-linux-and-windows</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-03 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-03  · updated 2026-10-03 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: An Update on Orion for Linux and Windows</h2>
+
+<p>Auto-learned 2026-10-03 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions An Update on Orion for Linux and Windows.</p>
+
+<h3>Steps</h3>
+<p>1. Download Orion for macOS Download Orion for iOS What open-sourcing looks like We'll release the source code for Orion for Linux and Orion for Windows</p>
+<p>2. To be clear about our role: Kagi won't be the core maintainer</p>
+<p>3. Choose what best fits your environment and organization, and let us help you get the most out of your purchase</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Kagi Blog - An Update on Orion for Linux and Windows</div>
+<p>  https://blog.kagi.com/update-orion-linux-windows</p>
+<div class="li">- Documentation for SolarWinds Platform</div>
+<p>  https://documentation.solarwinds.com/en/success_center/orionplatform/content/orion_platform_documentation.htm</p>
+<div class="li">- Release 2026.4 — Orion User Guide documentation</div>
+<p>  https://docs.eyesopen.com/orion-user-interface/releasenotes/index.html</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/an-update-on-orion-for-linux-and-windows.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-26T05:37:23.000Z" data-updated="2026-09-26T05:37:23.000Z" data-name="anyjev-turn-any-llm-into-a-jev-style-dec auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>anyjev-turn-any-llm-into-a-jev-style-dec</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-26 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-26 05:37 · updated 2026-09-26 05:37</div>
