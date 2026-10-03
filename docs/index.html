@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">207 skills (6 auto · 17 imported · 184 built)</span><span class="pill">generated 2026-10-03</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">209 skills (6 auto · 17 imported · 186 built)</span><span class="pill">generated 2026-10-03</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T07:43:37.000Z" data-updated="2026-10-03T07:52:08.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T07:43:37.000Z" data-updated="2026-10-03T13:13:08.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-the-bloomberg-termina</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-10-01 07:43 · updated 2026-10-03 07:52</div>
+  <div class="dates">added 2026-10-01 07:43 · updated 2026-10-03 13:13</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of the Bloomberg terminal</h2>
 
 <p>Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -255,9 +255,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-the-bloomberg-termina.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-23T21:45:46.000Z" data-updated="2026-10-03T01:49:44.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-23T21:45:46.000Z" data-updated="2026-10-03T13:13:08.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 21:45 · updated 2026-10-03 01:49</div>
+  <div class="dates">added 2026-09-23 21:45 · updated 2026-10-03 13:13</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -10511,6 +10511,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/wrr/drop</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-drop-a-rootless-linux-sandbox-wi.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-03" data-updated="2026-10-03" data-name="show-hn-germany-s-new-sovereign-ai-model auto-learned 2026-10-03 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-germany-s-new-sovereign-ai-model</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-03 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-03  · updated 2026-10-03 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Germany's new sovereign AI model Kolibri</h2>
+
+<p>Auto-learned 2026-10-03 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: Germany's new sovereign AI model Kolibri.</p>
+
+<h3>Steps</h3>
+<p>1. How Kolibri works Kolibri is 6 ideas stacked on top of each other, and each one is there to make German cheaper, longer or more honest</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Aleph Alpha Kolibri: How the Sovereign German LLM Works</div>
+<p>  https://tej.as/blog/aleph-alpha-kolibri</p>
+<div class="li">- Aleph-Alpha/Kolibri-1 · Hugging Face</div>
+<p>  https://huggingface.co/Aleph-Alpha/Kolibri-1</p>
+<div class="li">- PDF Kolibri: A Sovereign European Model on the Pareto Frontier</div>
+<p>  https://aleph-alpha.com/downloads/tech-report.pdf</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-germany-s-new-sovereign-ai-model.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-20T01:25:43.000Z" data-updated="2026-09-20T01:25:43.000Z" data-name="show-hn-i-created-an-open-source-locally auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-i-created-an-open-source-locally</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-20 01:25 · updated 2026-09-20 01:25</div>
@@ -10695,6 +10721,35 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://outspeaker.com/post/14749</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-npunlock-run-custom-c-kernels-fo.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-03" data-updated="2026-10-03" data-name="show-hn-offrun-manage-every-coding-agent auto-learned 2026-10-03 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-offrun-manage-every-coding-agent</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-03 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-03  · updated 2026-10-03 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Offrun – manage every coding agent from one workspace</h2>
+
+<p>Auto-learned 2026-10-03 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: Offrun – manage every coding agent from one workspace.</p>
+
+<h3>Steps</h3>
+<p>1. Run Claude Code, Codex, AGY, and Grok Build side by side</p>
+<p>2. Pick a project and give it a task</p>
+<p>3. Run a refactor and a bug fix at once and merge them on your own schedule</p>
+<p>4. Pick a reviewer, and its findings land in the chat while the work is still uncommitted</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Offrun | Mission control for your coding agents</div>
+<p>  https://offrun.dev/</p>
+<div class="li">- Show HN: Offrun - manage every coding agent from one workspace</div>
+<p>  https://upstract.com/x/a5f7e63de08b393b</p>
+<div class="li">- Show HN: Offrun - manage every coding agent from one workspace</div>
+<p>  https://hb.int2inf.com/en/s/item/7XA3ZyXgDTQUxeaF6n3Ujp-offrun-coding-agent-worktree</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-offrun-manage-every-coding-agent.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-10-01T19:53:50.000Z" data-updated="2026-10-01T19:53:50.000Z" data-name="show-hn-open-source-model-routing-for-co auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-open-source-model-routing-for-co</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-10-01 19:53 · updated 2026-10-01 19:53</div>
