@@ -1,1 +1,11 @@
-{}
+{
+  "invoice-agent.js": {
+    "origin": "imported",
+    "repo": "https://github.com/munesoft/agent",
+    "file": "examples/invoice-agent.js",
+    "found_via": "web-search",
+    "query": "zero dependency node.js automation agent tool github",
+    "at": "2026-10-03",
+    "status": "pending-review"
+  }
+}
