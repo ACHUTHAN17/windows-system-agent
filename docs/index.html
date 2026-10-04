@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">221 skills (6 auto · 17 imported · 198 built)</span><span class="pill">generated 2026-10-04</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">223 skills (6 auto · 17 imported · 200 built)</span><span class="pill">generated 2026-10-04</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-03T20:55:28.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-04T05:29:56.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-the-bloomberg-termina</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-03 20:55</div>
+  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-04 05:29</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of the Bloomberg terminal</h2>
 
 <p>Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -367,9 +367,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-the-bloomberg-termina.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-03T23:42:50.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-04T05:29:56.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-03 23:42</div>
+  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-04 05:29</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -5221,6 +5221,34 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/agent-modes.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-04" data-updated="2026-10-04" data-name="agents-don-t-need-memory-they-need-docum auto-learned 2026-10-04 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>agents-don-t-need-memory-they-need-docum</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-04 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-04  · updated 2026-10-04 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Agents don't need memory, they need documentation</h2>
+
+<p>Auto-learned 2026-10-04 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Agents don't need memory, they need documentation.</p>
+
+<h3>Steps</h3>
+<p>1. To know where a feature is, why it was built, what you agreed on and what you care about</p>
+<p>2. To remember better, we should capture more, index better, retrieve smarter</p>
+<p>3. Copy link Copy link Copied to Clipboard Share to X Share to LinkedIn Share to Facebook Share to Mastodon Share Post via..</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Agents Don&amp;#x27;t Need Memory. They Need Documentation.</div>
+<p>  https://liao.gg/blog/agents-dont-need-memory</p>
+<div class="li">- Agents Don&amp;#x27;t Need Memory · Hacker News | Zeli</div>
+<p>  https://zeli.app/story/49945933</p>
+<div class="li">- Agents Don&amp;#x27;t Need Memory, They Need Documentation: A Practical AGENTS ...</div>
+<p>  https://dev.to/eme_gug_0821b41b948be6516/agents-dont-need-memory-they-need-documentation-a-practical-agentsmd-playbook-18mm</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/agents-don-t-need-memory-they-need-docum.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-17T14:28:22.000Z" data-updated="2026-09-17T14:28:22.000Z" data-name="agentverse-os-personal-cloud-os-for-a-de auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>agentverse-os-personal-cloud-os-for-a-de</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-17 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-17 14:28 · updated 2026-09-17 14:28</div>
@@ -12400,6 +12428,40 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/per-simmons/unreal-agent-harness</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/unreal-agent-async-first-agent-harness.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-04" data-updated="2026-10-04" data-name="vibe-wise-a-claude-code-plugin-that-help auto-learned 2026-10-04 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>vibe-wise-a-claude-code-plugin-that-help</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-04 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-04  · updated 2026-10-04 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: vibe-wise A Claude Code plugin that helps you learn how to build while AI writes the code.</h2>
+
+<p>Auto-learned 2026-10-04 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions vibe-wise A Claude Code plugin that helps you learn how to build while AI writes the code..</p>
+
+<h3>Steps</h3>
+<p>1. First, add the marketplace: /plugin marketplace add nykooi1/vibe-wise After it finishes, install the plugin: /plugin install vibe-wise@vibe-wise Enable automatic updates: open /plugin → Marketplaces → vibe-wise → Enable auto-update</p>
+<p>2. Use the arrow keys and Enter for choices; pick Use defaults to skip preference setup</p>
+<p>3. Then ask Claude to build something</p>
+<p>4. disable-model-invocation true VibeWise Learn mode Activate learning mode in the main conversation</p>
+<p>5. Use the Read tool for plugin guides instead of printing them with Bash cat</p>
+<p>6. Use Glob to discover optional learner-state files before reading them</p>
+<p>7. Use the nearest existing state directory within that boundary</p>
+<p>8. Install and set up vibe-wise (claude-plugin project) into my current project</p>
+<p>9. First, add the marketplace: copy /plugin marketplace add nykooi1/vibe-wise After it finishes, install the plugin: copy /plugin install vibe-wise@vibe-wise Enable automatic updates: open /plugin → Marketplaces → vibe-wise → Enable auto-update</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - nykooi1/vibe-wise: A Claude Code plugin that helps you learn ...</div>
+<p>  https://github.com/nykooi1/vibe-wise</p>
+<div class="li">- vibe-wise-A-Claude-Code-plugin-that-helps-you-learn-how-to-build-while ...</div>
+<p>  https://github.com/Alot1z/vibe-wise-A-Claude-Code-plugin-that-helps-you-learn-how-to-build-while-AI-writes-the-code./blob/main/skills/learn/SKILL.md</p>
+<div class="li">- vibe-wise — Claude Plugins | Claudeers</div>
+<p>  https://claudeers.com/vibe-wise</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/vibe-wise-a-claude-code-plugin-that-help.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-18T01:33:14.000Z" data-updated="2026-09-18T01:33:14.000Z" data-name="video-generator-client-async-python-wrap auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>video-generator-client-async-python-wrap</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-18 01:33 · updated 2026-09-18 01:33</div>
