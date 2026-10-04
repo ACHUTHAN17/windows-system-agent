@@ -387,3 +387,29 @@ When the task mentions refresh and verify the a-brief-history-of-the-bloomberg-t
 - A Brief History of the Bloomberg Terminal - NewsBreak
   https://www.newsbreak.com/ieee-spectrum-319637150/4916922065712-a-brief-history-of-the-bloomberg-terminal
 
+
+
+---
+## Field update 2026-10-04
+# Skill: refresh and verify the a-brief-history-of-the-bloomberg-termina skill
+
+Auto-learned 2026-10-04 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-brief-history-of-the-bloomberg-termina skill.
+
+## Steps
+1. To supplement the company’s telegraph dispatches, he sent pigeons between Aachen, Germany, and Brussels; each bird carried a cylinder containing slips of paper with that day’s stock prices
+2. To access Market Concepts program, you will need to login to Bloomberg Terminal and key BMC <GO>
+3. Type the Bloomberg mnemonic &ldquo;BESS&rdquo; followed by <GO> into the command line located in the upper right corner
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- A Brief History of the Bloomberg Terminal - IEEE Spectrum
+  https://spectrum.ieee.org/bloomberg-terminal
+- GSU Library Research Guides: Bloomberg Terminals: Help & Training
+  https://research.library.gsu.edu/bloomberg/help
+
