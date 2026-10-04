@@ -333,3 +333,27 @@ When the task mentions refresh and verify the a-brief-history-of-the-bloomberg-t
 - A brief history of the Bloomberg terminal: Context, Claims, and Sources
   https://tech-trends-daily.vercel.app/guides/a-brief-history-of-the-bloomberg-terminal-49909583/
 
+
+
+---
+## Field update 2026-10-04
+# Skill: refresh and verify the a-brief-history-of-the-bloomberg-termina skill
+
+Auto-learned 2026-10-04 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-brief-history-of-the-bloomberg-termina skill.
+
+## Steps
+1. To supplement the company’s telegraph dispatches, he sent pigeons between Aachen, Germany, and Brussels; each bird carried a cylinder containing slips of paper with that day’s stock prices
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- A Brief History of the Bloomberg Terminal - IEEE Spectrum
+  https://spectrum.ieee.org/bloomberg-terminal
+- ChatGPT | ChatGPT Learn
+  https://learn.chatgpt.com/docs
+
