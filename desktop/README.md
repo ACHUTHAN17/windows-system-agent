@@ -25,7 +25,7 @@ cd desktop
 npm install
 npm test            # 19 tests: parser, runner, sync, UI, and the REAL engine end-to-end
 npm start           # run in development
-npm run dist        # -> desktop\dist\WinAgent-Setup-1.0.3.exe and WinAgent-Portable-1.0.3.exe
+npm run dist        # -> desktop\dist\WinAgent-Setup-1.0.4.exe and WinAgent-Portable-1.0.4.exe
 ```
 
 ## What you get
@@ -51,18 +51,27 @@ npm run dist        # -> desktop\dist\WinAgent-Setup-1.0.3.exe and WinAgent-Port
 
 ## How it works
 
+**One process, not two.** Earlier builds spawned the engine as a separate child process and
+parsed its stdout with regexes — genuinely "two things glued together." That's gone:
+
 ```
-Electron main ──spawn──▶ WinAgent.exe (ELECTRON_RUN_AS_NODE=1) src/index.js --once "<task>"
-      ▲   │                      stdout: [step] [tool] … approval prompt … @@WINAGENT_ANSWER@@
-      │   └─ lib/runner.js parses lines → events ─IPC─▶ renderer (sandboxed, no Node access)
-      └──── approve/stop/settings via a small validated IPC surface (preload.js)
+Electron main process (lib/embedded-engine.js)
+  import('…/src/index.js')  →  createEngine()  →  engine.agentTask(task)   [same function call,
+       ▲                                                                     no subprocess]
+       │  cfg.onEvent(ev)        — step/tool events, straight JS callback, no stdout/regex
+       │  cfg.approvalHandler()  — returns a Promise; the UI's Allow/Deny resolves it directly
+       ▼
+  EventEmitter 'event' ──IPC──▶ renderer (sandboxed, no Node access, preload.js is the only bridge)
 ```
 
-* The engine is copied to `%APPDATA%\WinAgent\agent` on first launch (it writes memory/skills/runs
-  next to its source, so it can't live in `Program Files`). Updating the app refreshes `src/` but
-  never touches your memory, skills you synced, `runs/`, or `tools-imported/`.
-* No local web server is opened (the older `--ui` dashboard listens on 127.0.0.1; it is now protected
-  against cross-site requests too, but the desktop app doesn't need it).
+`src/index.js` is the same engine the CLI and GitHub Actions use — `createEngine()` is an
+exported factory (new); everything else is identical. The engine is still seeded to
+`%APPDATA%\WinAgent\agent` (it writes memory/skills/runs next to its source, so it can't live in
+`Program Files`), but it's **imported**, not spawned. Routine chatter (skill auto-pick, model
+fallback retries, MCP/self-tool loading) only ever reaches `console.log`, never `cfg.onEvent` —
+so it shows up if you run the CLI in a terminal, but never clutters the chat window.
+No local web server is opened either (the older `--ui` dashboard still exists and is hardened
+against cross-site requests, but the desktop app doesn't use it).
 
 ## Security notes — read once
 

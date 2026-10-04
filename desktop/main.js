@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const { app, BrowserWindow, Tray, Menu, globalShortcut, ipcMain, dialog, shell, nativeImage, Notification, safeStorage, session } = require('electron');
 const { ensureAgentDir } = require('./lib/agentdir');
 const { Settings } = require('./lib/settings');
-const { AgentRunner } = require('./lib/runner');
+const { EmbeddedEngine } = require('./lib/embedded-engine');
 const { syncFromGitHub } = require('./lib/sync');
 const { pushLearned, listCandidates } = require('./lib/github-push');
 const { submitPending } = require('./lib/self-improve');
@@ -185,10 +185,9 @@ function registerIpc() {
   handle('agent:run', async ({ text, history }) => {
     const local = await tryLocalAction({ text, agentDir, allowedRoots: settings.data.allowedRoots });
     if (local) return { ok: true, instant: true, message: local.message, error: local.error };
-    const r = runner.run({ text: buildTask(text, history), fullAuto: !!settings.data.fullAuto, env: settings.agentEnv() });
-    return r;
+    return runner.run(buildTask(text, history), { fullAuto: !!settings.data.fullAuto, env: settings.agentEnv() });
   });
-  handle('agent:selftest', () => runner.start({ args: ['--selftest'], env: settings.agentEnv() }));
+  handle('agent:selftest', () => runner.runSelftest());
   handle('agent:stop', () => runner.stop());
   handle('agent:approve', ({ id, decision }) => runner.approve(Number(id), ['once', 'always', 'deny'].includes(decision) ? decision : 'deny'));
   handle('sync:run', () => doSync());
@@ -258,7 +257,7 @@ function start() {
     try { ensureAgentDir({ bundleDir: bundleDir(), agentDir, version }); }
     catch (e) { dialog.showErrorBox('WinAgent', `Could not prepare the agent folder:\n${e.message}`); app.quit(); return; }
 
-    runner = new AgentRunner({ agentDir, execPath: process.execPath });
+    runner = new EmbeddedEngine(agentDir);
     runner.on('event', (ev) => {
       send('agent:event', ev);
       if (ev.t === 'approval') notify('WinAgent needs your approval', ev.label);

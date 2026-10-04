@@ -123,13 +123,27 @@ renderer only ever receives bytes over IPC, never a filesystem path or a live UR
 intact and keeps path traversal out of reach from model output).
 
 
-Electron shell around the SAME engine: `desktop/lib/runner.js` spawns `src/index.js --once "<task>"`
-(via `ELECTRON_RUN_AS_NODE=1`, so no system Node), parses stdout (`[step]`, `[tool]`, approval prompts —
-which have NO trailing newline — and the `@@WINAGENT_ANSWER@@` block) into events for a sandboxed
-renderer. The engine is copied to `%APPDATA%\WinAgent\agent` (writable); `lib/sync.js` pulls
-skills/docs/memory from GitHub and NEVER `tools-imported/`. Settings/keys: `lib/settings.js`
-(DPAPI via safeStorage, injected as env vars). Tests: `cd desktop && npm test` (includes a real-engine
-end-to-end against a mock LLM). Build: `.github/workflows/desktop-build.yml` on windows-latest.
+Electron shell around the SAME engine, running IN-PROCESS — `desktop/lib/embedded-engine.js`
+dynamically `import()`s the seeded `agentDir/src/index.js` and calls its exported
+`createEngine()` directly; no child process, no stdout parsing. `src/index.js` was refactored
+(while keeping the CLI 100% behavior-identical — see its `isCliEntry` bootstrap at the bottom)
+from a top-level script into that factory so it's reusable both ways. Two hooks make embedding
+possible without the engine knowing it's embedded: `cfg.onEvent(ev)` (new — a plain JS callback
+`agentTask()`/`runTool()` call for `{t:'step'|'tool',...}`, alongside their existing
+`console.log`, so CLI output is unaffected) and `cfg.approvalHandler(label)` (pre-existing, built
+for the old web dashboard — resolves a Promise the UI's Allow/Deny answers directly). `EmbeddedEngine.run()`
+returns almost immediately (same contract the old child-process runner had — "started OK"); all
+real progress streams through its `'event'` EventEmitter. The raw CLI subprocess path
+(`node src/index.js --once`, what GitHub Actions' `agent-task.yml` actually spawns) still exists
+and is tested separately in `desktop/test/e2e.test.js`, decoupled from the desktop app's own
+integration. The engine is seeded to `%APPDATA%\WinAgent\agent` (writable, since it writes
+memory/skills/runs next to its source); `lib/sync.js` pulls skills/docs/memory from GitHub and
+NEVER `tools-imported/`. Settings/keys: `lib/settings.js` (DPAPI via safeStorage, injected as
+env vars the embedded engine reads the same way the CLI does). Tests: `cd desktop && npm test`
+(`embedded-engine.test.js` is the one that matters most — it proves the in-process architecture
+end to end: steps, tool calls, the approval round-trip, errors, `stop()`, and that switching
+models actually invalidates the cached engine). Build: `.github/workflows/desktop-build.yml`
+on windows-latest.
 
 Instant local actions (`lib/local-actions.js`): a conservative regex+lookup matcher for
 "open X"-style messages (known special folders, a curated app-name list, or an explicit path) —

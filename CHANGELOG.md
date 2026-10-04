@@ -1,4 +1,27 @@
 # Changelog
+## 1.25.0 — 2026-10-01
+- **Single-process architecture** (the big one): the desktop app no longer spawns `src/index.js`
+  as a child process and parses its stdout. `src/index.js` was refactored into an exported
+  `createEngine()` factory (CLI behavior 100% unchanged — verified against the full e2e suite
+  before and after) and `desktop/lib/embedded-engine.js` calls it directly, in-process. Two hooks
+  make this work without the engine knowing it's embedded: `cfg.onEvent()` (new — plain JS
+  callbacks for step/tool events) and `cfg.approvalHandler()` (pre-existing, from the old web
+  dashboard — now answers the desktop app's Allow/Deny buttons via a real Promise). Removed:
+  `desktop/lib/runner.js`, `desktop/lib/parse.js` and their dedicated tests (dead code once
+  nothing spawns a subprocess). The raw CLI subprocess path GitHub Actions actually uses is still
+  tested, separately, in a rewritten `e2e.test.js` that no longer depends on desktop internals.
+  Side effect: routine engine chatter (skill auto-pick, model-fallback retries, MCP/self-tool
+  loading) was never wired to `onEvent`, so it no longer reaches the chat UI at all — it still
+  prints via `console.log` for CLI/terminal use.
+- **Bug fix**: a reasoning-style free model (seen from Pollinations' `openai-fast`) was returning
+  its answer in `message.reasoning` with an empty `message.content`, which `src/llm.js` treated as
+  a hard failure ("Unexpected LLM response shape") — this was the actual cause of "skills aren't
+  working" a few messages back. Now falls back to `.reasoning` before giving up.
+- 11 new tests (58 -> 60 net, but ~20 added/removed): `embedded-engine.test.js` proves the whole
+  in-process contract — steps/tools/banner, the approval round-trip (allow writes a file, deny
+  doesn't), aggregate errors, `busy`, `stop()` landing mid-loop, model-switch cache invalidation,
+  and `runSelftest()` — plus 2 tests pinning down the exact Pollinations response-shape bug.
+
 ## 1.24.0 — 2026-09-30
 - **UI**: full visual pass — refined dark palette, message/approval fade-in animation, smoother
   button/hover states, nicer composer with focus glow, sidebar active-item accent bar, polished

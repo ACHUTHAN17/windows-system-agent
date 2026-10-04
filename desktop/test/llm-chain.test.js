@@ -65,3 +65,21 @@ test('useScoutedModels:false means only the explicit chain is tried, never the s
   await assert.rejects(() => chat(cfg, [{ role: 'user', content: 'hi' }]));
   primary.close(); scouted.close();
 });
+
+test('reasoning-model response (empty content, text in .reasoning) is used instead of failing — the exact Pollinations openai-fast shape', async () => {
+  const s = await server(200, {
+    id: 'pllns_test',
+    choices: [{ index: 0, message: { role: 'assistant', content: '', reasoning: 'The user wants X, so call tool Y.', tool_calls: [{ id: 'x' }] } }],
+  });
+  const cfg = { provider: 'openai-compatible', apiUrl: url(s), model: 'openai-fast', timeoutMs: 3000, useScoutedModels: false };
+  const text = await chat(cfg, [{ role: 'user', content: 'hi' }]);
+  assert.strictEqual(text, 'The user wants X, so call tool Y.');
+  s.close();
+});
+
+test('truly empty response (no content, no reasoning) still fails clearly', async () => {
+  const s = await server(200, { choices: [{ message: { role: 'assistant', content: '' } }] });
+  const cfg = { provider: 'openai-compatible', apiUrl: url(s), model: 'x', timeoutMs: 3000, useScoutedModels: false };
+  await assert.rejects(() => chat(cfg, [{ role: 'user', content: 'hi' }]), /Unexpected LLM response shape/);
+  s.close();
+});

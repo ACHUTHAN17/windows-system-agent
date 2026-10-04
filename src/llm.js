@@ -78,8 +78,15 @@ async function chatOpenAICompatible(cfg, messages) {
     throw new Error(`LLM HTTP ${res.status} from ${url}: ${body.slice(0, 800)}`);
   }
   const data = await res.json();
-  const text = data?.choices?.[0]?.message?.content;
-  if (typeof text !== 'string' || !text) throw new Error(`Unexpected LLM response shape: ${JSON.stringify(data).slice(0, 500)}`);
+  const msg = data?.choices?.[0]?.message;
+  // Reasoning-style models (seen from Pollinations' "openai-fast") sometimes return an empty
+  // .content and put everything in .reasoning, often alongside a native .tool_calls attempt
+  // our text-based JSON protocol doesn't use. Fall back to .reasoning rather than failing
+  // outright — parseAgentJson can usually still pull a JSON object out of it.
+  const text = (typeof msg?.content === 'string' && msg.content) ? msg.content
+    : (typeof msg?.reasoning === 'string' && msg.reasoning) ? msg.reasoning
+    : null;
+  if (!text) throw new Error(`Unexpected LLM response shape: ${JSON.stringify(data).slice(0, 500)}`);
   return text;
 }
 
