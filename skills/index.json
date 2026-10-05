@@ -5,7 +5,7 @@
   "description": "Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-10-01T09:50:41.000Z",
-  "updated": "2026-10-04T22:57:50.000Z",
+  "updated": "2026-10-05T01:50:03.000Z",
   "triggers": [
    "brief",
    "history",
@@ -30,7 +30,7 @@
   "description": "Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-09-23T19:03:42.000Z",
-  "updated": "2026-10-04T22:57:50.000Z",
+  "updated": "2026-10-05T01:50:03.000Z",
   "triggers": [
    "brief",
    "history",
@@ -3132,6 +3132,34 @@
   ]
  },
  {
+  "name": "muse-gadget-sdk-open-source-sdk-to-build",
+  "title": "muse-gadget-sdk Open source SDK to build Muse gadgets",
+  "description": "Auto-learned 2026-10-05 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-10-05",
+  "updated": "2026-10-05",
+  "triggers": [
+   "muse",
+   "gadget",
+   "sdk",
+   "open",
+   "source",
+   "build",
+   "gadgets",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
   "name": "nanojev-a-nano-replica-of-jev-parallel-d",
   "title": "NanoJev A nano replica of Jev: parallel decisions, dynamic candidates, and an en",
   "description": "Auto-learned 2026-09-19 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
@@ -3734,6 +3762,29 @@
    "hacked",
    "hugging",
    "face",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
+  "name": "sales-crm",
+  "title": "sales-crm",
+  "description": "Auto-learned 2026-10-05 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-10-05",
+  "updated": "2026-10-05",
+  "triggers": [
+   "sales",
+   "crm",
    "auto",
    "learned",
    "2026",
