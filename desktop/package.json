@@ -5,7 +5,7 @@
   "description": "WinAgent desktop app: a ChatGPT/Codex-style window for the WinAgent system-control agent",
   "main": "main.js",
   "author": "ACHUTHAN17",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "private": true,
   "scripts": {
     "start": "electron .",

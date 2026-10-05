@@ -1,7 +1,13 @@
 # WinAgent — Windows System Agent (files + apps, any model)
 
 Zero-dependency Node.js agent. It lists/reads/writes files, launches/lists/kills apps,
-runs gated PowerShell, and talks to **any model** through one config:
+runs gated PowerShell, and talks to **any model** through one config. See
+[`ARCHITECTURE.md`](ARCHITECTURE.md) for how it all fits together and
+[`DATA_MAP.md`](DATA_MAP.md) for what's stored where.
+
+**Use it from Claude Desktop, Claude Code, or any MCP client:** `node src/mcp-server.js`
+exposes every tool below over MCP — see [`ARCHITECTURE.md`'s MCP server
+section](ARCHITECTURE.md#mcp-server-srcmcp-serverjs--winagent-as-a-tool-provider-for-other-ai-hosts).
 
 | Model | `MODEL_PROVIDER` | `MODEL_API_URL` | `MODEL_API_KEY` | `MODEL_NAME` |
 |---|---|---|---|---|

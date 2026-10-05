@@ -1,6 +1,95 @@
 # WinAgent framework — how the whole system fits together
 
 One brain, many bodies. Everything below is zero-dependency Node 18+ unless noted.
+For what's stored where (and which trust zone it's in), see **DATA_MAP.md**.
+
+## System architecture (top level)
+
+```
+                              ┌─────────────────────────────┐
+                              │   ENGINE CORE (src/)         │
+                              │   createEngine() factory —   │
+                              │   cfg, tools[], byName,       │
+                              │   agentTask(), runTool()      │
+                              └──────────────┬────────────────┘
+                                             │  (same function calls, every interface below)
+        ┌──────────────┬────────────────────┼─────────────────────┬──────────────────┐
+        ▼              ▼                    ▼                     ▼                  ▼
+   CLI / REPL     Desktop app         Web chat (cloud)        Telegram          MCP SERVER
+   node src/      Electron,           docs/chat.html →        channel-          (new) src/
+   index.js       IN-PROCESS via      GitHub Actions           telegram.js      mcp-server.js —
+   (subprocess    lib/embedded-       dispatch →                                WinAgent's tools
+   when spawned   engine.js — NOT     node src/index.js                         exposed to any
+   by Actions)    a child process     --once (subprocess)                       MCP CLIENT (Claude
+                                                                                 Desktop, etc.)
+        │              │                    │                     │                  │
+        └──────────────┴────────────────────┴─────────────────────┴──────────────────┘
+                                             │
+                              ┌──────────────┴────────────────┐
+                              │  cfg.onEvent() / cfg.approvalHandler()  — how each interface
+                              │  gets step/tool events and answers approval prompts, without
+                              │  the engine needing to know which interface is driving it
+                              └──────────────┬────────────────┘
+                                             │
+                    ┌────────────────────────┼────────────────────────┐
+                    ▼                        ▼                        ▼
+              TOOLS (60+)              SKILLS (library)          MEMORY (persisted)
+              src/tools.js             skills/*.md, catalog      memory/*.md, injected
+              + MCP CLIENT tools       GitHub-first, auto-        into every prompt —
+              (src/mcp.js consumes     picked by keyword match    see DATA_MAP.md
+              OTHER MCP servers)       or explicit skill_load
+                    │
+                    ▼
+     SELF-IMPROVEMENT LOOP (autonomous, scheduled via GitHub Actions)
+     crawlers (skills/tools, daily) → tool_create / self_improve_propose (live, mid-task)
+     → staged under tools-imported/ or self-improvements/ → human review (PR) before it's live
+     — the one checkpoint that's never automated away; see "Self-awareness &
+     self-improvement" below for why.
+```
+
+**The one architectural rule everything above follows:** every interface (CLI, desktop,
+web chat, Telegram, MCP server) calls the *exact same* `createEngine()` / `agentTask()` /
+`runTool()` — there is one engine, not five reimplementations of it. What differs per
+interface is only how it supplies `cfg.onEvent` (how progress is shown) and
+`cfg.approvalHandler` (how a risky action gets a yes/no) — both are plain injectable hooks
+on `cfg`, not forks of the engine itself. The desktop app's embedded engine
+(`desktop/lib/embedded-engine.js`) and the MCP server (`src/mcp-server.js`) are the two
+clearest examples: same `createEngine()` call, completely different approval strategy
+(interactive Allow/Deny buttons vs. a safe-by-default auto-deny gate — see "MCP server"
+below) — because the TRANSPORT differs (IPC vs. stdio JSON-RPC that can't be interrupted
+for a prompt), not because the engine itself changed.
+
+## MCP server (`src/mcp-server.js`) — WinAgent as a tool provider for other AI hosts
+
+Mirrors `src/mcp.js` (which already lets WinAgent *consume* other MCP servers as tool
+sources) in the other direction: any MCP client — Claude Desktop, Claude Code, or anything
+else that speaks MCP — can add WinAgent as a server and get all of its tools (file/app/
+screen/browser control, memory, skills, everything in `src/tools.js`) via the standard
+`tools/list` / `tools/call` JSON-RPC methods over stdio, same `protocolVersion` and
+newline-delimited framing `src/mcp.js` already uses as a client.
+
+The one thing that has to work differently here: **stdin/stdout ARE the JSON-RPC channel**,
+so there is no safe way to pause and show an interactive y/N prompt (it would corrupt the
+protocol, or just hang). So approval is a static, explicit choice made at launch instead of
+a live question per call:
+- `MCP_AUTO_YES` unset (default): read-only tools (`sys_info`, `file_list`, `web_search`, …)
+  work normally; anything in `safety.js`'s `DESTRUCTIVE` set is auto-denied with a clear
+  error instead of ever touching stdin. `ALLOWED_ROOTS`/`BLOCKED_PATHS` still apply exactly
+  as everywhere else — this isn't a separate trust boundary, it's the same `cfg`.
+- `MCP_AUTO_YES=true`: every tool call is allowed immediately. This is a deliberate,
+  explicit choice made by whoever writes the MCP client config (e.g. the owner's own
+  `claude_desktop_config.json`) — many MCP hosts also show their own per-call confirmation
+  UI regardless, which still applies on top of this.
+
+Every tool's `inputSchema` is generated from its existing loose `{argName: "description"}`
+shape (WinAgent never had strict arg typing — the engine's own LLM loop parses args loosely
+too), and `annotations.destructiveHint`/`readOnlyHint` come straight from the same
+`DESTRUCTIVE` set `safety.js` already used internally — one source of truth, not a second
+copy of which tools are dangerous. Routine engine chatter (skill auto-pick, MCP/self-tool
+loading) is redirected to stderr for this interface specifically, since stdout must contain
+nothing but valid JSON-RPC lines — verified by a test that parses every line of stdout.
+Run it: `node src/mcp-server.js` or `npm run mcp`. Tested in
+`desktop/test/mcp-server.test.js` (real subprocess, real JSON-RPC).
 
 ```
 ENTRY (src/index.js --flags)          REPL · --once · --yes · --plan · --ui · --chat telegram
