@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">228 skills (6 auto · 17 imported · 205 built)</span><span class="pill">generated 2026-10-04</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">230 skills (6 auto · 17 imported · 207 built)</span><span class="pill">generated 2026-10-05</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-04T19:31:55.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-04T22:57:50.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-the-bloomberg-termina</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-04 19:31</div>
+  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-04 22:57</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of the Bloomberg terminal</h2>
 
 <p>Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -463,9 +463,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-the-bloomberg-termina.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-04T19:31:55.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-04T22:57:50.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-04 19:31</div>
+  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-04 22:57</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -1902,6 +1902,41 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-windows-scroll-bar-sh.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-05" data-updated="2026-10-05" data-name="a-browser-native-classic-visual-basic-vb auto-learned 2026-10-05 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>a-browser-native-classic-visual-basic-vb</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-05 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-05  · updated 2026-10-05 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: A browser-native classic Visual Basic VB6 IDE</h2>
+
+<p>Auto-learned 2026-10-05 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions A browser-native classic Visual Basic VB6 IDE.</p>
+
+<h3>Steps</h3>
+<p>1. Open VB6 IDE VB6 Reference No installation Full VB6 syntax Open Source Form1.frm — WebVB Studio ' Classic VB6 Event-Driven Code Dim Total As Double Sub Form1_Load Total = 0 lblTotal</p>
+<p>2. Use Pandas, NumPy, and data science libraries when you need them</p>
+<p>3. Open example Advanced E-commerce Full Webshop App Sub cmdAddToCart_Click Dim item As String item = grdProducts.TextMatrix(grdProducts.Row, 1 ) lstCart.AddItem item UpdateTotal End Sub Complete e-commerce app with product catalog, shopping cart, and order processing</p>
+<p>4. Open example Explore All 38+ Examples 25+ Controls — More Than the Original VB6 All the classic VB6 controls you remember, plus modern additions the original IDE never had</p>
+<p>5. Open Studio Watch Demo WebVB Studio — Webshop Analytics Dashboard Open Source Works Everywhere Instant Execution VB6 &amp; Python Powerful Features Everything You Need to Build Amazing Apps A complete development environment with visual design, intelligent code editing, and instant execution</p>
+<p>6. Create custom UserControls to extend the library</p>
+<p>7. Run The complete IDE is dist/VB6-Studio-Web.html</p>
+<p>8. Press F5 to run, Shift+F5 to stop, and choose File → Make .html… to export an independent application</p>
+<p>9. Save Project downloads an editable .vb6web file</p>
+<p>10. Save explicit project backups; origin storage and layout persistence are best-effort browser facilities, not a replacement for dow</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Visual Basic Online IDE — Write &amp; Run VB6 Code in Your Browser | WebVB ...</div>
+<p>  https://www.webvbstudio.com/visual-basic</p>
+<div class="li">- WebVB Studio - Free Browser-Based Visual Basic IDE | Build Apps Online ...</div>
+<p>  https://www.webvbstudio.com/</p>
+<div class="li">- GitHub - wieslawsoltes/VB6: VB6 Studio Web — a browser-native classic ...</div>
+<p>  https://github.com/wieslawsoltes/VB6/tree/main</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-browser-native-classic-visual-basic-vb.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-29T18:55:23.000Z" data-updated="2026-10-01T08:44:59.000Z" data-name="a-privacy-analysis-of-web-and-mobile-con auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-privacy-analysis-of-web-and-mobile-con</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-29 18:55 · updated 2026-10-01 08:44</div>
@@ -10020,6 +10055,33 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/3hs4n/pdoomvideo/blob/main/README.md</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/pdoomvideo-source-code-for-the-claude-op.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-05" data-updated="2026-10-05" data-name="photocraft auto-learned 2026-10-05 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>photocraft</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-05 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-05  · updated 2026-10-05 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: photocraft</h2>
+
+<p>Auto-learned 2026-10-05 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions photocraft.</p>
+
+<h3>Steps</h3>
+<p>1. Open source, offline, and yours</p>
+<p>2. Download PhotoCraft Join the Discord View on GitHub macOS · Windows · Linux · Web · Free and open source Share Copy link X Reddit Bluesky LinkedIn Curves and type layers — The Great Wave Screenshot 02 / Highlights Image editor What&amp;#x27;s inside</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Centre d&amp;#x27;aide PhotoCraft - Guide complet des fonctionnalités</div>
+<p>  https://photocraft.fr/centre-aide</p>
+<div class="li">- GitHub - storytold/photocraft</div>
+<p>  https://github.com/storytold/photocraft</p>
+<div class="li">- PhotoCraft: The image editor you already know how to use.</div>
+<p>  https://getartcraft.com/apps/photocraft</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/photocraft.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-18T21:10:54.000Z" data-updated="2026-09-18T21:10:54.000Z" data-name="photon-emission-guided-laser-fault-injec auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>photon-emission-guided-laser-fault-injec</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-18 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-18 21:10 · updated 2026-09-18 21:10</div>
