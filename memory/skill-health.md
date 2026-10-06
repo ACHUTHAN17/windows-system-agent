@@ -1,7 +1,10 @@
 # Skill health — 2026-10-06
 
-230 skills audited, 25 links probed, 1 dead.
-10 need attention:
+232 skills audited, 25 links probed, 2 dead.
+11 need attention:
+
+## a-brief-history-of-windows-scroll-bar-sh.md (50037 chars)
+- dead link (429): https://news.ycombinator.com/item?id=49820065
 
 ## a-privacy-analysis-of-web-and-mobile-con.md (7020 chars)
 - dead link (404): https://jorgegarciaherrero.com/wp-content/interactivos/20260916-Prompt
