@@ -925,8 +925,8 @@
   "title": "bloodborne_pc",
   "description": "Auto-learned 2026-10-06 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-06",
-  "updated": "2026-10-06",
+  "added": "2026-10-06T23:22:02.000Z",
+  "updated": "2026-10-06T23:22:02.000Z",
   "triggers": [
    "bloodborne",
    "auto",
@@ -3036,8 +3036,8 @@
   "title": "lightcraft An open-source, clean-room reimplementation of Adobe Lightroom in pur",
   "description": "Auto-learned 2026-10-06 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-06",
-  "updated": "2026-10-06",
+  "added": "2026-10-06T23:22:02.000Z",
+  "updated": "2026-10-06T23:22:02.000Z",
   "triggers": [
    "lightcraft",
    "open",
