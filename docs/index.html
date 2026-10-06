@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">232 skills (6 auto · 17 imported · 209 built)</span><span class="pill">generated 2026-10-06</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">234 skills (6 auto · 17 imported · 211 built)</span><span class="pill">generated 2026-10-06</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T07:43:37.000Z" data-updated="2026-10-06T14:04:09.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T07:43:37.000Z" data-updated="2026-10-06T19:45:23.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-the-bloomberg-termina</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-10-01 07:43 · updated 2026-10-06 14:04</div>
+  <div class="dates">added 2026-10-01 07:43 · updated 2026-10-06 19:45</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of the Bloomberg terminal</h2>
 
 <p>Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -627,9 +627,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-the-bloomberg-termina.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-23T21:45:46.000Z" data-updated="2026-10-06T14:04:09.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-23T21:45:46.000Z" data-updated="2026-10-06T19:45:23.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 21:45 · updated 2026-10-06 14:04</div>
+  <div class="dates">added 2026-09-23 21:45 · updated 2026-10-06 19:45</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -8582,6 +8582,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>branch before the first push of a session.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/file-fetch-upload.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-06" data-updated="2026-10-06" data-name="filmcraft-an-open-source-clean-room-reim auto-learned 2026-10-06 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>filmcraft-an-open-source-clean-room-reim</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-06 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-06  · updated 2026-10-06 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: filmcraft An open-source, clean-room reimplementation of Adobe Premiere Pro built in pure Rust.</h2>
+
+<p>Auto-learned 2026-10-06 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions filmcraft An open-source, clean-room reimplementation of Adobe Premiere Pro built in pure Rust..</p>
+
+<h3>Steps</h3>
+<p>1. Note ArtCraft is a community of artists from all walks of life</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - storytold/filmcraft: An open-source, clean-room ...</div>
+<p>  https://github.com/storytold/filmcraft</p>
+<div class="li">- filmcraft-opensource-premiere-alternative/README.md at main ... - GitHub</div>
+<p>  https://github.com/aflahzaman/filmcraft-opensource-premiere-alternative/blob/main/README.md</p>
+<div class="li">- FilmCraft: Open Source Adobe Premiere Pro Alternative | OpenAltFinder</div>
+<p>  https://openaltfinder.com/tools/filmcraft</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/filmcraft-an-open-source-clean-room-reim.md">view source on GitHub</a></article>
 <article class="card" data-origin="imported" data-added="2026-09-17T19:36:25.000Z" data-updated="2026-09-17T19:36:25.000Z" data-name="finishing-a-development-branch imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/finishing-a-development-branch/skill.md) — use when im">
   <h2>finishing-a-development-branch</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/finishing-a-development-branch/SKILL.md) — Use when im</p>
   <div class="dates">added 2026-09-17 19:36 · updated 2026-09-17 19:36</div>
@@ -11779,6 +11805,31 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/mudler/LocalAI</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-i-created-an-open-source-locally.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-06" data-updated="2026-10-06" data-name="show-hn-i-turned-my-iphone-and-a-20-smar auto-learned 2026-10-06 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-i-turned-my-iphone-and-a-20-smar</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-06 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-06  · updated 2026-10-06 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: I turned my iPhone and a $20 smart plug into an f-stop timer</h2>
+
+<p>Auto-learned 2026-10-06 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: I turned my iPhone and a $20 smart plug into an f-stop timer.</p>
+
+<h3>Steps</h3>
+<p>1. Use a smart plug only with coffee makers that default to “on” when re-energized, otherwise you will arrive at an empty carafe every morning</p>
+<p>2. Use mechanical-timer slow cookers that default to “on” when power returns</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- 25+ Creative Smart Plug Uses and Ideas for 2026</div>
+<p>  https://www.guidespot.com/smart-plug-uses-and-ideas/</p>
+<div class="li">- freshnews - fresh tech news from around the web</div>
+<p>  https://www.freshnews.org/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-i-turned-my-iphone-and-a-20-smar.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-10-01T23:33:13.000Z" data-updated="2026-10-01T23:33:13.000Z" data-name="show-hn-janus-go-binary-that-runs-gguf-m auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-janus-go-binary-that-runs-gguf-m</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-10-01 23:33 · updated 2026-10-01 23:33</div>
