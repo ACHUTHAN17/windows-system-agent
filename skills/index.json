@@ -3457,8 +3457,8 @@
   "title": "Opus 5.5 agents discover two room-temperature magnetic semiconductor candidates",
   "description": "Auto-learned 2026-10-05 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-05",
-  "updated": "2026-10-05",
+  "added": "2026-10-05T21:48:48.000Z",
+  "updated": "2026-10-05T21:48:48.000Z",
   "triggers": [
    "opus",
    "agents",
@@ -3921,8 +3921,8 @@
   "title": "SCSKiller Kill shader compilation stutter before you play. Compiles your games' ",
   "description": "Auto-learned 2026-10-05 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-05",
-  "updated": "2026-10-05",
+  "added": "2026-10-05T21:48:48.000Z",
+  "updated": "2026-10-05T21:48:48.000Z",
   "triggers": [
    "scskiller",
    "kill",
