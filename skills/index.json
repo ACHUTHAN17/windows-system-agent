@@ -2343,8 +2343,8 @@
   "title": "huashu-art-motion 艺术动画skill：35种艺术风格、9种解说语法，用代码让画动起来。",
   "description": "Auto-learned 2026-10-07 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-07",
-  "updated": "2026-10-07",
+  "added": "2026-10-07T02:30:14.000Z",
+  "updated": "2026-10-07T02:30:14.000Z",
   "triggers": [
    "huashu",
    "art",
@@ -3061,8 +3061,8 @@
   "title": "leviathan **Deep memory for agents over large datasets.**   Leviathan is a singl",
   "description": "Auto-learned 2026-10-07 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-07",
-  "updated": "2026-10-07",
+  "added": "2026-10-07T02:30:14.000Z",
+  "updated": "2026-10-07T02:30:14.000Z",
   "triggers": [
    "leviathan",
    "deep",
