@@ -170,3 +170,46 @@ test('stop() aborts between steps and auto-denies any pending approval', async (
   assert.ok(evs.find(e => e.t === 'answer' && e.text === 'Stopped.'), JSON.stringify(evs.map(e => e.t)));
   server.close();
 });
+
+test('reasoning dump with no JSON triggers one retry, then the tool actually runs (the exact "open windows settings" failure mode)', async () => {
+  cleanRepoState();
+  const reasoningDump = 'We need to open Windows Settings app. We can use app_launch or app_open? '
+    + 'The skill mentions opening Settings via WIN+I keys. We can use key_press? But need to focus window. '
+    + 'We can use app_launch with "ms-settings:"? Actually Windows Settings can be launched via "ms-settings:" URI. '
+    + 'Use app_launch with command "ms-settings:"? The tool app_launch expects exe path or command. '
+    + 'We can use "ms-settings:" as command? Might need to use "start ms-settings:"? '
+    + 'We need to output JSON with action.';
+  assert.ok(reasoningDump.length > 300 && !reasoningDump.includes('{'), 'fixture matches the real failure shape');
+  const server = await mockLlm([
+    reasoningDump, // first reply: exactly what the real model produced — no JSON at all
+    JSON.stringify({ action: 'tool', tool: 'sys_info', args: {} }), // after the retry nudge
+    JSON.stringify({ answer: 'Opened Settings.' }),
+  ]);
+  const engine = new EmbeddedEngine(REPO);
+  const { evs, done } = collect(engine);
+  await engine.run('open windows settings', { env: { MODEL_API_URL: `http://127.0.0.1:${server.address().port}`, MODEL_NAME: 'mock', USE_SCOUTED_MODELS: 'false' } });
+  await done;
+  // Must NOT surface the raw reasoning dump as if it were a real answer.
+  assert.ok(!evs.some(e => e.t === 'answer' && e.text.includes('ms-settings')), 'the half-finished reasoning must never reach the user as a final answer');
+  assert.ok(evs.some(e => e.t === 'tool' && e.name === 'sys_info'), 'the retry must actually get the agent to act');
+  assert.strictEqual(evs.find(e => e.t === 'answer').text, 'Opened Settings.');
+  server.close();
+});
+
+test('a short genuine conversational answer with no braces is NOT retried (no wasted call)', async () => {
+  cleanRepoState();
+  let callCount = 0;
+  const server = require('node:http').createServer((req, res) => {
+    callCount++;
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ choices: [{ message: { content: 'Hello! How can I help you today?' } }] }));
+  });
+  await new Promise(r => server.listen(0, '127.0.0.1', r));
+  const engine = new EmbeddedEngine(REPO);
+  const { evs, done } = collect(engine);
+  await engine.run('hi', { env: { MODEL_API_URL: `http://127.0.0.1:${server.address().port}`, MODEL_NAME: 'mock', USE_SCOUTED_MODELS: 'false' } });
+  await done;
+  assert.strictEqual(callCount, 1, 'a short, clearly-conversational reply must not trigger a retry');
+  assert.strictEqual(evs.find(e => e.t === 'answer').text, 'Hello! How can I help you today?');
+  server.close();
+});

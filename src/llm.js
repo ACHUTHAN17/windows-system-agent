@@ -68,6 +68,14 @@ async function chatOpenAICompatible(cfg, messages) {
         model: cfg.model,
         messages,
         temperature: cfg.temperature,
+        // Explicit and generous on purpose: reasoning-style free models (Pollinations'
+        // "openai-fast" and similar) spend real output tokens "thinking out loud" before
+        // ever emitting the actual JSON action our protocol needs. With no max_tokens at
+        // all, whatever small default the provider picks can truncate the reply mid-thought
+        // — the model never gets to the JSON, and parseAgentJson's lenient fallback then
+        // treats the half-finished reasoning dump as if it were a real final answer (looks
+        // like "the agent can only talk, not act" when really it just ran out of budget).
+        max_tokens: cfg.maxTokens || 4096,
       }),
     });
   } catch (e) {

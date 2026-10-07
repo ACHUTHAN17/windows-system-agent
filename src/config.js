@@ -72,6 +72,7 @@ export function loadConfig(argv = {}) {
     extraHeaders,
     maxSteps: Number(env('MAX_STEPS', json.maxSteps ?? 15)),
     temperature: Number(env('TEMPERATURE', json.temperature ?? 0.2)),
+    maxTokens: Number(env('MODEL_MAX_TOKENS', json.maxTokens ?? 4096)),
     timeoutMs: Number(env('TIMEOUT_MS', json.timeoutMs ?? 60000)),
     requireApproval: String(env('REQUIRE_APPROVAL', json.requireApproval ?? true)) !== 'false' && String(env('REQUIRE_APPROVAL', json.requireApproval ?? true)) !== '0',
     autoYes: String(env('AUTO_YES', argv.yes ? 'true' : (json.autoYes ?? false))) === 'true' || argv.yes === true,

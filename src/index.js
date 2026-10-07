@@ -361,9 +361,23 @@ export async function createEngine(argvOverride) {
     }
     for (let step = 1; step <= cfg.maxSteps; step++) {
       if (cfg._aborted) return 'Stopped.';
-      const raw = await chat(cfg, history);
+      let raw = await chat(cfg, history);
       if (cfg._aborted) return 'Stopped.';
-      const parsed = parseAgentJson(raw);
+      let parsed = parseAgentJson(raw);
+      // Defense against a model (seen live: a Pollinations reasoning model) that burns its
+      // whole reply narrating what it's about to do — "We need to call app_open... We need
+      // to output JSON" — and then stops before ever emitting the JSON. parseAgentJson's
+      // lenient fallback (no braces found -> treat the whole thing as a final answer) then
+      // makes an incomplete tool-call attempt look like a genuine response, so the agent
+      // never actually acts. One retry per step with a sharper instruction; a real long
+      // conversational answer that happens to have no braces only costs one extra call.
+      if (parsed.action === 'final' && !raw.includes('{') && raw.length > 300) {
+        history.push({ role: 'assistant', content: raw });
+        history.push({ role: 'user', content: 'That reply had no JSON object in it. Reply with EXACTLY one JSON object and nothing else — {"action":"tool","tool":"...","args":{...}} or {"answer":"..."}.' });
+        raw = await chat(cfg, history);
+        parsed = parseAgentJson(raw);
+        history.pop(); history.pop(); // scaffolding only — don't let the retry nudge pollute permanent history
+      }
       if (parsed.action === 'final') return parsed.answer;
       if (parsed.thought) { console.log(`  [step ${step}] ${parsed.thought}`); cfg.onEvent?.({ t: 'step', n: step, text: parsed.thought }); }
       const result = await runTool(parsed.tool, parsed.args);

@@ -83,3 +83,24 @@ test('truly empty response (no content, no reasoning) still fails clearly', asyn
   await assert.rejects(() => chat(cfg, [{ role: 'user', content: 'hi' }]), /Unexpected LLM response shape/);
   s.close();
 });
+
+test('max_tokens is sent explicitly (reasoning models need real budget, not a provider default)', async () => {
+  let capturedBody = null;
+  const srv = http.createServer((req, res) => {
+    let b = ''; req.on('data', d => { b += d; });
+    req.on('end', () => {
+      capturedBody = JSON.parse(b);
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ choices: [{ message: { content: 'ok' } }] }));
+    });
+  });
+  await new Promise(r => srv.listen(0, '127.0.0.1', r));
+  const cfg = { provider: 'openai-compatible', apiUrl: `http://127.0.0.1:${srv.address().port}`, model: 'x', timeoutMs: 3000, useScoutedModels: false };
+  await chat(cfg, [{ role: 'user', content: 'hi' }]);
+  assert.strictEqual(capturedBody.max_tokens, 4096);
+
+  const cfg2 = { ...cfg, maxTokens: 8192 };
+  await chat(cfg2, [{ role: 'user', content: 'hi' }]);
+  assert.strictEqual(capturedBody.max_tokens, 8192, 'cfg.maxTokens overrides the default');
+  srv.close();
+});
