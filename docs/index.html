@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">245 skills (6 auto · 17 imported · 222 built)</span><span class="pill">generated 2026-10-06</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">247 skills (6 auto · 17 imported · 224 built)</span><span class="pill">generated 2026-10-07</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-06T19:46:15.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-06T23:43:21.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-the-bloomberg-termina</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-06 19:46</div>
+  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-06 23:43</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of the Bloomberg terminal</h2>
 
 <p>Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -655,9 +655,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-the-bloomberg-termina.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-06T19:46:15.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-06T23:43:21.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-06 19:46</div>
+  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-06 23:43</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -9916,6 +9916,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://gitnova.dev/en/r/lemomo-ai/lemo-opuscar</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/lemo-opuscar-43-film-styles-each-a-reusa.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-07" data-updated="2026-10-07" data-name="leviathan-deep-memory-for-agents-over-la auto-learned 2026-10-07 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>leviathan-deep-memory-for-agents-over-la</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-07 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-07  · updated 2026-10-07 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: leviathan **Deep memory for agents over large datasets.**   Leviathan is a single static binary that turns your records </h2>
+
+<p>Auto-learned 2026-10-07 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions leviathan <strong>Deep memory for agents over large datasets.</strong>   Leviathan is a single static binary that turns your records .</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Leviathan — The Universal Agent Runtime</div>
+<p>  https://lev.here.now/</p>
+<div class="li">- Leviathan — a local, persistent AI runtime for Windows + NVIDIA (no ...</div>
+<p>  https://discuss.huggingface.co/t/leviathan-a-local-persistent-ai-runtime-for-windows-nvidia-no-server-no-cloud-no-account-feedback-welcome/182544</p>
+<div class="li">- Agent Memory Systems: The Complete Guide (2026)</div>
+<p>  https://www.aibuilderclub.com/blog/agent-memory-systems-guide</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/leviathan-deep-memory-for-agents-over-la.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-10-06T01:57:22.000Z" data-updated="2026-10-06T01:57:22.000Z" data-name="live-panel-skill-config-driven-animated- auto-learned 2026-10-06 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>live-panel-skill-config-driven-animated-</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-06 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-10-06 01:57 · updated 2026-10-06 01:57</div>
@@ -11089,6 +11115,38 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.helpnetsecurity.com/2026/10/05/removemacai-turn-off-apple-intelligence/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/removemacai-turn-off-apple-intelligence-.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-07" data-updated="2026-10-07" data-name="replica-skill-eleven-free-claude-skills- auto-learned 2026-10-07 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>replica-skill-eleven-free-claude-skills-</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-07 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-07  · updated 2026-10-07 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: replica-skill Eleven free Claude skills that clone any app: reverse-engineer it, rebuild it, test it for bugs, then fix </h2>
+
+<p>Auto-learned 2026-10-07 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions replica-skill Eleven free Claude skills that clone any app: reverse-engineer it, rebuild it, test it for bugs, then fix .</p>
+
+<h3>Steps</h3>
+<p>1. How do I install replica-skill? Clone the repository with "git clone https://github.com/Jakeschincariol/replica-skill" and add it to your Claude Code skills directory (see the Installation section above)</p>
+<p>2. Open the AI Agents category from the badge at the top of this page, or use the Related Skills and comparison links further down to weigh replica-skill against similar tools</p>
+<p>3. To the maximum extent permitted by applicable law, SkillsLLM is not liable for losses arising from third-party software</p>
+<p>4. Install and set up replica-skill (claude-plugin project) into my current project</p>
+<p>5. Copy the folders instead if you want plain /replica-recon : copy git clone https://github.com/Jakeschincariol/replica-skill.git cp -r replica-skill/replica-* ~/.claude/skills/ Project-local instead of global: copy the same folders into your repo&amp;#x27;s .claude/skills/</p>
+<p>6. How to use it Run them in order</p>
+<p>7. copy recon -&gt; architect -&gt; design -&gt; build -&gt; backend -&gt; test -&gt; diff -&gt; entrepreneur -&gt; brand -&gt; launch -&gt; deploy An example: cloning a scheduling app, the kind where you share a link and people book a time with you</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- replica-skill - AI Agents on GitHub | SkillsLLM</div>
+<p>  https://skillsllm.com/skill/replica-skill</p>
+<div class="li">- Replica, an eleven-skill kit for Claude that reverse-engineers an app ...</div>
+<p>  https://reveneau.com/ainews/replica-skill-eleven-claude-skills-clone-any-app-119-stars</p>
+<div class="li">- replica-skill — Claude Skills | Claudeers</div>
+<p>  https://claudeers.com/replica-skill</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/replica-skill-eleven-free-claude-skills-.md">view source on GitHub</a></article>
 <article class="card" data-origin="imported" data-added="2026-09-17T19:36:25.000Z" data-updated="2026-09-17T19:36:25.000Z" data-name="requesting-code-review imported from [obra/superpowers](https://github.com/obra/superpowers/blob/head/skills/requesting-code-review/skill.md) — use when completing">
   <h2>requesting-code-review</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/obra/superpowers">obra/superpowers</a> · crawled free from GitHub</div><p class="desc">Imported from [obra/superpowers](https://github.com/obra/superpowers/blob/HEAD/skills/requesting-code-review/SKILL.md) — Use when completing</p>
   <div class="dates">added 2026-09-17 19:36 · updated 2026-09-17 19:36</div>
