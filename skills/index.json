@@ -5,7 +5,7 @@
   "description": "Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-10-01T09:50:41.000Z",
-  "updated": "2026-10-06T23:43:21.000Z",
+  "updated": "2026-10-07T05:32:37.000Z",
   "triggers": [
    "brief",
    "history",
@@ -30,7 +30,7 @@
   "description": "Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-09-23T19:03:42.000Z",
-  "updated": "2026-10-06T23:43:21.000Z",
+  "updated": "2026-10-07T05:32:37.000Z",
   "triggers": [
    "brief",
    "history",
@@ -2418,6 +2418,31 @@
    "pass",
    "ask",
    "refresh",
+   "key",
+   "configured"
+  ]
+ },
+ {
+  "name": "huashu-art-motion-skill-35-9",
+  "title": "huashu-art-motion 艺术动画skill：35种艺术风格、9种解说语法，用代码让画动起来。",
+  "description": "Auto-learned 2026-10-07 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-10-07",
+  "updated": "2026-10-07",
+  "triggers": [
+   "huashu",
+   "art",
+   "motion",
+   "skill",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
    "key",
    "configured"
   ]
@@ -6616,6 +6641,33 @@
    "export",
    "fresh",
    "start",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
+  "name": "x-gift-bot-x-premium-gift-cli-and-redemp",
+  "title": "x_gift_bot X Premium gift CLI and redemption site",
+  "description": "Auto-learned 2026-10-07 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-10-07",
+  "updated": "2026-10-07",
+  "triggers": [
+   "gift",
+   "bot",
+   "premium",
+   "cli",
+   "redemption",
+   "site",
    "auto",
    "learned",
    "2026",

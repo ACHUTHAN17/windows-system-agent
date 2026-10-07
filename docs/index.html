@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">247 skills (6 auto · 17 imported · 224 built)</span><span class="pill">generated 2026-10-07</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">249 skills (6 auto · 17 imported · 226 built)</span><span class="pill">generated 2026-10-07</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-06T23:43:21.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-07T05:32:37.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-the-bloomberg-termina</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-06 23:43</div>
+  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-07 05:32</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of the Bloomberg terminal</h2>
 
 <p>Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -679,9 +679,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-the-bloomberg-termina.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-06T23:43:21.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-07T05:32:37.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-06 23:43</div>
+  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-07 05:32</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -9368,6 +9368,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://developers.google.com/tech-writing/two/llms</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/how-to-write-with-an-llm.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-07" data-updated="2026-10-07" data-name="huashu-art-motion-skill-35-9 auto-learned 2026-10-07 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>huashu-art-motion-skill-35-9</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-07 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-07  · updated 2026-10-07 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: huashu-art-motion 艺术动画skill：35种艺术风格、9种解说语法，用代码让画动起来。</h2>
+
+<p>Auto-learned 2026-10-07 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions huashu-art-motion 艺术动画skill：35种艺术风格、9种解说语法，用代码让画动起来。.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- alchaincyf/huashu-art-motion — what it is and what it&amp;#x27;s for | GitNova</div>
+<p>  https://gitnova.dev/en/r/alchaincyf/huashu-art-motion</p>
+<div class="li">- Releases · alchaincyf/huashu-art-motion · GitHub</div>
+<p>  https://github.com/alchaincyf/huashu-art-motion/releases</p>
+<div class="li">- GitHub - alchaincyf/huashu-skills: 花叔全部开源 Agent Skills 总目录：16 旗舰 + 14 ...</div>
+<p>  https://github.com/alchaincyf/huashu-skills</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/huashu-art-motion-skill-35-9.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-30T07:28:33.000Z" data-updated="2026-09-30T07:28:33.000Z" data-name="hypoarena-scientific-hypothesis-discover auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>hypoarena-scientific-hypothesis-discover</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-30 07:28 · updated 2026-09-30 07:28</div>
@@ -14236,6 +14262,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://docs.rs/crate/wx-cli/latest</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/wx-cli-again-wechat-local-data-cli-query.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-07" data-updated="2026-10-07" data-name="x-gift-bot-x-premium-gift-cli-and-redemp auto-learned 2026-10-07 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>x-gift-bot-x-premium-gift-cli-and-redemp</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-07 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-07  · updated 2026-10-07 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: x_gift_bot X Premium gift CLI and redemption site</h2>
+
+<p>Auto-learned 2026-10-07 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions x_gift_bot X Premium gift CLI and redemption site.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - mizorewww/x_gift_bot: X Premium gift CLI and redemption site</div>
+<p>  https://github.com/mizorewww/x_gift_bot</p>
+<div class="li">- x_gift_bot/docs at main · mizorewww/x_gift_bot · GitHub</div>
+<p>  https://github.com/mizorewww/x_gift_bot/tree/main/docs/</p>
+<div class="li">- GitHub - IIXINGCHEN/x_gift_botos: X Premium gift CLI and redemption site</div>
+<p>  https://github.com/IIXINGCHEN/x_gift_botos</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/x-gift-bot-x-premium-gift-cli-and-redemp.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-10-01T15:43:20.000Z" data-updated="2026-10-01T15:43:20.000Z" data-name="yomiyasu-ai-agent-skill-agent-skill-for- auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>yomiyasu-ai-agent-skill-agent-skill-for-</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-10-01 15:43 · updated 2026-10-01 15:43</div>
