@@ -1,16 +1,13 @@
 # Skill health — 2026-10-08
 
-257 skills audited, 25 links probed, 3 dead.
-9 need attention:
+259 skills audited, 25 links probed, 2 dead.
+8 need attention:
 
-## a-brief-history-of-the-bloomberg-termina.md (28735 chars)
+## a-brief-history-of-the-bloomberg-termina.md (29634 chars)
 - dead link (403): https://agihunt.info/en/p/1a0f31a25f2bdfec108aaac392c
 
 ## a-privacy-analysis-of-web-and-mobile-con.md (6246 chars)
 - dead link (404): https://jorgegarciaherrero.com/wp-content/interactivos/20260916-Prompt
-
-## a-wordpress-vulnerability-scored-9-2-10-.md (1153 chars)
-- dead link (500): https://wpsecurestack.com/wordpress-vulnerabilities-database-cve-alert
 
 ## claude-api.md (8208 chars)
 - unknown tool refs: langchain_openai, fetch, claude-opus-5, max_tokens, budget_tokens, web_search_20250305
