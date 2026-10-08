@@ -721,3 +721,28 @@ When the task mentions refresh and verify the a-brief-history-of-the-bloomberg-t
 - Quick Start | xbbg
   https://xbbg.org/python/quickstart
 
+
+
+---
+## Field update 2026-10-08
+# Skill: refresh and verify the a-brief-history-of-the-bloomberg-termina skill
+
+Auto-learned 2026-10-08 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-brief-history-of-the-bloomberg-termina skill.
+
+## Steps
+1. To supplement the company’s telegraph dispatches, he sent pigeons between Aachen, Germany, and Brussels; each bird carried a cylinder containing slips of paper with that day’s stock prices
+2. To begin, type a code into Bloomberg and hit the green go key
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- A Brief History of the Bloomberg Terminal - IEEE Spectrum
+  https://spectrum.ieee.org/bloomberg-terminal
+- Research Guides: Bloomberg: Bloomberg Help Documentation
+  https://researchguides.library.vanderbilt.edu/Bloomberg/help
+

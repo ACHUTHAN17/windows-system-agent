@@ -245,8 +245,8 @@
   "title": "agentmemoryrepo Spec for Agent Memory Repo",
   "description": "Auto-learned 2026-10-08 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-08",
-  "updated": "2026-10-08",
+  "added": "2026-10-08T02:46:09.000Z",
+  "updated": "2026-10-08T02:46:09.000Z",
   "triggers": [
    "agentmemoryrepo",
    "spec",
@@ -5980,8 +5980,8 @@
   "title": "tendedero Screenshots, hung out to dry. A tiny native macOS app that hangs every",
   "description": "Auto-learned 2026-10-08 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-08",
-  "updated": "2026-10-08",
+  "added": "2026-10-08T02:46:09.000Z",
+  "updated": "2026-10-08T02:46:09.000Z",
   "triggers": [
    "tendedero",
    "screenshots",
