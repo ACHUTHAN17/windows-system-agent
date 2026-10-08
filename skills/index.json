@@ -6030,8 +6030,8 @@
   "title": "Telnet BBS Guide",
   "description": "Auto-learned 2026-10-08 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-08",
-  "updated": "2026-10-08",
+  "added": "2026-10-08T16:54:13.000Z",
+  "updated": "2026-10-08T16:54:13.000Z",
   "triggers": [
    "telnet",
    "bbs",
@@ -6802,8 +6802,8 @@
   "title": "wordcraft An open-source, clean-room reimplementation of Microsoft Word in pure ",
   "description": "Auto-learned 2026-10-08 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-08",
-  "updated": "2026-10-08",
+  "added": "2026-10-08T16:54:13.000Z",
+  "updated": "2026-10-08T16:54:13.000Z",
   "triggers": [
    "wordcraft",
    "open",
