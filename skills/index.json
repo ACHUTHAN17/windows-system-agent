@@ -5,7 +5,7 @@
   "description": "Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-10-01T07:43:37.000Z",
-  "updated": "2026-10-08T05:32:31.000Z",
+  "updated": "2026-10-08T13:10:26.000Z",
   "triggers": [
    "brief",
    "history",
@@ -30,7 +30,7 @@
   "description": "Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
   "added": "2026-09-23T21:45:46.000Z",
-  "updated": "2026-10-08T05:32:31.000Z",
+  "updated": "2026-10-08T13:10:26.000Z",
   "triggers": [
    "brief",
    "history",
@@ -3338,6 +3338,28 @@
   ]
  },
  {
+  "name": "math",
+  "title": "math",
+  "description": "Auto-learned 2026-10-08 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-10-08",
+  "updated": "2026-10-08",
+  "triggers": [
+   "math",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
   "name": "mcp-extensions-build-plugins-that-feel-l",
   "title": "mcp-extensions Build plugins that feel like native, first-class features of Chat",
   "description": "Auto-learned 2026-10-02 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
@@ -5859,6 +5881,30 @@
    "capture",
    "annotate",
    "save",
+   "auto",
+   "learned",
+   "2026",
+   "web",
+   "heuristic",
+   "pass",
+   "ask",
+   "refresh",
+   "llm",
+   "key",
+   "configured"
+  ]
+ },
+ {
+  "name": "telnet-bbs-guide",
+  "title": "Telnet BBS Guide",
+  "description": "Auto-learned 2026-10-08 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
+  "origin": "task",
+  "added": "2026-10-08",
+  "updated": "2026-10-08",
+  "triggers": [
+   "telnet",
+   "bbs",
+   "guide",
    "auto",
    "learned",
    "2026",
