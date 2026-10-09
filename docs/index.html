@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">263 skills (6 auto · 17 imported · 240 built)</span><span class="pill">generated 2026-10-08</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">265 skills (6 auto · 17 imported · 242 built)</span><span class="pill">generated 2026-10-09</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-08T19:23:47.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-08T23:53:06.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-the-bloomberg-termina</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-08 19:23</div>
+  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-08 23:53</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of the Bloomberg terminal</h2>
 
 <p>Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -846,9 +846,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-the-bloomberg-termina.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-08T19:23:47.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-08T23:53:06.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-08 19:23</div>
+  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-08 23:53</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -12477,6 +12477,31 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://hn.watch/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-dataviz-ranked-daily-from-github.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-09" data-updated="2026-10-09" data-name="show-hn-edi-life-os-self-hosted-life-das auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-edi-life-os-self-hosted-life-das</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-09  · updated 2026-10-09 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Edi Life OS – self-hosted life dashboard with an MCP server for AI</h2>
+
+<p>Auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: Edi Life OS – self-hosted life dashboard with an MCP server for AI.</p>
+
+<h3>Steps</h3>
+<p>1. Copy link Copy link Copied to Clipboard Share to X Share to LinkedIn Share to Facebook Share to Mastodon Share Post via..</p>
+<p>2. Use HTTPS everywhere except localhost, and keep tokens out of URLs, frontend code and logs</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Building a self-hosted life OS that my AI assistant can actually use</div>
+<p>  https://dev.to/edrisranjbar/building-a-self-hosted-life-os-that-my-ai-assistant-can-actually-use-m7n</p>
+<div class="li">- Edi Life OS bundles habits, goals and an AI server into one self-hosted ...</div>
+<p>  https://news.lavx.hu/article/edi-life-os-bundles-habits-goals-and-an-ai-server-into-one-self-hosted-dashboard</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-edi-life-os-self-hosted-life-das.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-21T16:39:31.000Z" data-updated="2026-09-21T16:39:31.000Z" data-name="show-hn-foremerge-catch-intent-conflicts auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-foremerge-catch-intent-conflicts</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-21 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-21 16:39 · updated 2026-09-21 16:39</div>
@@ -13116,6 +13141,30 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://outspeaker.com/post/14584</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-sigabrt-dev-cronjob-monitor-with.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-09" data-updated="2026-10-09" data-name="show-hn-svg-spark-10-client-side-svg-des auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-svg-spark-10-client-side-svg-des</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-09  · updated 2026-10-09 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: SVG Spark – 10 client-side SVG design and dev tools</h2>
+
+<p>Auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: SVG Spark – 10 client-side SVG design and dev tools.</p>
+
+<h3>Steps</h3>
+<p>1. How this is checked SVG Spark is a free collection of ten browser-based utilities for developers, marketers, and creators</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Free Browser Utilities — 10 Private Client-Side Tools</div>
+<p>  https://svg-spark.vercel.app/</p>
+<div class="li">- SVG Spark - PulseGate</div>
+<p>  https://www.pulsegate.ai/apps/show-hn-svg-spark-10-client-side-svg-design-and-dev-tools-vercel-app</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-svg-spark-10-client-side-svg-des.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-27T17:21:54.000Z" data-updated="2026-09-27T17:21:54.000Z" data-name="show-hn-tinyaiarena-watch-ai-agents-batt auto-learned 2026-09-27 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-tinyaiarena-watch-ai-agents-batt</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-27 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-27 17:21 · updated 2026-09-27 17:21</div>
