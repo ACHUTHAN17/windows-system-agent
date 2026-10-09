@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">258 skills (6 auto · 17 imported · 235 built)</span><span class="pill">generated 2026-10-09</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">63 tools</span><span class="pill">260 skills (6 auto · 17 imported · 237 built)</span><span class="pill">generated 2026-10-09</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T07:43:37.000Z" data-updated="2026-10-09T12:57:06.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T07:43:37.000Z" data-updated="2026-10-09T18:45:03.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-the-bloomberg-termina</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-10-01 07:43 · updated 2026-10-09 12:57</div>
+  <div class="dates">added 2026-10-01 07:43 · updated 2026-10-09 18:45</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of the Bloomberg terminal</h2>
 
 <p>Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -933,9 +933,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-the-bloomberg-termina.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-23T21:45:46.000Z" data-updated="2026-10-09T12:57:06.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-23T21:45:46.000Z" data-updated="2026-10-09T18:45:03.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 21:45 · updated 2026-10-09 12:57</div>
+  <div class="dates">added 2026-09-23 21:45 · updated 2026-10-09 18:45</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -13016,6 +13016,30 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://news.mcan.sh/item/49837006</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-koi-rest-watch-some-fish-and-reg.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-09" data-updated="2026-10-09" data-name="show-hn-let-your-ai-agents-paint-big-arr auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-let-your-ai-agents-paint-big-arr</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-09  · updated 2026-10-09 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Let your AI agents paint big arrows, boxes and text on your screen</h2>
+
+<p>Auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: Let your AI agents paint big arrows, boxes and text on your screen.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Let your AI agents paint big arrows, boxes and text on your screen</div>
+<p>  https://github.com/franzenzenhofer/big-arrow-on-the-screen</p>
+<div class="li">- Let Your AI Agents Paint Big Arrows, Boxes, and Text on Your Screen</div>
+<p>  https://www.linkedin.com/pulse/let-your-ai-agents-paint-big-arrows-boxes-text-screen-andy-arnott-udxyc</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-let-your-ai-agents-paint-big-arr.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-27T19:56:53.000Z" data-updated="2026-09-27T19:56:53.000Z" data-name="show-hn-lofi-cities-pixel-art-city-night auto-learned 2026-09-27 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-lofi-cities-pixel-art-city-night</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-27 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-27 19:56 · updated 2026-09-27 19:56</div>
@@ -13365,6 +13389,40 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.visual-paradigm.com/guide/mastering-modern-uml-a-beginners-guide-to-diagram-as-code-and-ai-driven-design/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-reladraw-a-diagram-language-wher.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-09" data-updated="2026-10-09" data-name="show-hn-see-almost-any-carriers-phone-se auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-see-almost-any-carriers-phone-se</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-09  · updated 2026-10-09 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: See *almost* any carriers phone settings</h2>
+
+<p>Auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: See *almost* any carriers phone settings.</p>
+
+<h3>Steps</h3>
+<p>1. Click to expand When You Need to Change Your APN Most phones configure the APN automatically the moment you insert a SIM or activate an eSIM</p>
+<p>2. How to Change APN Settings on Android The wording varies slightly by brand, but the path is similar across modern Android phones</p>
+<p>3. To add a new one, tap the plus sign or Add, then fill in each field exactly as listed for your carrier</p>
+<p>4. To start over, open the same three-dot menu and choose Reset to default, which restores the carrier's original entries</p>
+<p>5. Click to expand How to Change APN Settings on iPhone Apple keeps APN editing in one place</p>
+<p>6. Go to Settings &gt; Cellular &gt; Cellular Data Network, then enter the values under Cellular Data and MMS</p>
+<p>7. Go to Settings &gt; General &gt; Transfer or Reset iPhone &gt; Reset &gt; Reset Network Settings, then reboot so the carrier can re-provision the correct values</p>
+<p>8. Step-by-step guides for Android, iPhone, and HarmonyOS</p>
+<p>9. How do I install APN settings on iPhone? iPhones usually configure APN automatically</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- APN Settings for Every Major US Carrier (2026 Guide)</div>
+<p>  https://switchninja.app/learn/apn-settings</p>
+<div class="li">- APN Settings for AT&amp;T, Verizon, T-Mobile and US Carriers (2026 Guide)</div>
+<p>  https://www.technobezz.com/updated-apn-settings-for-att-verizon-t-mobile-an</p>
+<div class="li">- APN Settings for Every Carrier &amp; Phone | APNConfig</div>
+<p>  https://apnconfig.com/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-see-almost-any-carriers-phone-se.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-20T14:55:26.000Z" data-updated="2026-09-20T14:55:26.000Z" data-name="show-hn-sigabrt-dev-cronjob-monitor-with auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-sigabrt-dev-cronjob-monitor-with</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-20 14:55 · updated 2026-09-20 14:55</div>
