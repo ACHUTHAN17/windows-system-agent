@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">265 skills (6 auto · 17 imported · 242 built)</span><span class="pill">generated 2026-10-09</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">267 skills (6 auto · 17 imported · 244 built)</span><span class="pill">generated 2026-10-09</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-08T23:53:06.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-09T05:45:05.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-the-bloomberg-termina</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-08 23:53</div>
+  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-09 05:45</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of the Bloomberg terminal</h2>
 
 <p>Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -870,9 +870,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-the-bloomberg-termina.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-08T23:53:06.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-09T05:45:05.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-08 23:53</div>
+  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-09 05:45</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -12912,6 +12912,31 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://upstract.com/x/a5f7e63de08b393b</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-offrun-manage-every-coding-agent.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-09" data-updated="2026-10-09" data-name="show-hn-oldroll-a-free-vintage-photo-edi auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-oldroll-a-free-vintage-photo-edi</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-09  · updated 2026-10-09 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: OldRoll, a free vintage photo editor for the browser</h2>
+
+<p>Auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: OldRoll, a free vintage photo editor for the browser.</p>
+
+<h3>Steps</h3>
+<p>1. Choose a Photo Drop photos here 100% free online · No installation · Mobile ready Original Digicam Digicam Y2K 90s Film Dreamy Explore OldRoll Popular Retro Filters Start with the looks people return to, from crisp digicam flash and disposable-camera warmth to soft film grain and dreamy color</p>
+<p>2. How to Make an Aesthetic Photo with OldRoll Upload a Photo Choose a photo from your phone or computer</p>
+<p>3. Download and Share Compare the edit with the original, preview the finished result and save your photo</p>
+<p>4. Choose a Photo The OldRoll Camera Experience, Recognized Camera-inspired creativity, loved by a worldwide community</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- OldRoll: Free Online Aesthetic Photo Editor for Retro Effects</div>
+<p>  https://www.oldroll.io/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-oldroll-a-free-vintage-photo-edi.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-10-01T20:32:53.000Z" data-updated="2026-10-01T20:32:53.000Z" data-name="show-hn-open-source-model-routing-for-co auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-open-source-model-routing-for-co</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-10-01 20:32 · updated 2026-10-01 20:32</div>
@@ -13056,6 +13081,30 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.ajeetraina.com/getting-started-with-the-pi-agent-kit-on-docker-sandboxes/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-pi-pod-run-your-pi-coding-agent-.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-09" data-updated="2026-10-09" data-name="show-hn-quake-ported-to-safe-rust-playab auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-quake-ported-to-safe-rust-playab</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-09  · updated 2026-10-09 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Quake ported to safe Rust, playable in browser</h2>
+
+<p>Auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: Quake ported to safe Rust, playable in browser.</p>
+
+<h3>Steps</h3>
+<p>1. See sources below and follow the official docs.</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Claude helped port Quake to safe Rust, with tests against the original</div>
+<p>  https://runtimewire.com/article/quake-srp-rust-port-claude-browser</p>
+<div class="li">- Show HN: Quake in the browser, with procedurally generated levels ...</div>
+<p>  https://news.ycombinator.com/item?id=48631675</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-quake-ported-to-safe-rust-playab.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-20T17:55:57.000Z" data-updated="2026-09-20T17:55:57.000Z" data-name="show-hn-radius-a-meetup-com-alternative auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-radius-a-meetup-com-alternative</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-20 17:55 · updated 2026-09-20 17:55</div>
