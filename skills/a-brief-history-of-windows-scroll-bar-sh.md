@@ -1892,3 +1892,34 @@ When the task mentions refresh and verify the a-brief-history-of-windows-scroll-
 - A brief history of Windows scroll bar shortcuts | Lobsters
   https://lobste.rs/s/kjqjse
 
+
+
+---
+## Field update 2026-10-09
+# Skill: refresh and verify the a-brief-history-of-windows-scroll-bar-sh skill
+
+Auto-learned 2026-10-09 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-brief-history-of-windows-scroll-bar-sh skill.
+
+## Steps
+1. Download Microsoft Edge More info about Internet Explorer and Microsoft Edge Table of contents Exit editor mode Ask Learn Ask Learn Reading mode Table of contents Read in English Add Add to Plans Edit Copy Markdown Print Note Access to this page requires authorization
+2. Note: The GetScrollPos function is provided for backward compatibility
+3. Note: The GetScrollRange function is provided for compatibility only
+4. Note: The ScrollWindow function is provided for backward compatibility
+5. Note: The SetScrollPos function is provided for backward compatibility
+6. Note: The SetScrollRange function is provided for backward compatibility
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- A brief history of Windows scroll bar shortcuts - The Old New Thing
+  https://devblogs.microsoft.com/oldnewthing/20260922-00/?p=112719/
+- A brief history of Windows scroll bar shortcuts
+  https://cppdashboard.dev/r/2026/09/a-brief-history-of-windows-scroll-bar-shortcuts/
+- Scroll Bar - Win32 apps | Microsoft Learn
+  https://learn.microsoft.com/en-us/windows/win32/controls/scroll-bars
+
