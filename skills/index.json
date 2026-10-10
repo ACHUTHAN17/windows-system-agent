@@ -1453,8 +1453,8 @@
   "title": "deckcraft Presentations and slide shows: an open-source, clean-room reimplementa",
   "description": "Auto-learned 2026-10-10 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-10",
-  "updated": "2026-10-10",
+  "added": "2026-10-10T08:34:29.000Z",
+  "updated": "2026-10-10T08:34:29.000Z",
   "triggers": [
    "deckcraft",
    "presentations",
@@ -6232,8 +6232,8 @@
   "title": "Telegram Desktop vulnerability allowed any user's file to be stolen",
   "description": "Auto-learned 2026-10-10 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-10",
-  "updated": "2026-10-10",
+  "added": "2026-10-10T08:34:29.000Z",
+  "updated": "2026-10-10T08:34:29.000Z",
   "triggers": [
    "telegram",
    "desktop",
