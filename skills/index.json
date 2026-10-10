@@ -1175,8 +1175,8 @@
   "title": "Cbirds: A flock of birds in your terminal",
   "description": "Auto-learned 2026-10-10 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-10",
-  "updated": "2026-10-10",
+  "added": "2026-10-10T19:20:34.000Z",
+  "updated": "2026-10-10T19:20:34.000Z",
   "triggers": [
    "cbirds",
    "flock",
@@ -4260,8 +4260,8 @@
   "title": "Rampart: Browser native on-device PII radaction",
   "description": "Auto-learned 2026-10-10 from the web (heuristic pass — ask for a refresh once an LLM key is configured).",
   "origin": "task",
-  "added": "2026-10-10",
-  "updated": "2026-10-10",
+  "added": "2026-10-10T19:20:34.000Z",
+  "updated": "2026-10-10T19:20:34.000Z",
   "triggers": [
    "rampart",
    "browser",
