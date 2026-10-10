@@ -1,13 +1,10 @@
 # Skill health — 2026-10-10
 
-269 skills audited, 25 links probed, 2 dead.
-11 need attention:
+271 skills audited, 25 links probed, 1 dead.
+10 need attention:
 
 ## a-privacy-analysis-of-web-and-mobile-con.md (7020 chars)
 - dead link (404): https://jorgegarciaherrero.com/wp-content/interactivos/20260916-Prompt
-
-## academy-guide.md (70503 chars)
-- dead link (503): https://github.com/anthropics/skills/blob/HEAD/skills/academy-guide/SK
 
 ## agent-overlay.md (3676 chars)
 - unknown tool refs: click, drag, type, file
