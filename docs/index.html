@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">282 skills (6 auto · 17 imported · 259 built)</span><span class="pill">generated 2026-10-11</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">284 skills (6 auto · 17 imported · 261 built)</span><span class="pill">generated 2026-10-11</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-10T23:27:34.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-11T02:07:43.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-the-bloomberg-termina</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-10 23:27</div>
+  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-11 02:07</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of the Bloomberg terminal</h2>
 
 <p>Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -1089,9 +1089,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-the-bloomberg-termina.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-10T23:27:34.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-11T02:07:43.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-10 23:27</div>
+  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-11 02:07</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -6851,6 +6851,39 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.claudemap.org/en/explore/agentverse-os</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/agentverse-os-personal-cloud-os-for-a-de.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-11" data-updated="2026-10-11" data-name="ai-agents-in-a-stand-up-call auto-learned 2026-10-11 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>ai-agents-in-a-stand-up-call</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-11 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-11  · updated 2026-10-11 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: AI agents in a stand-up call</h2>
+
+<p>Auto-learned 2026-10-11 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions AI agents in a stand-up call.</p>
+
+<h3>Steps</h3>
+<p>1. How AI Call Agents Work Let’s break this down without turning it into a PhD lecture</p>
+<p>2. Create, Test, and Deploy a Voice AI Agent | HighLevel : HighLevel Support Portal Skip to main content HighLevel Support Portal Home Knowledge base Login Sign up Home Knowledge base AI Employee Voice AI ..</p>
+<p>3. Choose a Voice AI Agent Creation Method HighLevel provides three starting points so you can balance setup speed with the level of control required for the conversation</p>
+<p>4. Create Custom Agent: Configure an agent through the full-screen builder using a prompt, Knowledge Base, actions, and call settings</p>
+<p>5. How To Create and Configure a Voice AI Agent A complete setup begins with the agent's purpose and conversation instructions, then adds only the knowledge, actions, and settings required for that use case</p>
+<p>6. Step 1: Open Voice AI The Voice AI Agent List provides access to existing agents, call logs, and the agent-creation workflow</p>
+<p>7. Step 2: Start a New Agent Creating a separate agent for each primary call-handling use case makes prompts, actions, routing, and reporting easier to manage</p>
+<p>8. Select Browse Marketplace , Create Custom Agent , or Flow Based Builder</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- The Complete Guide to AI Call Agents in 2026 - ondial.ai</div>
+<p>  https://www.ondial.ai/blog/ultimate-guide-ai-call-agents</p>
+<div class="li">- How to Write an AI Call Agent Script | AvairAI</div>
+<p>  https://www.avair.ai/resources/blog/ai-call-agent-script-guide</p>
+<div class="li">- Create, Test, and Deploy a Voice AI Agent | HighLevel</div>
+<p>  https://help.gohighlevel.com/support/solutions/articles/155000004107-how-to-create-voice-ai-agents</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/ai-agents-in-a-stand-up-call.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-29T13:50:41.000Z" data-updated="2026-09-29T13:50:41.000Z" data-name="ai-companies-leak-data-to-advertisers-pd auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>ai-companies-leak-data-to-advertisers-pd</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-29 13:50 · updated 2026-09-29 13:50</div>
@@ -13417,6 +13450,28 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://news.mcan.sh/item/49927295</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-graphene-data-analysis-toolkit-f.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-11" data-updated="2026-10-11" data-name="show-hn-happy-hangul-day-an-rnn-for-gene auto-learned 2026-10-11 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-happy-hangul-day-an-rnn-for-gene</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-11 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-11  · updated 2026-10-11 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Happy Hangul Day! An RNN for Generating Korean Handwriting Strokes</h2>
+
+<p>Auto-learned 2026-10-11 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: Happy Hangul Day! An RNN for Generating Korean Handwriting Strokes.</p>
+
+<h3>Steps</h3>
+<p>1. How it works A few ideas do most of the heavy lifting: Jamo decomposition</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - Hilokal/korean-handwriting: Generate Korean (Hangul ...</div>
+<p>  https://github.com/Hilokal/korean-handwriting</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-happy-hangul-day-an-rnn-for-gene.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-20T01:25:43.000Z" data-updated="2026-09-20T01:25:43.000Z" data-name="show-hn-i-created-an-open-source-locally auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-i-created-an-open-source-locally</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-20 01:25 · updated 2026-09-20 01:25</div>
