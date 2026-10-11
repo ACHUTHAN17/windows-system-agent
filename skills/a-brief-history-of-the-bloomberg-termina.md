@@ -1112,3 +1112,26 @@ When the task mentions refresh and verify the a-brief-history-of-the-bloomberg-t
 - A Brief History of the Bloomberg Terminal | Startup Networx
   https://www.startupnetworx.com/directory/news/a-brief-history-of-the-bloomberg-terminal-09ca6ba2
 
+
+
+---
+## Field update 2026-10-11
+# Skill: refresh and verify the a-brief-history-of-the-bloomberg-termina skill
+
+Auto-learned 2026-10-11 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-brief-history-of-the-bloomberg-termina skill.
+
+## Steps
+1. Click Download to view the document
+2. Choose the print command within Adobe to obtain a hard copy
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Guides and Tutorials - Bloomberg - Guides at Johns Hopkins University
+  https://guides.library.jhu.edu/bloomberg/general/guides-and-tutorials
+
