@@ -1,10 +1,9 @@
-# Skill health — 2026-10-11
+# Skill health — 2026-10-12
 
-290 skills audited, 25 links probed, 3 dead.
+292 skills audited, 25 links probed, 2 dead.
 8 need attention:
 
-## a-brief-history-of-the-bloomberg-termina.md (42848 chars)
-- dead link (ERR:This operation was aborted): https://spectrum.ieee.org/bloomberg-terminal
+## a-brief-history-of-the-bloomberg-termina.md (43576 chars)
 - dead link (403): https://agihunt.info/en/p/1a0f31a25f2bdfec108aaac392c
 
 ## a-privacy-analysis-of-web-and-mobile-con.md (6246 chars)
