@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">292 skills (6 auto · 17 imported · 269 built)</span><span class="pill">generated 2026-10-12</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">294 skills (6 auto · 17 imported · 271 built)</span><span class="pill">generated 2026-10-12</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-11T23:53:19.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-12T05:34:20.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-the-bloomberg-termina</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-11 23:53</div>
+  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-12 05:34</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of the Bloomberg terminal</h2>
 
 <p>Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -1185,9 +1185,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-the-bloomberg-termina.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-11T20:08:31.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-12T05:34:20.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-11 20:08</div>
+  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-12 05:34</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -12152,6 +12152,31 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://ml-digest.com/ollaya-run-decision-models-locally/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/ollaya-run-open-decision-models-locally-.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-12" data-updated="2026-10-12" data-name="omdrop-owl-airdrop-for-non-apple-devices auto-learned 2026-10-12 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>omdrop-owl-airdrop-for-non-apple-devices</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-12 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-12  · updated 2026-10-12 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: omdrop-owl airdrop for non-apple devices</h2>
+
+<p>Auto-learned 2026-10-12 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions omdrop-owl airdrop for non-apple devices.</p>
+
+<h3>Steps</h3>
+<p>1. Install Install this package (omdrop-owl) first, then omdrop</p>
+<p>2. Then install omdrop (0.16.0 or newer): omarchy plugin add https://github.com/brentkearney/omdrop-plugin.git and turn it on from the bar</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - t4t5/omdrop-owl: airdrop for non-apple devices</div>
+<p>  https://github.com/t4t5/omdrop-owl</p>
+<div class="li">- omdrop-owl/README.md at main · t4t5/omdrop-owl · GitHub</div>
+<p>  https://github.com/t4t5/omdrop-owl/blob/main/README.md</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/omdrop-owl-airdrop-for-non-apple-devices.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-28T21:34:26.000Z" data-updated="2026-09-28T21:34:26.000Z" data-name="onetake-motion-films-that-never-cut-to-t auto-learned 2026-09-28 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>onetake-motion-films-that-never-cut-to-t</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-28 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-28 21:34 · updated 2026-09-28 21:34</div>
@@ -13447,6 +13472,34 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://github.com/travelonium/arcadeia</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-arcadeia-a-self-hosted-media-lib.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-12" data-updated="2026-10-12" data-name="show-hn-atticus-hold-to-talk-voice-assis auto-learned 2026-10-12 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-atticus-hold-to-talk-voice-assis</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-12 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-12  · updated 2026-10-12 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Atticus – Hold-to-talk voice assistant for macOS that runs on Claude -p</h2>
+
+<p>Auto-learned 2026-10-12 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: Atticus – Hold-to-talk voice assistant for macOS that runs on Claude -p.</p>
+
+<h3>Steps</h3>
+<p>1. Set Dictation Language to Multilingual and the English-only model is hidden</p>
+<p>2. Step 01 Option + Space Hold the key Press and hold Option-Space, or choose another shortcut in Settings</p>
+<p>3. Step 02 Talk Just say what you want to write</p>
+<p>4. Step 03 Your words show up Let go of the key</p>
+<p>5. Use cases Built for the places where typing slows you down</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- GitHub - edamame-labs/hold-to-talk: Free, open-source voice dictation ...</div>
+<p>  https://github.com/Edamame-Labs/hold-to-talk</p>
+<div class="li">- Hold to Talk — Talk to Type on Mac</div>
+<p>  https://holdtotalk.com/</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-atticus-hold-to-talk-voice-assis.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-10-02T11:17:40.000Z" data-updated="2026-10-02T11:17:40.000Z" data-name="show-hn-audionaut-an-open-source-cross-p auto-learned 2026-10-02 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-audionaut-an-open-source-cross-p</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-02 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-10-02 11:17 · updated 2026-10-02 11:17</div>
