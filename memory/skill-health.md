@@ -1,10 +1,7 @@
 # Skill health — 2026-10-12
 
-282 skills audited, 25 links probed, 2 dead.
-11 need attention:
-
-## a-browser-native-classic-visual-basic-vb.md (1684 chars)
-- dead link (ERR:This operation was aborted): https://www.webvbstudio.com/visual-basic
+283 skills audited, 25 links probed, 1 dead.
+10 need attention:
 
 ## a-privacy-analysis-of-web-and-mobile-con.md (7020 chars)
 - dead link (404): https://jorgegarciaherrero.com/wp-content/interactivos/20260916-Prompt
