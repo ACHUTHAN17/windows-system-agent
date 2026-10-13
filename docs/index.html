@@ -17,13 +17,13 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <body><div class="wrap">
 <h1>WinAgent learned skills — live</h1>
 <p class="sub">The agent loads these straight from GitHub on every run (no local copies needed). Updated on every push. <a style="color:#58a6ff" href="./chat.html">💬 chat with the agent online</a></p>
-<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">300 skills (6 auto · 17 imported · 277 built)</span><span class="pill">generated 2026-10-13</span></div>
+<div class="meta"><span class="pill">v1.21.0</span><span class="pill">68 tools</span><span class="pill">302 skills (6 auto · 17 imported · 279 built)</span><span class="pill">generated 2026-10-13</span></div>
 <div class="filters"><button data-f="all" class="on">All</button><button data-f="auto">Auto-learned</button><button data-f="imported">Imported</button><button data-f="task">Task-built</button><select id="sort" onchange="applyFilter()"><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="cat">Category</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
 <input id="q" placeholder="filter skills…" oninput="applyFilter()">
 <script>let CF='all';document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{CF=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));applyFilter();});function applyFilter(){const q=document.getElementById('q').value.toLowerCase();const s=document.getElementById('sort').value;const grid=document.getElementById('grid');const cards=[...grid.children];cards.sort((a,b)=>s==='za'?b.dataset.name.localeCompare(a.dataset.name):s==='cat'?(a.dataset.origin+a.dataset.name).localeCompare(b.dataset.origin+a.dataset.name):s==='new'?(b.dataset.added||b.dataset.updated||'0000').localeCompare(a.dataset.added||a.dataset.updated||'0000'):s==='old'?(a.dataset.added||a.dataset.updated||'9999').localeCompare(b.dataset.added||b.dataset.updated||'9999'):a.dataset.name.localeCompare(b.dataset.name));cards.forEach(c=>grid.appendChild(c));document.querySelectorAll('.card').forEach(c=>{c.style.display=(CF==='all'||c.dataset.origin===CF)&&c.dataset.name.includes(q)?'':'none';});}</script>
-<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-13T03:27:57.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<div class="grid" id="grid"><article class="card" data-origin="task" data-added="2026-10-01T09:50:41.000Z" data-updated="2026-10-13T11:00:07.000Z" data-name="a-brief-history-of-the-bloomberg-termina auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-the-bloomberg-termina</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-13 03:27</div>
+  <div class="dates">added 2026-10-01 09:50 · updated 2026-10-13 11:00</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of the Bloomberg terminal</h2>
 
 <p>Auto-learned 2026-10-01 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -1291,9 +1291,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/a-brief-history-of-the-bloomberg-termina.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-13T03:27:57.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+<article class="card" data-origin="task" data-added="2026-09-23T19:03:42.000Z" data-updated="2026-10-13T11:00:07.000Z" data-name="a-brief-history-of-windows-scroll-bar-sh auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>a-brief-history-of-windows-scroll-bar-sh</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
-  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-13 03:27</div>
+  <div class="dates">added 2026-09-23 19:03 · updated 2026-10-13 11:00</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: A brief history of Windows scroll bar shortcuts</h2>
 
 <p>Auto-learned 2026-09-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
@@ -6057,9 +6057,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/academy-guide.md">view source on GitHub</a></article>
-<article class="card" data-origin="auto" data-added="2026-09-17T12:34:16.000Z" data-updated="2026-09-22T13:18:43.000Z" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
+<article class="card" data-origin="auto" data-added="2026-09-17T12:39:03.000Z" data-updated="2026-09-22T13:18:43.000Z" data-name="agent-modes winagent is one brain with six bodies. pick per task; combine for speed.">
   <h2>agent-modes</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from its own run modes + parallel discipline</div><p class="desc">WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
-  <div class="dates">added 2026-09-17 12:34 · updated 2026-09-22 13:18</div>
+  <div class="dates">added 2026-09-17 12:39 · updated 2026-09-22 13:18</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: agent-modes — run modes and how to work them in parallel</h2>
 
 <p>WinAgent is one brain with six bodies. Pick per task; combine for speed.</p>
@@ -9023,9 +9023,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://natrongithub.github.io/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/compositor-the-photoshop-alternative-for.md">view source on GitHub</a></article>
-<article class="card" data-origin="auto" data-added="2026-09-17T12:34:16.000Z" data-updated="2026-09-17T12:34:16.000Z" data-name="computer-use faithful mirror of the computer use model (chatgpt desktop, windows): an agent">
+<article class="card" data-origin="auto" data-added="2026-09-17T12:39:03.000Z" data-updated="2026-09-17T12:39:03.000Z" data-name="computer-use faithful mirror of the computer use model (chatgpt desktop, windows): an agent">
   <h2>computer-use</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from OpenAI Computer Use docs (live web research)</div><p class="desc">Faithful mirror of the Computer Use model (ChatGPT desktop, Windows): an agent</p>
-  <div class="dates">added 2026-09-17 12:34 · updated 2026-09-17 12:34</div>
+  <div class="dates">added 2026-09-17 12:39 · updated 2026-09-17 12:39</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: computer-use — see + operate GUIs exactly like OpenAI Computer Use</h2>
 
 <p>Faithful mirror of the Computer Use model (ChatGPT desktop, Windows): an agent</p>
@@ -9974,6 +9974,32 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://docker.github.io/docker-agent/concepts/agents/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/docker-agent.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-13" data-updated="2026-10-13" data-name="document-review-with-unsiloed-and-typesa auto-learned 2026-10-13 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>document-review-with-unsiloed-and-typesa</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-13 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-13  · updated 2026-10-13 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Document Review with Unsiloed and TypeSafe Jev</h2>
+
+<p>Auto-learned 2026-10-13 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Document Review with Unsiloed and TypeSafe Jev.</p>
+
+<h3>Steps</h3>
+<p>1. Enable source citations with enable_citations=true and wait for the extraction job to complete before constructing Jev’s state</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Document Review With Unsiloed and TypeSafe Jev</div>
+<p>  https://www.unsiloed.ai/blog/document-review-unsiloed-typesafe-jev</p>
+<div class="li">- Jev Manual - Tutorials, API Guide, Examples &amp; TypeSafe Jev Documentation</div>
+<p>  https://jevmanual.com/</p>
+<div class="li">- Unsiloed and Jev — continuous review flow</div>
+<p>  https://www.unsiloed.ai/blog-assets/unsiloed-jev/architecture-diagram-experimental.html</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/document-review-with-unsiloed-and-typesa.md">view source on GitHub</a></article>
 <article class="card" data-origin="imported" data-added="2026-09-17T16:04:50.000Z" data-updated="2026-09-17T16:04:50.000Z" data-name="docx imported from [achuthan17/skills](https://github.com/achuthan17/skills/blob/head/skills/docx/skill.md) — "use this skill whenever the user w">
   <h2>docx</h2><span class="badge imp">imported</span><div class="src">from <a style="color:#58a6ff" href="https://github.com/ACHUTHAN17/skills">ACHUTHAN17/skills</a> · crawled free from GitHub</div><p class="desc">Imported from [ACHUTHAN17/skills](https://github.com/ACHUTHAN17/skills/blob/HEAD/skills/docx/SKILL.md) — "Use this skill whenever the user w</p>
   <div class="dates">added 2026-09-17 16:04 · updated 2026-09-17 16:04</div>
@@ -10140,9 +10166,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://codersera.com/blog/openai-chatgpt-dots-guide-2026/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/dots-open-source-dots-for-the-web-an-ai-.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T12:34:16.000Z" data-updated="2026-09-17T12:34:16.000Z" data-name="drag-drop `screen_drag {x1,y1,x2,y2}` moves with the left button held, in smooth steps.">
+<article class="card" data-origin="task" data-added="2026-09-17T12:39:03.000Z" data-updated="2026-09-17T12:39:03.000Z" data-name="drag-drop `screen_drag {x1,y1,x2,y2}` moves with the left button held, in smooth steps.">
   <h2>drag-drop</h2><span class="badge task">task-built playbook</span><p class="desc">`screen_drag {x1,y1,x2,y2}` moves with the left button held, in smooth steps.</p>
-  <div class="dates">added 2026-09-17 12:34 · updated 2026-09-17 12:34</div>
+  <div class="dates">added 2026-09-17 12:39 · updated 2026-09-17 12:39</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: drag-drop — mouse drags, sliders, selections, drag-and-drop on Windows</h2>
 
 <p><code>screen_drag {x1,y1,x2,y2}</code> moves with the left button held, in smooth steps.</p>
@@ -10478,9 +10504,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.gitstars.io/repo/github/tamaratran/fast-jev-compaction</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/fast-jev-compaction-claude-code-plugin-t.md">view source on GitHub</a></article>
-<article class="card" data-origin="auto" data-added="2026-09-17T12:34:16.000Z" data-updated="2026-09-17T12:34:16.000Z" data-name="file-fetch-upload file manager parity: if explorer can see it, you can fetch it. locked sqlite">
+<article class="card" data-origin="auto" data-added="2026-09-17T12:39:03.000Z" data-updated="2026-09-17T12:39:03.000Z" data-name="file-fetch-upload file manager parity: if explorer can see it, you can fetch it. locked sqlite">
   <h2>file-fetch-upload</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from locked-file + upload research</div><p class="desc">File Manager parity: if Explorer can see it, you can fetch it. Locked SQLite</p>
-  <div class="dates">added 2026-09-17 12:34 · updated 2026-09-17 12:34</div>
+  <div class="dates">added 2026-09-17 12:39 · updated 2026-09-17 12:39</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: file-fetch-upload — fetch ANY file (even locked/in-use) and upload it</h2>
 
 <p>File Manager parity: if Explorer can see it, you can fetch it. Locked SQLite</p>
@@ -10921,9 +10947,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://readmewriter.swiftlabs.dev/blog/github-readme-badges</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/github-readme-badges-with-shields-io.md">view source on GitHub</a></article>
-<article class="card" data-origin="auto" data-added="2026-09-17T12:34:16.000Z" data-updated="2026-09-17T12:34:16.000Z" data-name="github self-learned from github docs + deverrors + cli/cli (see memory note). this is">
+<article class="card" data-origin="auto" data-added="2026-09-17T12:39:03.000Z" data-updated="2026-09-17T12:39:03.000Z" data-name="github self-learned from github docs + deverrors + cli/cli (see memory note). this is">
   <h2>github</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned from GitHub docs + real push failures</div><p class="desc">Self-learned from GitHub docs + DevErrors + cli/cli (see memory note). This is</p>
-  <div class="dates">added 2026-09-17 12:34 · updated 2026-09-17 12:34</div>
+  <div class="dates">added 2026-09-17 12:39 · updated 2026-09-17 12:39</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: github — push itself, multi-account auth, device flow (researched live)</h2>
 
 <p>Self-learned from GitHub docs + DevErrors + cli/cli (see memory note). This is</p>
@@ -13570,9 +13596,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://gitcode.com/gh_mirrors/search59/Search</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/search-a-small-fast-webkit-browser-for-m.md">view source on GitHub</a></article>
-<article class="card" data-origin="auto" data-added="2026-09-17T12:34:16.000Z" data-updated="2026-09-17T12:34:16.000Z" data-name="self-learn when a task needs knowledge you don't have (new app, new site, new api, stale">
+<article class="card" data-origin="auto" data-added="2026-09-17T12:39:03.000Z" data-updated="2026-09-17T12:39:03.000Z" data-name="self-learn when a task needs knowledge you don't have (new app, new site, new api, stale">
   <h2>self-learn</h2><span class="badge auto">auto-learned</span><div class="src">auto-learned — the research-install-verify loop itself</div><p class="desc">When a task needs knowledge you don't have (new app, new site, new API, stale</p>
-  <div class="dates">added 2026-09-17 12:34 · updated 2026-09-17 12:34</div>
+  <div class="dates">added 2026-09-17 12:39 · updated 2026-09-17 12:39</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: self-learn — teach yourself new skills from the web, live, mid-task</h2>
 
 <p>When a task needs knowledge you don't have (new app, new site, new API, stale</p>
@@ -14985,6 +15011,38 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://huggingface.co/docs/transformers/index</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-turbogpt-train-22kib-transformer.md">view source on GitHub</a></article>
+<article class="card" data-origin="task" data-added="2026-10-13" data-updated="2026-10-13" data-name="show-hn-use-your-openai-subscription-to- auto-learned 2026-10-13 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
+  <h2>show-hn-use-your-openai-subscription-to-</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-10-13 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+  <div class="dates">added 2026-10-13  · updated 2026-10-13 </div>
+  <details><summary>read full skill</summary><div class="body"><h2>Skill: Show HN: Use your OpenAI subscription to create audiobooks</h2>
+
+<p>Auto-learned 2026-10-13 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
+
+<h3>When to use</h3>
+<p>When the task mentions Show HN: Use your OpenAI subscription to create audiobooks.</p>
+
+<h3>Steps</h3>
+<p>1. Then use the shared guides for [custom voices](https://developers.openai.com/api/docs/guides/custom-voices), [evaluation](https://developers.openai.com/api/docs/guides/voice-agents#evaluate-your-voice-agent), and [cost optimization](https://developers.openai.com/api/docs/guides/voice-latency-cost)</p>
+<p>2. Select your API on each connection page</p>
+<p>3. How to Use OpenAI FM – The Practical Guide | OpenAIFM.org OpenAI FM Home Guide Voices Indian TTS Alternatives Compare Quickstart Guide From Zero to Speech</p>
+<p>4. Install $ pip install openai # 2</p>
+<p>5. Choose where to save the audio speech_file_path = Path(__file__).parent / "speech.mp3" # 2</p>
+<p>6. How to handle API rate limits? Rate limits depend on the model and account tier</p>
+<p>7. Choose the language already used by your application, and keep API keys in server-side environment settings rather than browser code</p>
+
+<h3>Verify</h3>
+<div class="li">- Re-check one fact against a second source before acting on it.</div>
+<div class="li">- Never run destructive commands from a single source.</div>
+
+<h3>Sources</h3>
+<div class="li">- Audio and voice | OpenAI API</div>
+<p>  https://developers.openai.com/api/docs/guides/audio</p>
+<div class="li">- developers.openai.com</div>
+<p>  https://developers.openai.com/api/docs/guides/audio.md</p>
+<div class="li">- How to Use OpenAI FM - The Practical Guide | OpenAIFM.org</div>
+<p>  https://www.openaifm.org/how-to-use</p>
+</div></details>
+  <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/show-hn-use-your-openai-subscription-to-.md">view source on GitHub</a></article>
 <article class="card" data-origin="task" data-added="2026-09-24T22:17:59.000Z" data-updated="2026-09-24T22:17:59.000Z" data-name="show-hn-whiteboard-yc-w26-an-open-source auto-learned 2026-09-24 from the web (heuristic pass — ask for a refresh once an llm key is configured).">
   <h2>show-hn-whiteboard-yc-w26-an-open-source</h2><span class="badge task">task-built playbook</span><p class="desc">Auto-learned 2026-09-24 from the web (heuristic pass — ask for a refresh once an LLM key is configured).</p>
   <div class="dates">added 2026-09-24 22:17 · updated 2026-09-24 22:17</div>
@@ -15266,9 +15324,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>Never start implementation on a m</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/subagent-driven-development.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T12:34:16.000Z" data-updated="2026-09-17T12:34:16.000Z" data-name="system-control you are the operator: windows, processes, services, registry, power, clipboard.">
+<article class="card" data-origin="task" data-added="2026-09-17T12:39:03.000Z" data-updated="2026-09-17T12:39:03.000Z" data-name="system-control you are the operator: windows, processes, services, registry, power, clipboard.">
   <h2>system-control</h2><span class="badge task">task-built playbook</span><p class="desc">You are the operator: windows, processes, services, registry, power, clipboard.</p>
-  <div class="dates">added 2026-09-17 12:34 · updated 2026-09-17 12:34</div>
+  <div class="dates">added 2026-09-17 12:39 · updated 2026-09-17 12:39</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: system-control — take whole-system control of this Windows machine</h2>
 
 <p>You are the operator: windows, processes, services, registry, power, clipboard.</p>
@@ -16155,9 +16213,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://enterprisedna.co/resources/ai-pulse/ai-pulse-2026-09-17-computer-use-agent-claims-0-0002-a-step/</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/typesafe-computer-use-computer-use-for-a.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T12:34:16.000Z" data-updated="2026-09-17T12:34:16.000Z" data-name="typing-editing text entry without a dom: keyboard injection + clipboard. needs an interactive">
+<article class="card" data-origin="task" data-added="2026-09-17T12:39:03.000Z" data-updated="2026-09-17T12:39:03.000Z" data-name="typing-editing text entry without a dom: keyboard injection + clipboard. needs an interactive">
   <h2>typing-editing</h2><span class="badge task">task-built playbook</span><p class="desc">Text entry without a DOM: keyboard injection + clipboard. Needs an interactive</p>
-  <div class="dates">added 2026-09-17 12:34 · updated 2026-09-17 12:34</div>
+  <div class="dates">added 2026-09-17 12:39 · updated 2026-09-17 12:39</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: typing-editing — type, edit text and drive inputs anywhere on Windows</h2>
 
 <p>Text entry without a DOM: keyboard injection + clipboard. Needs an interactive</p>
@@ -16190,9 +16248,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p><code>.env</code>. Always confirm focus with a screenshot before any keystroke run.</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/typing-editing.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T12:34:16.000Z" data-updated="2026-09-17T12:34:16.000Z" data-name="uia-click windows exposes every button to ui automation. prefer this over `screen_click`">
+<article class="card" data-origin="task" data-added="2026-09-17T12:39:03.000Z" data-updated="2026-09-17T12:39:03.000Z" data-name="uia-click windows exposes every button to ui automation. prefer this over `screen_click`">
   <h2>uia-click</h2><span class="badge task">task-built playbook</span><p class="desc">Windows exposes every button to UI Automation. Prefer this over `screen_click`</p>
-  <div class="dates">added 2026-09-17 12:34 · updated 2026-09-17 12:34</div>
+  <div class="dates">added 2026-09-17 12:39 · updated 2026-09-17 12:39</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: uia-click — trigger ANY button by name (no coordinates, no focus tricks)</h2>
 
 <p>Windows exposes every button to UI Automation. Prefer this over <code>screen_click</code></p>
@@ -16716,9 +16774,9 @@ code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px
 <p>  https://www.theregister.com/software/2026/10/08/rust-upstart-reveals-reimplementation-of-microsoft-office-with-claude-on-coding-duty/5301952</p>
 </div></details>
   <a class="raw" href="https://github.com/ACHUTHAN17/windows-system-agent/blob/main/skills/wordcraft-an-open-source-clean-room-reim.md">view source on GitHub</a></article>
-<article class="card" data-origin="task" data-added="2026-09-17T12:34:16.000Z" data-updated="2026-09-17T12:34:16.000Z" data-name="wordpress-build you build complete wordpress sites: install, theme, content, plugins, go-live.">
+<article class="card" data-origin="task" data-added="2026-09-17T12:39:03.000Z" data-updated="2026-09-17T12:39:03.000Z" data-name="wordpress-build you build complete wordpress sites: install, theme, content, plugins, go-live.">
   <h2>wordpress-build</h2><span class="badge task">task-built playbook</span><p class="desc">You build complete WordPress sites: install, theme, content, plugins, go-live.</p>
-  <div class="dates">added 2026-09-17 12:34 · updated 2026-09-17 12:34</div>
+  <div class="dates">added 2026-09-17 12:39 · updated 2026-09-17 12:39</div>
   <details><summary>read full skill</summary><div class="body"><h2>Skill: wordpress-build — build WordPress sites on the web (Windows host)</h2>
 
 <p>You build complete WordPress sites: install, theme, content, plugins, go-live.</p>
