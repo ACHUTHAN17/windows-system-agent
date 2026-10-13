@@ -1,9 +1,9 @@
-# Skill health — 2026-10-12
+# Skill health — 2026-10-13
 
-296 skills audited, 25 links probed, 2 dead.
-8 need attention:
+298 skills audited, 25 links probed, 2 dead.
+9 need attention:
 
-## a-brief-history-of-the-bloomberg-termina.md (45562 chars)
+## a-brief-history-of-the-bloomberg-termina.md (46444 chars)
 - dead link (403): https://agihunt.info/en/p/1a0f31a25f2bdfec108aaac392c
 
 ## a-privacy-analysis-of-web-and-mobile-con.md (6246 chars)
@@ -11,6 +11,9 @@
 
 ## claude-api.md (8208 chars)
 - unknown tool refs: langchain_openai, fetch, claude-opus-5, max_tokens, budget_tokens, web_search_20250305
+
+## codex-cli-installs-a-persistent-self-upd.md (1068 chars)
+- unknown tool refs: daemon_auto_start
 
 ## doc-coauthoring.md (8416 chars)
 - unknown tool refs: create_file
