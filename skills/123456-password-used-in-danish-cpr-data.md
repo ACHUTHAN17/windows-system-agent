@@ -481,3 +481,51 @@ When the task mentions refresh and verify the 123456-password-used-in-danish-cpr
 - CPR leak: 8.8 million records stolen via 123456 password
   https://thedanishdream.com/cpr-leak-8-8-million-records-stolen-via-123456-password/
 
+
+
+---
+## Field update 2026-10-13
+# Skill: refresh and verify the 123456-password-used-in-danish-cpr-data skill
+
+Auto-learned 2026-10-13 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 123456-password-used-in-danish-cpr-data skill.
+
+## Steps
+1. See sources below and follow the official docs.
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- `123456&#x27; Password Used In Danish CPR Data Breach - Vultrade
+  https://vultrade.com/privacy-identity-access/123456-password-used-in-danish-cpr-data-breach/
+- "123456" Password Used in Massive Danish CPR Data Breach
+  https://oodaloop.com/briefs/cyber/123456-password-used-in-massive-danish-cpr-data-breach/
+
+
+
+---
+## Field update 2026-10-13
+# Skill: refresh and verify the 123456-password-used-in-danish-cpr-data- skill
+
+Auto-learned 2026-10-13 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 123456-password-used-in-danish-cpr-data- skill.
+
+## Steps
+1. See sources below and follow the official docs.
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- `123456&#x27; Password Used In Danish CPR Data Breach - Vultrade
+  https://vultrade.com/privacy-identity-access/123456-password-used-in-danish-cpr-data-breach/
+- "123456" Password Used in Massive Danish CPR Data Breach
+  https://oodaloop.com/briefs/cyber/123456-password-used-in-massive-danish-cpr-data-breach/
+
