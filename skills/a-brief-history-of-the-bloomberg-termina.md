@@ -1311,3 +1311,31 @@ When the task mentions refresh and verify the a-brief-history-of-the-bloomberg-t
 - Bloomberg Terminal Shortcuts Cheat Sheet - Essential Commands for ...
   https://equityref.com/cheat-sheets/bloomberg-terminal-shortcuts/
 
+
+
+---
+## Field update 2026-10-14
+# Skill: refresh and verify the a-brief-history-of-the-bloomberg-termina skill
+
+Auto-learned 2026-10-14 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the a-brief-history-of-the-bloomberg-termina skill.
+
+## Steps
+1. To supplement the company’s telegraph dispatches, he sent pigeons between Aachen, Germany, and Brussels; each bird carried a cylinder containing slips of paper with that day’s stock prices
+2. Click Download to view the document
+3. Choose the print command within Adobe to obtain a hard copy
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- A Brief History of the Bloomberg Terminal - IEEE Spectrum
+  https://spectrum.ieee.org/bloomberg-terminal
+- Guides and Tutorials - Bloomberg - Guides at Johns Hopkins University
+  https://guides.library.jhu.edu/bloomberg/general/guides-and-tutorials
+- Bloomberg Terminal Guide in Green Library
+  https://guides.library.stanford.edu/bloomberg_terminal/essentials
+
