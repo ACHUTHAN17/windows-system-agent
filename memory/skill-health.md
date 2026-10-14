@@ -1,10 +1,13 @@
 # Skill health — 2026-10-14
 
-314 skills audited, 25 links probed, 2 dead.
-9 need attention:
+316 skills audited, 25 links probed, 3 dead.
+10 need attention:
 
-## a-brief-history-of-the-bloomberg-termina.md (54084 chars)
+## a-brief-history-of-the-bloomberg-termina.md (54865 chars)
 - dead link (403): https://agihunt.info/en/p/1a0f31a25f2bdfec108aaac392c
+
+## a-brief-history-of-windows-scroll-bar-sh.md (78493 chars)
+- dead link (ERR:This operation was aborted): https://hn.nuxt.dev/item/49820065
 
 ## a-privacy-analysis-of-web-and-mobile-con.md (6246 chars)
 - dead link (404): https://jorgegarciaherrero.com/wp-content/interactivos/20260916-Prompt
