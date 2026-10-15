@@ -953,3 +953,49 @@ When the task mentions refresh and verify the 123456-password-used-in-danish-cpr
 - Denmark CPR breach linked to &#x27;123456&#x27; password - aistockwire.com
   https://aistockwire.com/blog/denmark-cpr-data-breach-123456-password-8-8-million-october-2026
 
+
+
+---
+## Field update 2026-10-15
+# Skill: refresh and verify the 123456-password-used-in-danish-cpr-data skill
+
+Auto-learned 2026-10-15 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 123456-password-used-in-danish-cpr-data skill.
+
+## Steps
+1. See sources below and follow the official docs.
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- `123456&#x27; Password Used In Danish CPR Data Breach - Vultrade
+  https://vultrade.com/privacy-identity-access/123456-password-used-in-danish-cpr-data-breach/
+
+
+
+---
+## Field update 2026-10-15
+# Skill: refresh and verify the 123456-password-used-in-danish-cpr-data- skill
+
+Auto-learned 2026-10-15 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 123456-password-used-in-danish-cpr-data- skill.
+
+## Steps
+1. How the Breach Unfolded: A Timeline Danish authorities said they discovered the unauthorized access on October 2, 2026, and went public with the announcement three days later, on October 5
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Denmark Breach: 123456 Password Exposed 8.8M [2026]
+  https://trendintech.com/denmark-123456-password-breach-8-8-million-2026/
+- Denmark CPR breach linked to &#x27;123456&#x27; password - aistockwire.com
+  https://aistockwire.com/blog/denmark-cpr-data-breach-123456-password-8-8-million-october-2026
+
