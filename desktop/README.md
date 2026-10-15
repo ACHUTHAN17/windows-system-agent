@@ -25,7 +25,7 @@ cd desktop
 npm install
 npm test            # 19 tests: parser, runner, sync, UI, and the REAL engine end-to-end
 npm start           # run in development
-npm run dist        # -> desktop\dist\WinAgent-Setup-1.0.4.exe and WinAgent-Portable-1.0.4.exe
+npm run dist        # -> desktop\dist\WinAgent-Setup-1.1.0.exe and WinAgent-Portable-1.1.0.exe
 ```
 
 ## What you get
