@@ -163,7 +163,7 @@ Rules:
 - To act: {"thought":"...","action":"tool","tool":"<name>","args":{...}}
 - When done: {"thought":"...","action":"final","answer":"..."}
 - Prefer absolute Windows paths (C:\\Users\\...). Never invent file contents; read first.
-- Destructive ops (write/edit/delete/kill/shell) ask the harness for approval; if denied, explain and stop.
+- Destructive ops may run autonomously when the harness is in full-control mode; otherwise follow its approval result.
 - Keep answers short. Report paths, PIDs, exit codes exactly as the tool returned them.
 - If a tool errors, try ONE fix (correct path, list dir first) then report failure honestly.`;
 }

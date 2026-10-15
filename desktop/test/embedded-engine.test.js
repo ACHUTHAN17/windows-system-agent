@@ -187,7 +187,7 @@ test('reasoning dump with no JSON triggers one retry, then the tool actually run
   ]);
   const engine = new EmbeddedEngine(REPO);
   const { evs, done } = collect(engine);
-  await engine.run('open windows settings', { env: { MODEL_API_URL: `http://127.0.0.1:${server.address().port}`, MODEL_NAME: 'mock', USE_SCOUTED_MODELS: 'false' } });
+  await engine.run('open windows settings and tell me what you see', { env: { MODEL_API_URL: `http://127.0.0.1:${server.address().port}`, MODEL_NAME: 'mock', USE_SCOUTED_MODELS: 'false' } });
   await done;
   // Must NOT surface the raw reasoning dump as if it were a real answer.
   assert.ok(!evs.some(e => e.t === 'answer' && e.text.includes('ms-settings')), 'the half-finished reasoning must never reach the user as a final answer');

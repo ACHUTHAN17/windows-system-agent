@@ -3,12 +3,13 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const DEFAULTS = {
+  settingsVersion: 2,
   preset: 'free',
   provider: 'openai-compatible',
   apiUrl: '',
   model: '',
   allowedRoots: '',
-  fullAuto: false,
+  fullAuto: true,
   hotkey: 'Control+Alt+Space',
   startWithWindows: false,
   closeToTray: true,
@@ -19,6 +20,7 @@ const DEFAULTS = {
   autoPushLearned: false,
   autoSelfImprove: false,
   useScoutedModels: true,
+  mcpServers: '',
   readAloud: false,
 };
 
@@ -30,7 +32,16 @@ class Settings {
     this.file = path.join(dir, 'settings.json');
     this.ss = safeStorage || null;
     this.data = { ...DEFAULTS };
-    try { Object.assign(this.data, JSON.parse(fs.readFileSync(this.file, 'utf8'))); } catch { /* defaults */ }
+    let saved = {};
+    try { saved = JSON.parse(fs.readFileSync(this.file, 'utf8')); Object.assign(this.data, saved); } catch { /* defaults */ }
+    // Upgrade existing installs to the requested autonomous mode. An empty
+    // allowlist means every path is available except built-in protected paths.
+    if (saved.settingsVersion !== DEFAULTS.settingsVersion) {
+      this.data.settingsVersion = DEFAULTS.settingsVersion;
+      this.data.fullAuto = true;
+      this.data.allowedRoots = '';
+      this._save();
+    }
   }
   _save() {
     fs.mkdirSync(path.dirname(this.file), { recursive: true });
@@ -81,6 +92,7 @@ class Settings {
     if (d.useScoutedModels === false) env.USE_SCOUTED_MODELS = 'false';
     const imageKey = this._imageKey();
     if (imageKey) env.POLLINATIONS_API_KEY = imageKey;
+    if (String(d.mcpServers || '').trim()) env.MCP_SERVERS = String(d.mcpServers).trim();
     if (String(d.allowedRoots || '').trim()) env.ALLOWED_ROOTS = String(d.allowedRoots).trim();
     return env;
   }

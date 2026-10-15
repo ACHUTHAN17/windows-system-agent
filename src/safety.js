@@ -10,15 +10,20 @@ function norm(p) {
   try { return path.resolve(p).toLowerCase(); } catch { return String(p).toLowerCase(); }
 }
 
+function isWithin(root, target) {
+  const rel = path.relative(norm(root), norm(target));
+  return rel === '' || (rel !== '..' && !rel.startsWith(`..${path.sep}`) && !path.isAbsolute(rel));
+}
+
 export function isPathAllowed(cfg, p) {
   const n = norm(p);
   for (const b of (cfg.blockedPaths || [])) {
-    if (n === norm(b) || n.startsWith(norm(b) + path.sep)) return { ok: false, reason: `blocked path prefix: ${b}` };
+    if (isWithin(b, n)) return { ok: false, reason: `blocked path prefix: ${b}` };
   }
   const roots = (cfg.allowedRoots || []).filter(Boolean);
   if (!roots.length) return { ok: true };
   for (const r of roots) {
-    if (n === norm(r) || n.startsWith(norm(r) + path.sep)) return { ok: true };
+    if (isWithin(r, n)) return { ok: true };
   }
   return { ok: false, reason: `outside ALLOWED_ROOTS (${roots.join(', ')})` };
 }

@@ -46,7 +46,7 @@
           <button id="send" class="send" title="Send">➤</button>
           <button id="stop" class="send stop" title="Stop" hidden>■</button>
         </div>
-        <div class="hint">WinAgent can control this computer. Review approvals carefully.</div>
+        <div class="hint">WinAgent has full control by default and can work across your files, folders, apps and system.</div>
       </div>
     </section>
 
@@ -78,13 +78,17 @@
         <div class="dim">Image requests use Pollinations' current image API. The key is encrypted with Windows protection and is never sent to the chat model.</div>
         <label class="check"><input id="sScouted" type="checkbox"> If my model fails, try free models the agent has found on its own</label>
 
+        <h2>Plugins</h2>
+        <label>MCP plugin servers (JSON) <textarea id="sMcp" rows="4" spellcheck="false" placeholder='{"filesystem":{"command":"npx","args":["-y","@modelcontextprotocol/server-filesystem","C:/Users/ADMIN"]}}'></textarea></label>
+        <div class="dim">Paste an MCP server definition from trusted plugin documentation. Its tools appear automatically in the agent.</div>
+
         <h2>Voice</h2>
         <label class="check"><input id="sReadAloud" type="checkbox"> Read the agent's replies aloud automatically</label>
         <div class="dim">🎤 next to the composer transcribes speech to text as you talk. 🔊 on any reply reads it aloud on demand. Both run fully in the app (Chromium's built-in voice engine) — no extra setup, but voice input needs an internet connection.</div>
         <div class="row"><button id="sTest" class="ghost">Test model in a new chat</button><button id="sSelftest" class="ghost">Run agent self-test</button></div>
 
         <h2>Control</h2>
-        <label class="check"><input id="sFull" type="checkbox"> Full control — act without asking for approval</label>
+        <label class="check"><input id="sFull" type="checkbox"> Autonomous mode — act without asking for approval</label>
         <label>Allowed folders (comma-separated, empty = anywhere except protected system paths)
           <div class="row"><input id="sRoots" placeholder="C:\Users\you\Documents, D:\Projects"><button id="sPick" class="ghost">Add folder…</button></div></label>
 

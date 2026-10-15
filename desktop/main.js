@@ -149,15 +149,6 @@ function registerIpc() {
   handle('settings:get', () => settings.publicView());
   handle('settings:set', async (patch) => {
     patch = patch && typeof patch === 'object' ? patch : {};
-    if (patch.fullAuto === true && !settings.data.fullAuto) {
-      const r = await dialog.showMessageBox(win, {
-        type: 'warning', buttons: ['Cancel', 'Enable full control'], defaultId: 0, cancelId: 0, noLink: true,
-        title: 'Enable full control?',
-        message: 'Full control lets WinAgent act WITHOUT asking you first.',
-        detail: 'It can run commands, create/edit/delete files, change the registry, control apps and use the network on your behalf. Only enable this if you trust the model you configured. You can turn it off any time.',
-      });
-      if (r.response !== 1) patch.fullAuto = false;
-    }
     if (patch.autoSelfImprove === true && !settings.data.autoSelfImprove) {
       const r = await dialog.showMessageBox(win, {
         type: 'warning', buttons: ['Cancel', 'Enable'], defaultId: 0, cancelId: 0, noLink: true,

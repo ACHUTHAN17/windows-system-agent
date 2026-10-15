@@ -63,3 +63,8 @@ test('tryLocalAction executes nothing on non-Windows (guard), and rejects a path
   assert.ok(r.error && /outside/.test(r.error), JSON.stringify(r));
   Object.defineProperty(process, 'platform', { value: origPlatform });
 });
+
+test('drive-root allowlist includes nested Windows folders', async () => {
+  const { isPathAllowed } = await import('../../src/safety.js');
+  assert.strictEqual(isPathAllowed({ allowedRoots: ['C:\\'], blockedPaths: [] }, 'C:\\Users\\ADMIN\\Pictures').ok, true);
+});

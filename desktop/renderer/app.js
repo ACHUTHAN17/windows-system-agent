@@ -297,17 +297,20 @@
     $('sRepo').value = s.githubRepo || ''; $('sPat').value = '';
     $('sPat').placeholder = s.hasGithubPat ? '•••••••• saved (leave blank to keep)' : 'ghp_… (repo scope)';
     $('sAutoPush').checked = !!s.autoPushLearned; $('sSelfImprove').checked = !!s.autoSelfImprove; $('sScouted').checked = s.useScoutedModels !== false; $('sReadAloud').checked = !!s.readAloud;
+    $('sMcp').value = s.mcpServers || '';
     $('customFields').hidden = s.preset === 'free'; updateMode();
   }
   async function loadSettings() { S.settings = await api.getSettings(); fillSettings(); const i = await api.info(); $('aboutLine').textContent = `WinAgent desktop ${i.version} · agent folder: ${i.agentDir}`; }
   function updateMode() { const full = S.settings && S.settings.fullAuto; const b = $('modeBadge'); b.textContent = full ? 'Full control' : 'Ask before acting'; b.classList.toggle('full', !!full); }
   async function saveSettings() {
+    const mcpServers = $('sMcp').value.trim();
+    if (mcpServers) { try { JSON.parse(mcpServers); } catch { $('sState').textContent = 'Invalid MCP plugin JSON'; return; } }
     const patch = {
       preset: $('sPreset').value, provider: PRESETS[$('sPreset').value].provider, apiUrl: $('sUrl').value.trim(), model: $('sModel').value.trim(),
       fullAuto: $('sFull').checked, allowedRoots: $('sRoots').value.trim(), hotkey: $('sHotkey').value.trim(),
       startWithWindows: $('sStart').checked, closeToTray: $('sTray').checked, syncOnStart: $('sSyncStart').checked, syncMemory: $('sSyncMem').checked, syncEngine: $('sSyncEng').checked,
       githubRepo: $('sRepo').value.trim(), autoPushLearned: $('sAutoPush').checked, autoSelfImprove: $('sSelfImprove').checked, useScoutedModels: $('sScouted').checked,
-      readAloud: $('sReadAloud').checked,
+      readAloud: $('sReadAloud').checked, mcpServers,
     };
     if ($('sKey').value.trim()) patch.apiKey = $('sKey').value.trim();
     if ($('sImageKey').value.trim()) patch.imageApiKey = $('sImageKey').value.trim();
