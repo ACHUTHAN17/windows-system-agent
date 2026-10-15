@@ -28,6 +28,7 @@ button.ghost{background:#21262d}button:disabled{opacity:.35}button.mode-on{outli
 .achip{display:flex;align-items:center;gap:6px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:4px 6px 4px 10px;font-size:12.5px}
 .achip button{border:0;background:none;color:#8b949e;padding:0 4px;font-size:13px;cursor:pointer}
 .achip.err{border-color:#f85149;color:#f85149}
+.genimg{display:block;max-width:min(100%,720px);max-height:720px;border-radius:10px;border:1px solid #30363d;margin-top:8px}
 </style></head>
 <body>
 <div class="top"><b>WinAgent online chat</b>
@@ -43,14 +44,16 @@ button.ghost{background:#21262d}button:disabled{opacity:.35}button.mode-on{outli
 <input id="apiurl" placeholder="Custom model URL (https://…/v1)"><input id="apikey" type="password" placeholder="Custom API key">
 <input id="model" placeholder="Custom model id"><input id="repo" placeholder="owner/repo">
 <input id="pat" type="password" placeholder="GitHub PAT — repo + workflow + models scopes">
+<input id="imagekey" type="password" placeholder="Pollinations image key (for image generation)">
 <button class="ghost" id="test">Test GitHub connection</button>
 </div>
-<div id="chat"><div class="warn">✅ Pick a blue box above (Free needs nothing), optionally pick a model, type, Send. <b>Teach / Run</b> use the second box — no popups. 📎 attach files/images for <b>⚙️ Run</b> to build tools/skills against (small text files inline; others are committed to your repo's uploads/ folder — needs a PAT). Keys stay in this browser only.</div></div>
+<div id="chat"><div class="warn">✅ Pick a blue box above, then Send. Local Windows commands are routed without an AI call in the desktop app; the online page can chat, generate images with a Pollinations key, and dispatch agent tasks through GitHub. <b>Teach / Run</b> use the second box. Keys stay in this browser only.</div></div>
 <div id="bar">
 <div class="row"><input id="in" placeholder="chat with the agent…" autocomplete="off"><button id="send">Send</button></div>
 <div id="attach"></div>
 <div class="row"><input id="doin" placeholder="skill or task, e.g. keyboard shortcuts…" autocomplete="off"><input id="file" type="file" multiple style="display:none"><button class="ghost" id="clip" title="Attach files or images — used by ⚙️ Run">📎</button><button class="ghost" id="teach">🧠 Teach</button><button class="ghost" id="teachfree">📝 Issue</button><button class="ghost" id="dotask">⚙️ Run</button><button class="ghost" id="test2">🧪 Test</button></div>
 </div>
+<script src="./router.js"></script>
 <script>
 const $=id=>document.getElementById(id);
 const store={get:(k,d)=>localStorage.getItem('wa_'+k)||d||'',set:(k,v)=>localStorage.setItem('wa_'+k,v)};
@@ -58,7 +61,7 @@ const FREE_URL='https://text.pollinations.ai/openai';
 const GH_MODELS=['gpt-4o-mini','gpt-4o','o4-mini','DeepSeek-V3-0324','Llama-3.3-70B-Versatile','Mistral-Large-2411','Phi-4'];
 if(!store.get('mode'))store.set('mode','free');
 if(!store.get('repo'))store.set('repo','ACHUTHAN17/windows-system-agent');
-['apiurl','apikey','model','repo','pat'].forEach(k=>{$(k).value=store.get(k);$(k).onchange=()=>{store.set(k,$(k).value);gate();pill();};});
+['apiurl','apikey','model','repo','pat','imagekey'].forEach(k=>{$(k).value=store.get(k);$(k).onchange=()=>{store.set(k,$(k).value);gate();pill();};});
 let MODELS=null;
 async function loadModels(){
   try{
@@ -103,10 +106,25 @@ function pill(){
   else{const ok=store.get('apiurl')&&store.get('apikey');d.className=ok?'ok':'warn';d.textContent=ok?'✅ Custom backend configured.':'⚠ Fill URL + key (+ model id) in ⚙ keys, then Send — or pick ⚡ Free.';}
 }
 $('cfgbtn').onclick=()=>{const c=$('cfg');c.style.display=c.style.display==='grid'?'none':'grid';};
-const hist=[{role:'system',content:'You are WinAgent, a Windows/Linux system agent (63 tools: files, apps, browser CDP, Office docs, MCP, memory, self-learning skills). Repo: ACHUTHAN17/windows-system-agent. Be concise, practical, copy-paste-first. Never ask for secrets in chat.'}];
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+const hist=[{role:'system',content:'You are WinAgent, a Windows/Linux system agent (63 tools: files, apps, browser CDP, Office docs, MCP, memory, self-learning skills). Repo: ACHUTHAN17/windows-system-agent. Be concise, practical, copy-paste-first. Never ask for secrets in chat.\n\n'+(window.WinAgentRouter?.ROUTER_SYSTEM_PROMPT||'')}];
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
 function bubble(who,text,you){const d=document.createElement('div');d.className='msg'+(you?' you':'');d.innerHTML='<div class="who">'+who+'</div>'+esc(text).replace(/`([^`]+)`/g,'<code>$1</code>');$('chat').appendChild(d);window.scrollTo(0,99999);return d;}
 function busyBubble(text){return bubble('agent','<span class="spin"></span> '+esc(text));}
+function bubbleHtml(who,html){const d=document.createElement('div');d.className='msg';d.innerHTML='<div class="who">'+esc(who)+'</div>'+html;$('chat').appendChild(d);window.scrollTo(0,99999);return d;}
+function renderWebAnswer(text){
+  let html=esc(text);
+  html=html.replace(/\[\[image:(generated\/[A-Za-z0-9._/-]+)\]\]/g,(_,p)=>'<img class="genimg" alt="generated image" src="https://raw.githubusercontent.com/'+encodeURI(store.get('repo'))+'/main/'+p+'">');
+  html=html.replace(/!\[([^\]]*)\]\((https:\/\/[^)]+)\)/g,(_,alt,url)=>'<img class="genimg" alt="'+alt+'" src="'+url+'">');
+  return html.replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\n/g,'<br>');
+}
+async function generateWebImage(prompt){
+  const key=store.get('imagekey')||((store.get('apiurl')||'').includes('pollinations.ai')?store.get('apikey'):'');
+  if(!key)throw new Error('Add a Pollinations image key in ⚙ keys to generate images.');
+  const url='https://gen.pollinations.ai/image/'+encodeURIComponent(prompt)+'?model=flux&width=1024&height=1024&nologo=true';
+  const r=await fetch(url,{headers:{Authorization:'Bearer '+key}});
+  if(!r.ok)throw new Error('image generation failed (HTTP '+r.status+') — check the Pollinations key');
+  return URL.createObjectURL(await r.blob());
+}
 async function postChat(url,model,key,msgs){
   const headers={'Content-Type':'application/json'};if(key)headers['Authorization']='Bearer '+key;
   const r=await fetch(url+'/chat/completions',{method:'POST',headers,body:JSON.stringify({model,messages:msgs,temperature:.3})});
@@ -124,6 +142,18 @@ async function talk(){
   const t=$('in').value.trim();if(!t)return;$('in').value='';bubble('you',t,true);hist.push({role:'user',content:t});
   const mode=store.get('mode');const b=busyBubble('thinking…');
   try{
+    const route=window.WinAgentRouter&&window.WinAgentRouter.routeText(t);
+    if(route&&route.kind==='local'){
+      hist.push({role:'assistant',content:'This is a local Windows action. Use the desktop app to execute it directly.'});
+      b.innerHTML='<div class="who">agent · local router</div>'+esc('This is a local Windows action. The online chat cannot control your PC; open WinAgent desktop to execute it directly without an AI call.');
+      return;
+    }
+    if(route&&route.kind==='image'){
+      const src=await generateWebImage(route.prompt);
+      hist.push({role:'assistant',content:'Generated an image: '+route.prompt});
+      b.innerHTML='<div class="who">agent · image generator</div><div>'+esc('Generated: '+route.prompt)+'</div><img class="genimg" alt="generated image" src="'+src+'">';
+      return;
+    }
     let a,label;
     if(mode==='free'){
       const e=selected();
@@ -145,7 +175,7 @@ async function talk(){
       label='custom';
     }
     hist.push({role:'assistant',content:a});
-    b.innerHTML='<div class="who">agent · '+esc(label)+'</div>'+esc(a).replace(/`([^`]+)`/g,'<code>$1</code>');
+    b.innerHTML='<div class="who">agent · '+esc(label)+'</div>'+renderWebAnswer(a);
   }catch(e){
     const s=e.status||'';
     b.innerHTML='<div class="who">agent</div>⚠ '+esc(s===401?(e.why||'key rejected — check ⚙ keys, or pick ⚡ Free'):'request failed'+(s?' HTTP '+s:'')+'. Pick ⚡ Free to reset.');
@@ -248,7 +278,7 @@ async function doAction(kind){
           prog.innerHTML='<div class="who">agent · new skill</div>'+esc(raw.slice(0,2500))+'<br><br>📚 Full skill: <a style="color:#58a6ff" href="https://github.com/'+store.get('repo')+'/blob/main/skills/'+slug+'.md">skills/'+slug+'.md</a>';
         }catch(e){prog.innerHTML='<div class="who">agent</div>✅ done: '+run.html_url+'<br>Library refreshes in ~1 min.';}
       }else if(kind==='task'){
-        try{const raw=await(await fetch('https://raw.githubusercontent.com/'+store.get('repo')+'/main/runs/'+run.id+'.md')).text();prog.innerHTML='<div class="who">agent · result</div>'+esc(raw.slice(0,3500));}
+        try{const raw=await(await fetch('https://raw.githubusercontent.com/'+store.get('repo')+'/main/runs/'+run.id+'.md')).text();prog.innerHTML='<div class="who">agent · result</div>'+renderWebAnswer(raw.slice(0,3500));}
         catch(e){prog.innerHTML='<div class="who">agent</div>✅ done: '+run.html_url;}
       }else prog.innerHTML='<div class="who">agent</div>✅ done: '+run.html_url;
     }else prog.innerHTML='<div class="who">agent</div>❌ run '+run.conclusion+': '+run.html_url;

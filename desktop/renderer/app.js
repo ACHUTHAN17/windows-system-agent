@@ -290,6 +290,7 @@
     $('sPreset').value = s.preset; $('sUrl').value = s.apiUrl || ''; $('sModel').value = s.model || ''; $('sKey').value = '';
     $('sKey').placeholder = s.hasKey ? '•••••••• saved (leave blank to keep)' : 'paste your API key';
     $('keyNote').textContent = s.hasKey ? (s.keyEncrypted ? 'Key is stored encrypted with Windows DPAPI.' : 'Key is stored unencrypted (secure storage unavailable).') : '';
+    $('sImageKey').value = ''; $('sImageKey').placeholder = s.hasImageKey ? '•••••••• saved (leave blank to keep)' : 'Pollinations image key';
     $('sFull').checked = !!s.fullAuto; $('sRoots').value = s.allowedRoots || ''; $('sHotkey').value = s.hotkey || '';
     $('sStart').checked = !!s.startWithWindows; $('sTray').checked = !!s.closeToTray;
     $('sSyncStart').checked = !!s.syncOnStart; $('sSyncMem').checked = !!s.syncMemory; $('sSyncEng').checked = !!s.syncEngine;
@@ -309,6 +310,7 @@
       readAloud: $('sReadAloud').checked,
     };
     if ($('sKey').value.trim()) patch.apiKey = $('sKey').value.trim();
+    if ($('sImageKey').value.trim()) patch.imageApiKey = $('sImageKey').value.trim();
     if ($('sPat').value.trim()) patch.githubPat = $('sPat').value.trim();
     const r = await api.setSettings(patch); S.settings = r.settings; fillSettings();
     $('modelPill').textContent = modelLabel(S.settings);

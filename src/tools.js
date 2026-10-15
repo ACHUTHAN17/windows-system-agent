@@ -86,7 +86,7 @@ export function buildTools() {
   const tools = [
     {
       name: 'image_generate',
-      description: 'Generate an image from a text prompt (free, keyless — pollinations.ai). Saves it under '
+      description: 'Generate an image from a text prompt using Pollinations. Requires POLLINATIONS_API_KEY '
         + 'generated/ next to memory/skills and returns a marker; put that EXACT marker in your final answer '
         + '(on its own line) so the app can display the image inline — do not describe the marker, just include it.',
       args: { prompt: 'what to draw, in detail', width: 'px, default 1024 (opt)', height: 'px, default 1024 (opt)' },
@@ -97,9 +97,11 @@ export function buildTools() {
           const w = Math.max(64, Math.min(1536, Number(a.width) || 1024));
           const h = Math.max(64, Math.min(1536, Number(a.height) || 1024));
           const seed = Math.floor(Math.random() * 1e9);
-          const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${w}&height=${h}&seed=${seed}&nologo=true`;
-          const res = await fetch(url, { signal: AbortSignal.timeout(60000) });
-          if (!res.ok) return fail(`image generation HTTP ${res.status}`, 'Try a shorter/simpler prompt, or retry once.');
+          const key = String(ctx?.cfg?.imageApiKey || process.env.POLLINATIONS_API_KEY || (String(ctx?.cfg?.apiUrl || '').includes('pollinations.ai') ? ctx?.cfg?.apiKey : '') || '').trim();
+          if (!key) return fail('POLLINATIONS_API_KEY is not configured', 'Add a Pollinations key in Settings, or set POLLINATIONS_API_KEY in the environment.');
+          const url = `https://gen.pollinations.ai/image/${encodeURIComponent(prompt)}?model=flux&width=${w}&height=${h}&seed=${seed}&nologo=true`;
+          const res = await fetch(url, { headers: { Authorization: `Bearer ${key}` }, signal: AbortSignal.timeout(60000) });
+          if (!res.ok) return fail(`image generation HTTP ${res.status}`, 'Check the Pollinations key and image permissions, then retry.');
           const buf = Buffer.from(await res.arrayBuffer());
           if (buf.length < 500) return fail('image service returned an empty/invalid image', 'Try a different prompt.');
           const dir = path.join(ctx.cfg.root, 'generated');

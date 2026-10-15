@@ -68,6 +68,7 @@ export function loadConfig(argv = {}) {
     provider: env('MODEL_PROVIDER', json.provider ?? 'openai-compatible'),
     apiUrl: env('MODEL_API_URL', json.apiUrl ?? 'http://localhost:11434/v1'),
     apiKey: env('MODEL_API_KEY', json.apiKey ?? ''),
+    imageApiKey: env('POLLINATIONS_API_KEY', json.imageApiKey ?? ''),
     model: env('MODEL_NAME', json.model ?? json.MODEL_NAME ?? 'llama3.1'),
     extraHeaders,
     maxSteps: Number(env('MAX_STEPS', json.maxSteps ?? 15)),

@@ -37,14 +37,15 @@ class Settings {
     fs.writeFileSync(this.file, JSON.stringify(this.data, null, 2), 'utf8');
   }
   publicView() {
-    const { apiKeyEnc, apiKeyPlain, githubPatEnc, githubPatPlain, ...rest } = this.data;
-    return { ...rest, hasKey: !!(apiKeyEnc || apiKeyPlain), keyEncrypted: !!apiKeyEnc, hasGithubPat: !!(githubPatEnc || githubPatPlain) };
+    const { apiKeyEnc, apiKeyPlain, imageApiKeyEnc, imageApiKeyPlain, githubPatEnc, githubPatPlain, ...rest } = this.data;
+    return { ...rest, hasKey: !!(apiKeyEnc || apiKeyPlain), keyEncrypted: !!apiKeyEnc, hasImageKey: !!(imageApiKeyEnc || imageApiKeyPlain), imageKeyEncrypted: !!imageApiKeyEnc, hasGithubPat: !!(githubPatEnc || githubPatPlain) };
   }
   // patch may contain apiKey ('' = leave unchanged, null = clear)
   update(patch) {
     const allowed = Object.keys(DEFAULTS);
     for (const k of allowed) if (k in patch) this.data[k] = patch[k];
     this._setSecret('apiKey', 'apiKeyEnc', 'apiKeyPlain', patch);
+    this._setSecret('imageApiKey', 'imageApiKeyEnc', 'imageApiKeyPlain', patch);
     this._setSecret('githubPat', 'githubPatEnc', 'githubPatPlain', patch);
     this._save();
     return this.publicView();
@@ -63,6 +64,7 @@ class Settings {
     return this.data[plainKey] || '';
   }
   _key() { return this._secret('apiKeyEnc', 'apiKeyPlain'); }
+  _imageKey() { return this._secret('imageApiKeyEnc', 'imageApiKeyPlain'); }
   githubPat() { return this._secret('githubPatEnc', 'githubPatPlain'); }
   // Environment for the agent child. Empty values are omitted so the engine's own
   // defaults (and the free-model fallback chain) still apply.
@@ -77,6 +79,8 @@ class Settings {
       if (k) env.MODEL_API_KEY = k;
     }
     if (d.useScoutedModels === false) env.USE_SCOUTED_MODELS = 'false';
+    const imageKey = this._imageKey();
+    if (imageKey) env.POLLINATIONS_API_KEY = imageKey;
     if (String(d.allowedRoots || '').trim()) env.ALLOWED_ROOTS = String(d.allowedRoots).trim();
     return env;
   }

@@ -22,6 +22,8 @@ test('detects known apps and URI-style targets', () => {
   assert.deepStrictEqual(detectLocalAction('open notepad'), { handled: true, label: 'Opened notepad', target: 'notepad', kind: 'app' });
   assert.strictEqual(detectLocalAction('open settings').target, 'uri:ms-settings:');
   assert.strictEqual(detectLocalAction('open settings').kind, 'uri');
+  assert.strictEqual(detectLocalAction('open system settings').target, 'uri:ms-settings:');
+  assert.strictEqual(detectLocalAction('open windows settings').target, 'uri:ms-settings:');
   assert.strictEqual(detectLocalAction('start task manager').target, 'taskmgr');
   assert.strictEqual(detectLocalAction('please open chrome').target, 'chrome');
 });

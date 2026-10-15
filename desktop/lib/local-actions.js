@@ -36,7 +36,7 @@ const APPS = {
   powershell: 'powershell',
   'task manager': 'taskmgr', taskmgr: 'taskmgr',
   'control panel': 'control',
-  settings: 'uri:ms-settings:',
+  settings: 'uri:ms-settings:', 'system settings': 'uri:ms-settings:', 'windows settings': 'uri:ms-settings:',
   'file explorer': 'explorer', explorer: 'explorer', files: 'explorer',
   'recycle bin': 'uri:shell:RecycleBinFolder',
   chrome: 'chrome', 'google chrome': 'chrome',

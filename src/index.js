@@ -18,7 +18,8 @@ import { pathToFileURL } from 'node:url';
 import { loadConfig, printActiveModel } from './config.js';
 import { buildTools } from './tools.js';
 import { chat, parseAgentJson, systemPrompt, toolPrompt } from './llm.js';
-import { needsApproval, askYesNo, audit, needsAppApproval, askAppApproval, requestApproval, requestAppApproval } from './safety.js';
+import { needsApproval, askYesNo, audit, isPathAllowed, needsAppApproval, askAppApproval, requestApproval, requestAppApproval } from './safety.js';
+import { localToolCall, resolveFolderTarget, routeText, ROUTER_SYSTEM_PROMPT } from './router.js';
 
 function parseArgs(raw) {
   const o = { _: [] };
@@ -329,6 +330,37 @@ export async function createEngine(argvOverride) {
 
   async function agentTask(task) {
     if (cfg._aborted) cfg._aborted = false; // a fresh task clears any stale abort from a previous one
+    // Deterministic pre-routing is deliberately before skills/catalog/model work. A known
+    // single-purpose local action must be instant and must not consume an LLM call.
+    const route = routeText(task);
+    if (route.kind === 'image' || (route.kind === 'local' && process.platform === 'win32')) {
+      let call = route.kind === 'image'
+        ? { tool: 'image_generate', args: { prompt: route.prompt } }
+        : localToolCall(route);
+      if (call && call.args && String(call.args.target || '').startsWith('__WINAGENT_FOLDER__:')) {
+        const folder = String(call.args.target).slice('__WINAGENT_FOLDER__:'.length);
+        let target = resolveFolderTarget(folder, process.env.USERPROFILE || process.env.HOME || '');
+        if (folder === 'temp') target = process.env.TEMP || process.env.TMP || null;
+        if (folder === 'appData') target = process.env.APPDATA || null;
+        if (target) call = { tool: 'app_open', args: { target } };
+        else return `I couldn't resolve the ${folder} folder on this computer.`;
+      }
+      if (call) {
+        if (route.kind === 'local' && ['path', 'folder'].includes(route.action?.kind)) {
+          const target = String(call.args?.target || '');
+          const allowed = isPathAllowed(cfg, target);
+          if (!allowed.ok) return `I couldn't open that path: ${allowed.reason}`;
+          if (!fs.existsSync(target)) return `I couldn't find that path: ${target}`;
+        }
+        cfg.onEvent?.({ t: 'route', kind: route.kind, confidence: route.confidence, reason: route.reason });
+        const result = await runTool(call.tool, call.args);
+        console.log(`  [route:${route.kind}] ${call.tool} -> ${JSON.stringify(result).slice(0, 400)}`);
+        cfg.onEvent?.({ t: 'tool', name: call.tool, ok: result && result.ok, summary: JSON.stringify(result).slice(0, 400) });
+        if (!result || !result.ok) return `I couldn't complete that local request: ${result?.error || 'unknown error'}`;
+        if (route.kind === 'image') return `${result.marker || ''}\nGenerated the image.`.trim();
+        return route.action.label;
+      }
+    }
     const skills = await loadSkills(argv, cfg);
     if (skills.length) console.log(`  [skills] ${skills.map(s => s.name).join(', ')}`);
     const catalog = await loadCatalog(cfg);
@@ -341,7 +373,7 @@ export async function createEngine(argvOverride) {
       } catch {}
     }
     const history = [
-      { role: 'system', content: systemPrompt(toolPrompt(tools)) + skillPrompt(skills) + catalogPrompt(catalog) + loadMemory(cfg) + loadProjectRules(cfg) },
+      { role: 'system', content: systemPrompt(toolPrompt(tools)) + '\n\n' + ROUTER_SYSTEM_PROMPT + skillPrompt(skills) + catalogPrompt(catalog) + loadMemory(cfg) + loadProjectRules(cfg) },
       { role: 'user', content: task },
     ];
     if (argv.plan) {

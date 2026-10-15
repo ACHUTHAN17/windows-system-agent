@@ -7,6 +7,7 @@ import { spawnSync } from 'node:child_process';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')), '..');
 const SKILLS = path.join(ROOT, 'skills');
 const OUT = path.join(ROOT, 'docs', 'index.html');
+const ROUTER_OUT = path.join(ROOT, 'docs', 'router.js');
 
 // git is often missing from PATH on Windows (Git's bin dir isn't added by the
 // installer) — resolve it once, then reuse. Without this, every dates lookup
@@ -73,6 +74,15 @@ function gitDates(f) {
 }
 
 function main() {
+  // Keep the browser chat's routing decision identical to the desktop/core engine.
+  // src/router.js is ESM; the docs copy is a small classic-script projection so GitHub
+  // Pages can load it without a bundler.
+  try {
+    const source = fs.readFileSync(path.join(ROOT, 'src', 'router.js'), 'utf8')
+      .replace(/^export\s+(?=(const|function|class)\b)/gm, '')
+      .replace(/^export\s+\{[^\n]+\};?\s*$/gm, '');
+    fs.writeFileSync(ROUTER_OUT, `${source}\nwindow.WinAgentRouter = { routeText, localToolCall, resolveFolderTarget, ROUTER_SYSTEM_PROMPT };\n`, 'utf8');
+  } catch (e) { console.warn(`router copy skipped: ${e.message}`); }
   try { gitSync(['fetch', 'origin', '--deepen=200', '--quiet']); } catch {}
   const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
   const files = fs.readdirSync(SKILLS).filter(f => f.endsWith('.md')).sort();
