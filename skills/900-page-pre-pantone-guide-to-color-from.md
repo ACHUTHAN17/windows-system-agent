@@ -292,3 +292,30 @@ When the task mentions refresh and verify the 900-page-pre-pantone-guide-to-colo
 - A 900-Page Pre-Pantone Guide to Color from 1692 | Flipso
   https://flipso.com/p/7aazfstv0
 
+
+
+---
+## Field update 2026-10-16
+# Skill: refresh and verify the 900-page-pre-pantone-guide-to-color-from skill
+
+Auto-learned 2026-10-16 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 900-page-pre-pantone-guide-to-color-from skill.
+
+## Steps
+1. Note: An ear­li­er ver­sion of this post appeared on our site in 2019
+2. To sup­port Open Cul­ture’s edu­ca­tion­al mis­sion, please con­sid­er mak­ing a dona­tion
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- A 900-Page Pre-Pantone Guide to Color from 1692: A Complete High ...
+  https://www.openculture.com/2026/10/a-900-page-pre-pantone-guide-to-color-from-1692.html
+- A 900-Page Pre-Pantone Guide to Color from 1692 | Flipso
+  https://flipso.com/p/7aazfstv0
+- A 900-Page Color Guide from 1692 · Hacker News | Zeli
+  https://zeli.app/story/50053487
+
