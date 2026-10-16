@@ -29,6 +29,11 @@ The optional model loop is used only for open-ended planning and can be enabled 
 or `.env` by supplying a provider, URL, and model name. Risky writes and process control still
 use the normal approval/full-control settings.
 
+In the desktop app, Full control is enabled by default for autonomous work: the agent can type
+arbitrary key sequences, click, drag, scroll, focus windows, run commands, and install or remove
+packages through the detected OS package manager. A system-wide bottom glow shows when work is
+running, including while the chat window is hidden.
+
 The repository also bundles the Apache-2.0 skills from
 [anthropics/skills](https://github.com/anthropics/skills) under `skills/anthropic/`. They are
 loaded by the same local catalog and work without a network connection. Anthropic's
@@ -238,6 +243,8 @@ Private remote skills need `SKILL_TOKEN`; public repos need no token. Newly
 created skills and self-authored tools can sync automatically to the
 `agent-learned` GitHub branch when `GITHUB_REPO` and `GITHUB_PAT` are set;
 `main` is never modified by that automatic sync.
+Desktop chat checkpoints can also sync every step and second to the separate
+`agent-chats` branch when enabled in Settings.
 Browse the live library: [`skills/` on GitHub](./skills) + generated
 [`docs/index.html`](./docs/index.html) (auto-rebuilt by `node src/build-docs.js`).
 

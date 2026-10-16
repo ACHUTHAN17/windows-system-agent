@@ -28,6 +28,17 @@ test('single-entry chain: a failure throws a plain, unwrapped message', async ()
   bad.close();
 });
 
+test('policy-rejected 422 is reduced to a useful rephrase message', async () => {
+  const bad = await server(422, { error: { message: 'Invalid prompt: potentially violating our usage policy', code: 'invalid_prompt' } });
+  const cfg = { provider: 'openai-compatible', apiUrl: url(bad), model: 'openai', timeoutMs: 3000, useScoutedModels: false };
+  await assert.rejects(() => chat(cfg, [{ role: 'user', content: 'hi' }]), (e) => {
+    assert.match(e.message, /rejected this prompt under its safety policy/);
+    assert.ok(!e.message.includes('potentially violating'));
+    return true;
+  });
+  bad.close();
+});
+
 test('all-fail chain: error names EVERY attempt (primary vs fallback), not just the last one', async () => {
   const primary = await server(429, { error: 'rate limited' });
   const fallback = await server(402, { error: 'payment required' });

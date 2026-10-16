@@ -17,6 +17,7 @@ export async function chat(cfg, messages) {
       return text;
     } catch (e) {
       attempts.push({ model: c.model, url: c.apiUrl, message: String(e.message).split('\n')[0] });
+      if (e.code === 'LLM_POLICY') break;
       if (i < chain.length - 1) console.log(`  [llm] ${c.model} @ ${c.apiUrl} failed (${attempts[attempts.length - 1].message}) — trying next in chain...`);
     }
   }
@@ -94,7 +95,18 @@ async function chatOpenAICompatible(cfg, messages) {
   } finally { clearTimeout(t); }
   if (!res.ok) {
     const body = await res.text().catch(() => '');
-    throw new Error(`LLM HTTP ${res.status} from ${url}: ${body.slice(0, 800)}`);
+    const policy = res.status === 422 || /invalid_prompt|usage.?policy|potentially violating|prompt was flagged/i.test(body);
+    if (policy) {
+      const error = new Error('The selected model rejected this prompt under its safety policy (HTTP 422). Rephrase the request or choose another model.');
+      error.code = 'LLM_POLICY';
+      throw error;
+    }
+    let detail = body.slice(0, 800);
+    try {
+      const parsed = JSON.parse(body);
+      detail = parsed?.error?.message || parsed?.message || detail;
+    } catch {}
+    throw new Error(`LLM HTTP ${res.status} from ${url}: ${detail}`);
   }
   const data = await res.json();
   const msg = data?.choices?.[0]?.message;

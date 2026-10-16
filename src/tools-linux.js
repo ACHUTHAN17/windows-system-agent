@@ -109,6 +109,9 @@ export async function linuxTool(name, a, ctx) {
       case 'key_tap':
         try { return { handled: true, result: ok(await plat.keyUnix(String((a && a.key) || ''), String((a && a.modifiers) || ''))) }; }
         catch (e) { return { handled: true, result: fail(e.message) }; }
+      case 'key_sequence':
+        try { return { handled: true, result: ok(await plat.keySequenceUnix(String((a && a.sequence) || ''))) }; }
+        catch (e) { return { handled: true, result: fail(e.message, 'Use xdotool on X11 or a compatible input bridge.') }; }
       case 'clipboard_read':
         try { return { handled: true, result: ok({ text: (await plat.clipReadUnix()).slice(0, 8000) }) }; }
         catch (e) { return { handled: true, result: fail(e.message) }; }
@@ -139,6 +142,29 @@ export async function linuxTool(name, a, ctx) {
       case 'installed_apps':
         try { return { handled: true, result: ok({ apps: await plat.appsUnix(String((a && a.filter) || '')) }) }; }
         catch (e) { return { handled: true, result: fail(e.message) }; }
+      case 'package_install':
+      case 'package_uninstall': {
+        const action = name === 'package_install' ? 'install' : 'uninstall';
+        const requested = String((a && a.manager) || 'auto').toLowerCase();
+        const managers = requested === 'auto' ? (plat.isMac ? ['brew'] : ['apt-get', 'dnf', 'pacman', 'brew']) : [requested];
+        let manager = null;
+        for (const m of managers) { try { await plat.needBin(m, 'package manager'); manager = m; break; } catch {} }
+        if (!manager) return { handled: true, result: fail('no supported package manager found') };
+        const pkg = String((a && a.name) || '').trim().replace(/[\r\n]/g, '');
+        if (!pkg) return { handled: true, result: fail('package name is required') };
+        const extra = Array.isArray(a.extra) ? a.extra.slice(0, 10).map(String) : [];
+        const q = (v) => "'" + String(v).replace(/'/g, "'\\''") + "'";
+        let args = manager === 'apt-get' ? [action === 'install' ? 'install' : 'remove', '-y', pkg]
+          : manager === 'dnf' ? [action, '-y', pkg]
+            : manager === 'pacman' ? (action === 'install' ? ['-S', '--noconfirm', pkg] : ['-R', '--noconfirm', pkg])
+              : [action === 'install' ? 'install' : 'uninstall', pkg];
+        args = args.concat(extra);
+        const needsSudo = !plat.isMac && typeof process.getuid === 'function' && process.getuid() !== 0 && manager !== 'brew';
+        try {
+          const r = await plat.shRun((needsSudo ? 'sudo -n ' : '') + [manager, ...args].map(q).join(' '), 10 * 60 * 1000);
+          return { handled: true, result: ok({ action, manager, package: pkg, stdout: r.stdout.slice(-6000), stderr: r.stderr.slice(-3000) }) };
+        } catch (e) { return { handled: true, result: fail(e.message, 'The package manager may require administrator privileges.') }; }
+      }
       case 'disk_info':
         try { return { handled: true, result: ok({ drives: await plat.disksUnix() }) }; }
         catch (e) { return { handled: true, result: fail(e.message) }; }

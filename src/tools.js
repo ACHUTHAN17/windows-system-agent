@@ -22,6 +22,38 @@ async function ps(command, timeout = 20000) {
   return { stdout: stdout.trim(), stderr: stderr.trim() };
 }
 
+async function executableExists(command) {
+  try {
+    await execFileAsync(process.platform === 'win32' ? 'where.exe' : 'which', [command], { windowsHide: true });
+    return true;
+  } catch { return false; }
+}
+
+async function choosePackageManager(requested) {
+  const want = String(requested || 'auto').toLowerCase();
+  const candidates = want !== 'auto' ? [want]
+    : process.platform === 'win32' ? ['winget', 'choco']
+      : process.platform === 'darwin' ? ['brew'] : ['apt-get', 'dnf', 'pacman', 'brew'];
+  for (const manager of candidates) if (await executableExists(manager)) return manager;
+  return null;
+}
+
+function packageCommand(manager, action, name, extra = []) {
+  const n = String(name || '').trim();
+  const safe = n && !/[\r\n]/.test(n) ? n : '';
+  if (!safe) throw new Error('package name is required');
+  const m = String(manager).toLowerCase();
+  if (m === 'winget') return { command: 'winget.exe', args: action === 'install'
+    ? ['install', '--id', safe, '--exact', '--silent', '--accept-source-agreements', '--accept-package-agreements', ...extra]
+    : ['uninstall', '--id', safe, '--exact', '--silent', '--accept-source-agreements', ...extra] };
+  if (m === 'choco') return { command: 'choco.exe', args: [action, safe, '-y', ...extra] };
+  if (m === 'apt-get') return { command: 'apt-get', args: [action === 'install' ? 'install' : 'remove', '-y', safe, ...extra] };
+  if (m === 'dnf') return { command: 'dnf', args: [action, '-y', safe, ...extra] };
+  if (m === 'pacman') return { command: 'pacman', args: action === 'install' ? ['-S', '--noconfirm', safe, ...extra] : ['-R', '--noconfirm', safe, ...extra] };
+  if (m === 'brew') return { command: 'brew', args: [action === 'install' ? 'install' : 'uninstall', safe, ...extra] };
+  throw new Error(`unsupported package manager: ${manager}`);
+}
+
 // ---------- HTML -> readable text (zero-dep) ----------
 function textOf(html) {
   let t = String(html || '');
@@ -734,6 +766,32 @@ export function buildTools() {
       },
     },
     {
+      name: 'package_install', description: 'Install an application/package using the detected OS package manager (winget/choco/apt/dnf/pacman/brew).',
+      args: { name: 'package id/name (required)', manager: 'auto|winget|choco|apt-get|dnf|pacman|brew (opt)', extra: 'additional argument array (opt)' },
+      async run(a) {
+        try {
+          const manager = await choosePackageManager(a.manager);
+          if (!manager) return fail('No supported package manager was found on this OS.');
+          const spec = packageCommand(manager, 'install', a.name, Array.isArray(a.extra) ? a.extra.slice(0, 10).map(String) : []);
+          const r = await execFileAsync(spec.command, spec.args, { windowsHide: true, timeout: 10 * 60 * 1000, maxBuffer: 8 * 1024 * 1024 });
+          return ok({ action: 'install', manager, package: a.name, stdout: String(r.stdout || '').slice(-6000), stderr: String(r.stderr || '').slice(-3000) });
+        } catch (e) { return fail(e.message, 'Check the package id and run the app with administrator privileges when required.'); }
+      },
+    },
+    {
+      name: 'package_uninstall', description: 'Uninstall an application/package using the detected OS package manager.',
+      args: { name: 'package id/name (required)', manager: 'auto|winget|choco|apt-get|dnf|pacman|brew (opt)', extra: 'additional argument array (opt)' },
+      async run(a) {
+        try {
+          const manager = await choosePackageManager(a.manager);
+          if (!manager) return fail('No supported package manager was found on this OS.');
+          const spec = packageCommand(manager, 'uninstall', a.name, Array.isArray(a.extra) ? a.extra.slice(0, 10).map(String) : []);
+          const r = await execFileAsync(spec.command, spec.args, { windowsHide: true, timeout: 10 * 60 * 1000, maxBuffer: 8 * 1024 * 1024 });
+          return ok({ action: 'uninstall', manager, package: a.name, stdout: String(r.stdout || '').slice(-6000), stderr: String(r.stderr || '').slice(-3000) });
+        } catch (e) { return fail(e.message, 'Check the package id and run the app with administrator privileges when required.'); }
+      },
+    },
+    {
       name: 'disk_info', description: 'Drives with total/free space GB.',
       args: {},
       async run() {
@@ -809,25 +867,40 @@ for ($i = 1; $i -le ${steps}; $i++) { [WinDrag]::SetCursorPos([int](${nums[0]} +
     },
     {
       name: 'key_tap', description: 'Press a special key with optional modifiers (no text typing; use key_press for text). Examples: Enter, Tab, Esc, F5, Ctrl+S, Alt+Tab. INPUT-INJECTING.',
-      args: { key: 'Enter|Tab|Esc|Backspace|Delete|Up|Down|Left|Right|Home|End|PgUp|PgDn|F1..F12|Space|A..Z|0..9', modifiers: 'comma combo e.g. Ctrl,Shift (opt)' },
+      args: { key: 'named key or one character', modifiers: 'comma combo e.g. Ctrl,Shift (opt)', raw: 'optional Windows SendKeys token, e.g. {F13}, ^%{TAB} (opt)' },
       async run(a) {
         try {
           const named = { enter: '{ENTER}', tab: '{TAB}', esc: '{ESC}', backspace: '{BACKSPACE}', delete: '{DELETE}', up: '{UP}', down: '{DOWN}', left: '{LEFT}', right: '{RIGHT}', home: '{HOME}', end: '{END}', pgup: '{PGUP}', pgdn: '{PGDN}', space: ' ' };
           let k = String(a.key || '').trim();
           const low = k.toLowerCase();
           let code;
-          if (/^f\d{1,2}$/i.test(k)) code = '{' + k.toUpperCase() + '}';
+          if (a.raw) code = String(a.raw).slice(0, 200);
+          else if (/^f\d{1,2}$/i.test(k)) code = '{' + k.toUpperCase() + '}';
           else if (named[low]) code = named[low];
           else if (/^[a-z0-9]$/i.test(k)) code = k.toLowerCase();
           else return fail(`unknown key: ${k}`, 'Use Enter/Tab/Esc/F1-F12/Space/single letters.');
-          let mod = '';
+          let mod = a.raw ? '' : '';
           for (const m of String(a.modifiers || '').toLowerCase().split(',')) {
             if (m.includes('ctrl')) mod += '^';
             else if (m.includes('alt')) mod += '%';
             else if (m.includes('shift')) mod += '+';
           }
-          await ps(`(New-Object -ComObject WScript.Shell).SendKeys('${mod}${code}')`);
-          return ok({ key: k, modifiers: a.modifiers || '' });
+          await ps(`(New-Object -ComObject WScript.Shell).SendKeys('${String(mod + code).replace(/'/g, "''")}')`);
+          return ok({ key: k || undefined, raw: a.raw || undefined, modifiers: a.modifiers || '' });
+        } catch (e) { return fail(e.message); }
+      },
+    },
+    {
+      name: 'key_sequence', description: 'Send an arbitrary Windows SendKeys sequence to the focused window, including function keys, modifiers, repeats and special tokens.',
+      args: { sequence: 'SendKeys sequence, e.g. ^a{BACKSPACE}{F13}{ENTER} (required)', delayMs: 'delay after sending, default 0 (opt)' },
+      async run(a) {
+        try {
+          const sequence = String(a.sequence || '').slice(0, 2000);
+          if (!sequence) return fail('sequence is required');
+          await ps(`(New-Object -ComObject WScript.Shell).SendKeys('${sequence.replace(/'/g, "''")}')`);
+          const delay = Math.min(Math.max(Number(a.delayMs || 0), 0), 5000);
+          if (delay) await new Promise((resolve) => setTimeout(resolve, delay));
+          return ok({ sequence, delayMs: delay });
         } catch (e) { return fail(e.message); }
       },
     },

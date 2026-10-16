@@ -16,6 +16,7 @@ test('offline planner handles local actions without a model', async () => {
   assert.equal(offlinePlan('read file README.md', cfg).steps[0].tool, 'file_read');
   assert.equal(offlinePlan('open notepad', cfg).steps[0].tool, 'app_launch');
   assert.equal(offlinePlan('show system info', cfg).steps[0].tool, 'sys_info');
+  assert.equal(offlinePlan('install vscode', cfg).steps[0].tool, 'package_install');
 });
 
 test('offline planner leaves ambiguous work for the optional model loop', async () => {

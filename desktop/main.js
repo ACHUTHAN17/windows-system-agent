@@ -1,7 +1,7 @@
 'use strict';
 const path = require('node:path');
 const fs = require('node:fs');
-const { app, BrowserWindow, Tray, Menu, globalShortcut, ipcMain, dialog, shell, nativeImage, Notification, safeStorage, session } = require('electron');
+const { app, BrowserWindow, Tray, Menu, globalShortcut, ipcMain, dialog, shell, nativeImage, Notification, safeStorage, session, screen } = require('electron');
 const { ensureAgentDir } = require('./lib/agentdir');
 const { Settings } = require('./lib/settings');
 const { EmbeddedEngine } = require('./lib/embedded-engine');
@@ -10,6 +10,7 @@ const { pushLearned, listCandidates } = require('./lib/github-push');
 const { submitPending } = require('./lib/self-improve');
 const { tryLocalAction } = require('./lib/local-actions');
 const { attachFromPaths, saveBufferIntoUploads } = require('./lib/attachments');
+const { ChatSync } = require('./lib/chat-sync');
 
 const ICON = path.join(__dirname, 'build', 'icon.png');
 let win = null;
@@ -19,6 +20,9 @@ let settings = null;
 let runner = null;
 let agentDir = '';
 let syncing = false;
+let overlay = null;
+let activeChatSync = null;
+let activeChatId = '';
 
 function bundleDir() { return app.isPackaged ? path.join(process.resourcesPath, 'agent') : path.resolve(__dirname, '..'); }
 function send(channel, payload) { if (win && !win.isDestroyed()) win.webContents.send(channel, payload); }
@@ -30,6 +34,35 @@ function handle(channel, fn) {
     if (!trusted(e)) throw new Error('untrusted sender');
     return fn(...args);
   });
+}
+
+function resizeOverlay() {
+  if (!overlay || overlay.isDestroyed()) return;
+  const area = screen.getPrimaryDisplay().workArea;
+  overlay.setBounds({ x: area.x, y: area.y + area.height - 10, width: area.width, height: 10 });
+}
+
+function createActivityOverlay() {
+  overlay = new BrowserWindow({
+    x: 0, y: 0, width: 800, height: 10, show: false, frame: false, transparent: true,
+    resizable: false, movable: false, focusable: false, skipTaskbar: true, alwaysOnTop: true,
+    webPreferences: { sandbox: true, contextIsolation: true },
+  });
+  overlay.setIgnoreMouseEvents(true);
+  overlay.setAlwaysOnTop(true, 'floating', 1);
+  overlay.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(`<!doctype html><style>
+    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent}
+    body:after{content:"";display:block;width:100%;height:3px;margin-top:4px;background:linear-gradient(90deg,transparent,#6d5dfc 20%,#00d4ff 50%,#6d5dfc 80%,transparent);box-shadow:0 0 8px #6d5dfc,0 0 18px #00d4ff;animation:p 1.2s ease-in-out infinite}
+    @keyframes p{0%,100%{opacity:.35;transform:scaleX(.65)}50%{opacity:1;transform:scaleX(1)}}
+  </style>`));
+  screen.on('display-metrics-changed', resizeOverlay);
+  resizeOverlay();
+}
+
+function setActivityGlow(active) {
+  if (!overlay || overlay.isDestroyed()) return;
+  if (active) { resizeOverlay(); overlay.showInactive(); }
+  else overlay.hide();
 }
 
 function createWindow(startHidden) {
@@ -184,15 +217,29 @@ function registerIpc() {
       if (r.response !== 1) patch.autoPushLearned = false;
     }
     const view = settings.update(patch);
+    if (runner && ['githubRepo', 'githubPat', 'autoPushLearned'].some((key) => key in patch)) runner.engine = null;
     let hotkeyOk = true;
     if ('hotkey' in patch) hotkeyOk = registerHotkey();
     if ('startWithWindows' in patch) app.setLoginItemSettings({ openAtLogin: !!patch.startWithWindows, args: ['--hidden'] });
     return { settings: view, hotkeyOk };
   });
-  handle('agent:run', async ({ text, history }) => {
+  handle('agent:run', async ({ text, history, chatId }) => {
+    activeChatId = String(chatId || Date.now());
+    activeChatSync = new ChatSync({
+      repo: settings.data.githubRepo, pat: settings.githubPat(), enabled: settings.data.syncChats,
+      onStatus: (status) => send('chat:sync', status),
+    });
+    activeChatSync.start(activeChatId, text, history);
     const local = await tryLocalAction({ text, agentDir, allowedRoots: settings.data.allowedRoots });
-    if (local) return { ok: true, instant: true, message: local.message, error: local.error };
-    return runner.run(buildTask(text, history), { fullAuto: !!settings.data.fullAuto, env: settings.agentEnv() });
+    if (local) {
+      activeChatSync.record({ t: 'answer', text: local.message || local.error || '' });
+      activeChatSync.finish({ status: local.error ? 'failed' : 'completed', instant: true });
+      activeChatSync = null; activeChatId = '';
+      return { ok: true, instant: true, message: local.message, error: local.error };
+    }
+    const result = await runner.run(buildTask(text, history), { fullAuto: !!settings.data.fullAuto, env: settings.agentEnv() });
+    if (!result.ok) { activeChatSync.finish({ status: 'not_started', error: result.error }); activeChatSync = null; activeChatId = ''; }
+    return result;
   });
   handle('agent:selftest', () => runner.runSelftest());
   handle('agent:stop', () => runner.stop());
@@ -271,17 +318,25 @@ function start() {
     runner = new EmbeddedEngine(agentDir);
     runner.on('event', (ev) => {
       send('agent:event', ev);
+      setActivityGlow(ev.t !== 'done');
+      if (activeChatSync) activeChatSync.record(ev);
       if (ev.t === 'approval') notify('WinAgent needs your approval', ev.label);
-      if (ev.t === 'done') { notify('WinAgent finished', 'The task is complete.'); afterRun(); }
+      if (ev.t === 'done') {
+        notify('WinAgent finished', 'The task is complete.');
+        if (activeChatSync) activeChatSync.finish({ status: ev.code === 0 ? 'completed' : 'failed', code: ev.code });
+        activeChatSync = null; activeChatId = '';
+        afterRun();
+      }
     });
 
     registerIpc();
     createWindow(process.argv.includes('--hidden'));
+    createActivityOverlay();
     createTray();
     registerHotkey();
     if (settings.data.syncOnStart) setTimeout(() => { doSync(); }, 2500);
   });
-  app.on('before-quit', () => { quitting = true; if (runner) runner.stop(); });
+  app.on('before-quit', () => { quitting = true; setActivityGlow(false); if (overlay && !overlay.isDestroyed()) overlay.close(); if (runner) runner.stop(); });
   app.on('will-quit', () => globalShortcut.unregisterAll());
   app.on('window-all-closed', () => { if (!settings || !settings.data.closeToTray) app.quit(); });
 }

@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const DEFAULTS = {
-  settingsVersion: 5,
+  settingsVersion: 6,
   preset: 'offline',
   provider: 'none',
   apiUrl: '',
@@ -18,6 +18,7 @@ const DEFAULTS = {
   syncEngine: false,
   githubRepo: '',
   autoPushLearned: true,
+  syncChats: true,
   autoSelfImprove: false,
   useScoutedModels: false,
   mcpServers: '',
@@ -48,6 +49,7 @@ class Settings {
       // Automatic learned-file sync is now the default. It is inert until a
       // repository and token are configured, and it only targets agent-learned.
       if (saved.settingsVersion && saved.settingsVersion < 5) this.data.autoPushLearned = true;
+      if (saved.settingsVersion && saved.settingsVersion < 6) this.data.syncChats = true;
       this._save();
     }
   }

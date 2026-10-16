@@ -208,7 +208,7 @@
     const turn = { role: 'assistant', text: '', activity: [], approval: null, error: '', status: 'running', kind: 'task' };
     s.messages.push(turn); s.updated = Date.now(); S.turn = turn;
     $('input').value = ''; S.attachments = []; renderAttachRow(); autosize(); setRunning(true); renderAll();
-    const r = await api.run(fullText, history);
+    const r = await api.run(fullText, history, s.id);
     if (!r || !r.ok) { turn.status = 'error'; turn.error = r && r.error === 'busy' ? 'The agent is already running a task.' : `Could not start the agent: ${r && r.error}`; endTurn(); return; }
     if (r.instant) { turn.instant = true; turn.text = r.message || ''; turn.error = r.error || ''; turn.status = 'done'; S.turn = null; setRunning(false); saveSoon(); renderAll(); speakIfEnabled(turn.text); }
   }
@@ -245,6 +245,7 @@
       case 'route': t.activity.push({ k: 'route', text: `${String(ev.kind || 'agent').toUpperCase()} route · ${ev.reason || ''}` }); break;
       case 'step': t.activity.push({ k: 'step', text: `Step ${ev.n}: ${ev.text}` }); break;
       case 'tool': t.activity.push({ k: 'tool', name: ev.name, ok: ev.ok, summary: ev.summary }); break;
+      case 'sync': t.activity.push({ k: 'sync', text: `GitHub checkpoint: ${(ev.pushed || []).length || ev.entries || 0} item(s)` }); break;
       case 'note': case 'log': if (t.activity.length < 300) t.activity.push({ k: 'note', text: ev.text }); break;
       case 'banner': $('modelPill').textContent = ev.text.replace(/\s*@\s*.*$/, '').slice(0, 60); $('modelPill').title = ev.text; break;
       case 'approval': t.approval = { id: ev.id, label: ev.label, options: ev.options, resolved: '' }; break;
@@ -299,7 +300,7 @@
     $('sSyncStart').checked = !!s.syncOnStart; $('sSyncMem').checked = !!s.syncMemory; $('sSyncEng').checked = !!s.syncEngine;
     $('sRepo').value = s.githubRepo || ''; $('sPat').value = '';
     $('sPat').placeholder = s.hasGithubPat ? '•••••••• saved (leave blank to keep)' : 'ghp_… (repo scope)';
-    $('sAutoPush').checked = !!s.autoPushLearned; $('sSelfImprove').checked = !!s.autoSelfImprove; $('sScouted').checked = s.useScoutedModels !== false; $('sReadAloud').checked = !!s.readAloud;
+    $('sAutoPush').checked = !!s.autoPushLearned; $('sSyncChats').checked = s.syncChats !== false; $('sSelfImprove').checked = !!s.autoSelfImprove; $('sScouted').checked = s.useScoutedModels !== false; $('sReadAloud').checked = !!s.readAloud;
     $('sMcp').value = s.mcpServers || '';
     $('sAndroid').value = s.androidSerial || '';
     $('customFields').hidden = s.preset === 'free' || s.preset === 'offline'; updateMode();
@@ -313,7 +314,7 @@
       preset: $('sPreset').value, provider: PRESETS[$('sPreset').value].provider, apiUrl: $('sUrl').value.trim(), model: $('sModel').value.trim(),
       fullAuto: $('sFull').checked, allowedRoots: $('sRoots').value.trim(), hotkey: $('sHotkey').value.trim(),
       startWithWindows: $('sStart').checked, closeToTray: $('sTray').checked, syncOnStart: $('sSyncStart').checked, syncMemory: $('sSyncMem').checked, syncEngine: $('sSyncEng').checked,
-      githubRepo: $('sRepo').value.trim(), autoPushLearned: $('sAutoPush').checked, autoSelfImprove: $('sSelfImprove').checked, useScoutedModels: $('sScouted').checked,
+      githubRepo: $('sRepo').value.trim(), autoPushLearned: $('sAutoPush').checked, syncChats: $('sSyncChats').checked, autoSelfImprove: $('sSelfImprove').checked, useScoutedModels: $('sScouted').checked,
       readAloud: $('sReadAloud').checked, mcpServers, androidSerial: $('sAndroid').value.trim(),
     };
     if ($('sKey').value.trim()) patch.apiKey = $('sKey').value.trim();
@@ -341,6 +342,7 @@
 
     api.onEvent(onEvent);
     api.onSync((st) => { $('syncState').textContent = st.text; $('syncBtn').disabled = st.state === 'running'; if (st.state === 'done') { api.skills().then(s => { $('skillCount').textContent = s.length || ''; }); if (S.view === 'skills') loadSkills(); if (S.view === 'memory') loadMemory(); } });
+    api.onChatSync((st) => { if (!st.ok) $('syncState').textContent = 'Chat checkpoint delayed: ' + st.error; });
 
     $('newChat').onclick = newSession;
     $('send').onclick = () => send($('input').value);

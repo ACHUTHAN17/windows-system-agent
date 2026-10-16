@@ -104,6 +104,12 @@ export function offlinePlan(text, cfg = {}) {
     if (command) return { kind: 'offline', steps: [result('app_kill', { name: `${command}.exe` }, `Closed ${clean(close[1])}`)], reason: 'explicit known application close request' };
   }
 
+  const packageTask = t.match(/^(install|uninstall)\s+(?:the\s+)?(?:app|application|package)?\s*(.+)$/i);
+  if (packageTask) {
+    const action = packageTask[1].toLowerCase() === 'install' ? 'package_install' : 'package_uninstall';
+    return { kind: 'offline', steps: [result(action, { name: clean(packageTask[2]), manager: 'auto' }, `${packageTask[1]} ${clean(packageTask[2])}`)], reason: 'explicit package manager request' };
+  }
+
   const routed = routeText(t);
   if (routed.kind === 'local') {
     const call = routed.action?.kind === 'folder'
@@ -121,5 +127,5 @@ export function offlinePlan(text, cfg = {}) {
 }
 
 export function offlineHelp() {
-  return 'Offline mode handles explicit local tasks without an AI model: open/launch apps and folders, list/read/search/create/copy/move/delete files, system info, processes, windows, and screenshots. Configure an optional model for open-ended planning.';
+  return 'Offline mode handles explicit local tasks without an AI model: open/launch apps and folders, list/read/search/create/copy/move/delete files, system info, processes, windows, screenshots, and package install/uninstall. Configure an optional model for open-ended planning.';
 }

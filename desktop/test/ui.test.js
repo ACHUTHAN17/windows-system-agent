@@ -8,8 +8,8 @@ const { JSDOM } = require('jsdom');
 
 function boot() {
   const calls = { run: [], approve: [], stop: 0, settings: [] };
-  let listener = () => {}; let syncListener = () => {}; let learnedListener = () => {}; let prListener = () => {};
-  const settings = { preset: 'offline', provider: 'none', apiUrl: '', model: '', allowedRoots: '', fullAuto: false, hotkey: 'Control+Alt+Space', startWithWindows: false, closeToTray: true, syncOnStart: true, syncMemory: true, syncEngine: false, hasKey: false, keyEncrypted: false, githubRepo: '', autoPushLearned: false, autoSelfImprove: false, hasGithubPat: false, useScoutedModels: false };
+  let listener = () => {}; let syncListener = () => {}; let chatSyncListener = () => {}; let learnedListener = () => {}; let prListener = () => {};
+  const settings = { preset: 'offline', provider: 'none', apiUrl: '', model: '', allowedRoots: '', fullAuto: false, hotkey: 'Control+Alt+Space', startWithWindows: false, closeToTray: true, syncOnStart: true, syncMemory: true, syncEngine: false, hasKey: false, keyEncrypted: false, githubRepo: '', autoPushLearned: false, syncChats: true, autoSelfImprove: false, hasGithubPat: false, useScoutedModels: false };
   const fake = {
     info: async () => ({ version: '1.0.0', agentDir: 'C:\\agent' }),
     getSettings: async () => ({ ...settings }),
@@ -17,7 +17,7 @@ function boot() {
     run: async (text, history) => { calls.run.push({ text, history }); return { ok: true }; },
     selftest: async () => ({ ok: true }), stop: async () => { calls.stop++; return true; },
     approve: async (id, d) => { calls.approve.push([id, d]); return true; },
-    onEvent: (cb) => { listener = cb; return () => {}; }, onSync: (cb) => { syncListener = cb; return () => {}; },
+    onEvent: (cb) => { listener = cb; return () => {}; }, onSync: (cb) => { syncListener = cb; return () => {}; }, onChatSync: (cb) => { chatSyncListener = cb; return () => {}; },
     sync: async () => ({ ok: true }),
     skills: async () => [{ name: 'docx', title: 'docx', description: 'Word files', origin: 'imported' }, { name: 'pdf', title: 'pdf', description: 'PDF files', origin: '' }],
     skillRead: async (n) => `# ${n}\nsome **skill** text`,

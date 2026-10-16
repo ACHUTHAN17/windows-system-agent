@@ -141,6 +141,13 @@ export async function keyUnix(key, modifiers = '') {
   return { key: k, modifiers };
 }
 
+export async function keySequenceUnix(sequence) {
+  const tokens = String(sequence || '').trim().split(/\s+/).filter(Boolean).slice(0, 80);
+  if (!tokens.length) throw new Error('sequence is required');
+  await xdo(['key', ...tokens]);
+  return { sequence: tokens.join(' ') };
+}
+
 export async function clipReadUnix() {
   if (isMac) {
     const { stdout } = await execFileAsync('pbpaste', [], { timeout: 10000 });
