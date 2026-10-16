@@ -75,8 +75,8 @@
           <div class="dim" id="keyNote"></div>
         </div>
         <label>Image generation key <input id="sImageKey" type="password" placeholder="Pollinations key (optional)" autocomplete="off"></label>
-        <div class="dim">Image requests use Pollinations' current image API. The key is encrypted with Windows protection and is never sent to the chat model.</div>
-        <label class="check"><input id="sScouted" type="checkbox"> If my model fails, try free models the agent has found on its own</label>
+        <div class="dim">Offline mode is the default: local file/app actions need no key, network, or local LLM. Add a model only for open-ended planning.</div>
+        <label class="check"><input id="sScouted" type="checkbox"> If an enabled model fails, try optional free remote models found by the agent</label>
 
         <h2>Plugins</h2>
         <label>MCP plugin servers (JSON) <textarea id="sMcp" rows="4" spellcheck="false" placeholder='{"filesystem":{"command":"npx","args":["-y","@modelcontextprotocol/server-filesystem","C:/Users/ADMIN"]}}'></textarea></label>
@@ -109,7 +109,7 @@
         <h2>Self-improvement</h2>
         <label>GitHub repo (owner/name) <input id="sRepo" placeholder="you/your-fork"></label>
         <label>GitHub token <input id="sPat" type="password" placeholder="" autocomplete="off"><span class="dim">Needs the "repo" scope. Used only for the two things below.</span></label>
-        <label class="check"><input id="sAutoPush" type="checkbox"> Push skills/tools the agent learns to the <code>agent-learned</code> branch automatically</label>
+        <label class="check"><input id="sAutoPush" type="checkbox"> Automatically sync newly created skills/tools to <code>agent-learned</code> (never directly to main)</label>
         <label class="check"><input id="sSelfImprove" type="checkbox"> Let the agent open pull requests proposing changes to its own code (never merges — you review on GitHub)</label>
         <div class="dim" id="learnState"></div>
 

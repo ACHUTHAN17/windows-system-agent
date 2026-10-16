@@ -17,10 +17,12 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { loadConfig, printActiveModel } from './config.js';
 import { buildTools } from './tools.js';
-import { chat, parseAgentJson, systemPrompt, toolPrompt } from './llm.js';
+import { chat, hasConfiguredModel, parseAgentJson, systemPrompt, toolPrompt } from './llm.js';
 import { needsApproval, askYesNo, audit, isPathAllowed, needsAppApproval, askAppApproval, requestApproval, requestAppApproval } from './safety.js';
 import { localToolCall, resolveFolderTarget, routeText, ROUTER_SYSTEM_PROMPT } from './router.js';
 import { loadBehavior, recordExperience } from './behavior.js';
+import { offlineHelp, offlinePlan } from './offline.js';
+import { pushLearnedFiles, seedLearnedState } from './github-sync.js';
 
 function parseArgs(raw) {
   const o = { _: [] };
@@ -52,18 +54,21 @@ async function fetchRemoteSkill(name, cfg) {
   if (mode === 'local') return null;
   const repo = cfg.skillRepo || 'ACHUTHAN17/windows-system-agent';
   const branch = cfg.skillBranch || 'main';
-  const url = `https://raw.githubusercontent.com/${repo}/${branch}/skills/${name}`;
   try {
     const headers = { 'User-Agent': 'WinAgent/1.6' };
     if (cfg.skillToken) headers.Authorization = `Bearer ${cfg.skillToken}`;
-    const res = await fetch(url, { headers, signal: AbortSignal.timeout(10000) });
-    if (!res.ok) {
-      if (mode === 'github') console.log(`  [skill] ${name}: remote HTTP ${res.status} (private repo? set SKILL_TOKEN)`);
-      return null;
+    const rel = String(name).replace(/^\/+/, '').replace(/\.md$/i, '');
+    const candidates = repo.toLowerCase() === 'anthropics/skills'
+      ? [`skills/${rel}/SKILL.md`, `skills/${rel}.md`]
+      : [`skills/${rel}.md`, `skills/${rel}/SKILL.md`];
+    for (const file of candidates) {
+      const res = await fetch(`https://raw.githubusercontent.com/${repo}/${branch}/${file}`, { headers, signal: AbortSignal.timeout(10000) });
+      if (!res.ok) continue;
+      const text = (await res.text()).slice(0, 12000);
+      if (text.trim()) return { name, text, source: 'github' };
     }
-    const text = (await res.text()).slice(0, 12000);
-    if (!text.trim()) return null;
-    return { name, text, source: 'github' };
+    if (mode === 'github') console.log(`  [skill] ${name}: remote skill not found (private repo? set SKILL_TOKEN)`);
+    return null;
   } catch (e) {
     if (mode === 'github') console.log(`  [skill] ${name}: remote unreachable`);
     return null;
@@ -83,17 +88,53 @@ async function loadSkills(argv, cfg) {
   const loaded = [];
   const remoteOnly = String(cfg.skillSource || 'auto').toLowerCase() === 'github';
   for (let name of wanted) {
-    if (!name.endsWith('.md')) name += '.md';
-    const safe = path.basename(name);
+    const requested = String(name).replace(/\\/g, '/').replace(/^\/+/, '');
+    const safe = requested.endsWith('.md') ? requested : requested + '.md';
     const remote = await fetchRemoteSkill(safe, cfg);
     if (remote) { console.log(`  [skill] ${safe} <- github (live)`); loaded.push(remote); continue; }
     if (remoteOnly) { console.log(`  [skill] ${safe}: remote-only mode, skipped (offline or bad token)`); continue; }
     try {
-      loaded.push({ name: safe, text: fs.readFileSync(path.join(cfg.root, 'skills', safe), 'utf8').slice(0, 12000), source: 'local' });
+      const local = findLocalSkill(cfg.root, safe);
+      if (!local) throw new Error('missing');
+      loaded.push({ name: safe, text: local.text.slice(0, 12000), source: 'local' });
       console.log(`  [skill] ${safe} <- local (github unreachable, fallback)`);
     } catch { console.log(`  [skill] not found: skills/${safe} (local missing, remote unreachable)`); }
   }
   return loaded;
+}
+
+function findLocalSkill(root, requested) {
+  const raw = String(requested || '').replace(/\\/g, '/').replace(/^skills\//, '').replace(/^anthropic\//, '');
+  const stem = raw.replace(/\.md$/, '');
+  const direct = [
+    path.join(root, 'skills', raw),
+    path.join(root, 'skills', stem + '.md'),
+    path.join(root, 'skills', 'anthropic', stem, 'SKILL.md'),
+    path.join(root, 'skills', stem, 'SKILL.md'),
+  ];
+  for (const p of direct) {
+    try { if (fs.statSync(p).isFile()) return { path: p, text: fs.readFileSync(p, 'utf8') }; } catch {}
+  }
+  return null;
+}
+
+function bundledAnthropicCatalog(root) {
+  const base = path.join(root, 'skills', 'anthropic');
+  const out = [];
+  let dirs = [];
+  try { dirs = fs.readdirSync(base, { withFileTypes: true }).filter(e => e.isDirectory()); } catch { return out; }
+  for (const d of dirs) {
+    const p = path.join(base, d.name, 'SKILL.md');
+    try {
+      const text = fs.readFileSync(p, 'utf8');
+      const fm = text.match(/^---[\s\S]*?\nname:\s*([^\n]+)[\s\S]*?\ndescription:\s*(?:[>|-]\s*)?([\s\S]*?)\n---/i);
+      const name = (fm?.[1] || d.name).trim().replace(/^['"]|['"]$/g, '');
+      const description = (fm?.[2] || text.split(/\r?\n/).find(x => x.trim() && !x.startsWith('#')) || '').replace(/\s+/g, ' ').trim().slice(0, 300);
+      const triggers = Array.from(new Set((name + ' ' + description).toLowerCase().split(/[^a-z0-9+#]+/).filter(w => w.length > 2 && !STOPWORDS.has(w)))).slice(0, 50);
+      out.push({ name: `anthropic/${d.name}`, title: name, description, origin: 'anthropics/skills (Apache-2.0)', triggers });
+    } catch {}
+  }
+  return out;
 }
 
 function skillPrompt(loaded) {
@@ -146,14 +187,14 @@ async function loadCatalog(cfg) {
       const res = await fetch(`https://raw.githubusercontent.com/${repo}/${branch}/skills/index.json`, { headers, signal: AbortSignal.timeout(10000) });
       if (res.ok) {
         const j = await res.json();
-        if (Array.isArray(j) && j.length) return { list: j, source: 'github' };
+        if (Array.isArray(j) && j.length) return { list: [...j, ...bundledAnthropicCatalog(cfg.root)], source: 'github' };
       }
     } catch {}
     if (mode === 'github') return { list: [], source: 'github-unreachable' };
   }
   try {
     const j = JSON.parse(fs.readFileSync(path.join(cfg.root, 'skills', 'index.json'), 'utf8'));
-    if (Array.isArray(j) && j.length) return { list: j, source: 'local-index' };
+    if (Array.isArray(j) && j.length) return { list: [...j, ...bundledAnthropicCatalog(cfg.root)], source: 'local-index' };
   } catch {}
   try {
     const dir = path.join(cfg.root, 'skills');
@@ -166,7 +207,7 @@ async function loadCatalog(cfg) {
       const triggers = Array.from(new Set((title + ' ' + desc).toLowerCase().split(/[^a-z0-9+#]+/).filter(w => w.length > 2 && !STOPWORDS.has(w)))).slice(0, 40);
       return { name, title, description: desc, origin: 'local', triggers };
     });
-    return { list, source: 'local-extract' };
+    return { list: [...list, ...bundledAnthropicCatalog(cfg.root)], source: 'local-extract' };
   } catch { return { list: [], source: 'none' }; }
 }
 
@@ -198,6 +239,12 @@ function autoPick(task, list, explicit) {
 export async function createEngine(argvOverride) {
   const argv = argvOverride || parseArgs(process.argv.slice(2));
   const cfg = loadConfig(argv);
+  cfg._learnedFiles = new Set();
+  const baseline = [];
+  try { for (const f of fs.readdirSync(path.join(cfg.root, 'skills'))) if (f.endsWith('.md')) baseline.push(`skills/${f}`); } catch {}
+  try { for (const f of fs.readdirSync(path.join(cfg.root, 'tools-imported', 'self-authored'))) if (f.endsWith('.js')) baseline.push(`tools-imported/self-authored/${f}`); } catch {}
+  if (fs.existsSync(path.join(cfg.root, 'memory', 'SELF.md'))) baseline.push('memory/SELF.md');
+  seedLearnedState({ agentDir: cfg.root, files: baseline });
   const tools = buildTools();
   const byName = Object.fromEntries(tools.map(t => [t.name, t]));
   try {
@@ -219,6 +266,20 @@ export async function createEngine(argvOverride) {
       tools.push(t); byName[t.name] = t;
       console.log(`  [self-tool] ${t.name} <- tools-imported/self-authored (loaded)`);
     } catch (e) { console.log(`  [self-tool] ${filePath}: load failed: ${e.message}`); }
+  }
+
+  async function syncLearnedFiles(reason, extra = []) {
+    if (!cfg.autoPushLearned || !cfg.githubRepo || !cfg.githubPat) return;
+    const files = [...cfg._learnedFiles, ...extra].filter(Boolean);
+    if (!files.length) return;
+    try {
+      const result = await pushLearnedFiles({ agentDir: cfg.root, repo: cfg.githubRepo, pat: cfg.githubPat, files });
+      if (result.pushed.length) {
+        console.log(`  [github] pushed ${result.pushed.join(', ')} to agent-learned (${reason})`);
+        cfg.onEvent?.({ t: 'sync', branch: 'agent-learned', pushed: result.pushed, reason });
+      }
+      if (result.errors.length) console.log(`  [github] ${result.errors.join(' | ')}`);
+    } catch (error) { console.log(`  [github] learned-file sync skipped: ${error.message}`); }
   }
   try {
     const dir = path.join(cfg.root, 'tools-imported', 'self-authored');
@@ -248,6 +309,10 @@ export async function createEngine(argvOverride) {
     audit(cfg, `TOOL ${name} args=${JSON.stringify(args).slice(0, 300)} -> ${JSON.stringify(res).slice(0, 500)}`);
     if (name === 'tool_create' && res && res.ok && res.filePath) {
       await registerSelfAuthored(res.filePath);
+      const rel = path.relative(cfg.root, res.filePath).split(path.sep).join('/');
+      cfg._learnedFiles.add(rel);
+      cfg._learnedFiles.add('memory/SELF.md');
+      await syncLearnedFiles('tool_create');
     }
     return res;
   }
@@ -323,11 +388,16 @@ export async function createEngine(argvOverride) {
       const w = await F.run({ path: full, content: String(dec.content).slice(0, 12000) }, { cfg });
       if (!w.ok) return 'skill write failed: ' + w.error;
       await M.run({ text: `learned skill ${safe} about: ${t.slice(0, 120)}` }, { cfg });
+      cfg._learnedFiles.add(safe);
+      cfg._learnedFiles.add('memory/SELF.md');
+      await syncLearnedFiles('learn-cycle');
       return `installed skill ${safe}`;
     }
     if (dec && dec.kind === 'memory' && dec.text) {
       const w = await M.run({ text: String(dec.text).slice(0, 800), topic: dec.topic || undefined }, { cfg });
       if (!w.ok) return 'memory write failed: ' + w.error;
+      cfg._learnedFiles.add('memory/SELF.md');
+      await syncLearnedFiles('learn-cycle');
       return 'memory updated';
     }
     return 'nothing actionable distilled';
@@ -335,6 +405,26 @@ export async function createEngine(argvOverride) {
 
   async function runAgentTask(task) {
     if (cfg._aborted) cfg._aborted = false; // a fresh task clears any stale abort from a previous one
+    // Offline-first execution: explicit local work never needs a model, a key,
+    // Ollama, or network access. The same runTool path keeps safety and audit
+    // behavior identical to model-planned actions.
+    const offline = offlinePlan(task, cfg);
+    if (offline) {
+      cfg.onEvent?.({ t: 'route', kind: 'offline', confidence: 'high', reason: offline.reason });
+      const reports = [];
+      for (const step of offline.steps) {
+        const result = await runTool(step.tool, step.args);
+        cfg.onEvent?.({ t: 'tool', name: step.tool, ok: result && result.ok, summary: JSON.stringify(result).slice(0, 400) });
+        if (!result || !result.ok) return `I couldn't complete that offline request: ${result?.error || 'unknown error'}`;
+        if (result.content != null) reports.push(String(result.content));
+        else if (Array.isArray(result.entries)) reports.push(result.entries.map(x => `${x.type === 'dir' ? '[folder]' : '[file]'} ${x.name}`).join('\n') || '(empty folder)');
+        else if (Array.isArray(result.matches)) reports.push(result.matches.map(x => `${x.file}:${x.line} ${x.text}`).join('\n') || '(no matches)');
+        else if (Array.isArray(result.processes)) reports.push(result.processes.map(x => `${x.name} (PID ${x.pid})`).join('\n') || '(no matching processes)');
+        else if (Array.isArray(result.windows)) reports.push(result.windows.map(x => `${x.app}: ${x.title} (PID ${x.pid})`).join('\n') || '(no visible windows)');
+        else reports.push(step.label + (result.path ? `\n${result.path}` : ''));
+      }
+      return reports.join('\n\n') || 'Done.';
+    }
     // Deterministic pre-routing is deliberately before skills/catalog/model work. A known
     // single-purpose local action must be instant and must not consume an LLM call.
     const route = routeText(task);
@@ -376,6 +466,9 @@ export async function createEngine(argvOverride) {
         const r = await loader.run({ name: an }, { cfg });
         if (r.ok) { skills.push({ name: an + '.md', text: r.content }); console.log(`  [skills:auto] ${an} <- ${r.source}`); }
       } catch {}
+    }
+    if (!hasConfiguredModel(cfg)) {
+      return `I am running in offline mode and there is no model configured. ${offlineHelp()}`;
     }
     const history = [
       { role: 'system', content: systemPrompt(toolPrompt(tools)) + loadBehavior(cfg.root) + '\n\n' + ROUTER_SYSTEM_PROMPT + skillPrompt(skills) + catalogPrompt(catalog) + loadMemory(cfg) + loadProjectRules(cfg) },
@@ -465,7 +558,7 @@ export async function createEngine(argvOverride) {
     if (/^(exit|quit)$/i.test(line)) { rl.close(); process.exit(0); }
     if (line === 'model') { console.log(' ' + printActiveModel(cfg)); return; }
     if (line === 'tools') { console.log(' ' + Object.keys(byName).join(', ')); return; }
-    if (line === 'skills') { try { console.log(' ' + fs.readdirSync(path.join(cfg.root, 'skills')).filter(f => f.endsWith('.md')).join(', ')); } catch { console.log(' (no local skills dir)'); } console.log(`  [source: ${cfg.skillSource || 'auto'} -> ${cfg.skillRepo || ''}/skills]`); return; }
+    if (line === 'skills') { const cat = await loadCatalog(cfg); console.log(' ' + cat.list.map(s => s.name).join(', ')); console.log(`  [source: ${cat.source}]`); return; }
     if (line === 'memory') { try { console.log(fs.readFileSync(path.join(cfg.root, 'memory', 'MEMORY.md'), 'utf8').slice(0, 2000)); } catch { console.log(' (no memory yet)'); } return; }
     if (line === 'goals') { try { console.log(fs.readFileSync(path.join(cfg.root, 'memory', 'GOALS.md'), 'utf8').slice(0, 2000)); } catch { console.log(' (no goals yet)'); } return; }
     if (line === 'selftest') { await selftest(); return; }
@@ -599,7 +692,7 @@ export async function createEngine(argvOverride) {
       else console.log('\n' + answer);
     } catch (e) {
       console.error('\nERROR: ' + e.message);
-      console.error('Fix: copy .env.example -> .env (Ollama default) or set MODEL_API_URL/KEY/NAME for your provider.');
+      console.error('Offline local actions need no model. For open-ended tasks, configure MODEL_PROVIDER, MODEL_API_URL, MODEL_NAME, and an optional MODEL_API_KEY.');
       process.exitCode = 1;
     }
   }

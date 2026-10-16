@@ -3,7 +3,8 @@
   const api = window.winagent;
   const $ = (id) => document.getElementById(id);
   const PRESETS = {
-    free: { label: 'Free models (no key needed)', provider: 'openai-compatible', apiUrl: '', model: '' },
+    offline: { label: 'Offline mode (no key or LLM)', provider: 'none', apiUrl: '', model: '' },
+    free: { label: 'Free remote models (optional)', provider: 'openai-compatible', apiUrl: '', model: '' },
     ollama: { label: 'Ollama (local)', provider: 'openai-compatible', apiUrl: 'http://localhost:11434/v1', model: 'llama3.1' },
     openai: { label: 'OpenAI', provider: 'openai-compatible', apiUrl: 'https://api.openai.com/v1', model: 'gpt-4o-mini' },
     anthropic: { label: 'Anthropic Claude', provider: 'anthropic', apiUrl: 'https://api.anthropic.com', model: '' },
@@ -61,7 +62,8 @@
 
   function modelLabel(s) {
     if (!s) return 'model: default';
-    if (s.preset === 'free') return 'model: free (auto)';
+    if (s.preset === 'offline') return 'offline mode';
+    if (s.preset === 'free') return 'model: free (optional)';
     return 'model: ' + (s.model || PRESETS[s.preset]?.label || s.preset);
   }
   async function switchModel(patch) {
@@ -164,7 +166,7 @@
     const box = $('messages'); const s = cur(); box.innerHTML = '';
     if (!s || !s.messages.length) {
       const w = el('div', 'welcome');
-      w.innerHTML = `<div class="logo">&gt;_</div><h1>What should WinAgent do?</h1><p>${S.settings && S.settings.preset === 'free' ? 'Using free models by default — add your own key in Settings for better results.' : 'Describe a task. WinAgent will plan it and use its tools on this PC.'}</p><div class="cards"></div>`;
+      w.innerHTML = `<div class="logo">&gt;_</div><h1>What should WinAgent do?</h1><p>${S.settings && S.settings.preset === 'offline' ? 'Offline-first: local files and apps work without an API key or local LLM. Add an optional model for open-ended planning.' : 'Describe a task. WinAgent will plan it and use its tools on this PC.'}</p><div class="cards"></div>`;
       const cards = w.querySelector('.cards');
       for (const [t, p] of STARTERS) { const c = el('div', 'card', `<b>${esc(t)}</b><span>${esc(p)}</span>`); c.onclick = () => send(p); cards.appendChild(c); }
       box.appendChild(w); return;
@@ -300,7 +302,7 @@
     $('sAutoPush').checked = !!s.autoPushLearned; $('sSelfImprove').checked = !!s.autoSelfImprove; $('sScouted').checked = s.useScoutedModels !== false; $('sReadAloud').checked = !!s.readAloud;
     $('sMcp').value = s.mcpServers || '';
     $('sAndroid').value = s.androidSerial || '';
-    $('customFields').hidden = s.preset === 'free'; updateMode();
+    $('customFields').hidden = s.preset === 'free' || s.preset === 'offline'; updateMode();
   }
   async function loadSettings() { S.settings = await api.getSettings(); fillSettings(); const i = await api.info(); $('aboutLine').textContent = `WinAgent desktop ${i.version} · agent folder: ${i.agentDir}`; }
   function updateMode() { const full = S.settings && S.settings.fullAuto; const b = $('modeBadge'); b.textContent = full ? 'Full control' : 'Ask before acting'; b.classList.toggle('full', !!full); }
@@ -327,7 +329,7 @@
 
   async function init() {
     for (const [k, v] of Object.entries(PRESETS)) $('sPreset').appendChild(new Option(v.label, k));
-    $('sPreset').onchange = () => { const p = PRESETS[$('sPreset').value]; $('customFields').hidden = $('sPreset').value === 'free'; if ($('sPreset').value !== 'custom') { $('sUrl').value = p.apiUrl; $('sModel').value = p.model; } };
+    $('sPreset').onchange = () => { const p = PRESETS[$('sPreset').value]; $('customFields').hidden = $('sPreset').value === 'free' || $('sPreset').value === 'offline'; if ($('sPreset').value !== 'custom') { $('sUrl').value = p.apiUrl; $('sModel').value = p.model; } };
     S.sessions = (await api.sessionsLoad()) || [];
     for (const s of S.sessions) for (const m of s.messages) if (m.status === 'running') m.status = 'done'; // an interrupted turn from last run
     if (!S.sessions.length) S.sessions.push({ id: uid(), title: 'New chat', messages: [], updated: Date.now() });

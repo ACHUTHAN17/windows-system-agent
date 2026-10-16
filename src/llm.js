@@ -5,6 +5,9 @@
 // Uses global fetch (Node 18+). No SDK dependencies.
 export async function chat(cfg, messages) {
   const chain = buildChain(cfg);
+  if (!chain.length) {
+    throw new Error('No AI model is configured. Offline mode can still perform local actions; add a model URL/name in Settings or .env for open-ended planning.');
+  }
   const attempts = [];
   for (let i = 0; i < chain.length; i++) {
     const c = chain[i];
@@ -35,7 +38,8 @@ export async function chat(cfg, messages) {
 // can actually fall back on, with no human editing .env. Set
 // USE_SCOUTED_MODELS=false to opt out of the self-discovered tier.
 function buildChain(cfg) {
-  const chain = [cfg];
+  const chain = [];
+  if (hasConfiguredModel(cfg)) chain.push(cfg);
   const fb = (cfg.fallbackUrl || process.env.LLM_FALLBACK_URL || '').replace(/\/+$/, '');
   if (fb) {
     chain.push({
@@ -50,6 +54,13 @@ function buildChain(cfg) {
     }
   }
   return chain;
+}
+
+export function hasConfiguredModel(cfg) {
+  if (!cfg || !String(cfg.apiUrl || '').trim() || !String(cfg.model || '').trim()) return false;
+  if (String(cfg.provider || '').toLowerCase() === 'none') return false;
+  if (String(cfg.provider || '').toLowerCase() === 'anthropic' && !String(cfg.apiKey || '').trim()) return false;
+  return true;
 }
 
 async function chatOpenAICompatible(cfg, messages) {

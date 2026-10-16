@@ -120,12 +120,28 @@ async function afterRun() {
 
 function readSkills() {
   const dir = path.join(agentDir, 'skills');
+  const out = [];
   try {
     const idx = JSON.parse(fs.readFileSync(path.join(dir, 'index.json'), 'utf8'));
-    return idx.map(s => ({ name: s.name, title: s.title || s.name, description: s.description || '', origin: s.origin || '' }));
-  } catch {
-    try { return fs.readdirSync(dir).filter(f => f.endsWith('.md')).map(f => ({ name: f.replace(/\.md$/, ''), title: f.replace(/\.md$/, ''), description: '', origin: '' })); } catch { return []; }
-  }
+    out.push(...idx.map(s => ({ name: s.name, title: s.title || s.name, description: s.description || '', origin: s.origin || '' })));
+  } catch {}
+  try {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
+      const name = entry.name.replace(/\.md$/, '');
+      if (!out.some(s => s.name === name)) out.push({ name, title: name, description: '', origin: '' });
+    }
+    const anth = path.join(dir, 'anthropic');
+    for (const entry of fs.readdirSync(anth, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const file = path.join(anth, entry.name, 'SKILL.md');
+      if (!fs.existsSync(file)) continue;
+      const text = fs.readFileSync(file, 'utf8');
+      const fm = text.match(/^---[\s\S]*?\nname:\s*([^\n]+)[\s\S]*?\ndescription:\s*(?:[>|-]\s*)?([\s\S]*?)\n---/i);
+      out.push({ name: `anthropic/${entry.name}`, title: (fm?.[1] || entry.name).trim(), description: (fm?.[2] || '').replace(/\s+/g, ' ').trim().slice(0, 300), origin: 'anthropics/skills (Apache-2.0)' });
+    }
+  } catch {}
+  return out;
 }
 
 function readTools() {
@@ -185,8 +201,12 @@ function registerIpc() {
   handle('skills:list', () => readSkills());
   handle('skills:read', (name) => {
     const n = String(name || '');
-    if (!/^[A-Za-z0-9._-]+$/.test(n)) return '';
-    try { return fs.readFileSync(path.join(agentDir, 'skills', n + '.md'), 'utf8').slice(0, 200000); } catch { return ''; }
+    if (!/^[A-Za-z0-9._/-]+$/.test(n) || n.includes('..')) return '';
+    const stem = n.replace(/\.md$/, '');
+    for (const file of [path.join(agentDir, 'skills', stem + '.md'), path.join(agentDir, 'skills', stem, 'SKILL.md'), path.join(agentDir, 'skills', 'anthropic', path.basename(stem), 'SKILL.md')]) {
+      try { return fs.readFileSync(file, 'utf8').slice(0, 200000); } catch {}
+    }
+    return '';
   });
   handle('tools:list', () => readTools());
   handle('models:scouted', () => {

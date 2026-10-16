@@ -33,13 +33,13 @@ test('ensureAgentDir seeds, refreshes engine on version change, never clobbers u
 
 const fakeSS = { isEncryptionAvailable: () => true, encryptString: (s) => Buffer.from('enc:' + s), decryptString: (b) => b.toString().slice(4) };
 
-test('Settings: free preset sends no model env; key is encrypted at rest and only reaches the child env', () => {
+test('Settings: offline preset sends no remote model; key is encrypted at rest and only reaches the child env', () => {
   const dir = tmp(); const s = new Settings(dir, fakeSS);
-  assert.deepStrictEqual(s.agentEnv(), {});
+  assert.deepStrictEqual(s.agentEnv(), { MODEL_PROVIDER: 'none', USE_SCOUTED_MODELS: 'false' });
   s.update({ preset: 'openai', provider: 'openai-compatible', apiUrl: 'https://api.openai.com/v1', model: 'gpt-4o-mini', apiKey: 'sk-secret', allowedRoots: 'C:\\Docs' });
   const disk = fs.readFileSync(path.join(dir, 'settings.json'), 'utf8');
   assert.ok(!disk.includes('sk-secret')); assert.ok(!JSON.stringify(s.publicView()).includes('sk-secret')); assert.strictEqual(s.publicView().hasKey, true);
-  assert.deepStrictEqual(s.agentEnv(), { MODEL_PROVIDER: 'openai-compatible', MODEL_API_URL: 'https://api.openai.com/v1', MODEL_NAME: 'gpt-4o-mini', MODEL_API_KEY: 'sk-secret', ALLOWED_ROOTS: 'C:\\Docs' });
+  assert.deepStrictEqual(s.agentEnv(), { MODEL_PROVIDER: 'openai-compatible', MODEL_API_URL: 'https://api.openai.com/v1', MODEL_NAME: 'gpt-4o-mini', MODEL_API_KEY: 'sk-secret', USE_SCOUTED_MODELS: 'false', ALLOWED_ROOTS: 'C:\\Docs' });
   s.update({ apiKey: '' }); assert.strictEqual(s.agentEnv().MODEL_API_KEY, 'sk-secret');
   s.update({ apiKey: null }); assert.strictEqual(s.agentEnv().MODEL_API_KEY, undefined);
   assert.strictEqual(new Settings(dir, fakeSS).data.model, 'gpt-4o-mini');
@@ -58,12 +58,12 @@ test('Settings: GitHub PAT is stored/encrypted separately from the model key and
   assert.strictEqual(s.githubPat(), ''); assert.strictEqual(s.publicView().hasGithubPat, false);
 });
 
-test('Settings: useScoutedModels defaults true, only sets USE_SCOUTED_MODELS env when explicitly disabled', () => {
+test('Settings: scouted models are opt-in and disabled by default', () => {
   const dir = tmp(); const s = new Settings(dir, fakeSS);
-  assert.strictEqual(s.data.useScoutedModels, true);
+  assert.strictEqual(s.agentEnv().USE_SCOUTED_MODELS, 'false');
+  assert.strictEqual(s.data.useScoutedModels, false);
+  s.update({ useScoutedModels: true });
   assert.strictEqual(s.agentEnv().USE_SCOUTED_MODELS, undefined);
   s.update({ useScoutedModels: false });
   assert.strictEqual(s.agentEnv().USE_SCOUTED_MODELS, 'false');
-  s.update({ useScoutedModels: true });
-  assert.strictEqual(s.agentEnv().USE_SCOUTED_MODELS, undefined);
 });

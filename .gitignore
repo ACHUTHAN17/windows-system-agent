@@ -4,6 +4,7 @@ config.json
 *.log
 agent-audit.log
 memory/EPISODES.md
+.push-state.json
 
 # runtime artifacts
 winshot-*.png

@@ -1356,8 +1356,10 @@ public class WinDbl { [DllImport("user32.dll")] public static extern bool SetCur
       args: { name: 'skill name, e.g. computer-use (required)' },
       async run(a, ctx) {
         try {
-          const safe = path.basename(String(a.name || '').trim().replace(/\.md$/, ''));
+          const requested = String(a.name || '').trim().replace(/\\/g, '/').replace(/^\/+/, '');
+          const safe = requested.replace(/\.md$/, '');
           if (!safe) return fail('name is required');
+          if (safe.includes('..') || safe.startsWith('/')) return fail('invalid skill name');
           const cfg = (ctx && ctx.cfg) || {};
           const mode = String(cfg.skillSource || 'auto').toLowerCase();
           if (mode !== 'local') {
@@ -1366,15 +1368,30 @@ public class WinDbl { [DllImport("user32.dll")] public static extern bool SetCur
               const branch = cfg.skillBranch || 'main';
               const headers = { 'User-Agent': 'WinAgent/1.6' };
               if (cfg.skillToken) headers.Authorization = `Bearer ${cfg.skillToken}`;
-              const res = await fetch(`https://raw.githubusercontent.com/${repo}/${branch}/skills/${safe}.md`, { headers, signal: AbortSignal.timeout(10000) });
-              if (res.ok) {
+              const rel = repo.toLowerCase() === 'anthropics/skills'
+                ? [`skills/${safe}/SKILL.md`, `skills/${safe}.md`]
+                : [`skills/${safe}.md`, `skills/${safe}/SKILL.md`];
+              for (const file of rel) {
+                const res = await fetch(`https://raw.githubusercontent.com/${repo}/${branch}/${file}`, { headers, signal: AbortSignal.timeout(10000) });
+                if (!res.ok) continue;
                 const text = (await res.text()).slice(0, 8000);
                 if (text.trim()) return ok({ name: safe, source: 'github', content: text });
               }
             } catch {}
             if (mode === 'github') return fail('remote unreachable (offline or bad token?)');
           }
-          const text = await fsp.readFile(path.join(cfg.root || '.', 'skills', safe + '.md'), 'utf8').catch(() => null);
+          const root = cfg.root || '.';
+          const stem = path.basename(safe);
+          const candidates = [
+            path.join(root, 'skills', safe + '.md'),
+            path.join(root, 'skills', safe, 'SKILL.md'),
+            path.join(root, 'skills', 'anthropic', stem, 'SKILL.md'),
+          ];
+          let text = null;
+          for (const candidate of candidates) {
+            text = await fsp.readFile(candidate, 'utf8').catch(() => null);
+            if (text !== null) break;
+          }
           if (text === null) return fail(`no such skill: ${safe}`);
           return ok({ name: safe, source: 'local', content: text.slice(0, 8000) });
         } catch (e) { return fail(e.message); }

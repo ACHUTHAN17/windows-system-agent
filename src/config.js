@@ -63,13 +63,20 @@ export function loadConfig(argv = {}) {
     return String(v).split(',').map(s => s.trim()).filter(Boolean);
   };
 
+  const configuredProvider = env('MODEL_PROVIDER', json.provider ?? '');
+  const configuredUrl = env('MODEL_API_URL', json.apiUrl ?? '');
+  const configuredModel = env('MODEL_NAME', json.model ?? json.MODEL_NAME ?? '');
   const cfg = {
     root: ROOT,
-    provider: env('MODEL_PROVIDER', json.provider ?? 'openai-compatible'),
-    apiUrl: env('MODEL_API_URL', json.apiUrl ?? 'http://localhost:11434/v1'),
+    // Offline-first: local deterministic actions must work on a fresh install.
+    // A model is optional and becomes active only when the user configures one.
+    // Supplying only MODEL_API_URL + MODEL_NAME remains compatible with older
+    // configs; a truly blank setup is the explicit offline provider.
+    provider: configuredProvider || (configuredUrl && configuredModel ? 'openai-compatible' : 'none'),
+    apiUrl: configuredUrl,
     apiKey: env('MODEL_API_KEY', json.apiKey ?? ''),
     imageApiKey: env('POLLINATIONS_API_KEY', json.imageApiKey ?? ''),
-    model: env('MODEL_NAME', json.model ?? json.MODEL_NAME ?? 'llama3.1'),
+    model: configuredModel,
     extraHeaders,
     maxSteps: Number(env('MAX_STEPS', json.maxSteps ?? 15)),
     temperature: Number(env('TEMPERATURE', json.temperature ?? 0.2)),
@@ -81,16 +88,20 @@ export function loadConfig(argv = {}) {
     blockedPaths: list(env('BLOCKED_PATHS', json.blockedPaths ?? [])),
     allowedApps: list(env('ALLOWED_APPS', json.allowedApps ?? [])),
     requireAppApproval: env('REQUIRE_APP_APPROVAL', json.requireAppApproval),    auditLog: env('AUDIT_LOG', json.auditLog ?? './agent-audit.log'),
-    skillSource: env('SKILL_SOURCE', json.skillSource ?? 'auto'),
+    // Skills are bundled locally so the default mode needs neither GitHub nor a key.
+    skillSource: env('SKILL_SOURCE', json.skillSource ?? 'local'),
     skillToken: env('SKILL_TOKEN', json.skillToken ?? ''),
     skillRepo: env('SKILL_REPO', json.skillRepo ?? 'ACHUTHAN17/windows-system-agent'),
     skillBranch: env('SKILL_BRANCH', json.skillBranch ?? 'main'),
+    githubRepo: env('GITHUB_REPO', json.githubRepo ?? ''),
+    githubPat: env('GITHUB_PAT', json.githubPat ?? process.env.GITHUB_TOKEN ?? ''),
+    autoPushLearned: String(env('AUTO_PUSH_LEARNED', json.autoPushLearned ?? true)) !== 'false',
     telegramToken: env('TELEGRAM_TOKEN', json.telegramToken ?? ''),
     telegramAllow: env('TELEGRAM_ALLOW_FROM', json.telegramAllow ?? ''),
     fallbackUrl: env('LLM_FALLBACK_URL', json.fallbackUrl ?? ''),
     fallbackModel: env('LLM_FALLBACK_MODEL', json.fallbackModel ?? 'openai'),
     fallbackKey: env('LLM_FALLBACK_KEY', json.fallbackKey ?? ''),
-    useScoutedModels: String(env('USE_SCOUTED_MODELS', json.useScoutedModels ?? true)) !== 'false',
+    useScoutedModels: String(env('USE_SCOUTED_MODELS', json.useScoutedModels ?? false)) === 'true',
     scoutedModels: loadScoutedModels(ROOT),
     shellAllowlist: json.shellAllowlist ?? ['powershell.exe', 'cmd.exe', 'pwsh.exe', 'tasklist.exe', 'taskkill.exe'],
   };
@@ -99,6 +110,9 @@ export function loadConfig(argv = {}) {
 }
 
 export function printActiveModel(cfg) {
+  if (!cfg?.apiUrl || !cfg?.model || String(cfg.provider || '').toLowerCase() === 'none') {
+    return 'offline deterministic mode (no API key or local LLM configured)';
+  }
   const kind = cfg.provider === 'anthropic' ? 'Anthropic-native'
     : cfg.apiUrl.includes('localhost') || cfg.apiUrl.includes('127.0.0.1') ? 'local LLM'
     : 'API / custom';

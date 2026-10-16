@@ -3,9 +3,9 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const DEFAULTS = {
-  settingsVersion: 3,
-  preset: 'free',
-  provider: 'openai-compatible',
+  settingsVersion: 5,
+  preset: 'offline',
+  provider: 'none',
   apiUrl: '',
   model: '',
   allowedRoots: '',
@@ -17,9 +17,9 @@ const DEFAULTS = {
   syncMemory: true,
   syncEngine: false,
   githubRepo: '',
-  autoPushLearned: false,
+  autoPushLearned: true,
   autoSelfImprove: false,
-  useScoutedModels: true,
+  useScoutedModels: false,
   mcpServers: '',
   androidSerial: '',
   readAloud: false,
@@ -40,6 +40,14 @@ class Settings {
     if (saved.settingsVersion !== DEFAULTS.settingsVersion) {
       this.data.settingsVersion = DEFAULTS.settingsVersion;
       if (!saved.settingsVersion) { this.data.fullAuto = true; this.data.allowedRoots = ''; }
+      // Existing installs that were on the old keyless/free auto-network mode
+      // move to deterministic offline mode. Explicitly configured models stay.
+      if (saved.settingsVersion && saved.preset === 'free' && !saved.apiUrl && !saved.model) {
+        this.data.preset = 'offline'; this.data.provider = 'none'; this.data.useScoutedModels = false;
+      }
+      // Automatic learned-file sync is now the default. It is inert until a
+      // repository and token are configured, and it only targets agent-learned.
+      if (saved.settingsVersion && saved.settingsVersion < 5) this.data.autoPushLearned = true;
       this._save();
     }
   }
@@ -94,6 +102,12 @@ class Settings {
     if (imageKey) env.POLLINATIONS_API_KEY = imageKey;
     if (String(d.mcpServers || '').trim()) env.MCP_SERVERS = String(d.mcpServers).trim();
     if (String(d.androidSerial || '').trim()) env.ANDROID_SERIAL = String(d.androidSerial).trim();
+    if (String(d.githubRepo || '').trim()) env.GITHUB_REPO = String(d.githubRepo).trim();
+    const githubPat = this.githubPat();
+    if (githubPat) env.GITHUB_PAT = githubPat;
+    // The engine default is enabled; only send an override when the user has
+    // explicitly disabled automatic learned-file sync.
+    if (d.autoPushLearned === false) env.AUTO_PUSH_LEARNED = 'false';
     if (String(d.allowedRoots || '').trim()) env.ALLOWED_ROOTS = String(d.allowedRoots).trim();
     return env;
   }

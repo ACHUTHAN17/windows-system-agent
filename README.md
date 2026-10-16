@@ -1,4 +1,4 @@
-# WinAgent — Windows System Agent (files + apps, any model)
+# WinAgent — Windows System Agent (offline-first, files + apps, any model)
 
 Zero-dependency Node.js agent. It lists/reads/writes files, launches/lists/kills apps,
 runs gated PowerShell, and talks to **any model** through one config. See
@@ -19,6 +19,21 @@ section](ARCHITECTURE.md#mcp-server-srcmcp-serverjs--winagent-as-a-tool-provider
 | Anthropic native | `anthropic` | `https://api.anthropic.com` | `sk-ant-...` | `claude-3-5-sonnet-latest` |
 
 Any endpoint that speaks `POST /chat/completions` works (vLLM, OpenRouter, Azure proxy, corporate gateway…).
+
+## Offline by default
+
+WinAgent starts in deterministic offline mode. Opening apps/folders, listing and reading files,
+searching, creating/copying/moving/deleting explicit paths, system information, process/window
+inspection, and screenshots do not need an API key, network access, Ollama, or any local LLM.
+The optional model loop is used only for open-ended planning and can be enabled later in Settings
+or `.env` by supplying a provider, URL, and model name. Risky writes and process control still
+use the normal approval/full-control settings.
+
+The repository also bundles the Apache-2.0 skills from
+[anthropics/skills](https://github.com/anthropics/skills) under `skills/anthropic/`. They are
+loaded by the same local catalog and work without a network connection. Anthropic's
+source-available document skills (`docx`, `pdf`, `pptx`, `xlsx`) are not copied; see the
+attribution note in `skills/anthropic/README.md`.
 
 ## How WinAgent compares (Sept 2026 landscape)
 
@@ -64,13 +79,15 @@ cd windows-system-agent
 ```
 
 ```powershell
-# 2. Point it at a model: copy the template, open it, set 3 lines (pick ONE block below)
-copy .env.example .env
-notepad .env
+# 2. No setup is required for offline local actions.
+node src\index.js "open the Documents folder"
+node src\index.js "list files in Documents"
 ```
 
+For open-ended planning, optionally copy `.env.example` to `.env` and configure a model.
+
 ```ini
-# Ollama (local, free) — first run: ollama serve  +  ollama pull llama3.1
+# Ollama (local) — first run: ollama serve  +  ollama pull llama3.1
 MODEL_API_URL=http://localhost:11434/v1
 MODEL_API_KEY=ollama
 MODEL_NAME=llama3.1
@@ -213,11 +230,14 @@ the agent's own `chat()` fallback chain automatically too, fastest first —
 if the primary model is unreachable, it tries a model it found itself before
 giving up (`USE_SCOUTED_MODELS=false` to disable).
 
-**Skills load from GitHub first — no local files needed.** `SKILL_SOURCE=auto`
-(default) fetches each skill live from this repo on every run, so the agent
-always learns the latest version; local `skills/` is only the offline fallback
-(`local` = offline only, `github` = remote only). Private repo? Put a classic
-PAT with `repo` scope in `.env` as `SKILL_TOKEN` (public repos need nothing).
+**Skills load locally and automatically.** `SKILL_SOURCE=local` (default) keeps
+the bundled skills usable without a network connection; `auto` or `github` can
+be selected when live remote refresh is wanted. The agent chooses matching
+skills before the model loop, so you do not need to call `skill_load` yourself.
+Private remote skills need `SKILL_TOKEN`; public repos need no token. Newly
+created skills and self-authored tools can sync automatically to the
+`agent-learned` GitHub branch when `GITHUB_REPO` and `GITHUB_PAT` are set;
+`main` is never modified by that automatic sync.
 Browse the live library: [`skills/` on GitHub](./skills) + generated
 [`docs/index.html`](./docs/index.html) (auto-rebuilt by `node src/build-docs.js`).
 

@@ -9,6 +9,14 @@ import path from 'node:path';
 import { loadConfig, printActiveModel } from './config.js';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')), '..');
+
+function bundledSkillNames() {
+  const dir = path.join(ROOT, 'skills');
+  const out = [];
+  try { out.push(...fs.readdirSync(dir).filter(f => f.endsWith('.md')).map(f => f.replace(/\.md$/, ''))); } catch {}
+  try { out.push(...fs.readdirSync(path.join(dir, 'anthropic'), { withFileTypes: true }).filter(e => e.isDirectory() && fs.existsSync(path.join(dir, 'anthropic', e.name, 'SKILL.md'))).map(e => `anthropic/${e.name}`)); } catch {}
+  return out;
+}
 const INDEX = path.join(ROOT, 'src', 'index.js');
 
 // Recognize the agent's approval prompts in child stdout.
@@ -161,16 +169,14 @@ export async function startDashboard(port) {
       return;
     }
     if (req.method === 'GET' && url.pathname === '/api/status') {
-      let skills = 0;
-      try { skills = fs.readdirSync(path.join(ROOT, 'skills')).filter(f => f.endsWith('.md')).length; } catch {}
+      const skills = bundledSkillNames().length;
       const mcp = (process.env.MCP_SERVERS || cfg.mcpServers) ? 'configured' : 'off';
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ model: printActiveModel(cfg), tools: toolCount(), skills, mcp, busy: !!state.child, pending: !!state.pending }));
       return;
     }
     if (req.method === 'GET' && url.pathname === '/api/skills') {
-      let out = [];
-      try { out = fs.readdirSync(path.join(ROOT, 'skills')).filter(f => f.endsWith('.md')).map(f => f.replace(/\.md$/, '')); } catch {}
+      const out = bundledSkillNames();
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify(out));
       return;
