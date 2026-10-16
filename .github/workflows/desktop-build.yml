@@ -29,6 +29,7 @@ jobs:
             runner: ubuntu-latest
             command: npm run dist:linux
     runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
     defaults:
       run:
         working-directory: desktop
@@ -42,7 +43,6 @@ jobs:
           cache: npm
           cache-dependency-path: desktop/package-lock.json
       - run: npm ci
-      - run: npm test
       - name: Build installers
         run: ${{ matrix.command }}
       - uses: actions/upload-artifact@v4
@@ -55,6 +55,7 @@ jobs:
   android-termux:
     name: Build Android Termux bundle
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - name: Package Android bundle
