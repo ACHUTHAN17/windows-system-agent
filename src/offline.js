@@ -34,9 +34,101 @@ function appCommand(name) {
   return target;
 }
 
+function loginUrl(raw) {
+  const text = clean(raw);
+  const explicit = text.match(/https?:\/\/[^\s)]+/i);
+  if (explicit) return explicit[0].replace(/[.,!?]+$/, '');
+  const sites = {
+    netflix: 'https://www.netflix.com/login',
+    gmail: 'https://mail.google.com/',
+    google: 'https://www.google.com/',
+    github: 'https://github.com/login',
+    microsoft: 'https://login.live.com/',
+    outlook: 'https://outlook.live.com/',
+    facebook: 'https://www.facebook.com/login',
+    instagram: 'https://www.instagram.com/accounts/login/',
+    linkedin: 'https://www.linkedin.com/login',
+    amazon: 'https://www.amazon.com/ap/signin',
+    spotify: 'https://accounts.spotify.com/login',
+    youtube: 'https://www.youtube.com/',
+  };
+  const hit = Object.keys(sites).find(name => new RegExp(`\\b${name}\\b`, 'i').test(text));
+  if (hit) return sites[hit];
+  const host = text.match(/\b([a-z0-9-]+\.(?:com|org|net|io|co\.uk))(?:\/[^\s]*)?/i);
+  return host ? `https://${host[0]}` : null;
+}
+
+function compoundOfflinePlan(text) {
+  const t = String(text || '').trim();
+  const steps = [];
+  const theme = t.match(/\b(?:change|switch|set|turn)\s+(?:the\s+)?(?:system\s+)?(?:theme|mode)\s+(?:to\s+)?(light|dark)\b/i)
+    || t.match(/\b(?:light|dark)\s+theme\b/i);
+  if (theme) {
+    const mode = theme[1] ? theme[1].toLowerCase() : (/\blight\b/i.test(theme[0]) ? 'light' : 'dark');
+    steps.push(result('theme_set', { mode }, `Changed to ${mode} theme`));
+  }
+  const browser = t.match(/\b(?:open|launch|start)\s+(?:a\s+)?new\s+tab\s+(?:on|in)\s+(microsoft\s+edge|edge|google\s+chrome|chrome|firefox)\b/i);
+  if (browser) {
+    const browserName = /edge/i.test(browser[1]) ? 'edge' : /firefox/i.test(browser[1]) ? 'firefox' : 'chrome';
+    const url = loginUrl(t.slice((browser.index || 0) + browser[0].length));
+    if (url) steps.push(result('browser_open', { browser: browserName, url }, `Opened ${url} in a new ${browserName} tab`));
+  }
+  return steps.length ? steps : null;
+}
+
+function directInputPlan(text) {
+  const t = String(text || '').trim();
+  let m = t.match(/^(?:click|left[- ]click)\s+(?:at\s+)?(\d+)\s*[, ]\s*(\d+)$/i);
+  if (m) return result('screen_click', { x: Number(m[1]), y: Number(m[2]), button: 'left' }, `Clicked at ${m[1]},${m[2]}`);
+  m = t.match(/^(?:right[- ]click)\s+(?:at\s+)?(\d+)\s*[, ]\s*(\d+)$/i);
+  if (m) return result('screen_click', { x: Number(m[1]), y: Number(m[2]), button: 'right' }, `Right-clicked at ${m[1]},${m[2]}`);
+  m = t.match(/^(?:double[- ]click)\s+(?:at\s+)?(\d+)\s*[, ]\s*(\d+)$/i);
+  if (m) return result('screen_double_click', { x: Number(m[1]), y: Number(m[2]) }, `Double-clicked at ${m[1]},${m[2]}`);
+  m = t.match(/^drag(?:\s+and\s+drop)?\s+(?:from\s+)?(\d+)\s*[, ]\s*(\d+)\s+(?:to|toward)\s+(\d+)\s*[, ]\s*(\d+)$/i);
+  if (m) return result('screen_drag', { x1: Number(m[1]), y1: Number(m[2]), x2: Number(m[3]), y2: Number(m[4]) }, `Dragged from ${m[1]},${m[2]} to ${m[3]},${m[4]}`);
+  m = t.match(/^(?:move|move the mouse)\s+(?:to\s+)?(\d+)\s*[, ]\s*(\d+)$/i);
+  if (m) return result('mouse_move', { x: Number(m[1]), y: Number(m[2]) }, `Moved the pointer to ${m[1]},${m[2]}`);
+  m = t.match(/^scroll\s+(up|down|left|right)(?:\s+(\d+))?(?:\s+at\s+(\d+)\s*[, ]\s*(\d+))?$/i);
+  if (m) return result('screen_scroll', { direction: m[1].toLowerCase(), amount: Number(m[2] || 3), x: Number(m[3] || 0), y: Number(m[4] || 0) }, `Scrolled ${m[1]}`);
+  m = t.match(/^(?:press|tap)\s+(.+)$/i);
+  if (m) {
+    const key = clean(m[1]);
+    const parts = key.split(/[+\s]+/).filter(Boolean);
+    const main = parts.pop() || key;
+    const modifiers = parts.join(',');
+    return result('key_tap', { key: main, modifiers }, `Pressed ${key}`);
+  }
+  m = t.match(/^(?:type|write)\s+([\s\S]+)$/i);
+  if (m) return result('key_press', { text: m[1] }, 'Typed text');
+  m = t.match(/^(?:run|execute)\s+(?:this\s+)?command\s*:\s*([\s\S]+)$/i);
+  if (m) return result('shell_exec', { command: m[1].trim() }, 'Ran the command');
+  return null;
+}
+
 export function offlinePlan(text, cfg = {}) {
   const t = clean(text);
   if (!t) return null;
+
+  const compound = compoundOfflinePlan(t);
+  if (compound) return { kind: 'offline', steps: compound, reason: 'known multi-step local task' };
+
+  // Join independently understood local actions. This keeps common sequences
+  // model-free while refusing to guess when any clause is ambiguous.
+  if (!/drag\s+and\s+drop/i.test(t) && /\b(?:and then|then|and)\b/i.test(t)) {
+    const parts = t.split(/\s+(?:and then|then|and)\s+/i).map(s => s.trim()).filter(Boolean);
+    if (parts.length > 1) {
+      const steps = [];
+      for (const part of parts) {
+        const plan = offlinePlan(part, cfg);
+        if (!plan || plan.kind !== 'offline') { steps.length = 0; break; }
+        steps.push(...plan.steps);
+      }
+      if (steps.length > 1) return { kind: 'offline', steps, reason: 'sequence of known local actions' };
+    }
+  }
+
+  const direct = directInputPlan(t);
+  if (direct) return { kind: 'offline', steps: [direct], reason: 'explicit computer input request' };
 
   if (/^(?:show|give|check|display|what(?: is|'s))\s+(?:my\s+)?(?:system|computer|pc|device)\s+(?:info|information|status)?$/i.test(t)
     || /^(?:system|computer)\s+(?:info|information|status)$/i.test(t)) {

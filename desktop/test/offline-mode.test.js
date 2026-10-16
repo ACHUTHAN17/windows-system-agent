@@ -19,6 +19,23 @@ test('offline planner handles local actions without a model', async () => {
   assert.equal(offlinePlan('install vscode', cfg).steps[0].tool, 'package_install');
 });
 
+test('offline planner executes known compound desktop tasks without a model', async () => {
+  if (!offlinePlan) ({ offlinePlan } = await import('../../src/offline.js'));
+  const plan = offlinePlan('change to light theme and open a new tab on edge on that login to netflix', cfg);
+  assert.deepEqual(plan.steps.map(step => step.tool), ['theme_set', 'browser_open']);
+  assert.deepEqual(plan.steps[0].args, { mode: 'light' });
+  assert.deepEqual(plan.steps[1].args, { browser: 'edge', url: 'https://www.netflix.com/login' });
+});
+
+test('offline planner composes ordinary local action sequences', async () => {
+  if (!offlinePlan) ({ offlinePlan } = await import('../../src/offline.js'));
+  assert.deepEqual(offlinePlan('install vscode and open settings', cfg).steps.map(step => step.tool), ['package_install', 'app_open']);
+  assert.deepEqual(offlinePlan('drag from 100,200 to 500,600', cfg).steps[0], {
+    tool: 'screen_drag', args: { x1: 100, y1: 200, x2: 500, y2: 600 }, label: 'Dragged from 100,200 to 500,600',
+  });
+  assert.deepEqual(offlinePlan('press Ctrl+Shift+S', cfg).steps[0].args, { key: 'S', modifiers: 'Ctrl,Shift' });
+});
+
 test('offline planner leaves ambiguous work for the optional model loop', async () => {
   if (!offlinePlan) ({ offlinePlan } = await import('../../src/offline.js'));
   assert.equal(offlinePlan('summarize my entire project and improve it', cfg), null);

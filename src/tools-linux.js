@@ -18,6 +18,30 @@ export async function linuxTool(name, a, ctx) {
   const cfg = (ctx && ctx.cfg) || {};
   try {
     switch (name) {
+      case 'theme_set': {
+        const mode = String((a && a.mode) || '').toLowerCase();
+        if (!['light', 'dark'].includes(mode)) return { handled: true, result: fail('mode must be light or dark') };
+        if (plat.isMac) {
+          await plat.shRun(mode === 'dark' ? 'defaults write -g AppleInterfaceStyle -string Dark' : 'defaults delete -g AppleInterfaceStyle || true');
+        } else {
+          const scheme = mode === 'dark' ? 'prefer-dark' : 'prefer-light';
+          await plat.shRun(`gsettings set org.gnome.desktop.interface color-scheme ${scheme}`);
+        }
+        return { handled: true, result: ok({ mode, applied: true }) };
+      }
+      case 'browser_open': {
+        const browser = String((a && a.browser) || 'chrome').toLowerCase().replace(/^microsoft\s+/, '');
+        const url = String((a && a.url) || '').trim();
+        if (!['edge', 'chrome', 'firefox'].includes(browser)) return { handled: true, result: fail('browser must be edge, chrome, or firefox') };
+        if (!/^https?:\/\//i.test(url)) return { handled: true, result: fail('url must start with http:// or https://') };
+        const candidates = browser === 'edge' ? ['microsoft-edge', 'microsoft-edge-stable'] : browser === 'chrome' ? ['google-chrome', 'chromium', 'chromium-browser'] : ['firefox'];
+        try {
+          const bin = await plat.needBin(candidates, `${browser} browser`);
+          const child = spawn(bin, browser === 'firefox' ? ['--new-tab', url] : ['--new-tab', url], { detached: true, stdio: 'ignore' });
+          child.unref();
+          return { handled: true, result: ok({ browser, url, newTab: true, pid: child.pid }) };
+        } catch (e) { return { handled: true, result: fail(e.message, `Install ${browser} or choose another browser.`) }; }
+      }
       case 'shell_exec': {
         const max = Math.min(Number((a && a.timeoutSec) || 20), 120);
         const { stdout, stderr } = await plat.shRun(String((a && a.command) || ''), max * 1000);

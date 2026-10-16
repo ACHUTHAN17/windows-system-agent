@@ -118,6 +118,51 @@ async function backupIfExists(p) {
 export function buildTools() {
   const tools = [
     {
+      name: 'theme_set', description: 'Set the current desktop theme to light or dark without opening a settings page.',
+      args: { mode: 'light|dark' },
+      async run(a) {
+        const mode = String(a?.mode || '').toLowerCase();
+        if (!['light', 'dark'].includes(mode)) return fail('mode must be light or dark');
+        if (process.platform !== 'win32') return fail('theme_set is handled by the host-platform tool layer');
+        try {
+          const value = mode === 'light' ? 1 : 0;
+          const key = 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize';
+          const command = `New-Item -Path '${key}' -Force | Out-Null; Set-ItemProperty -Path '${key}' -Name AppsUseLightTheme -Type DWord -Value ${value}; Set-ItemProperty -Path '${key}' -Name SystemUsesLightTheme -Type DWord -Value ${value}; RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters`;
+          await ps(command);
+          return ok({ mode, applied: true });
+        } catch (e) { return fail(e.message, 'Open Windows Settings > Personalization > Colors and try again.'); }
+      },
+    },
+    {
+      name: 'browser_open', description: 'Open a URL in a new tab of a selected installed browser using its normal user profile.',
+      args: { browser: 'edge|chrome|firefox', url: 'https://...' },
+      async run(a) {
+        const browser = String(a?.browser || 'edge').toLowerCase().replace(/^microsoft\s+/, '');
+        const url = String(a?.url || '').trim();
+        if (!['edge', 'chrome', 'firefox'].includes(browser)) return fail('browser must be edge, chrome, or firefox');
+        if (!/^https?:\/\//i.test(url)) return fail('url must start with http:// or https://');
+        if (process.platform !== 'win32') return fail('browser_open is handled by the host-platform tool layer');
+        try {
+          const exe = browser === 'edge' ? 'msedge.exe' : browser === 'chrome' ? 'chrome.exe' : 'firefox.exe';
+          let bin = null;
+          try { bin = (await execFileAsync('where.exe', [exe], { windowsHide: true })).stdout.trim().split(/\r?\n/)[0] || null; } catch {}
+          if (!bin) {
+            const bases = browser === 'edge'
+              ? ['C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe']
+              : browser === 'chrome'
+                ? ['C:/Program Files/Google/Chrome/Application/chrome.exe', 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe']
+                : ['C:/Program Files/Mozilla Firefox/firefox.exe', 'C:/Program Files (x86)/Mozilla Firefox/firefox.exe'];
+            for (const candidate of bases) { try { await fsp.access(candidate); bin = candidate; break; } catch {} }
+          }
+          if (!bin) return fail(`no ${browser} installation found`, `Install ${browser} or choose another browser.`);
+          const args = browser === 'firefox' ? ['-new-tab', url] : ['--new-tab', url];
+          const child = spawn(bin, args, { detached: true, stdio: 'ignore', windowsHide: true });
+          child.unref();
+          return ok({ browser, url, newTab: true, pid: child.pid });
+        } catch (e) { return fail(e.message); }
+      },
+    },
+    {
       name: 'android_status',
       description: 'Check Android control availability through Termux or an adb-connected device.',
       args: {},
