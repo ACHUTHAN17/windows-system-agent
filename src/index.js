@@ -21,7 +21,7 @@ import { chat, hasConfiguredModel, parseAgentJson, systemPrompt, toolPrompt } fr
 import { needsApproval, askYesNo, audit, isPathAllowed, needsAppApproval, askAppApproval, requestApproval, requestAppApproval } from './safety.js';
 import { localToolCall, resolveFolderTarget, routeText, ROUTER_SYSTEM_PROMPT } from './router.js';
 import { loadBehavior, recordExperience } from './behavior.js';
-import { offlineHelp, offlinePlan } from './offline.js';
+import { latestRequest, offlineHelp, offlinePlan } from './offline.js';
 import { pushLearnedFiles, seedLearnedState } from './github-sync.js';
 
 function parseArgs(raw) {
@@ -408,7 +408,8 @@ export async function createEngine(argvOverride) {
     // Offline-first execution: explicit local work never needs a model, a key,
     // Ollama, or network access. The same runTool path keeps safety and audit
     // behavior identical to model-planned actions.
-    const offline = offlinePlan(task, cfg);
+    const localTask = latestRequest(task);
+    const offline = offlinePlan(localTask, cfg);
     if (offline) {
       cfg.onEvent?.({ t: 'route', kind: 'offline', confidence: 'high', reason: offline.reason });
       const reports = [];
@@ -427,7 +428,7 @@ export async function createEngine(argvOverride) {
     }
     // Deterministic pre-routing is deliberately before skills/catalog/model work. A known
     // single-purpose local action must be instant and must not consume an LLM call.
-    const route = routeText(task);
+    const route = routeText(localTask);
     if (route.kind === 'image' || route.kind === 'local') {
       let call = route.kind === 'image'
         ? { tool: 'image_generate', args: { prompt: route.prompt } }

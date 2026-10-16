@@ -2,9 +2,10 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 
 let offlinePlan;
+let latestRequest;
 let hasConfiguredModel;
 test('load offline modules', async () => {
-  ({ offlinePlan } = await import('../../src/offline.js'));
+  ({ offlinePlan, latestRequest } = await import('../../src/offline.js'));
   ({ hasConfiguredModel } = await import('../../src/llm.js'));
 });
 
@@ -17,6 +18,16 @@ test('offline planner handles local actions without a model', async () => {
   assert.equal(offlinePlan('open notepad', cfg).steps[0].tool, 'app_launch');
   assert.equal(offlinePlan('show system info', cfg).steps[0].tool, 'sys_info');
   assert.equal(offlinePlan('install vscode', cfg).steps[0].tool, 'package_install');
+});
+
+test('offline routing ignores earlier conversation context', async () => {
+  if (!offlinePlan || !latestRequest) ({ offlinePlan, latestRequest } = await import('../../src/offline.js'));
+  const task = 'create a new folder on desktop named "testt"\n\n[Earlier in this conversation (context only — do not repeat or re-run it):\nUser: change to light theme and open a new tab on edge on that login to netflix\n]';
+  assert.equal(latestRequest(task), 'create a new folder on desktop named "testt"');
+  assert.equal(offlinePlan(task, cfg).steps[0].tool, 'file_mkdir');
+  assert.match(offlinePlan(task, cfg).steps[0].args.path, /Desktop[\\/]testt$/i);
+  assert.equal(offlinePlan('hey write a python program to print hello world', cfg).steps[0].tool, 'file_write');
+  assert.match(offlinePlan('hey write a python program to print hello world', cfg).steps[0].args.content, /hello world/);
 });
 
 test('offline planner executes known compound desktop tasks without a model', async () => {

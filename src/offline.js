@@ -28,6 +28,16 @@ function result(tool, args, label) {
   return { tool, args, label };
 }
 
+// The desktop shell appends recent chat messages for model context. Local
+// routing must only inspect the newest request, otherwise an old command can
+// win the regex match and be executed again on every later turn.
+export function latestRequest(text) {
+  const raw = String(text || '');
+  const marker = '\n\n[Earlier in this conversation (context only';
+  const at = raw.indexOf(marker);
+  return (at >= 0 ? raw.slice(0, at) : raw).trim();
+}
+
 function appCommand(name) {
   const target = ROUTER_APPS[clean(name).toLowerCase()];
   if (!target || target.startsWith('uri:')) return null;
@@ -106,7 +116,7 @@ function directInputPlan(text) {
 }
 
 export function offlinePlan(text, cfg = {}) {
-  const t = clean(text);
+  const t = clean(latestRequest(text));
   if (!t) return null;
 
   const compound = compoundOfflinePlan(t);
@@ -162,6 +172,22 @@ export function offlinePlan(text, cfg = {}) {
   if (read) {
     const file = targetPath(read[1], cfg);
     return { kind: 'offline', steps: [result('file_read', { path: file }, `Read ${file}`)], reason: 'explicit file read request' };
+  }
+
+  const namedFolder = t.match(/^(?:please\s+)?(?:create|make)\s+(?:a\s+)?(?:new\s+)?folder\s+(?:on|in)\s+(.+?)\s+(?:named?|called|with\s+name|name(?:d)?)\s+["']?(.+?)["']?$/i);
+  if (namedFolder) {
+    const base = targetPath(namedFolder[1], cfg);
+    const name = clean(namedFolder[2]);
+    const dir = path.join(base, name);
+    return { kind: 'offline', steps: [result('file_mkdir', { path: dir }, `Created ${dir}`)], reason: 'natural-language directory creation request' };
+  }
+
+  const python = t.match(/^(?:hey\s+)?(?:please\s+)?(?:write|create|make)\s+(?:a\s+)?python\s+program\s+to\s+print\s+([\s\S]+)$/i);
+  if (python) {
+    const value = clean(python[1]);
+    const file = path.join(targetPath('desktop', cfg), 'hello_world.py');
+    const content = `print(${JSON.stringify(value)})\n`;
+    return { kind: 'offline', steps: [result('file_write', { path: file, content }, `Wrote ${file}`)], reason: 'natural-language Python file creation request' };
   }
 
   const mkdir = t.match(/^(?:create|make)\s+(?:a\s+)?(?:new\s+)?folder\s+(.+)$/i);
