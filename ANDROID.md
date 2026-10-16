@@ -15,6 +15,10 @@ termux-setup-storage
 node src/index.js
 ```
 
+The GitHub release also includes `WinAgent-Android-Termux-<version>.zip` and
+`.tar.gz`. Extract the bundle in Termux and run `./termux-install.sh`; this is
+the supported phone package and does not require an API key or local LLM.
+
 The agent can use Android app launch/open, screenshots, taps, swipes, keyboard
 input, clipboard, package listing, and the normal file/shell tools. Shared
 storage is exposed under `~/storage/` after `termux-setup-storage`.

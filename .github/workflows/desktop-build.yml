@@ -1,25 +1,34 @@
-name: desktop-build (Windows installer for the WinAgent app)
-# Two independent jobs on Windows runners:
-#   test   - unit + UI + real-engine end-to-end tests (visible pass/fail, does not gate the installer)
-#   build  - produces WinAgent-Setup-<version>.exe (installer, per-user, no admin needed)
-#            and WinAgent-Portable-<version>.exe (single file, no install)
-# Push a tag like `desktop-v1.0.1` (matching desktop/package.json "version") to also publish
-# both files as a GitHub Release. Unsigned builds show a Windows SmartScreen prompt
-# ("More info" -> "Run anyway").
+name: Cross-platform WinAgent release
+
 on:
   workflow_dispatch:
   push:
     tags: ['desktop-v*']
-    branches: [main]
-    paths: ['desktop/**', 'src/**', '.github/workflows/desktop-build.yml']
+
 permissions:
   contents: write
+
 concurrency:
-  group: desktop-build-${{ github.ref }}
+  group: desktop-release-${{ github.ref }}
   cancel-in-progress: true
+
 jobs:
-  test:
-    runs-on: windows-latest
+  build-desktop:
+    name: Build ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows
+            runner: windows-latest
+            command: npm run dist:win
+          - name: macOS
+            runner: macos-latest
+            command: npm run dist:mac
+          - name: Linux
+            runner: ubuntu-latest
+            command: npm run dist:linux
+    runs-on: ${{ matrix.runner }}
     defaults:
       run:
         working-directory: desktop
@@ -33,32 +42,50 @@ jobs:
           cache: npm
           cache-dependency-path: desktop/package-lock.json
       - run: npm ci
-      - name: tests (parser, runner, sync, UI, real engine end-to-end)
-        run: npm test
-  build:
-    runs-on: windows-latest
-    defaults:
-      run:
-        working-directory: desktop
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-          cache-dependency-path: desktop/package-lock.json
-      - run: npm ci
-      - name: build installer + portable exe
-        run: npm run dist
+      - run: npm test
+      - name: Build installers
+        run: ${{ matrix.command }}
       - uses: actions/upload-artifact@v4
         with:
-          name: WinAgent-windows
-          path: desktop/dist/*.exe
-          retention-days: 30
+          name: WinAgent-${{ matrix.name }}
+          path: desktop/dist/*
           if-no-files-found: error
-      - name: publish release (tags only)
-        if: startsWith(github.ref, 'refs/tags/desktop-v')
+          retention-days: 30
+
+  android-termux:
+    name: Build Android Termux bundle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package Android bundle
+        run: |
+          set -e
+          mkdir -p android-termux/WinAgent
+          cp -R src skills memory package.json ANDROID.md termux-install.sh android-termux/WinAgent/
+          chmod +x android-termux/WinAgent/termux-install.sh
+          tar -czf WinAgent-Android-Termux-${GITHUB_REF_NAME#desktop-v}.tar.gz -C android-termux WinAgent
+          zip -qr WinAgent-Android-Termux-${GITHUB_REF_NAME#desktop-v}.zip android-termux
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WinAgent-Android-Termux
+          path: |
+            WinAgent-Android-Termux-*.tar.gz
+            WinAgent-Android-Termux-*.zip
+          if-no-files-found: error
+          retention-days: 30
+
+  release:
+    name: Publish GitHub release
+    if: startsWith(github.ref, 'refs/tags/desktop-v')
+    needs: [build-desktop, android-termux]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+      - name: Publish release assets
         uses: softprops/action-gh-release@v2
         with:
-          files: desktop/dist/*.exe
+          files: release-assets/*
           generate_release_notes: true
