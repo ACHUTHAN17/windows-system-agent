@@ -82,6 +82,10 @@
         <label>MCP plugin servers (JSON) <textarea id="sMcp" rows="4" spellcheck="false" placeholder='{"filesystem":{"command":"npx","args":["-y","@modelcontextprotocol/server-filesystem","C:/Users/ADMIN"]}}'></textarea></label>
         <div class="dim">Paste an MCP server definition from trusted plugin documentation. Its tools appear automatically in the agent.</div>
 
+        <h2>Android bridge</h2>
+        <label>Android device serial <input id="sAndroid" placeholder="adb serial (optional)"></label>
+        <div class="dim">Set this after enabling USB or wireless debugging. Leave empty when running WinAgent inside Termux. Ask “check Android status” to verify the bridge.</div>
+
         <h2>Voice</h2>
         <label class="check"><input id="sReadAloud" type="checkbox"> Read the agent's replies aloud automatically</label>
         <div class="dim">🎤 next to the composer transcribes speech to text as you talk. 🔊 on any reply reads it aloud on demand. Both run fully in the app (Chromium's built-in voice engine) — no extra setup, but voice input needs an internet connection.</div>

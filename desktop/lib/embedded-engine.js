@@ -141,7 +141,7 @@ class EmbeddedEngine extends EventEmitter {
     const keys = Object.keys(env);
     const prev = {};
     for (const k of keys) { prev[k] = process.env[k]; process.env[k] = env[k]; }
-    const changedModel = ['MODEL_API_URL', 'MODEL_NAME', 'MODEL_PROVIDER', 'MODEL_API_KEY'].some(k => k in env);
+    const changedModel = ['MODEL_API_URL', 'MODEL_NAME', 'MODEL_PROVIDER', 'MODEL_API_KEY', 'ANDROID_SERIAL', 'ANDROID_DEVICE', 'ANDROID_BRIDGE'].some(k => k in env);
     if (changedModel) this.engine = null; // force re-createEngine() so config.js re-reads env
     return () => { for (const k of keys) { if (prev[k] === undefined) delete process.env[k]; else process.env[k] = prev[k]; } };
   }

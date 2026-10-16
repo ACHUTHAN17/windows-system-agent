@@ -1,3 +1,6 @@
+import os from 'node:os';
+import path from 'node:path';
+
 // Shared request router. This layer runs before an LLM so obvious local actions
 // never spend a model call. It is intentionally deterministic: an uncertain
 // request always falls through to the normal agent loop.
@@ -96,10 +99,16 @@ export function localToolCall(route) {
 }
 
 export function resolveFolderTarget(folder, homeDir) {
-  const base = String(homeDir || '').replace(/[\\/]$/, '');
+  const base = String(homeDir || os.homedir() || '').replace(/[\\/]$/, '');
+  const join = (...parts) => path.join(base, ...parts);
+  const termuxShared = process.env.TERMUX_VERSION ? path.join(base, 'storage') : null;
   const map = {
-    downloads: `${base}\\Downloads`, documents: `${base}\\Documents`, desktop: `${base}\\Desktop`,
-    pictures: `${base}\\Pictures`, music: `${base}\\Music`, videos: `${base}\\Videos`,
+    downloads: termuxShared ? path.join(termuxShared, 'downloads') : join('Downloads'),
+    documents: termuxShared ? path.join(termuxShared, 'shared') : join('Documents'),
+    desktop: termuxShared ? path.join(termuxShared, 'shared') : join('Desktop'),
+    pictures: termuxShared ? path.join(termuxShared, 'pictures') : join('Pictures'),
+    music: termuxShared ? path.join(termuxShared, 'music') : join('Music'),
+    videos: termuxShared ? path.join(termuxShared, 'movies') : join('Videos'),
     home: base, temp: null, appData: null,
   };
   return map[folder] || null;

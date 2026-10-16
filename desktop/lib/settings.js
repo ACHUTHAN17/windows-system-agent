@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const DEFAULTS = {
-  settingsVersion: 2,
+  settingsVersion: 3,
   preset: 'free',
   provider: 'openai-compatible',
   apiUrl: '',
@@ -21,6 +21,7 @@ const DEFAULTS = {
   autoSelfImprove: false,
   useScoutedModels: true,
   mcpServers: '',
+  androidSerial: '',
   readAloud: false,
 };
 
@@ -38,8 +39,7 @@ class Settings {
     // allowlist means every path is available except built-in protected paths.
     if (saved.settingsVersion !== DEFAULTS.settingsVersion) {
       this.data.settingsVersion = DEFAULTS.settingsVersion;
-      this.data.fullAuto = true;
-      this.data.allowedRoots = '';
+      if (!saved.settingsVersion) { this.data.fullAuto = true; this.data.allowedRoots = ''; }
       this._save();
     }
   }
@@ -93,6 +93,7 @@ class Settings {
     const imageKey = this._imageKey();
     if (imageKey) env.POLLINATIONS_API_KEY = imageKey;
     if (String(d.mcpServers || '').trim()) env.MCP_SERVERS = String(d.mcpServers).trim();
+    if (String(d.androidSerial || '').trim()) env.ANDROID_SERIAL = String(d.androidSerial).trim();
     if (String(d.allowedRoots || '').trim()) env.ALLOWED_ROOTS = String(d.allowedRoots).trim();
     return env;
   }

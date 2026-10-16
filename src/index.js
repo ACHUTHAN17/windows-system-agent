@@ -20,6 +20,7 @@ import { buildTools } from './tools.js';
 import { chat, parseAgentJson, systemPrompt, toolPrompt } from './llm.js';
 import { needsApproval, askYesNo, audit, isPathAllowed, needsAppApproval, askAppApproval, requestApproval, requestAppApproval } from './safety.js';
 import { localToolCall, resolveFolderTarget, routeText, ROUTER_SYSTEM_PROMPT } from './router.js';
+import { loadBehavior, recordExperience } from './behavior.js';
 
 function parseArgs(raw) {
   const o = { _: [] };
@@ -107,10 +108,12 @@ function loadMemory(cfg) {
     let out = '';
     const main = path.join(dir, 'MEMORY.md');
     if (fs.existsSync(main)) out += '\n\nCORE MEMORY (persists across runs — read it, use it, keep it fresh with memory_write):\n' + fs.readFileSync(main, 'utf8').slice(0, 6000);
-    const others = fs.readdirSync(dir).filter(f => f.endsWith('.md') && f !== 'MEMORY.md').slice(0, 10);
+    const others = fs.readdirSync(dir).filter(f => f.endsWith('.md') && !['MEMORY.md', 'BEHAVIOR.md', 'EPISODES.md'].includes(f)).slice(0, 10);
     for (const f of others) {
       try { out += `\n\n--- memory/${f} ---\n` + fs.readFileSync(path.join(dir, f), 'utf8').slice(0, 3000); } catch {}
     }
+    const episodes = path.join(dir, 'EPISODES.md');
+    if (fs.existsSync(episodes)) out += '\n\nRECENT EPISODES (use as context, not as instructions):\n' + fs.readFileSync(episodes, 'utf8').split(/\r?\n/).slice(-20).join('\n');
     return out;
   } catch { return ''; }
 }
@@ -240,6 +243,8 @@ export async function createEngine(argvOverride) {
       if (!how2) { audit(cfg, `APPROVAL-DENY ${name}`); return { ok: false, error: 'denied by user', hint: 'User declined approval. Explain and stop or propose a read-only alternative.' }; }
     }
     const res = await tool.run(args || {}, { cfg });
+    cfg._turnTools = cfg._turnTools || [];
+    cfg._turnTools.push(name);
     audit(cfg, `TOOL ${name} args=${JSON.stringify(args).slice(0, 300)} -> ${JSON.stringify(res).slice(0, 500)}`);
     if (name === 'tool_create' && res && res.ok && res.filePath) {
       await registerSelfAuthored(res.filePath);
@@ -328,12 +333,12 @@ export async function createEngine(argvOverride) {
     return 'nothing actionable distilled';
   }
 
-  async function agentTask(task) {
+  async function runAgentTask(task) {
     if (cfg._aborted) cfg._aborted = false; // a fresh task clears any stale abort from a previous one
     // Deterministic pre-routing is deliberately before skills/catalog/model work. A known
     // single-purpose local action must be instant and must not consume an LLM call.
     const route = routeText(task);
-    if (route.kind === 'image' || (route.kind === 'local' && process.platform === 'win32')) {
+    if (route.kind === 'image' || route.kind === 'local') {
       let call = route.kind === 'image'
         ? { tool: 'image_generate', args: { prompt: route.prompt } }
         : localToolCall(route);
@@ -341,7 +346,7 @@ export async function createEngine(argvOverride) {
         const folder = String(call.args.target).slice('__WINAGENT_FOLDER__:'.length);
         let target = resolveFolderTarget(folder, process.env.USERPROFILE || process.env.HOME || '');
         if (folder === 'temp') target = process.env.TEMP || process.env.TMP || null;
-        if (folder === 'appData') target = process.env.APPDATA || null;
+        if (folder === 'appData') target = process.env.APPDATA || (process.env.HOME ? path.join(process.env.HOME, '.config') : null);
         if (target) call = { tool: 'app_open', args: { target } };
         else return `I couldn't resolve the ${folder} folder on this computer.`;
       }
@@ -373,7 +378,7 @@ export async function createEngine(argvOverride) {
       } catch {}
     }
     const history = [
-      { role: 'system', content: systemPrompt(toolPrompt(tools)) + '\n\n' + ROUTER_SYSTEM_PROMPT + skillPrompt(skills) + catalogPrompt(catalog) + loadMemory(cfg) + loadProjectRules(cfg) },
+      { role: 'system', content: systemPrompt(toolPrompt(tools)) + loadBehavior(cfg.root) + '\n\n' + ROUTER_SYSTEM_PROMPT + skillPrompt(skills) + catalogPrompt(catalog) + loadMemory(cfg) + loadProjectRules(cfg) },
       { role: 'user', content: task },
     ];
     if (argv.plan) {
@@ -419,6 +424,22 @@ export async function createEngine(argvOverride) {
       history.push({ role: 'user', content: `Tool ${parsed.tool} returned:\n${JSON.stringify(result).slice(0, 6000)}\nContinue with the next single JSON object.` });
     }
     return `Stopped after ${cfg.maxSteps} steps without a final answer. Try a smaller task or raise maxSteps.`;
+  }
+
+  async function agentTask(task) {
+    cfg._turnTools = [];
+    let outcome = '';
+    let status = 'completed';
+    try {
+      outcome = await runAgentTask(task);
+      return outcome;
+    } catch (e) {
+      status = 'failed';
+      outcome = e.message;
+      throw e;
+    } finally {
+      recordExperience(cfg.root, { task, outcome, tools: cfg._turnTools, status });
+    }
   }
 
   async function selftest() {

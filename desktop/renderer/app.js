@@ -240,6 +240,7 @@
   function onEvent(ev) {
     const t = S.turn; if (!t) return;
     switch (ev.t) {
+      case 'route': t.activity.push({ k: 'route', text: `${String(ev.kind || 'agent').toUpperCase()} route · ${ev.reason || ''}` }); break;
       case 'step': t.activity.push({ k: 'step', text: `Step ${ev.n}: ${ev.text}` }); break;
       case 'tool': t.activity.push({ k: 'tool', name: ev.name, ok: ev.ok, summary: ev.summary }); break;
       case 'note': case 'log': if (t.activity.length < 300) t.activity.push({ k: 'note', text: ev.text }); break;
@@ -298,6 +299,7 @@
     $('sPat').placeholder = s.hasGithubPat ? '•••••••• saved (leave blank to keep)' : 'ghp_… (repo scope)';
     $('sAutoPush').checked = !!s.autoPushLearned; $('sSelfImprove').checked = !!s.autoSelfImprove; $('sScouted').checked = s.useScoutedModels !== false; $('sReadAloud').checked = !!s.readAloud;
     $('sMcp').value = s.mcpServers || '';
+    $('sAndroid').value = s.androidSerial || '';
     $('customFields').hidden = s.preset === 'free'; updateMode();
   }
   async function loadSettings() { S.settings = await api.getSettings(); fillSettings(); const i = await api.info(); $('aboutLine').textContent = `WinAgent desktop ${i.version} · agent folder: ${i.agentDir}`; }
@@ -310,7 +312,7 @@
       fullAuto: $('sFull').checked, allowedRoots: $('sRoots').value.trim(), hotkey: $('sHotkey').value.trim(),
       startWithWindows: $('sStart').checked, closeToTray: $('sTray').checked, syncOnStart: $('sSyncStart').checked, syncMemory: $('sSyncMem').checked, syncEngine: $('sSyncEng').checked,
       githubRepo: $('sRepo').value.trim(), autoPushLearned: $('sAutoPush').checked, autoSelfImprove: $('sSelfImprove').checked, useScoutedModels: $('sScouted').checked,
-      readAloud: $('sReadAloud').checked, mcpServers,
+      readAloud: $('sReadAloud').checked, mcpServers, androidSerial: $('sAndroid').value.trim(),
     };
     if ($('sKey').value.trim()) patch.apiKey = $('sKey').value.trim();
     if ($('sImageKey').value.trim()) patch.imageApiKey = $('sImageKey').value.trim();

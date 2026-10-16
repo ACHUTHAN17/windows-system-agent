@@ -122,6 +122,23 @@ CLOUD (.github/workflows/, docs/)     learn-skill (issue/chat teach) · daily-sa
 CHANNELS                              terminal REPL · dashboard :8080 (chat+approvals) · Telegram · GitHub-issue chat · web chat
 ```
 
+## Cross-platform control
+
+The engine keeps one tool contract and selects a host backend at runtime:
+
+- Windows uses hidden PowerShell/Win32 actions.
+- Linux/macOS use the POSIX backend plus available desktop helpers such as
+  `xdotool`, `grim`, `scrot`, or `xdg-open`.
+- Android uses Termux locally, or an adb-connected device when
+  `ANDROID_SERIAL`/`ANDROID_DEVICE` is configured. The Android bridge covers
+  app open/launch, package listing, screenshots, taps, swipes, key input, and
+  clipboard where the host/device supports them.
+
+The request router runs before the model on every host. A single obvious local
+action is executed directly; ambiguous or multi-step work enters the autonomous
+agent loop. Host permissions, Android sandboxing, protected paths, and elevation
+boundaries remain enforced by the operating system.
+
 ## Contracts (follow these and nothing breaks)
 
 - **Tool**: `{ name, description, args, run(args, {cfg}) }` → `{ok, ...data}` or `{ok:false, error, hint}`. Never throw. No deps. Windows-first, Linux via tools-linux.js override (return `{handled:false}` to fall through).

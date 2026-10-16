@@ -8,6 +8,7 @@ import { promisify } from 'node:util';
 import os from 'node:os';
 import { isPathAllowed } from './safety.js';
 import { linuxTool } from './tools-linux.js';
+import { androidTool } from './tools-android.js';
 
 const execFileAsync = promisify(execFile);
 
@@ -84,6 +85,18 @@ async function backupIfExists(p) {
 
 export function buildTools() {
   const tools = [
+    {
+      name: 'android_status',
+      description: 'Check Android control availability through Termux or an adb-connected device.',
+      args: {},
+      async run() { return fail('Android bridge is not available on this host', 'Run inside Termux or configure ANDROID_SERIAL with adb.'); },
+    },
+    {
+      name: 'android_device',
+      description: 'Inspect the Android bridge mode and connected device state.',
+      args: {},
+      async run() { return fail('Android bridge is not available on this host', 'Run inside Termux or configure ANDROID_SERIAL with adb.'); },
+    },
     {
       name: 'image_generate',
       description: 'Generate an image from a text prompt using Pollinations. Requires POLLINATIONS_API_KEY '
@@ -1374,6 +1387,8 @@ public class WinDbl { [DllImport("user32.dll")] public static extern bool SetCur
     ...t,
     run: async (a, c) => {
       try {
+          const av = await androidTool(t.name, a, c);
+          if (av && av.handled) return av.result;
         const ov = await linuxTool(t.name, a, c);
         if (ov && ov.handled) return ov.result;
       } catch (e) {

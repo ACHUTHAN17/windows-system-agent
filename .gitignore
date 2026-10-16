@@ -3,6 +3,7 @@
 config.json
 *.log
 agent-audit.log
+memory/EPISODES.md
 
 # runtime artifacts
 winshot-*.png
