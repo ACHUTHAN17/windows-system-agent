@@ -3,7 +3,7 @@
 346 skills audited, 25 links probed, 2 dead.
 9 need attention:
 
-## a-brief-history-of-the-bloomberg-termina.md (67903 chars)
+## a-brief-history-of-the-bloomberg-termina.md (68834 chars)
 - dead link (403): https://agihunt.info/en/p/1a0f31a25f2bdfec108aaac392c
 
 ## a-privacy-analysis-of-web-and-mobile-con.md (6246 chars)
