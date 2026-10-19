@@ -1,11 +1,10 @@
-# Skill health — 2026-10-18
+# Skill health — 2026-10-19
 
-348 skills audited, 25 links probed, 2 dead.
+350 skills audited, 25 links probed, 1 dead.
 10 need attention:
 
 ## a-privacy-analysis-of-web-and-mobile-con.md (7020 chars)
 - dead link (404): https://jorgegarciaherrero.com/wp-content/interactivos/20260916-Prompt
-- dead link (ERR:This operation was aborted): https://dspace.networks.imdea.org/bitstream/handle/20.500.12761/2073/l
 
 ## agent-overlay.md (3676 chars)
 - unknown tool refs: click, drag, type, file
