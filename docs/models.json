@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-20T22:03:09.647Z",
+  "updated": "2026-10-20T23:40:50.140Z",
   "live": [
     {
       "id": "pollinations-openai",
@@ -7,7 +7,7 @@
       "url": "https://text.pollinations.ai/openai",
       "kind": "openai-post",
       "model": "openai",
-      "latencyMs": 423
+      "latencyMs": 525
     },
     {
       "id": "pollinations-openai-fast",
@@ -15,7 +15,7 @@
       "url": "https://text.pollinations.ai/openai",
       "kind": "openai-post",
       "model": "openai-fast",
-      "latencyMs": 278
+      "latencyMs": 228
     }
   ],
   "candidates": []
