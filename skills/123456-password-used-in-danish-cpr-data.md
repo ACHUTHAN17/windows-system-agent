@@ -2295,3 +2295,29 @@ When the task mentions refresh and verify the 123456-password-used-in-danish-cpr
 - Denmark Breach: 123456 Password Exposed 8.8M [2026]
   https://trendintech.com/denmark-123456-password-breach-8-8-million-2026/
 
+
+
+---
+## Field update 2026-10-20
+# Skill: refresh and verify the 123456-password-used-in-danish-cpr-data- skill
+
+Auto-learned 2026-10-20 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 123456-password-used-in-danish-cpr-data- skill.
+
+## Steps
+1. See sources below and follow the official docs.
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- "123456": The Password That Exposed Nearly Every Dane
+  https://alpineweekly.com/latest-news/denmark-cpr-data-breach-weak-password-123456
+- Denmark CPR breach blamed on &#x27;123456&#x27; password | Cybernews
+  https://cybernews.com/security/denmark-cpr-data-breach-weak-password/
+- `123456&#x27; password used in massive Danish CPR data breach
+  https://f4n6.co.uk/security-feed/123456-password-used-in-massive-danish-cpr-data-breach/
+
