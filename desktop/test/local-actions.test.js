@@ -25,6 +25,7 @@ test('detects known apps and URI-style targets', () => {
   assert.strictEqual(detectLocalAction('open system settings').target, 'uri:ms-settings:');
   assert.strictEqual(detectLocalAction('open windows settings').target, 'uri:ms-settings:');
   assert.strictEqual(detectLocalAction('start task manager').target, 'taskmgr');
+  assert.strictEqual(detectLocalAction('hey can u open control panel').target, 'control');
   assert.strictEqual(detectLocalAction('please open chrome').target, 'chrome');
 });
 

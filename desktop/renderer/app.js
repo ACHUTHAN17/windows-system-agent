@@ -292,6 +292,10 @@
   // ---------- settings ----------
   function fillSettings() {
     const s = S.settings; if (!s) return;
+    const status = $('sModelStatus');
+    if (status) status.textContent = s.preset === 'offline'
+      ? 'Offline is ready for direct device tasks and verified local artifacts. Add a model only for open-ended planning.'
+      : `Active planning brain: ${modelLabel(s)}. Local tools remain available in every mode.`;
     $('sPreset').value = s.preset; $('sUrl').value = s.apiUrl || ''; $('sModel').value = s.model || ''; $('sKey').value = '';
     $('sKey').placeholder = s.hasKey ? '•••••••• saved (leave blank to keep)' : 'paste your API key';
     $('keyNote').textContent = s.hasKey ? (s.keyEncrypted ? 'Key is stored encrypted with Windows DPAPI.' : 'Key is stored unencrypted (secure storage unavailable).') : '';

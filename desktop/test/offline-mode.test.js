@@ -38,6 +38,13 @@ test('offline planner executes known compound desktop tasks without a model', as
   assert.deepEqual(plan.steps[1].args, { browser: 'edge', url: 'https://www.netflix.com/login' });
 });
 
+test('offline planner creates a verified disk-report artifact plan without a model', async () => {
+  if (!offlinePlan) ({ offlinePlan } = await import('../../src/offline.js'));
+  const plan = offlinePlan('go through my C drive and give me an interactive chart of what occupies the most space', cfg);
+  assert.deepEqual(plan.steps.map(step => step.tool), ['disk_space_report', 'app_open']);
+  assert.match(plan.steps[0].args.outPath, /WinAgent-disk-space-report\.html$/i);
+});
+
 test('offline planner composes ordinary local action sequences', async () => {
   if (!offlinePlan) ({ offlinePlan } = await import('../../src/offline.js'));
   assert.deepEqual(offlinePlan('install vscode and open settings', cfg).steps.map(step => step.tool), ['package_install', 'app_open']);

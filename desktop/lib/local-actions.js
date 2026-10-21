@@ -10,7 +10,7 @@ const os = require('node:os');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 
-const VERB = /^(?:please\s+)?(?:can you\s+)?(open|launch|start|show me|show)\s+(.+?)[.!\s]*$/i;
+const VERB = /^(?:(?:hey|hi)[,!\s]+)?(?:please\s+)?(?:(?:can|could|would)\s+(?:you|u)\s+)?(open|launch|start|show me|show)\s+(.+?)[.!\s]*$/i;
 // If any of these show up in the remainder, this is a compound task (e.g. "open the file and
 // summarize it") and must go through the agent, not be shortcut.
 const COMPOUND = /\b(and|then|so that|so I can|to see|summar|analy[sz]e|read\b|list\b|find\b|search|tell me|what|why|how|check|review|edit|delete|rename|compare|convert)\b/i;

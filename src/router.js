@@ -5,7 +5,7 @@ import path from 'node:path';
 // never spend a model call. It is intentionally deterministic: an uncertain
 // request always falls through to the normal agent loop.
 
-const OPEN_VERB = /^(?:please\s+)?(?:can you\s+)?(open|launch|start|show me|show)\s+(.+?)[.!\s]*$/i;
+const OPEN_VERB = /^(?:(?:hey|hi)[,!\s]+)?(?:please\s+)?(?:(?:can|could|would)\s+(?:you|u)\s+)?(open|launch|start|show me|show)\s+(.+?)[.!\s]*$/i;
 const COMPOUND = /\b(and|then|so that|so i can|to see|summar?i[sz]|analy[sz]e|read\b|list\b|find\b|search|tell me|what|why|how|check|review|edit|delete|rename|compare|convert|write)\b/i;
 const IMAGE_WORD = /\b(image|picture|illustration|logo|wallpaper|photo|icon|artwork|portrait|banner)\b/i;
 const IMAGE_VERB = /\b(generate|create|draw|make|design|render|produce|paint|imagine)\b/i;

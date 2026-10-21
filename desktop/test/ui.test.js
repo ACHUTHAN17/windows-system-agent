@@ -89,6 +89,8 @@ test('errors are shown, settings save incl. key, views open', async () => {
 
   d.querySelector('[data-view=settings]').click(); await tick();
   assert.strictEqual(d.getElementById('view-settings').hidden, false);
+  assert.ok(d.querySelectorAll('.settings-card').length >= 5, 'settings are organized into focused cards');
+  assert.ok(d.getElementById('sModelStatus').textContent.includes('Offline is ready'));
   const sel = d.getElementById('sPreset'); sel.value = 'openai'; sel.dispatchEvent(new dom.window.Event('change'));
   assert.strictEqual(d.getElementById('sUrl').value, 'https://api.openai.com/v1');
   d.getElementById('sKey').value = 'sk-test'; d.getElementById('sFull').checked = true;

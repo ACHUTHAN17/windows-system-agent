@@ -140,6 +140,21 @@ export function offlinePlan(text, cfg = {}) {
   const direct = directInputPlan(t);
   if (direct) return { kind: 'offline', steps: [direct], reason: 'explicit computer input request' };
 
+  const asksForDiskReport = /\b(?:disk|drive|storage|space)\b/i.test(t)
+    && /\b(?:report|chart|interactive|largest|occup(?:y|ies|ied)|usage|free\s+space|clean(?:up)?)\b/i.test(t);
+  if (asksForDiskReport) {
+    const root = /\b(?:c\s*:?\s*(?:drive)?|system\s+drive)\b/i.test(t) ? `${process.env.SystemDrive || 'C:'}\\` : targetPath('home', cfg);
+    const outPath = path.join(targetPath('desktop', cfg), 'WinAgent-disk-space-report.html');
+    return {
+      kind: 'offline',
+      steps: [
+        result('disk_space_report', { root, outPath, maxDepth: 3, maxEntries: 40000 }, `Created disk space report at ${outPath}`),
+        result('app_open', { target: outPath }, `Opened disk space report`),
+      ],
+      reason: 'explicit disk-space artifact request',
+    };
+  }
+
   if (/^(?:show|give|check|display|what(?: is|'s))\s+(?:my\s+)?(?:system|computer|pc|device)\s+(?:info|information|status)?$/i.test(t)
     || /^(?:system|computer)\s+(?:info|information|status)$/i.test(t)) {
     return { kind: 'offline', steps: [result('sys_info', {}, 'System information')], reason: 'explicit system information request' };

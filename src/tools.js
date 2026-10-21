@@ -16,6 +16,93 @@ function ok(data) { return { ok: true, ...data }; }
 function fail(error, hint) { return { ok: false, error: String(error), hint }; }
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
 
+const NATIVE_INPUT_PREAMBLE = `Add-Type @'
+using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+public static class WinAgentInput {
+  [StructLayout(LayoutKind.Sequential)] public struct INPUT { public UInt32 type; public InputUnion U; }
+  [StructLayout(LayoutKind.Explicit)] public struct InputUnion { [FieldOffset(0)] public KEYBDINPUT ki; }
+  [StructLayout(LayoutKind.Sequential)] public struct KEYBDINPUT { public UInt16 wVk; public UInt16 wScan; public UInt32 dwFlags; public UInt32 time; public IntPtr dwExtraInfo; }
+  const UInt32 INPUT_KEYBOARD = 1, KEYEVENTF_KEYUP = 0x0002, KEYEVENTF_UNICODE = 0x0004;
+  [DllImport("user32.dll", SetLastError=true)] static extern UInt32 SendInput(UInt32 nInputs, INPUT[] pInputs, Int32 cbSize);
+  static void Send(UInt16 vk, UInt16 scan, UInt32 flags) {
+    var input = new INPUT[] { new INPUT { type=INPUT_KEYBOARD, U=new InputUnion { ki=new KEYBDINPUT { wVk=vk, wScan=scan, dwFlags=flags, time=0, dwExtraInfo=IntPtr.Zero } } } };
+    if (SendInput(1, input, Marshal.SizeOf(typeof(INPUT))) != 1) throw new Win32Exception(Marshal.GetLastWin32Error());
+  }
+  public static void Key(Int32 vk, Boolean down) { Send((UInt16)vk, 0, down ? 0 : KEYEVENTF_KEYUP); }
+  public static void Unicode(String text) { foreach (Char c in text) { Send(0, c, KEYEVENTF_UNICODE); Send(0, c, KEYEVENTF_UNICODE | KEYEVENTF_KEYUP); } }
+}
+'@`;
+
+function nativeTextCommand(text, enter) {
+  const encoded = Buffer.from(String(text || ''), 'utf16le').toString('base64');
+  return `${NATIVE_INPUT_PREAMBLE}\n$text = [Text.Encoding]::Unicode.GetString([Convert]::FromBase64String('${encoded}')); [WinAgentInput]::Unicode($text); ${enter ? '[WinAgentInput]::Key(13,$true); [WinAgentInput]::Key(13,$false);' : ''}`;
+}
+
+function virtualKeyCode(key) {
+  const k = String(key || '').trim().toLowerCase().replace(/[\s_-]+/g, '');
+  const named = { enter: 13, return: 13, tab: 9, esc: 27, escape: 27, backspace: 8, delete: 46, del: 46, up: 38, down: 40, left: 37, right: 39, home: 36, end: 35, pgup: 33, pageup: 33, pgdn: 34, pagedown: 34, space: 32, insert: 45, printscreen: 44, capslock: 20, numlock: 144, scrolllock: 145, pause: 19, browserback: 166, browserforward: 167, browserrefresh: 168, browserstop: 169, browsersearch: 170, browserfavorites: 171, browserhome: 172, volumeup: 175, volumedown: 174, volumemute: 173, medianext: 176, mediaprevious: 177, mediastop: 178, mediaplaypause: 179 };
+  if (named[k]) return named[k];
+  if (/^f(?:[1-9]|1\d|2[0-4])$/.test(k)) return 111 + Number(k.slice(1));
+  if (/^[a-z]$/i.test(k)) return k.toUpperCase().charCodeAt(0);
+  if (/^[0-9]$/.test(k)) return k.charCodeAt(0);
+  return null;
+}
+
+function modifierCodes(modifiers) {
+  const out = [];
+  for (const m of String(modifiers || '').toLowerCase().split(/[,+\s]+/).filter(Boolean)) {
+    const code = m.startsWith('ctrl') || m === 'control' ? 17 : m === 'alt' ? 18 : m.startsWith('shift') ? 16 : m === 'win' || m === 'meta' ? 91 : null;
+    if (code && !out.includes(code)) out.push(code);
+  }
+  return out;
+}
+
+function nativeTapCommand(keyCode, modifiers) {
+  const mods = modifierCodes(modifiers);
+  const down = mods.map(k => `[WinAgentInput]::Key(${k},$true);`).join('');
+  const up = mods.slice().reverse().map(k => `[WinAgentInput]::Key(${k},$false);`).join('');
+  return `${NATIVE_INPUT_PREAMBLE}\n${down}[WinAgentInput]::Key(${keyCode},$true); [WinAgentInput]::Key(${keyCode},$false); ${up}`;
+}
+
+function parseNativeSequence(sequence) {
+  const strokes = [];
+  const source = String(sequence || '');
+  for (let i = 0; i < source.length;) {
+    const modifiers = [];
+    while (i < source.length && '^+%'.includes(source[i])) {
+      const code = source[i] === '^' ? 17 : source[i] === '+' ? 16 : 18;
+      if (!modifiers.includes(code)) modifiers.push(code);
+      i++;
+    }
+    if (i >= source.length) return null;
+    let key = source[i++]; let repeat = 1;
+    if (key === '{') {
+      const end = source.indexOf('}', i);
+      if (end < 0) return null;
+      const token = source.slice(i, end).trim(); i = end + 1;
+      const match = token.match(/^([^\s]+)(?:\s+(\d{1,3}))?$/);
+      if (!match) return null;
+      key = match[1]; repeat = Number(match[2] || 1);
+    }
+    const keyCode = virtualKeyCode(key);
+    if (!keyCode || !Number.isInteger(repeat) || repeat < 1 || repeat > 100) return null;
+    for (let n = 0; n < repeat; n++) strokes.push({ keyCode, modifiers });
+  }
+  return strokes;
+}
+
+function nativeSequenceCommand(strokes) {
+  const lines = [];
+  for (const stroke of strokes) {
+    lines.push(...stroke.modifiers.map(k => `[WinAgentInput]::Key(${k},$true);`));
+    lines.push(`[WinAgentInput]::Key(${stroke.keyCode},$true); [WinAgentInput]::Key(${stroke.keyCode},$false);`);
+    lines.push(...stroke.modifiers.slice().reverse().map(k => `[WinAgentInput]::Key(${k},$false);`));
+  }
+  return `${NATIVE_INPUT_PREAMBLE}\n${lines.join(' ')}`;
+}
+
 async function ps(command, timeout = 20000) {
   // Single choke point for PowerShell so audit + allowlist stay in one place.
   const { stdout, stderr } = await execFileAsync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', command], { timeout, windowsHide: true, maxBuffer: 8 * 1024 * 1024 });
@@ -113,6 +200,60 @@ async function backupIfExists(p) {
     await fsp.copyFile(p, bak);
     return bak;
   } catch { return null; }
+}
+
+function htmlEscape(value) {
+  return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+}
+
+function bytesLabel(bytes) {
+  const n = Number(bytes || 0);
+  if (!Number.isFinite(n) || n <= 0) return '0 B';
+  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.min(units.length - 1, Math.floor(Math.log(n) / Math.log(1024)));
+  return `${(n / (1024 ** i)).toFixed(i < 2 ? 0 : 1)} ${units[i]}`;
+}
+
+async function measureTree(dir, depth, state) {
+  if (state.visited >= state.maxEntries) { state.truncated = true; return { bytes: 0, files: 0 }; }
+  let entries;
+  try { entries = await fsp.readdir(dir, { withFileTypes: true }); }
+  catch { state.unreadable++; return { bytes: 0, files: 0 }; }
+  let bytes = 0, files = 0;
+  for (const entry of entries) {
+    if (state.visited >= state.maxEntries) { state.truncated = true; break; }
+    state.visited++;
+    const item = path.join(dir, entry.name);
+    try {
+      if (entry.isSymbolicLink()) continue;
+      if (entry.isFile()) { bytes += (await fsp.stat(item)).size; files++; }
+      else if (entry.isDirectory() && depth > 0) {
+        const child = await measureTree(item, depth - 1, state);
+        bytes += child.bytes; files += child.files;
+      }
+    } catch { state.unreadable++; }
+  }
+  return { bytes, files };
+}
+
+function reportTips(rows) {
+  const names = rows.map(r => `${r.name} ${r.path}`.toLowerCase());
+  const tips = [];
+  if (names.some(n => /downloads/.test(n))) tips.push('Review Downloads first; move or remove old installers, archives, and duplicate media after checking them.');
+  if (names.some(n => /appdata|temp|cache/.test(n))) tips.push('Use each app\'s own cleanup controls before removing cache or temporary data.');
+  if (names.some(n => /windows|program files/.test(n))) tips.push('Do not delete Windows or Program Files folders manually; use Storage cleanup or uninstall unused apps instead.');
+  tips.push('Use the chart to inspect the largest folders, then verify individual files before deleting anything.');
+  return tips;
+}
+
+function diskReportHtml({ root, rows, state, createdAt }) {
+  const data = JSON.stringify(rows).replace(/</g, '\\u003c');
+  const tips = reportTips(rows).map(t => `<li>${htmlEscape(t)}</li>`).join('');
+  const status = state.truncated
+    ? `Partial scan: stopped after ${state.visited.toLocaleString()} entries to keep the app responsive.`
+    : `Completed scan of ${state.visited.toLocaleString()} entries.`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>WinAgent disk space report</title><style>
+*{box-sizing:border-box}body{margin:0;background:#0b1020;color:#edf2ff;font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}.wrap{max-width:1100px;margin:auto;padding:36px 24px 56px}.hero{padding:28px;border:1px solid #27365d;border-radius:20px;background:linear-gradient(130deg,#182650,#111a31)}h1{margin:0;font-size:30px}h2{margin:30px 0 10px}.muted{color:#adbbdc}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.toolbar input,.toolbar button{font:inherit;border-radius:10px;padding:10px 12px}.toolbar input{min-width:260px;border:1px solid #3a4d7b;background:#101a31;color:#fff}.toolbar button{border:1px solid #4665b2;background:#1d3267;color:#fff;cursor:pointer}.row{padding:14px 0;border-bottom:1px solid #253152;cursor:pointer}.head{display:flex;justify-content:space-between;gap:16px;font-weight:650}.bar{height:12px;margin-top:8px;border-radius:99px;background:#101a31;overflow:hidden}.bar>i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#7b8cff,#58d4c3)}.detail{margin-top:16px;padding:16px;border-radius:12px;background:#101a31;white-space:pre-wrap}.tips{padding:18px 22px;border-radius:14px;background:#10251f;border:1px solid #23654f}.tips li{margin:8px 0}@media(max-width:560px){.head{flex-direction:column;gap:2px}.toolbar input{min-width:100%}}</style></head><body><main class="wrap"><section class="hero"><h1>Disk space report</h1><p class="muted">Root: ${htmlEscape(root)} · Created: ${htmlEscape(createdAt)}</p><p>${htmlEscape(status)} ${state.unreadable ? `${state.unreadable.toLocaleString()} unreadable items were skipped.` : ''}</p></section><div class="toolbar"><input id="filter" placeholder="Filter folders…"><button data-sort="size">Sort by size</button><button data-sort="name">Sort by name</button></div><section id="chart"></section><h2>Safe cleanup guidance</h2><ul class="tips">${tips}</ul><div id="detail" class="detail">Select a folder to view its measured size and path.</div></main><script>const rows=${data};let sort='size';const chart=document.querySelector('#chart'),detail=document.querySelector('#detail'),filter=document.querySelector('#filter');const fmt=n=>{const u=['B','KB','MB','GB','TB'];let i=0;while(n>=1024&&i<u.length-1){n/=1024;i++}return n.toFixed(i<2?0:1)+' '+u[i]};function draw(){const q=filter.value.toLowerCase();const list=rows.filter(r=>(r.name+r.path).toLowerCase().includes(q)).sort((a,b)=>sort==='name'?a.name.localeCompare(b.name):b.bytes-a.bytes);const max=Math.max(1,...list.map(r=>r.bytes));chart.innerHTML=list.map((r,i)=>'<article class="row" data-i="'+i+'"><div class="head"><span>'+r.name+'</span><span>'+fmt(r.bytes)+'</span></div><div class="bar"><i style="width:'+Math.max(1,100*r.bytes/max)+'%"></i></div></article>').join('')||'<p class="muted">No matching folders.</p>';[...chart.querySelectorAll('.row')].forEach((el,i)=>el.onclick=()=>{const r=list[i];detail.textContent=r.path+'\\n'+fmt(r.bytes)+' across '+r.files.toLocaleString()+' files';});}filter.oninput=draw;document.querySelectorAll('[data-sort]').forEach(b=>b.onclick=()=>{sort=b.dataset.sort;draw()});draw();</script></body></html>`;
 }
 
 export function buildTools() {
@@ -569,14 +710,15 @@ export function buildTools() {
       },
     },
     {
-      name: 'key_press', description: 'Type text into the focused window (SendKeys). Use window_focus first. INPUT-INJECTING: needs approval.',
+      name: 'key_press', description: 'Type text into the focused window using native Windows SendInput. Use window_focus first. INPUT-INJECTING: needs approval.',
       args: { text: 'text to type', enter: 'true to press Enter after (opt)' },
       async run(a) {
         try {
-          const esc = String(a.text ?? '').replace(/([+^%~(){}[\]])/g, '{$1}').replace(/'/g, "''") + (String(a.enter) === 'true' ? '{ENTER}' : '');
-          await ps(`(New-Object -ComObject WScript.Shell).SendKeys('${esc}')`);
-          return ok({ typedChars: String(a.text ?? '').length, enter: String(a.enter) === 'true' });
-        } catch (e) { return fail(e.message); }
+          const text = String(a.text ?? '').slice(0, 20000);
+          if (!text) return fail('text is required');
+          await ps(nativeTextCommand(text, String(a.enter) === 'true'));
+          return ok({ typedChars: text.length, enter: String(a.enter) === 'true', transport: 'SendInput' });
+        } catch (e) { return fail(e.message, 'Focus the target window first. Windows cannot inject keys into an elevated app from a non-elevated WinAgent process.'); }
       },
     },
     {
@@ -849,6 +991,40 @@ export function buildTools() {
       },
     },
     {
+      name: 'disk_space_report', description: 'Create a real interactive HTML report of the largest folders under a drive/folder. Scans safely with bounded depth/entry limits, verifies the written artifact, and returns its path.',
+      args: { root: 'drive/folder to scan, default C:\\ on Windows', outPath: 'absolute .html report path (opt)', maxDepth: 'folder depth 1-6, default 3 (opt)', maxEntries: 'scan limit 1000-100000, default 40000 (opt)' },
+      async run(a, ctx) {
+        try {
+          const root = path.resolve(String(a.root || (process.platform === 'win32' ? `${process.env.SystemDrive || 'C:'}\\` : os.homedir())));
+          const allowed = isPathAllowed(ctx.cfg, root); if (!allowed.ok) return fail(allowed.reason);
+          const rootStat = await fsp.stat(root); if (!rootStat.isDirectory()) return fail(`${root} is not a directory`);
+          const outPath = path.resolve(String(a.outPath || path.join(os.homedir(), 'Desktop', 'WinAgent-disk-space-report.html')));
+          const outAllowed = isPathAllowed(ctx.cfg, outPath); if (!outAllowed.ok) return fail(outAllowed.reason);
+          const maxDepth = Math.min(6, Math.max(1, Number(a.maxDepth || 3)));
+          const maxEntries = Math.min(100000, Math.max(1000, Number(a.maxEntries || 40000)));
+          const state = { visited: 0, unreadable: 0, truncated: false, maxEntries };
+          const children = await fsp.readdir(root, { withFileTypes: true });
+          const rows = [];
+          for (const child of children) {
+            if (state.visited >= state.maxEntries) { state.truncated = true; break; }
+            if (!child.isDirectory() || child.isSymbolicLink()) continue;
+            const childPath = path.join(root, child.name);
+            const measured = await measureTree(childPath, maxDepth - 1, state);
+            rows.push({ name: child.name, path: childPath, bytes: measured.bytes, files: measured.files });
+          }
+          rows.sort((a, b) => b.bytes - a.bytes);
+          const createdAt = new Date().toISOString();
+          await fsp.mkdir(path.dirname(outPath), { recursive: true });
+          const backup = await backupIfExists(outPath);
+          await fsp.writeFile(outPath, diskReportHtml({ root, rows, state, createdAt }), 'utf8');
+          const written = await fsp.stat(outPath);
+          if (!written.size) return fail('report file was empty after writing');
+          const top = rows.slice(0, 10).map(r => `${r.name}: ${bytesLabel(r.bytes)}`).join('\n') || '(no readable child folders)';
+          return ok({ path: outPath, bytes: written.size, backup, root, partial: state.truncated, scannedEntries: state.visited, unreadableEntries: state.unreadable, topFolders: rows.slice(0, 10), content: `Created and verified interactive disk report:\n${outPath}\n\nLargest measured folders:\n${top}${state.truncated ? '\n\nNote: the scan reached its safety limit, so smaller folders may be incomplete.' : ''}` });
+        } catch (e) { return fail(e.message, 'Choose a readable folder and ensure the output path is allowed.'); }
+      },
+    },
+    {
       name: 'web_fetch', description: 'GET a URL, return status + text (first ~8000 chars). For downloads use outFile.',
       args: { url: 'https://...', outFile: 'absolute path to save download (opt)', maxChars: 'truncate (opt)' },
       async run(a, ctx) {
@@ -911,42 +1087,37 @@ for ($i = 1; $i -le ${steps}; $i++) { [WinDrag]::SetCursorPos([int](${nums[0]} +
       },
     },
     {
-      name: 'key_tap', description: 'Press a special key with optional modifiers (no text typing; use key_press for text). Examples: Enter, Tab, Esc, F5, Ctrl+S, Alt+Tab. INPUT-INJECTING.',
+      name: 'key_tap', description: 'Press a special key with optional modifiers using native Windows SendInput (no text typing; use key_press for text). Examples: Enter, Tab, Esc, F5, Ctrl+S, Alt+Tab. INPUT-INJECTING.',
       args: { key: 'named key or one character', modifiers: 'comma combo e.g. Ctrl,Shift (opt)', raw: 'optional Windows SendKeys token, e.g. {F13}, ^%{TAB} (opt)' },
       async run(a) {
         try {
-          const named = { enter: '{ENTER}', tab: '{TAB}', esc: '{ESC}', backspace: '{BACKSPACE}', delete: '{DELETE}', up: '{UP}', down: '{DOWN}', left: '{LEFT}', right: '{RIGHT}', home: '{HOME}', end: '{END}', pgup: '{PGUP}', pgdn: '{PGDN}', space: ' ' };
           let k = String(a.key || '').trim();
-          const low = k.toLowerCase();
-          let code;
-          if (a.raw) code = String(a.raw).slice(0, 200);
-          else if (/^f\d{1,2}$/i.test(k)) code = '{' + k.toUpperCase() + '}';
-          else if (named[low]) code = named[low];
-          else if (/^[a-z0-9]$/i.test(k)) code = k.toLowerCase();
-          else return fail(`unknown key: ${k}`, 'Use Enter/Tab/Esc/F1-F12/Space/single letters.');
-          let mod = a.raw ? '' : '';
-          for (const m of String(a.modifiers || '').toLowerCase().split(',')) {
-            if (m.includes('ctrl')) mod += '^';
-            else if (m.includes('alt')) mod += '%';
-            else if (m.includes('shift')) mod += '+';
+          if (a.raw) {
+            const raw = String(a.raw).slice(0, 200).replace(/'/g, "''");
+            await ps(`(New-Object -ComObject WScript.Shell).SendKeys('${raw}')`);
+            return ok({ raw: a.raw, modifiers: '', transport: 'SendKeys compatibility' });
           }
-          await ps(`(New-Object -ComObject WScript.Shell).SendKeys('${String(mod + code).replace(/'/g, "''")}')`);
-          return ok({ key: k || undefined, raw: a.raw || undefined, modifiers: a.modifiers || '' });
-        } catch (e) { return fail(e.message); }
+          const keyCode = virtualKeyCode(k);
+          if (!keyCode) return fail(`unknown key: ${k}`, 'Use Enter/Tab/Esc/F1-F24/Space/single letters or digits.');
+          await ps(nativeTapCommand(keyCode, a.modifiers));
+          return ok({ key: k, modifiers: a.modifiers || '', transport: 'SendInput' });
+        } catch (e) { return fail(e.message, 'Focus the target window first. Windows cannot inject keys into an elevated app from a non-elevated WinAgent process.'); }
       },
     },
     {
-      name: 'key_sequence', description: 'Send an arbitrary Windows SendKeys sequence to the focused window, including function keys, modifiers, repeats and special tokens.',
-      args: { sequence: 'SendKeys sequence, e.g. ^a{BACKSPACE}{F13}{ENTER} (required)', delayMs: 'delay after sending, default 0 (opt)' },
+      name: 'key_sequence', description: 'Send a key sequence to the focused window. Standard SendKeys notation (^a, {ENTER}, {F13}, {TAB 3}) uses native SendInput; unusual tokens fall back to SendKeys compatibility.',
+      args: { sequence: 'key sequence, e.g. ^a{BACKSPACE}{F13}{ENTER} (required)', delayMs: 'delay after sending, default 0 (opt)' },
       async run(a) {
         try {
           const sequence = String(a.sequence || '').slice(0, 2000);
           if (!sequence) return fail('sequence is required');
-          await ps(`(New-Object -ComObject WScript.Shell).SendKeys('${sequence.replace(/'/g, "''")}')`);
+          const strokes = parseNativeSequence(sequence);
+          if (strokes) await ps(nativeSequenceCommand(strokes));
+          else await ps(`(New-Object -ComObject WScript.Shell).SendKeys('${sequence.replace(/'/g, "''")}')`);
           const delay = Math.min(Math.max(Number(a.delayMs || 0), 0), 5000);
           if (delay) await new Promise((resolve) => setTimeout(resolve, delay));
-          return ok({ sequence, delayMs: delay });
-        } catch (e) { return fail(e.message); }
+          return ok({ sequence, delayMs: delay, transport: strokes ? 'SendInput' : 'SendKeys compatibility' });
+        } catch (e) { return fail(e.message, 'Focus the target window first. Windows cannot inject keys into an elevated app from a non-elevated WinAgent process.'); }
       },
     },
     {

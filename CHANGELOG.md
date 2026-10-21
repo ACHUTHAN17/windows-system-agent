@@ -1,4 +1,20 @@
 # Changelog
+## 1.27.0 — 2026-10-21
+- **Verified offline disk reports:** requests such as "what occupies the most
+  space on my C drive" now create a real interactive HTML dashboard, verify it
+  exists, and open it. Reports are bounded, skip unreadable/symlinked entries,
+  and identify their scan limits instead of inventing results.
+- **Natural local actions:** conversational requests such as "hey can you open
+  Control Panel" now route to the same direct local-action path as their terse
+  equivalents.
+- **Keyboard control:** Windows text and ordinary shortcut-key injection now
+  uses native `SendInput` instead of fragile `WScript.SendKeys`, with clear
+  feedback when the target is elevated and WinAgent is not.
+- **Settings redesign:** rebuilt Settings as a focused Control Center for the
+  planning brain, control boundaries, desktop behavior, GitHub memory, plugins,
+  and Android bridge. It now makes offline capability and the active model
+  state clear at a glance.
+
 ## 1.26.0 — 2026-10-21
 - **Goal-loop guard:** detects an identical tool call being repeated and sends the
   model a recovery instruction instead of executing the same action again. The

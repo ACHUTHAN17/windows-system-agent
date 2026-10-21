@@ -66,57 +66,42 @@
 
     <section id="view-settings" class="view" hidden>
       <div class="settings">
-        <h2>Model</h2>
-        <label>Provider preset <select id="sPreset"></select></label>
-        <div id="customFields">
-          <label>API URL <input id="sUrl" placeholder="https://…/v1"></label>
-          <label>Model name <input id="sModel" placeholder="e.g. gpt-4o-mini"></label>
-          <label>API key <input id="sKey" type="password" placeholder="" autocomplete="off"></label>
-          <div class="dim" id="keyNote"></div>
+        <header class="settings-hero"><div><p class="eyebrow">WINAGENT CONTROL CENTER</p><h1>Settings that explain the trade-offs.</h1><p id="sModelStatus" class="dim"></p></div><div class="settings-actions"><button id="sTest" class="ghost">Test brain</button><button id="sSelftest" class="ghost">Run self-test</button></div></header>
+
+        <div class="settings-grid">
+          <section class="settings-card span-2"><div class="setting-head"><span class="setting-icon">◈</span><div><h2>Brain & planning</h2><p>Choose how WinAgent handles open-ended goals. Local file and app tasks still work offline.</p></div></div>
+            <div class="form-grid"><label>Provider preset <select id="sPreset"></select></label><label>Image generation key <input id="sImageKey" type="password" placeholder="Optional Pollinations key" autocomplete="off"></label></div>
+            <div id="customFields" class="form-grid three"><label>API URL <input id="sUrl" placeholder="https://…/v1"></label><label>Model name <input id="sModel" placeholder="e.g. gpt-4o-mini"></label><label>API key <input id="sKey" type="password" placeholder="" autocomplete="off"><span class="field-help" id="keyNote"></span></label></div>
+            <label class="toggle-row"><input id="sScouted" type="checkbox"><span><b>Use verified free fallbacks</b><small>Only when your configured model fails. Availability is not guaranteed.</small></span></label>
+          </section>
+
+          <section class="settings-card"><div class="setting-head"><span class="setting-icon">⌘</span><div><h2>Control & access</h2><p>Set how independently the agent may act.</p></div></div>
+            <label class="toggle-row"><input id="sFull" type="checkbox"><span><b>Full control</b><small>Act without approval prompts. OS elevation and protected paths still apply.</small></span></label>
+            <label>Allowed folders <small>Empty means all non-protected locations.</small><div class="row"><input id="sRoots" placeholder="C:\Users\you\Documents, D:\Projects"><button id="sPick" class="ghost">Add folder</button></div></label>
+          </section>
+
+          <section class="settings-card"><div class="setting-head"><span class="setting-icon">▣</span><div><h2>Desktop behavior</h2><p>Choose how the app stays available.</p></div></div>
+            <label>Global show/hide hotkey <input id="sHotkey" placeholder="Control+Alt+Space"></label>
+            <label class="toggle-row"><input id="sStart" type="checkbox"><span><b>Start with Windows</b><small>Launch WinAgent when you sign in.</small></span></label>
+            <label class="toggle-row"><input id="sTray" type="checkbox"><span><b>Keep in tray</b><small>Closing the window keeps the agent ready.</small></span></label>
+            <label class="toggle-row"><input id="sReadAloud" type="checkbox"><span><b>Read replies aloud</b><small>Voice input and read-aloud use the app's built-in browser features.</small></span></label>
+          </section>
+
+          <section class="settings-card span-2"><div class="setting-head"><span class="setting-icon">↻</span><div><h2>GitHub memory & improvement</h2><p>Sync is deliberate: changes go to dedicated branches or reviewable pull requests, never silently to main.</p></div></div>
+            <div class="form-grid"><label>GitHub repository <input id="sRepo" placeholder="owner/repository"></label><label>GitHub token <input id="sPat" type="password" placeholder="ghp_…" autocomplete="off"><span class="field-help">Used only for configured sync actions.</span></label></div>
+            <div class="toggle-grid"><label class="toggle-row"><input id="sSyncStart" type="checkbox"><span><b>Sync on start</b><small>Pull skills, docs and models.</small></span></label><label class="toggle-row"><input id="sSyncMem" type="checkbox"><span><b>Merge GitHub memory</b><small>Adds notes without overwriting local ones.</small></span></label><label class="toggle-row"><input id="sAutoPush" type="checkbox"><span><b>Push learned skills/tools</b><small>Writes to <code>agent-learned</code>.</small></span></label><label class="toggle-row"><input id="sSyncChats" type="checkbox"><span><b>Checkpoint chats</b><small>Writes task history to <code>agent-chats</code>.</small></span></label><label class="toggle-row"><input id="sSelfImprove" type="checkbox"><span><b>Propose self-improvements</b><small>Opens reviewable PRs; never merges itself.</small></span></label><label class="toggle-row"><input id="sSyncEng" type="checkbox"><span><b>Update agent engine</b><small>Runs new engine code from GitHub.</small></span></label></div>
+            <div class="field-help" id="learnState"></div>
+          </section>
+
+          <section class="settings-card"><div class="setting-head"><span class="setting-icon">⌁</span><div><h2>Plugins</h2><p>Add only tools you trust.</p></div></div>
+            <label>MCP server configuration <textarea id="sMcp" rows="6" spellcheck="false" placeholder='{"filesystem":{"command":"npx","args":["-y","@modelcontextprotocol/server-filesystem","C:/Users/ADMIN"]}}'></textarea><span class="field-help">Tools become available automatically after saving.</span></label>
+          </section>
+
+          <section class="settings-card"><div class="setting-head"><span class="setting-icon">▤</span><div><h2>Android bridge</h2><p>Use a connected device or Termux.</p></div></div>
+            <label>Android device serial <input id="sAndroid" placeholder="adb serial (optional)"><span class="field-help">Enable USB or wireless debugging first. Leave blank for Termux.</span></label>
+          </section>
         </div>
-        <label>Image generation key <input id="sImageKey" type="password" placeholder="Pollinations key (optional)" autocomplete="off"></label>
-        <div class="dim">Offline mode is the default: local file/app actions need no key, network, or local LLM. Add a model only for open-ended planning.</div>
-        <label class="check"><input id="sScouted" type="checkbox"> If an enabled model fails, try optional free remote models found by the agent</label>
-
-        <h2>Plugins</h2>
-        <label>MCP plugin servers (JSON) <textarea id="sMcp" rows="4" spellcheck="false" placeholder='{"filesystem":{"command":"npx","args":["-y","@modelcontextprotocol/server-filesystem","C:/Users/ADMIN"]}}'></textarea></label>
-        <div class="dim">Paste an MCP server definition from trusted plugin documentation. Its tools appear automatically in the agent.</div>
-
-        <h2>Android bridge</h2>
-        <label>Android device serial <input id="sAndroid" placeholder="adb serial (optional)"></label>
-        <div class="dim">Set this after enabling USB or wireless debugging. Leave empty when running WinAgent inside Termux. Ask “check Android status” to verify the bridge.</div>
-
-        <h2>Voice</h2>
-        <label class="check"><input id="sReadAloud" type="checkbox"> Read the agent's replies aloud automatically</label>
-        <div class="dim">🎤 next to the composer transcribes speech to text as you talk. 🔊 on any reply reads it aloud on demand. Both run fully in the app (Chromium's built-in voice engine) — no extra setup, but voice input needs an internet connection.</div>
-        <div class="row"><button id="sTest" class="ghost">Test model in a new chat</button><button id="sSelftest" class="ghost">Run agent self-test</button></div>
-
-        <h2>Control</h2>
-        <label class="check"><input id="sFull" type="checkbox"> Autonomous mode — act without asking for approval</label>
-        <label>Allowed folders (comma-separated, empty = anywhere except protected system paths)
-          <div class="row"><input id="sRoots" placeholder="C:\Users\you\Documents, D:\Projects"><button id="sPick" class="ghost">Add folder…</button></div></label>
-
-        <h2>App</h2>
-        <label>Global hotkey to show/hide <input id="sHotkey" placeholder="Control+Alt+Space"></label>
-        <label class="check"><input id="sStart" type="checkbox"> Start WinAgent when I sign in to Windows</label>
-        <label class="check"><input id="sTray" type="checkbox"> Keep running in the tray when the window is closed</label>
-
-        <h2>GitHub sync</h2>
-        <label class="check"><input id="sSyncStart" type="checkbox"> Sync skills, model list and docs when the app starts</label>
-        <label class="check"><input id="sSyncMem" type="checkbox"> Also merge memory from GitHub (adds new notes, never overwrites yours)</label>
-        <label class="check"><input id="sSyncEng" type="checkbox"> Also update the agent engine (src/) from GitHub — runs new code with full access, off by default</label>
-
-        <h2>Self-improvement</h2>
-        <label>GitHub repo (owner/name) <input id="sRepo" placeholder="you/your-fork"></label>
-        <label>GitHub token <input id="sPat" type="password" placeholder="" autocomplete="off"><span class="dim">Needs the "repo" scope. Used only for the two things below.</span></label>
-        <label class="check"><input id="sAutoPush" type="checkbox"> Automatically sync newly created skills/tools to <code>agent-learned</code> (never directly to main)</label>
-        <label class="check"><input id="sSyncChats" type="checkbox"> Sync every chat step and 1-second checkpoint to <code>agent-chats</code></label>
-        <div class="dim">Chat checkpoints include the prompt, tool names/results and completion status. They require the GitHub repo/token above.</div>
-        <label class="check"><input id="sSelfImprove" type="checkbox"> Let the agent open pull requests proposing changes to its own code (never merges — you review on GitHub)</label>
-        <div class="dim" id="learnState"></div>
-
-        <div class="row"><button id="sSave" class="primary">Save settings</button><span id="sState" class="dim"></span></div>
-        <div class="dim" id="aboutLine"></div>
+        <footer class="settings-save"><div><button id="sSave" class="primary">Save changes</button><span id="sState" class="dim"></span></div><div class="dim" id="aboutLine"></div></footer>
       </div>
     </section>
   </main>
