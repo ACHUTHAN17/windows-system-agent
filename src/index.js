@@ -475,6 +475,7 @@ export async function createEngine(argvOverride) {
       { role: 'system', content: systemPrompt(toolPrompt(tools)) + loadBehavior(cfg.root) + '\n\n' + ROUTER_SYSTEM_PROMPT + skillPrompt(skills) + catalogPrompt(catalog) + loadMemory(cfg) + loadProjectRules(cfg) },
       { role: 'user', content: task },
     ];
+    const attemptedCalls = new Map();
     if (argv.plan) {
       const planRaw = await chat(cfg, [
         { role: 'system', content: 'Outline a short numbered plan (max 8 steps) using the available tools. Reply as JSON: {"plan": ["step 1", "..."]}. No other text.' },
@@ -511,6 +512,17 @@ export async function createEngine(argvOverride) {
       }
       if (parsed.action === 'final') return parsed.answer;
       if (parsed.thought) { console.log(`  [step ${step}] ${parsed.thought}`); cfg.onEvent?.({ t: 'step', n: step, text: parsed.thought }); }
+      const signature = `${parsed.tool}:${JSON.stringify(parsed.args || {})}`;
+      const count = (attemptedCalls.get(signature) || 0) + 1;
+      attemptedCalls.set(signature, count);
+      if (count > 1) {
+        const guard = `The exact action ${parsed.tool} with the same arguments was already attempted. Do not repeat it. Inspect the previous result, choose a different recovery action, or report the blocker.`;
+        console.log(`  [guard] repeated tool call blocked: ${parsed.tool}`);
+        cfg.onEvent?.({ t: 'guard', kind: 'repeat', tool: parsed.tool, count, text: guard });
+        history.push({ role: 'assistant', content: raw });
+        history.push({ role: 'user', content: guard });
+        continue;
+      }
       const result = await runTool(parsed.tool, parsed.args);
       console.log(`  [tool] ${parsed.tool} -> ${JSON.stringify(result).slice(0, 400)}`);
       cfg.onEvent?.({ t: 'tool', name: parsed.tool, ok: result && result.ok, summary: JSON.stringify(result).slice(0, 400) });

@@ -1,4 +1,11 @@
 # Changelog
+## 1.26.0 — 2026-10-21
+- **Goal-loop guard:** detects an identical tool call being repeated and sends the
+  model a recovery instruction instead of executing the same action again. The
+  guard is visible in desktop activity and preserves the normal approval/audit path.
+- **Release metadata:** root agent and desktop installer versions are aligned at
+  1.26.0 so the GitHub tag, installer filename, and in-app version agree.
+
 ## 1.25.0 — 2026-10-01
 - **Single-process architecture** (the big one): the desktop app no longer spawns `src/index.js`
   as a child process and parses its stdout. `src/index.js` was refactored into an exported

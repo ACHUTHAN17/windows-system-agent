@@ -244,6 +244,7 @@
     switch (ev.t) {
       case 'route': t.activity.push({ k: 'route', text: `${String(ev.kind || 'agent').toUpperCase()} route · ${ev.reason || ''}` }); break;
       case 'step': t.activity.push({ k: 'step', text: `Step ${ev.n}: ${ev.text}` }); break;
+      case 'guard': t.activity.push({ k: 'note', text: ev.text || 'Repeated action blocked; asking for a recovery step.' }); break;
       case 'tool': t.activity.push({ k: 'tool', name: ev.name, ok: ev.ok, summary: ev.summary }); break;
       case 'sync': t.activity.push({ k: 'sync', text: `GitHub checkpoint: ${(ev.pushed || []).length || ev.entries || 0} item(s)` }); break;
       case 'note': case 'log': if (t.activity.length < 300) t.activity.push({ k: 'note', text: ev.text }); break;

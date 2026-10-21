@@ -171,6 +171,23 @@ test('stop() aborts between steps and auto-denies any pending approval', async (
   server.close();
 });
 
+test('identical model tool calls are blocked and converted into a recovery turn', async () => {
+  cleanRepoState();
+  const server = await mockLlm([
+    JSON.stringify({ action: 'tool', tool: 'sys_info', args: {} }),
+    JSON.stringify({ action: 'tool', tool: 'sys_info', args: {} }),
+    JSON.stringify({ answer: 'Recovered without repeating the action.' }),
+  ]);
+  const engine = new EmbeddedEngine(REPO);
+  const { evs, done } = collect(engine);
+  await engine.run('inspect the computer and finish', { env: { MODEL_API_URL: `http://127.0.0.1:${server.address().port}`, MODEL_NAME: 'mock', USE_SCOUTED_MODELS: 'false' } });
+  await done;
+  assert.strictEqual(evs.filter(e => e.t === 'tool' && e.name === 'sys_info').length, 1);
+  assert.ok(evs.some(e => e.t === 'guard' && e.kind === 'repeat'));
+  assert.strictEqual(evs.find(e => e.t === 'answer').text, 'Recovered without repeating the action.');
+  server.close();
+});
+
 test('reasoning dump with no JSON triggers one retry, then the tool actually runs (the exact "open windows settings" failure mode)', async () => {
   cleanRepoState();
   const reasoningDump = 'We need to open Windows Settings app. We can use app_launch or app_open? '
