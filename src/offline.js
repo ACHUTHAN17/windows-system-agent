@@ -108,7 +108,10 @@ function directInputPlan(text) {
     const modifiers = parts.join(',');
     return result('key_tap', { key: main, modifiers }, `Pressed ${key}`);
   }
-  m = t.match(/^(?:type|write)\s+([\s\S]+)$/i);
+  // "write a file" and "write a Python program" are creation goals, not
+  // keystrokes. Keep native text injection explicit so it cannot steal those
+  // richer requests before the file/artifact planner sees them.
+  m = t.match(/^(?:type|enter|input)\s+([\s\S]+)$/i);
   if (m) return result('key_press', { text: m[1] }, 'Typed text');
   m = t.match(/^(?:run|execute)\s+(?:this\s+)?command\s*:\s*([\s\S]+)$/i);
   if (m) return result('shell_exec', { command: m[1].trim() }, 'Ran the command');

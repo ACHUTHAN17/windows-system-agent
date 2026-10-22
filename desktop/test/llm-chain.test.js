@@ -18,6 +18,27 @@ function server(status, body) {
 }
 const url = (s) => `http://127.0.0.1:${s.address().port}`;
 
+test('Gemini provider uses its native generateContent endpoint and keeps the system instruction separate', async () => {
+  let captured = null;
+  const s = http.createServer((req, res) => {
+    let raw = ''; req.on('data', d => { raw += d; });
+    req.on('end', () => {
+      captured = { path: req.url, key: req.headers['x-goog-api-key'], body: JSON.parse(raw) };
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ candidates: [{ content: { parts: [{ text: '{"action":"final","answer":"ok"}' }] } }] }));
+    });
+  });
+  await new Promise(r => s.listen(0, '127.0.0.1', r));
+  const answer = await chat({ provider: 'gemini', apiUrl: url(s), model: 'gemini-test', apiKey: 'free-key', timeoutMs: 3000, useScoutedModels: false }, [
+    { role: 'system', content: 'Return JSON only.' }, { role: 'user', content: 'hello' },
+  ]);
+  assert.strictEqual(answer, '{"action":"final","answer":"ok"}');
+  assert.strictEqual(captured.path, '/models/gemini-test:generateContent'); assert.strictEqual(captured.key, 'free-key');
+  assert.strictEqual(captured.body.systemInstruction.parts[0].text, 'Return JSON only.');
+  assert.strictEqual(captured.body.contents[0].role, 'user'); assert.strictEqual(captured.body.generationConfig.responseMimeType, 'application/json');
+  s.close();
+});
+
 test('single-entry chain: a failure throws a plain, unwrapped message', async () => {
   const bad = await server(500, {});
   const cfg = { provider: 'openai-compatible', apiUrl: url(bad), model: 'x', timeoutMs: 3000, useScoutedModels: false };

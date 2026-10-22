@@ -58,6 +58,21 @@ test('Settings: GitHub PAT is stored/encrypted separately from the model key and
   assert.strictEqual(s.githubPat(), ''); assert.strictEqual(s.publicView().hasGithubPat, false);
 });
 
+test('Settings: Gemini primary and OpenRouter fallback keys are encrypted, isolated, and reach only the agent environment', () => {
+  const dir = tmp(); const s = new Settings(dir, fakeSS);
+  s.update({
+    preset: 'cloud-free', provider: 'gemini', apiUrl: 'https://generativelanguage.googleapis.com/v1beta', model: 'gemini-3.8-flash', apiKey: 'gemini-secret',
+    fallbackProvider: 'openai-compatible', fallbackUrl: 'https://openrouter.ai/api/v1', fallbackModel: 'openrouter/free', fallbackKey: 'router-secret',
+  });
+  const disk = fs.readFileSync(path.join(dir, 'settings.json'), 'utf8');
+  const view = s.publicView(); const env = s.agentEnv();
+  assert.ok(!disk.includes('gemini-secret') && !disk.includes('router-secret'));
+  assert.ok(!JSON.stringify(view).includes('gemini-secret') && !JSON.stringify(view).includes('router-secret'));
+  assert.strictEqual(view.hasKey, true); assert.strictEqual(view.hasFallbackKey, true);
+  assert.strictEqual(env.MODEL_PROVIDER, 'gemini'); assert.strictEqual(env.MODEL_API_KEY, 'gemini-secret');
+  assert.strictEqual(env.LLM_FALLBACK_URL, 'https://openrouter.ai/api/v1'); assert.strictEqual(env.LLM_FALLBACK_KEY, 'router-secret');
+});
+
 test('Settings: scouted models are opt-in and disabled by default', () => {
   const dir = tmp(); const s = new Settings(dir, fakeSS);
   assert.strictEqual(s.agentEnv().USE_SCOUTED_MODELS, 'false');

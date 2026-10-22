@@ -1,7 +1,7 @@
 {
   "name": "windows-system-agent",
-  "version": "1.27.0",
-  "description": "Windows system agent: file access + app control, driven by API / local / custom LLM via OpenAI-compatible endpoint",
+  "version": "1.29.0",
+  "description": "Cross-platform system agent: offline device control plus optional free cloud planning",
   "type": "module",
   "engines": {
     "node": ">=18"

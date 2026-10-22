@@ -69,10 +69,12 @@
         <header class="settings-hero"><div><p class="eyebrow">WINAGENT CONTROL CENTER</p><h1>Settings that explain the trade-offs.</h1><p id="sModelStatus" class="dim"></p></div><div class="settings-actions"><button id="sTest" class="ghost">Test brain</button><button id="sSelftest" class="ghost">Run self-test</button></div></header>
 
         <div class="settings-grid">
-          <section class="settings-card span-2"><div class="setting-head"><span class="setting-icon">◈</span><div><h2>Brain & planning</h2><p>Choose how WinAgent handles open-ended goals. Local file and app tasks still work offline.</p></div></div>
+          <section class="settings-card span-2"><div class="setting-head"><span class="setting-icon">◈</span><div><h2>Brain & planning</h2><p>Use a free cloud brain for open-ended goals. WinAgent never downloads or runs a model on this device.</p></div></div>
             <div class="form-grid"><label>Provider preset <select id="sPreset"></select></label><label>Image generation key <input id="sImageKey" type="password" placeholder="Optional Pollinations key" autocomplete="off"></label></div>
             <div id="customFields" class="form-grid three"><label>API URL <input id="sUrl" placeholder="https://…/v1"></label><label>Model name <input id="sModel" placeholder="e.g. gpt-4o-mini"></label><label>API key <input id="sKey" type="password" placeholder="" autocomplete="off"><span class="field-help" id="keyNote"></span></label></div>
-            <label class="toggle-row"><input id="sScouted" type="checkbox"><span><b>Use verified free fallbacks</b><small>Only when your configured model fails. Availability is not guaranteed.</small></span></label>
+            <div id="fallbackFields" class="form-grid three"><label>Fallback API URL <input id="sFallbackUrl" placeholder="https://openrouter.ai/api/v1"></label><label>Fallback model <input id="sFallbackModel" placeholder="openrouter/free"></label><label>Fallback API key <input id="sFallbackKey" type="password" placeholder="" autocomplete="off"><span class="field-help" id="fallbackKeyNote"></span></label></div>
+            <div class="field-help">Free services have quotas and can change availability. No billing details are needed; when both providers are unavailable, direct offline tasks still work.</div>
+            <label class="toggle-row"><input id="sScouted" type="checkbox"><span><b>Use discovered public fallbacks</b><small>Off by default. Enable only if you accept less predictable free public endpoints.</small></span></label>
           </section>
 
           <section class="settings-card"><div class="setting-head"><span class="setting-icon">⌘</span><div><h2>Control & access</h2><p>Set how independently the agent may act.</p></div></div>

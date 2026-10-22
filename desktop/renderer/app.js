@@ -2,15 +2,13 @@
 (function () {
   const api = window.winagent;
   const $ = (id) => document.getElementById(id);
+  // The desktop app is always the local executor. Planning is either deterministic
+  // offline routing or a user-owned free cloud key — it never downloads a local LLM.
   const PRESETS = {
-    offline: { label: 'Offline mode (no key or LLM)', provider: 'none', apiUrl: '', model: '' },
-    free: { label: 'Free remote models (optional)', provider: 'openai-compatible', apiUrl: '', model: '' },
-    ollama: { label: 'Ollama (local)', provider: 'openai-compatible', apiUrl: 'http://localhost:11434/v1', model: 'llama3.1' },
-    openai: { label: 'OpenAI', provider: 'openai-compatible', apiUrl: 'https://api.openai.com/v1', model: 'gpt-4o-mini' },
-    anthropic: { label: 'Anthropic Claude', provider: 'anthropic', apiUrl: 'https://api.anthropic.com', model: '' },
-    openrouter: { label: 'OpenRouter', provider: 'openai-compatible', apiUrl: 'https://openrouter.ai/api/v1', model: '' },
-    pollinations: { label: 'Pollinations (needs a free key from enter.pollinations.ai)', provider: 'openai-compatible', apiUrl: 'https://gen.pollinations.ai/v1', model: 'openai' },
-    custom: { label: 'Custom OpenAI-compatible', provider: 'openai-compatible', apiUrl: '', model: '' },
+    offline: { label: 'Offline executor (no model)', provider: 'none', apiUrl: '', model: '' },
+    'cloud-free': { label: 'Free cloud brain: Gemini', provider: 'gemini', apiUrl: 'https://generativelanguage.googleapis.com/v1beta', model: 'gemini-3.8-flash', fallbackProvider: 'openai-compatible', fallbackUrl: 'https://openrouter.ai/api/v1', fallbackModel: 'openrouter/free' },
+    'openrouter-free': { label: 'Free cloud brain: OpenRouter', provider: 'openai-compatible', apiUrl: 'https://openrouter.ai/api/v1', model: 'openrouter/free', fallbackProvider: 'openai-compatible', fallbackUrl: '', fallbackModel: '' },
+    custom: { label: 'Custom cloud provider', provider: 'openai-compatible', apiUrl: '', model: '', fallbackProvider: 'openai-compatible', fallbackUrl: '', fallbackModel: '' },
   };
   const STARTERS = [
     ['Tidy my Downloads', 'List the 20 biggest files in my Downloads folder and suggest what I can safely delete.'],
@@ -63,7 +61,8 @@
   function modelLabel(s) {
     if (!s) return 'model: default';
     if (s.preset === 'offline') return 'offline mode';
-    if (s.preset === 'free') return 'model: free (optional)';
+    if (s.preset === 'cloud-free') return 'Gemini cloud brain';
+    if (s.preset === 'openrouter-free') return 'OpenRouter free brain';
     return 'model: ' + (s.model || PRESETS[s.preset]?.label || s.preset);
   }
   async function switchModel(patch) {
@@ -294,11 +293,16 @@
     const s = S.settings; if (!s) return;
     const status = $('sModelStatus');
     if (status) status.textContent = s.preset === 'offline'
-      ? 'Offline is ready for direct device tasks and verified local artifacts. Add a model only for open-ended planning.'
-      : `Active planning brain: ${modelLabel(s)}. Local tools remain available in every mode.`;
+      ? 'Offline is ready for direct device tasks and verified local artifacts. Choose a free cloud brain only when you want open-ended planning.'
+      : !s.hasKey
+        ? `Cloud brain selected: ${modelLabel(s)}. Add its free API key to enable planning; local tools still work offline.`
+        : `Active planning brain: ${modelLabel(s)}. Local tools remain available in every mode.`;
     $('sPreset').value = s.preset; $('sUrl').value = s.apiUrl || ''; $('sModel').value = s.model || ''; $('sKey').value = '';
-    $('sKey').placeholder = s.hasKey ? '•••••••• saved (leave blank to keep)' : 'paste your API key';
+    $('sKey').placeholder = s.hasKey ? '•••••••• saved (leave blank to keep)' : 'paste a free API key';
     $('keyNote').textContent = s.hasKey ? (s.keyEncrypted ? 'Key is stored encrypted with Windows DPAPI.' : 'Key is stored unencrypted (secure storage unavailable).') : '';
+    $('sFallbackUrl').value = s.fallbackUrl || ''; $('sFallbackModel').value = s.fallbackModel || ''; $('sFallbackKey').value = '';
+    $('sFallbackKey').placeholder = s.hasFallbackKey ? '•••••••• saved (leave blank to keep)' : 'optional fallback key';
+    $('fallbackKeyNote').textContent = s.hasFallbackKey ? (s.fallbackKeyEncrypted ? 'Fallback key is stored encrypted with Windows DPAPI.' : 'Fallback key is stored unencrypted (secure storage unavailable).') : '';
     $('sImageKey').value = ''; $('sImageKey').placeholder = s.hasImageKey ? '•••••••• saved (leave blank to keep)' : 'Pollinations image key';
     $('sFull').checked = !!s.fullAuto; $('sRoots').value = s.allowedRoots || ''; $('sHotkey').value = s.hotkey || '';
     $('sStart').checked = !!s.startWithWindows; $('sTray').checked = !!s.closeToTray;
@@ -308,7 +312,7 @@
     $('sAutoPush').checked = !!s.autoPushLearned; $('sSyncChats').checked = s.syncChats !== false; $('sSelfImprove').checked = !!s.autoSelfImprove; $('sScouted').checked = s.useScoutedModels !== false; $('sReadAloud').checked = !!s.readAloud;
     $('sMcp').value = s.mcpServers || '';
     $('sAndroid').value = s.androidSerial || '';
-    $('customFields').hidden = s.preset === 'free' || s.preset === 'offline'; updateMode();
+    $('customFields').hidden = s.preset === 'offline'; $('fallbackFields').hidden = s.preset === 'offline'; updateMode();
   }
   async function loadSettings() { S.settings = await api.getSettings(); fillSettings(); const i = await api.info(); $('aboutLine').textContent = `WinAgent desktop ${i.version} · agent folder: ${i.agentDir}`; }
   function updateMode() { const full = S.settings && S.settings.fullAuto; const b = $('modeBadge'); b.textContent = full ? 'Full control' : 'Ask before acting'; b.classList.toggle('full', !!full); }
@@ -317,12 +321,14 @@
     if (mcpServers) { try { JSON.parse(mcpServers); } catch { $('sState').textContent = 'Invalid MCP plugin JSON'; return; } }
     const patch = {
       preset: $('sPreset').value, provider: PRESETS[$('sPreset').value].provider, apiUrl: $('sUrl').value.trim(), model: $('sModel').value.trim(),
+      fallbackProvider: 'openai-compatible', fallbackUrl: $('sFallbackUrl').value.trim(), fallbackModel: $('sFallbackModel').value.trim(),
       fullAuto: $('sFull').checked, allowedRoots: $('sRoots').value.trim(), hotkey: $('sHotkey').value.trim(),
       startWithWindows: $('sStart').checked, closeToTray: $('sTray').checked, syncOnStart: $('sSyncStart').checked, syncMemory: $('sSyncMem').checked, syncEngine: $('sSyncEng').checked,
       githubRepo: $('sRepo').value.trim(), autoPushLearned: $('sAutoPush').checked, syncChats: $('sSyncChats').checked, autoSelfImprove: $('sSelfImprove').checked, useScoutedModels: $('sScouted').checked,
       readAloud: $('sReadAloud').checked, mcpServers, androidSerial: $('sAndroid').value.trim(),
     };
     if ($('sKey').value.trim()) patch.apiKey = $('sKey').value.trim();
+    if ($('sFallbackKey').value.trim()) patch.fallbackKey = $('sFallbackKey').value.trim();
     if ($('sImageKey').value.trim()) patch.imageApiKey = $('sImageKey').value.trim();
     if ($('sPat').value.trim()) patch.githubPat = $('sPat').value.trim();
     const r = await api.setSettings(patch); S.settings = r.settings; fillSettings();
@@ -335,7 +341,14 @@
 
   async function init() {
     for (const [k, v] of Object.entries(PRESETS)) $('sPreset').appendChild(new Option(v.label, k));
-    $('sPreset').onchange = () => { const p = PRESETS[$('sPreset').value]; $('customFields').hidden = $('sPreset').value === 'free' || $('sPreset').value === 'offline'; if ($('sPreset').value !== 'custom') { $('sUrl').value = p.apiUrl; $('sModel').value = p.model; } };
+    $('sPreset').onchange = () => {
+      const key = $('sPreset').value; const p = PRESETS[key]; const offline = key === 'offline';
+      $('customFields').hidden = offline; $('fallbackFields').hidden = offline;
+      if (key !== 'custom') {
+        $('sUrl').value = p.apiUrl; $('sModel').value = p.model;
+        $('sFallbackUrl').value = p.fallbackUrl || ''; $('sFallbackModel').value = p.fallbackModel || '';
+      }
+    };
     S.sessions = (await api.sessionsLoad()) || [];
     for (const s of S.sessions) for (const m of s.messages) if (m.status === 'running') m.status = 'done'; // an interrupted turn from last run
     if (!S.sessions.length) S.sessions.push({ id: uid(), title: 'New chat', messages: [], updated: Date.now() });
@@ -379,7 +392,7 @@
       const spk = e.target.closest('.mact.speak'); if (spk) { const txt = spk.closest('.bubble').querySelector('.answer').innerText; speak(txt); return; }
       const cp2 = e.target.closest('.mact.copy2'); if (cp2) { const txt = cp2.closest('.bubble').querySelector('.answer').innerText; navigator.clipboard.writeText(txt).then(() => { cp2.textContent = '✓'; setTimeout(() => { cp2.textContent = '⧉'; }, 1200); }); return; }
       const mp = e.target.closest('.mp-item'); if (mp) {
-        if (mp.dataset.preset) { const p = PRESETS[mp.dataset.preset]; switchModel({ preset: mp.dataset.preset, provider: p.provider, apiUrl: p.apiUrl, model: p.model }); }
+        if (mp.dataset.preset) { const p = PRESETS[mp.dataset.preset]; switchModel({ preset: mp.dataset.preset, provider: p.provider, apiUrl: p.apiUrl, model: p.model, fallbackProvider: p.fallbackProvider || 'openai-compatible', fallbackUrl: p.fallbackUrl || '', fallbackModel: p.fallbackModel || '' }); }
         else if (mp.dataset.url) { switchModel({ preset: 'custom', provider: 'openai-compatible', apiUrl: mp.dataset.url, model: mp.dataset.model }); }
         return;
       }

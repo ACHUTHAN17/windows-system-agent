@@ -52,6 +52,8 @@ test('offline planner composes ordinary local action sequences', async () => {
     tool: 'screen_drag', args: { x1: 100, y1: 200, x2: 500, y2: 600 }, label: 'Dragged from 100,200 to 500,600',
   });
   assert.deepEqual(offlinePlan('press Ctrl+Shift+S', cfg).steps[0].args, { key: 'S', modifiers: 'Ctrl,Shift' });
+  assert.deepEqual(offlinePlan('type hello world', cfg).steps[0].args, { text: 'hello world' });
+  assert.equal(offlinePlan('write a file', cfg), null, 'a creation goal must reach the planner, not inject text into the focused app');
 });
 
 test('offline planner leaves ambiguous work for the optional model loop', async () => {

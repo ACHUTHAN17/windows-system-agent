@@ -53,7 +53,8 @@ button.ghost{background:#21262d}button:disabled{opacity:.35}button.mode-on{outli
 <div id="attach"></div>
 <div class="row"><input id="doin" placeholder="skill or task, e.g. keyboard shortcuts…" autocomplete="off"><input id="file" type="file" multiple style="display:none"><button class="ghost" id="clip" title="Attach files or images — used by ⚙️ Run">📎</button><button class="ghost" id="teach">🧠 Teach</button><button class="ghost" id="teachfree">📝 Issue</button><button class="ghost" id="dotask">⚙️ Run</button><button class="ghost" id="test2">🧪 Test</button></div>
 </div>
-<script src="./router.js"></script>
+<!-- Load the optional web router without delaying the usable chat/attachment UI. -->
+<script src="./router.js" defer></script>
 <script>
 const $=id=>document.getElementById(id);
 const store={get:(k,d)=>localStorage.getItem('wa_'+k)||d||'',set:(k,v)=>localStorage.setItem('wa_'+k,v)};

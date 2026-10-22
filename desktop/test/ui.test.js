@@ -9,7 +9,7 @@ const { JSDOM } = require('jsdom');
 function boot() {
   const calls = { run: [], approve: [], stop: 0, settings: [] };
   let listener = () => {}; let syncListener = () => {}; let chatSyncListener = () => {}; let learnedListener = () => {}; let prListener = () => {};
-  const settings = { preset: 'offline', provider: 'none', apiUrl: '', model: '', allowedRoots: '', fullAuto: false, hotkey: 'Control+Alt+Space', startWithWindows: false, closeToTray: true, syncOnStart: true, syncMemory: true, syncEngine: false, hasKey: false, keyEncrypted: false, githubRepo: '', autoPushLearned: false, syncChats: true, autoSelfImprove: false, hasGithubPat: false, useScoutedModels: false };
+  const settings = { preset: 'offline', provider: 'none', apiUrl: '', model: '', fallbackUrl: '', fallbackModel: '', allowedRoots: '', fullAuto: false, hotkey: 'Control+Alt+Space', startWithWindows: false, closeToTray: true, syncOnStart: true, syncMemory: true, syncEngine: false, hasKey: false, keyEncrypted: false, hasFallbackKey: false, fallbackKeyEncrypted: false, githubRepo: '', autoPushLearned: false, syncChats: true, autoSelfImprove: false, hasGithubPat: false, useScoutedModels: false };
   const fake = {
     info: async () => ({ version: '1.0.0', agentDir: 'C:\\agent' }),
     getSettings: async () => ({ ...settings }),
@@ -91,12 +91,14 @@ test('errors are shown, settings save incl. key, views open', async () => {
   assert.strictEqual(d.getElementById('view-settings').hidden, false);
   assert.ok(d.querySelectorAll('.settings-card').length >= 5, 'settings are organized into focused cards');
   assert.ok(d.getElementById('sModelStatus').textContent.includes('Offline is ready'));
-  const sel = d.getElementById('sPreset'); sel.value = 'openai'; sel.dispatchEvent(new dom.window.Event('change'));
-  assert.strictEqual(d.getElementById('sUrl').value, 'https://api.openai.com/v1');
+  const sel = d.getElementById('sPreset'); sel.value = 'cloud-free'; sel.dispatchEvent(new dom.window.Event('change'));
+  assert.strictEqual(d.getElementById('sUrl').value, 'https://generativelanguage.googleapis.com/v1beta');
+  assert.strictEqual(d.getElementById('sFallbackModel').value, 'openrouter/free');
   d.getElementById('sKey').value = 'sk-test'; d.getElementById('sFull').checked = true;
+  d.getElementById('sFallbackKey').value = 'fallback-test';
   d.getElementById('sSave').click(); await tick();
   const patch = b.calls.settings.pop();
-  assert.strictEqual(patch.preset, 'openai'); assert.strictEqual(patch.apiKey, 'sk-test'); assert.strictEqual(patch.fullAuto, true);
+  assert.strictEqual(patch.preset, 'cloud-free'); assert.strictEqual(patch.apiKey, 'sk-test'); assert.strictEqual(patch.fallbackKey, 'fallback-test'); assert.strictEqual(patch.fullAuto, true);
   assert.strictEqual(d.getElementById('modeBadge').textContent, 'Full control');
 
   d.querySelector('[data-view=skills]').click(); await tick();
@@ -186,13 +188,13 @@ test('model popover: opens with presets + scouted models, picking one switches s
   b.fake.scoutedModels = async () => [{ label: 'Pollinations · openai', url: 'https://gen.pollinations.ai/v1', model: 'openai', latencyMs: 300 }];
   d.getElementById('modelPill').click(); await tick();
   assert.strictEqual(d.getElementById('modelPop').hidden, false);
-  assert.ok(d.querySelectorAll('.mp-item[data-preset]').length >= 5, 'lists every preset');
+  assert.ok(d.querySelectorAll('.mp-item[data-preset]').length >= 4, 'lists every supported preset');
   assert.ok(d.querySelector('.mp-item[data-url]').textContent.includes('Pollinations'));
 
-  d.querySelector('.mp-item[data-preset="ollama"]').click(); await tick();
+  d.querySelector('.mp-item[data-preset="cloud-free"]').click(); await tick();
   const patch = b.calls.settings.pop();
-  assert.strictEqual(patch.preset, 'ollama'); assert.strictEqual(patch.model, 'llama3.1');
-  assert.ok(d.getElementById('modelPill').textContent.includes('llama3.1'));
+  assert.strictEqual(patch.preset, 'cloud-free'); assert.strictEqual(patch.model, 'gemini-3.8-flash');
+  assert.ok(d.getElementById('modelPill').textContent.includes('Gemini'));
   assert.strictEqual(d.getElementById('modelPop').hidden, true, 'closes after picking');
 });
 

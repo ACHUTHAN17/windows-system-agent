@@ -12,7 +12,9 @@ export async function chat(cfg, messages) {
   for (let i = 0; i < chain.length; i++) {
     const c = chain[i];
     try {
-      const text = c.provider === 'anthropic' ? await chatAnthropic(c, messages) : await chatOpenAICompatible(c, messages);
+      const text = c.provider === 'anthropic' ? await chatAnthropic(c, messages)
+        : c.provider === 'gemini' ? await chatGemini(c, messages)
+          : await chatOpenAICompatible(c, messages);
       if (i > 0) console.log(`  [llm] primary failed — answered via fallback #${i}: ${c.model} @ ${c.apiUrl}`);
       return text;
     } catch (e) {
@@ -44,7 +46,7 @@ function buildChain(cfg) {
   const fb = (cfg.fallbackUrl || process.env.LLM_FALLBACK_URL || '').replace(/\/+$/, '');
   if (fb) {
     chain.push({
-      ...cfg, provider: 'openai-compatible', apiUrl: fb,
+      ...cfg, provider: cfg.fallbackProvider || process.env.LLM_FALLBACK_PROVIDER || 'openai-compatible', apiUrl: fb,
       model: cfg.fallbackModel || process.env.LLM_FALLBACK_MODEL || 'openai',
       apiKey: cfg.fallbackKey ?? process.env.LLM_FALLBACK_KEY ?? '',
     });
@@ -60,7 +62,7 @@ function buildChain(cfg) {
 export function hasConfiguredModel(cfg) {
   if (!cfg || !String(cfg.apiUrl || '').trim() || !String(cfg.model || '').trim()) return false;
   if (String(cfg.provider || '').toLowerCase() === 'none') return false;
-  if (String(cfg.provider || '').toLowerCase() === 'anthropic' && !String(cfg.apiKey || '').trim()) return false;
+  if (['anthropic', 'gemini'].includes(String(cfg.provider || '').toLowerCase()) && !String(cfg.apiKey || '').trim()) return false;
   return true;
 }
 
@@ -151,6 +153,41 @@ async function chatAnthropic(cfg, messages) {
   const data = await res.json();
   const text = (data?.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
   if (!text) throw new Error(`Unexpected Anthropic response: ${JSON.stringify(data).slice(0, 500)}`);
+  return text;
+}
+
+async function chatGemini(cfg, messages) {
+  const system = messages.filter(m => m.role === 'system').map(m => String(m.content)).join('\n\n');
+  const contents = messages.filter(m => m.role !== 'system').map(m => ({
+    role: m.role === 'assistant' ? 'model' : 'user',
+    parts: [{ text: String(m.content) }],
+  }));
+  const base = String(cfg.apiUrl || 'https://generativelanguage.googleapis.com/v1beta').replace(/\/+$/, '');
+  const url = `${base}/models/${encodeURIComponent(cfg.model)}:generateContent`;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), cfg.timeoutMs);
+  let res;
+  try {
+    res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': cfg.apiKey, ...cfg.extraHeaders },
+      signal: ctrl.signal,
+      body: JSON.stringify({
+        ...(system ? { systemInstruction: { parts: [{ text: system }] } } : {}),
+        contents,
+        generationConfig: { temperature: cfg.temperature, maxOutputTokens: cfg.maxTokens || 4096, responseMimeType: 'application/json' },
+      }),
+    });
+  } catch (e) {
+    throw new Error(`Gemini request failed (${cfg.model}): ${e.message}`);
+  } finally { clearTimeout(timer); }
+  if (!res.ok) {
+    const detail = (await res.text().catch(() => '')).slice(0, 800);
+    throw new Error(`Gemini HTTP ${res.status}: ${detail}`);
+  }
+  const data = await res.json();
+  const text = (data?.candidates?.[0]?.content?.parts || []).map(part => part.text || '').join('');
+  if (!text) throw new Error(`Unexpected Gemini response: ${JSON.stringify(data).slice(0, 500)}`);
   return text;
 }
 

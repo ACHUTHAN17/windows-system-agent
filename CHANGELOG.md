@@ -1,4 +1,24 @@
 # Changelog
+## 1.29.0 — 2026-10-21
+- **No-local-model planning:** the default is now an offline device executor;
+  WinAgent never downloads or launches a local LLM. The Settings control center
+  offers a free Gemini cloud brain and an optional OpenRouter free-model
+  fallback for open-ended goals.
+- **Reliable key isolation:** primary and fallback provider keys are separately
+  encrypted with Windows DPAPI, excluded from renderer state and stored files in
+  plaintext, then passed only to the agent process environment.
+- **Native Gemini support:** Gemini uses its `generateContent` contract rather
+  than an OpenAI-compatible shim, with a verified JSON-only planning response.
+
+## 1.28.0 — 2026-10-21
+- **System-wide activity indicator:** the working glow is now a narrow,
+  click-through overlay at the physical bottom edge of every connected display,
+  rather than inside the app/work area. It uses one neutral indigo glow.
+- **Local artifacts:** `artifact_create`, `artifact_edit`, and
+  `artifact_publish_local` create, back up, verify, edit, and serve local HTML,
+  Markdown, text, JSON, CSV, or SVG artifacts. Publishing is loopback-only
+  (`127.0.0.1`) and never uploads an artifact anywhere.
+
 ## 1.27.0 — 2026-10-21
 - **Verified offline disk reports:** requests such as "what occupies the most
   space on my C drive" now create a real interactive HTML dashboard, verify it

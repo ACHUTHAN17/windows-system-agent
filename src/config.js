@@ -99,6 +99,7 @@ export function loadConfig(argv = {}) {
     telegramToken: env('TELEGRAM_TOKEN', json.telegramToken ?? ''),
     telegramAllow: env('TELEGRAM_ALLOW_FROM', json.telegramAllow ?? ''),
     fallbackUrl: env('LLM_FALLBACK_URL', json.fallbackUrl ?? ''),
+    fallbackProvider: env('LLM_FALLBACK_PROVIDER', json.fallbackProvider ?? 'openai-compatible'),
     fallbackModel: env('LLM_FALLBACK_MODEL', json.fallbackModel ?? 'openai'),
     fallbackKey: env('LLM_FALLBACK_KEY', json.fallbackKey ?? ''),
     useScoutedModels: String(env('USE_SCOUTED_MODELS', json.useScoutedModels ?? false)) === 'true',
@@ -114,6 +115,7 @@ export function printActiveModel(cfg) {
     return 'offline deterministic mode (no API key or local LLM configured)';
   }
   const kind = cfg.provider === 'anthropic' ? 'Anthropic-native'
+    : cfg.provider === 'gemini' ? 'Gemini cloud'
     : cfg.apiUrl.includes('localhost') || cfg.apiUrl.includes('127.0.0.1') ? 'local LLM'
     : 'API / custom';
   return `${cfg.model} [${cfg.provider} · ${kind}] @ ${cfg.apiUrl}`;

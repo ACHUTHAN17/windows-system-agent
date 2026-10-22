@@ -11,6 +11,7 @@ const { submitPending } = require('./lib/self-improve');
 const { tryLocalAction } = require('./lib/local-actions');
 const { attachFromPaths, saveBufferIntoUploads } = require('./lib/attachments');
 const { ChatSync } = require('./lib/chat-sync');
+const { OVERLAY_HEIGHT, bottomEdgeBounds, activityOverlayHtml } = require('./lib/activity-overlay');
 
 const ICON = path.join(__dirname, 'build', 'icon.png');
 let win = null;
@@ -20,7 +21,7 @@ let settings = null;
 let runner = null;
 let agentDir = '';
 let syncing = false;
-let overlay = null;
+const overlays = new Map();
 let activeChatSync = null;
 let activeChatId = '';
 
@@ -36,33 +37,42 @@ function handle(channel, fn) {
   });
 }
 
-function resizeOverlay() {
-  if (!overlay || overlay.isDestroyed()) return;
-  const area = screen.getPrimaryDisplay().workArea;
-  overlay.setBounds({ x: area.x, y: area.y + area.height - 10, width: area.width, height: 10 });
-}
-
-function createActivityOverlay() {
-  overlay = new BrowserWindow({
-    x: 0, y: 0, width: 800, height: 10, show: false, frame: false, transparent: true,
+function createActivityOverlay(display) {
+  const bounds = bottomEdgeBounds(display.bounds);
+  const overlay = new BrowserWindow({
+    ...bounds, show: false, frame: false, transparent: true,
     resizable: false, movable: false, focusable: false, skipTaskbar: true, alwaysOnTop: true,
     webPreferences: { sandbox: true, contextIsolation: true },
   });
   overlay.setIgnoreMouseEvents(true);
   overlay.setAlwaysOnTop(true, 'floating', 1);
-  overlay.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(`<!doctype html><style>
-    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent}
-    body:after{content:"";display:block;width:100%;height:3px;margin-top:4px;background:linear-gradient(90deg,transparent,#6d5dfc 20%,#00d4ff 50%,#6d5dfc 80%,transparent);box-shadow:0 0 8px #6d5dfc,0 0 18px #00d4ff;animation:p 1.2s ease-in-out infinite}
-    @keyframes p{0%,100%{opacity:.35;transform:scaleX(.65)}50%{opacity:1;transform:scaleX(1)}}
-  </style>`));
-  screen.on('display-metrics-changed', resizeOverlay);
-  resizeOverlay();
+  overlay.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  overlay.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(activityOverlayHtml()));
+  return overlay;
+}
+
+function resizeOverlays() {
+  const displays = screen.getAllDisplays();
+  const active = new Set(displays.map(display => display.id));
+  for (const display of displays) {
+    let overlay = overlays.get(display.id);
+    if (!overlay || overlay.isDestroyed()) {
+      overlay = createActivityOverlay(display);
+      overlays.set(display.id, overlay);
+    }
+    overlay.setBounds(bottomEdgeBounds(display.bounds, OVERLAY_HEIGHT));
+  }
+  for (const [id, overlay] of overlays) {
+    if (!active.has(id)) { if (!overlay.isDestroyed()) overlay.close(); overlays.delete(id); }
+  }
 }
 
 function setActivityGlow(active) {
-  if (!overlay || overlay.isDestroyed()) return;
-  if (active) { resizeOverlay(); overlay.showInactive(); }
-  else overlay.hide();
+  resizeOverlays();
+  for (const overlay of overlays.values()) {
+    if (overlay.isDestroyed()) continue;
+    if (active) overlay.showInactive(); else overlay.hide();
+  }
 }
 
 function createWindow(startHidden) {
@@ -331,12 +341,15 @@ function start() {
 
     registerIpc();
     createWindow(process.argv.includes('--hidden'));
-    createActivityOverlay();
+    resizeOverlays();
+    screen.on('display-metrics-changed', resizeOverlays);
+    screen.on('display-added', resizeOverlays);
+    screen.on('display-removed', resizeOverlays);
     createTray();
     registerHotkey();
     if (settings.data.syncOnStart) setTimeout(() => { doSync(); }, 2500);
   });
-  app.on('before-quit', () => { quitting = true; setActivityGlow(false); if (overlay && !overlay.isDestroyed()) overlay.close(); if (runner) runner.stop(); });
+  app.on('before-quit', () => { quitting = true; setActivityGlow(false); for (const overlay of overlays.values()) if (!overlay.isDestroyed()) overlay.close(); if (runner) runner.stop(); });
   app.on('will-quit', () => globalShortcut.unregisterAll());
   app.on('window-all-closed', () => { if (!settings || !settings.data.closeToTray) app.quit(); });
 }

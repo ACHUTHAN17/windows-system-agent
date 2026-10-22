@@ -6,6 +6,7 @@ import path from 'node:path';
 import { spawn, execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import os from 'node:os';
+import http from 'node:http';
 import { isPathAllowed } from './safety.js';
 import { linuxTool } from './tools-linux.js';
 import { androidTool } from './tools-android.js';
@@ -15,6 +16,7 @@ const execFileAsync = promisify(execFile);
 function ok(data) { return { ok: true, ...data }; }
 function fail(error, hint) { return { ok: false, error: String(error), hint }; }
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+const localArtifactServers = new Map();
 
 const NATIVE_INPUT_PREAMBLE = `Add-Type @'
 using System;
@@ -256,6 +258,72 @@ function diskReportHtml({ root, rows, state, createdAt }) {
 *{box-sizing:border-box}body{margin:0;background:#0b1020;color:#edf2ff;font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}.wrap{max-width:1100px;margin:auto;padding:36px 24px 56px}.hero{padding:28px;border:1px solid #27365d;border-radius:20px;background:linear-gradient(130deg,#182650,#111a31)}h1{margin:0;font-size:30px}h2{margin:30px 0 10px}.muted{color:#adbbdc}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.toolbar input,.toolbar button{font:inherit;border-radius:10px;padding:10px 12px}.toolbar input{min-width:260px;border:1px solid #3a4d7b;background:#101a31;color:#fff}.toolbar button{border:1px solid #4665b2;background:#1d3267;color:#fff;cursor:pointer}.row{padding:14px 0;border-bottom:1px solid #253152;cursor:pointer}.head{display:flex;justify-content:space-between;gap:16px;font-weight:650}.bar{height:12px;margin-top:8px;border-radius:99px;background:#101a31;overflow:hidden}.bar>i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#7b8cff,#58d4c3)}.detail{margin-top:16px;padding:16px;border-radius:12px;background:#101a31;white-space:pre-wrap}.tips{padding:18px 22px;border-radius:14px;background:#10251f;border:1px solid #23654f}.tips li{margin:8px 0}@media(max-width:560px){.head{flex-direction:column;gap:2px}.toolbar input{min-width:100%}}</style></head><body><main class="wrap"><section class="hero"><h1>Disk space report</h1><p class="muted">Root: ${htmlEscape(root)} · Created: ${htmlEscape(createdAt)}</p><p>${htmlEscape(status)} ${state.unreadable ? `${state.unreadable.toLocaleString()} unreadable items were skipped.` : ''}</p></section><div class="toolbar"><input id="filter" placeholder="Filter folders…"><button data-sort="size">Sort by size</button><button data-sort="name">Sort by name</button></div><section id="chart"></section><h2>Safe cleanup guidance</h2><ul class="tips">${tips}</ul><div id="detail" class="detail">Select a folder to view its measured size and path.</div></main><script>const rows=${data};let sort='size';const chart=document.querySelector('#chart'),detail=document.querySelector('#detail'),filter=document.querySelector('#filter');const fmt=n=>{const u=['B','KB','MB','GB','TB'];let i=0;while(n>=1024&&i<u.length-1){n/=1024;i++}return n.toFixed(i<2?0:1)+' '+u[i]};function draw(){const q=filter.value.toLowerCase();const list=rows.filter(r=>(r.name+r.path).toLowerCase().includes(q)).sort((a,b)=>sort==='name'?a.name.localeCompare(b.name):b.bytes-a.bytes);const max=Math.max(1,...list.map(r=>r.bytes));chart.innerHTML=list.map((r,i)=>'<article class="row" data-i="'+i+'"><div class="head"><span>'+r.name+'</span><span>'+fmt(r.bytes)+'</span></div><div class="bar"><i style="width:'+Math.max(1,100*r.bytes/max)+'%"></i></div></article>').join('')||'<p class="muted">No matching folders.</p>';[...chart.querySelectorAll('.row')].forEach((el,i)=>el.onclick=()=>{const r=list[i];detail.textContent=r.path+'\\n'+fmt(r.bytes)+' across '+r.files.toLocaleString()+' files';});}filter.oninput=draw;document.querySelectorAll('[data-sort]').forEach(b=>b.onclick=()=>{sort=b.dataset.sort;draw()});draw();</script></body></html>`;
 }
 
+function artifactExtension(format) {
+  return ({ html: '.html', markdown: '.md', text: '.txt', json: '.json', csv: '.csv', svg: '.svg' })[String(format || '').toLowerCase()] || '.txt';
+}
+
+function artifactContent(format, title, content) {
+  const kind = String(format || 'text').toLowerCase();
+  const text = String(content ?? '');
+  if (text.length > 2 * 1024 * 1024) throw new Error('artifact content is too large (max 2 MB)');
+  if (kind === 'json') {
+    if (!text.trim()) return '{}\n';
+    return JSON.stringify(JSON.parse(text), null, 2) + '\n';
+  }
+  if (kind === 'html') {
+    if (/^\s*(?:<!doctype|<html\b)/i.test(text)) return text;
+    const body = /<[^>]+>/.test(text) ? text : `<pre>${htmlEscape(text || 'WinAgent local artifact')}</pre>`;
+    return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${htmlEscape(title || 'WinAgent artifact')}</title><style>body{max-width:900px;margin:40px auto;padding:0 20px;font:16px/1.55 system-ui,sans-serif;color:#172033}pre{white-space:pre-wrap}</style></head><body>${body}</body></html>`;
+  }
+  return text;
+}
+
+function artifactMime(file) {
+  const ext = path.extname(file).toLowerCase();
+  return ({ '.html': 'text/html; charset=utf-8', '.htm': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.md': 'text/markdown; charset=utf-8', '.txt': 'text/plain; charset=utf-8', '.csv': 'text/csv; charset=utf-8', '.svg': 'image/svg+xml' })[ext] || 'application/octet-stream';
+}
+
+function containedIn(root, candidate) {
+  const rel = path.relative(path.resolve(root), path.resolve(candidate));
+  return rel === '' || (!rel.startsWith(`..${path.sep}`) && rel !== '..' && !path.isAbsolute(rel));
+}
+
+function openLocalTarget(target) {
+  const command = process.platform === 'win32' ? 'cmd.exe' : process.platform === 'darwin' ? 'open' : 'xdg-open';
+  const args = process.platform === 'win32' ? ['/c', 'start', '""', target] : [target];
+  const child = spawn(command, args, { detached: true, stdio: 'ignore', windowsHide: true });
+  child.unref();
+  return child.pid;
+}
+
+async function publishArtifactLocally(source, requestedPort) {
+  const file = path.resolve(source);
+  const root = path.dirname(file);
+  const existing = localArtifactServers.get(file);
+  if (existing && existing.server.listening) return existing;
+  const desired = requestedPort === undefined || requestedPort === '' ? 0 : Number(requestedPort);
+  if (!Number.isInteger(desired) || desired < 0 || desired > 65535) throw new Error('port must be 0-65535');
+  const server = http.createServer(async (req, res) => {
+    try {
+      const requestPath = decodeURIComponent(new URL(req.url || '/', 'http://127.0.0.1').pathname);
+      const relative = requestPath === '/' ? path.basename(file) : requestPath.replace(/^[/\\]+/, '');
+      const target = path.resolve(root, relative);
+      if (!containedIn(root, target)) { res.writeHead(403); res.end('Forbidden'); return; }
+      const stat = await fsp.stat(target);
+      if (!stat.isFile()) { res.writeHead(404); res.end('Not found'); return; }
+      res.writeHead(200, { 'Content-Type': artifactMime(target), 'Cache-Control': 'no-store' });
+      if (req.method !== 'HEAD') fs.createReadStream(target).pipe(res); else res.end();
+    } catch { res.writeHead(404); res.end('Not found'); }
+  });
+  await new Promise((resolve, reject) => { server.once('error', reject); server.listen(desired, '127.0.0.1', resolve); });
+  server.unref();
+  const port = server.address().port;
+  const published = { server, source: file, root, port, url: `http://127.0.0.1:${port}/${encodeURIComponent(path.basename(file))}` };
+  localArtifactServers.set(file, published);
+  server.once('close', () => localArtifactServers.delete(file));
+  return published;
+}
+
 export function buildTools() {
   const tools = [
     {
@@ -442,6 +510,74 @@ export function buildTools() {
       },
     },
     {
+      name: 'artifact_create', description: 'Create a verified local artifact (HTML dashboard/page, Markdown, text, JSON, CSV, or SVG). Writes to the requested local path, backs up an existing file, and can open the finished artifact. Use this instead of claiming an artifact exists.',
+      args: { path: 'absolute output path; extension is added when omitted', format: 'html|markdown|text|json|csv|svg', title: 'artifact title (opt)', content: 'complete artifact content', open: 'true to open after verifying (opt)' },
+      async run(a, ctx) {
+        try {
+          const format = String(a.format || path.extname(String(a.path || '')).slice(1) || 'text').toLowerCase();
+          if (!['html', 'markdown', 'text', 'json', 'csv', 'svg'].includes(format)) return fail('format must be html, markdown, text, json, csv, or svg');
+          if (!String(a.path || '').trim()) return fail('path is required');
+          let output = path.resolve(String(a.path));
+          if (!path.extname(output)) output += artifactExtension(format);
+          const allowed = isPathAllowed(ctx.cfg, output); if (!allowed.ok) return fail(allowed.reason);
+          const rendered = artifactContent(format, a.title || path.basename(output), a.content);
+          await fsp.mkdir(path.dirname(output), { recursive: true });
+          const backup = await backupIfExists(output);
+          await fsp.writeFile(output, rendered, 'utf8');
+          const verified = await fsp.readFile(output, 'utf8');
+          if (verified !== rendered) return fail('artifact verification failed after writing');
+          const shouldOpen = a.open === true || String(a.open).toLowerCase() === 'true';
+          const pid = shouldOpen ? openLocalTarget(output) : null;
+          return ok({ path: output, format, bytes: Buffer.byteLength(rendered), backup, opened: shouldOpen, pid, content: `Created and verified local ${format} artifact: ${output}` });
+        } catch (e) { return fail(e.message, 'Choose an allowed local output path and valid content.'); }
+      },
+    },
+    {
+      name: 'artifact_edit', description: 'Edit a local text artifact safely. Supports replace, append, prepend, or overwrite; creates a timestamped backup and verifies the saved content.',
+      args: { path: 'artifact path', mode: 'replace|append|prepend|overwrite', oldString: 'required for replace', content: 'replacement or added content' },
+      async run(a, ctx) {
+        try {
+          const target = path.resolve(String(a.path || ''));
+          if (!String(a.path || '').trim()) return fail('path is required');
+          const allowed = isPathAllowed(ctx.cfg, target); if (!allowed.ok) return fail(allowed.reason);
+          const mode = String(a.mode || 'replace').toLowerCase();
+          if (!['replace', 'append', 'prepend', 'overwrite'].includes(mode)) return fail('mode must be replace, append, prepend, or overwrite');
+          const before = await fsp.readFile(target, 'utf8');
+          const content = String(a.content ?? '');
+          let after;
+          if (mode === 'replace') {
+            const oldString = String(a.oldString ?? '');
+            if (!oldString) return fail('oldString is required for replace');
+            if (!before.includes(oldString)) return fail('oldString not found');
+            after = before.replace(oldString, content);
+          } else if (mode === 'append') after = before + content;
+          else if (mode === 'prepend') after = content + before;
+          else after = content;
+          if (after.length > 2 * 1024 * 1024) return fail('edited artifact is too large (max 2 MB)');
+          const backup = await backupIfExists(target);
+          await fsp.writeFile(target, after, 'utf8');
+          if ((await fsp.readFile(target, 'utf8')) !== after) return fail('artifact verification failed after editing');
+          return ok({ path: target, mode, bytes: Buffer.byteLength(after), backup, content: `Edited and verified local artifact: ${target}` });
+        } catch (e) { return fail(e.message, 'Use artifact_create first or provide an existing allowed text artifact.'); }
+      },
+    },
+    {
+      name: 'artifact_publish_local', description: 'Publish an existing local artifact on a loopback-only URL (127.0.0.1), then optionally open it. This never uploads data or exposes the artifact to the internet.',
+      args: { path: 'artifact file path', port: '0 for an automatic free port (opt)', open: 'false to avoid opening the local URL (opt)' },
+      async run(a, ctx) {
+        try {
+          const source = path.resolve(String(a.path || ''));
+          if (!String(a.path || '').trim()) return fail('path is required');
+          const allowed = isPathAllowed(ctx.cfg, source); if (!allowed.ok) return fail(allowed.reason);
+          if (!(await fsp.stat(source)).isFile()) return fail('path is not a file');
+          const published = await publishArtifactLocally(source, a.port);
+          const shouldOpen = !(a.open === false || String(a.open).toLowerCase() === 'false');
+          const pid = shouldOpen ? openLocalTarget(published.url) : null;
+          return ok({ path: source, url: published.url, port: published.port, localOnly: true, opened: shouldOpen, pid, content: `Published local-only artifact: ${published.url}` });
+        } catch (e) { return fail(e.message, 'Use an existing allowed artifact path. The local server is available only while WinAgent is running.'); }
+      },
+    },
+    {
       name: 'file_mkdir', description: 'Create directory recursively.',
       args: { path: 'absolute dir path' },
       async run(a, ctx) {
@@ -583,8 +719,9 @@ export function buildTools() {
       args: {},
       async run() {
         try {
-          const { stdout } = await ps(`Get-Process | Where-Object { $_.MainWindowTitle } | Select-Object ProcessName, Id, MainWindowTitle | ConvertTo-Json -Compress`);
-          let arr = JSON.parse(stdout || '[]');
+          // Base64 avoids PowerShell/console control characters from arbitrary window titles corrupting JSON output.
+          const { stdout } = await ps(`$rows = Get-Process | Where-Object { $_.MainWindowTitle } | Select-Object ProcessName, Id, MainWindowTitle; $json = $rows | ConvertTo-Json -Compress; [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($json))`);
+          let arr = JSON.parse(Buffer.from(stdout.trim() || 'W10=', 'base64').toString('utf8'));
           if (!Array.isArray(arr)) arr = [arr];
           return ok({ windows: arr.map(w => ({ app: w.ProcessName, pid: w.Id, title: w.MainWindowTitle })).slice(0, 100) });
         } catch (e) { return fail(e.message); }

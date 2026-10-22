@@ -3,11 +3,14 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const DEFAULTS = {
-  settingsVersion: 6,
+  settingsVersion: 7,
   preset: 'offline',
   provider: 'none',
   apiUrl: '',
   model: '',
+  fallbackProvider: 'openai-compatible',
+  fallbackUrl: '',
+  fallbackModel: '',
   allowedRoots: '',
   fullAuto: true,
   hotkey: 'Control+Alt+Space',
@@ -58,14 +61,15 @@ class Settings {
     fs.writeFileSync(this.file, JSON.stringify(this.data, null, 2), 'utf8');
   }
   publicView() {
-    const { apiKeyEnc, apiKeyPlain, imageApiKeyEnc, imageApiKeyPlain, githubPatEnc, githubPatPlain, ...rest } = this.data;
-    return { ...rest, hasKey: !!(apiKeyEnc || apiKeyPlain), keyEncrypted: !!apiKeyEnc, hasImageKey: !!(imageApiKeyEnc || imageApiKeyPlain), imageKeyEncrypted: !!imageApiKeyEnc, hasGithubPat: !!(githubPatEnc || githubPatPlain) };
+    const { apiKeyEnc, apiKeyPlain, fallbackKeyEnc, fallbackKeyPlain, imageApiKeyEnc, imageApiKeyPlain, githubPatEnc, githubPatPlain, ...rest } = this.data;
+    return { ...rest, hasKey: !!(apiKeyEnc || apiKeyPlain), keyEncrypted: !!apiKeyEnc, hasFallbackKey: !!(fallbackKeyEnc || fallbackKeyPlain), fallbackKeyEncrypted: !!fallbackKeyEnc, hasImageKey: !!(imageApiKeyEnc || imageApiKeyPlain), imageKeyEncrypted: !!imageApiKeyEnc, hasGithubPat: !!(githubPatEnc || githubPatPlain) };
   }
   // patch may contain apiKey ('' = leave unchanged, null = clear)
   update(patch) {
     const allowed = Object.keys(DEFAULTS);
     for (const k of allowed) if (k in patch) this.data[k] = patch[k];
     this._setSecret('apiKey', 'apiKeyEnc', 'apiKeyPlain', patch);
+    this._setSecret('fallbackKey', 'fallbackKeyEnc', 'fallbackKeyPlain', patch);
     this._setSecret('imageApiKey', 'imageApiKeyEnc', 'imageApiKeyPlain', patch);
     this._setSecret('githubPat', 'githubPatEnc', 'githubPatPlain', patch);
     this._save();
@@ -85,6 +89,7 @@ class Settings {
     return this.data[plainKey] || '';
   }
   _key() { return this._secret('apiKeyEnc', 'apiKeyPlain'); }
+  _fallbackKey() { return this._secret('fallbackKeyEnc', 'fallbackKeyPlain'); }
   _imageKey() { return this._secret('imageApiKeyEnc', 'imageApiKeyPlain'); }
   githubPat() { return this._secret('githubPatEnc', 'githubPatPlain'); }
   // Environment for the agent child. Empty values are omitted so the engine's own
@@ -92,12 +97,23 @@ class Settings {
   agentEnv() {
     const d = this.data;
     const env = {};
-    if (d.preset !== 'free') {
+    if (d.preset === 'offline') {
+      // Send an explicit value so a parent shell's MODEL_* variables cannot
+      // accidentally re-enable cloud planning for an offline desktop profile.
+      env.MODEL_PROVIDER = 'none';
+    } else {
       if (d.provider) env.MODEL_PROVIDER = d.provider;
       if (d.apiUrl) env.MODEL_API_URL = d.apiUrl;
       if (d.model) env.MODEL_NAME = d.model;
       const k = this._key();
       if (k) env.MODEL_API_KEY = k;
+    }
+    if (d.fallbackUrl && d.fallbackModel) {
+      env.LLM_FALLBACK_PROVIDER = d.fallbackProvider || 'openai-compatible';
+      env.LLM_FALLBACK_URL = d.fallbackUrl;
+      env.LLM_FALLBACK_MODEL = d.fallbackModel;
+      const fallbackKey = this._fallbackKey();
+      if (fallbackKey) env.LLM_FALLBACK_KEY = fallbackKey;
     }
     if (d.useScoutedModels === false) env.USE_SCOUTED_MODELS = 'false';
     const imageKey = this._imageKey();
