@@ -6,7 +6,7 @@
   // offline routing or a user-owned free cloud key — it never downloads a local LLM.
   const PRESETS = {
     offline: { label: 'Offline executor (no model)', provider: 'none', apiUrl: '', model: '' },
-    'cloud-free': { label: 'Free cloud brain: Gemini', provider: 'gemini', apiUrl: 'https://generativelanguage.googleapis.com/v1beta', model: 'gemini-3.8-flash', fallbackProvider: 'openai-compatible', fallbackUrl: 'https://openrouter.ai/api/v1', fallbackModel: 'openrouter/free' },
+    'cloud-free': { label: 'Free cloud brain: Gemini', provider: 'gemini', apiUrl: 'https://generativelanguage.googleapis.com/v1beta', model: 'gemini-2.5-flash', fallbackProvider: 'openai-compatible', fallbackUrl: 'https://openrouter.ai/api/v1', fallbackModel: 'openrouter/free' },
     'openrouter-free': { label: 'Free cloud brain: OpenRouter', provider: 'openai-compatible', apiUrl: 'https://openrouter.ai/api/v1', model: 'openrouter/free', fallbackProvider: 'openai-compatible', fallbackUrl: '', fallbackModel: '' },
     custom: { label: 'Custom cloud provider', provider: 'openai-compatible', apiUrl: '', model: '', fallbackProvider: 'openai-compatible', fallbackUrl: '', fallbackModel: '' },
   };
@@ -313,6 +313,13 @@
     $('sMcp').value = s.mcpServers || '';
     $('sAndroid').value = s.androidSerial || '';
     $('customFields').hidden = s.preset === 'offline'; $('fallbackFields').hidden = s.preset === 'offline'; updateMode();
+    api.systemCapabilities().then((capability) => {
+      const privilege = $('sPrivilege'); const elevate = $('sElevate');
+      if (!privilege || !elevate) return;
+      privilege.textContent = capability.detail || '';
+      elevate.hidden = !capability.supported || !!capability.elevated;
+      elevate.disabled = !capability.supported;
+    }).catch(() => {});
   }
   async function loadSettings() { S.settings = await api.getSettings(); fillSettings(); const i = await api.info(); $('aboutLine').textContent = `WinAgent desktop ${i.version} · agent folder: ${i.agentDir}`; }
   function updateMode() { const full = S.settings && S.settings.fullAuto; const b = $('modeBadge'); b.textContent = full ? 'Full control' : 'Ask before acting'; b.classList.toggle('full', !!full); }
@@ -380,6 +387,10 @@
     $('memSave').onclick = async () => { if (!memCur) return; await api.memorySave(memCur, $('memText').value); $('memState').textContent = 'Saved.'; };
     $('memFolder').onclick = () => api.openAgentDir();
     $('sSave').onclick = saveSettings;
+    $('sElevate').onclick = async () => {
+      const r = await api.requestElevation();
+      $('sPrivilege').textContent = r.restarting ? 'Restarting with Windows UAC…' : (r.alreadyElevated ? 'Already running as Administrator.' : (r.error || (r.cancelled ? 'Administrator restart cancelled.' : 'Could not restart as Administrator.')));
+    };
     $('sPick').onclick = async () => { const p = await api.pickFolder(); if (p) $('sRoots').value = [$('sRoots').value.trim(), p].filter(Boolean).join(', '); };
     $('sSelftest').onclick = selftest;
     $('sTest').onclick = () => { showView('chat'); newSession(); send('Reply with exactly the single word: OK'); };

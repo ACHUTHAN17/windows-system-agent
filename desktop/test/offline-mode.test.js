@@ -4,8 +4,9 @@ const assert = require('node:assert/strict');
 let offlinePlan;
 let latestRequest;
 let hasConfiguredModel;
+let interpretExplicitInput;
 test('load offline modules', async () => {
-  ({ offlinePlan, latestRequest } = await import('../../src/offline.js'));
+  ({ offlinePlan, latestRequest, interpretExplicitInput } = await import('../../src/offline.js'));
   ({ hasConfiguredModel } = await import('../../src/llm.js'));
 });
 
@@ -51,7 +52,11 @@ test('offline planner composes ordinary local action sequences', async () => {
   assert.deepEqual(offlinePlan('drag from 100,200 to 500,600', cfg).steps[0], {
     tool: 'screen_drag', args: { x1: 100, y1: 200, x2: 500, y2: 600 }, label: 'Dragged from 100,200 to 500,600',
   });
-  assert.deepEqual(offlinePlan('press Ctrl+Shift+S', cfg).steps[0].args, { key: 'S', modifiers: 'Ctrl,Shift' });
+  assert.deepEqual(offlinePlan('press Ctrl+Shift+S', cfg).steps[0].args, { key: 'S', modifiers: 'ctrl,shift' });
+  const lock = offlinePlan('yo chad !! press win+ L', cfg).steps[0];
+  assert.deepEqual(lock.args, { key: 'L', modifiers: 'win' });
+  assert.equal(lock.intent, 'lock-session');
+  assert.match(lock.impact, /Locks the current Windows session immediately/);
   assert.deepEqual(offlinePlan('type hello world', cfg).steps[0].args, { text: 'hello world' });
   assert.equal(offlinePlan('write a file', cfg), null, 'a creation goal must reach the planner, not inject text into the focused app');
 });
@@ -61,10 +66,21 @@ test('offline planner leaves ambiguous work for the optional model loop', async 
   assert.equal(offlinePlan('summarize my entire project and improve it', cfg), null);
 });
 
+test('shortcut interpretation distinguishes an explicit action from a normal question', async () => {
+  if (!interpretExplicitInput) ({ interpretExplicitInput } = await import('../../src/offline.js'));
+  assert.deepEqual(interpretExplicitInput('yo chad !! press win+ L'), {
+    key: 'L', modifiers: 'win', intent: 'lock-session',
+    impact: 'Locks the current Windows session immediately', label: 'Locked the current Windows session', platform: 'win32',
+  });
+  assert.equal(interpretExplicitInput('what does Win+L do?'), null);
+  assert.equal(interpretExplicitInput('should I press Win+L?'), null);
+});
+
 test('model configuration is opt-in', async () => {
   if (!hasConfiguredModel) ({ hasConfiguredModel } = await import('../../src/llm.js'));
   assert.equal(hasConfiguredModel({ provider: 'none', apiUrl: '', model: '' }), false);
   assert.equal(hasConfiguredModel({ provider: 'openai-compatible', apiUrl: '', model: '' }), false);
   assert.equal(hasConfiguredModel({ provider: 'openai-compatible', apiUrl: 'http://localhost:11434/v1', model: 'llama3.1' }), true);
+  assert.equal(hasConfiguredModel({ provider: 'openai-compatible', apiUrl: 'https://openrouter.ai/api/v1', model: 'openrouter/free', apiKey: '' }), false);
   assert.equal(hasConfiguredModel({ provider: 'anthropic', apiUrl: 'https://api.anthropic.com', model: 'claude', apiKey: '' }), false);
 });

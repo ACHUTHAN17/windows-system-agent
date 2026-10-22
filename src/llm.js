@@ -45,11 +45,15 @@ function buildChain(cfg) {
   if (hasConfiguredModel(cfg)) chain.push(cfg);
   const fb = (cfg.fallbackUrl || process.env.LLM_FALLBACK_URL || '').replace(/\/+$/, '');
   if (fb) {
-    chain.push({
+    const fallback = {
       ...cfg, provider: cfg.fallbackProvider || process.env.LLM_FALLBACK_PROVIDER || 'openai-compatible', apiUrl: fb,
       model: cfg.fallbackModel || process.env.LLM_FALLBACK_MODEL || 'openai',
       apiKey: cfg.fallbackKey ?? process.env.LLM_FALLBACK_KEY ?? '',
-    });
+    };
+    // Do not turn a missing OpenRouter/OpenAI key into a second, unrelated
+    // authentication error after the real model failure.  Custom local and
+    // self-hosted OpenAI-compatible endpoints remain keyless by design.
+    if (hasConfiguredModel(fallback)) chain.push(fallback);
   }
   if (cfg.useScoutedModels !== false) {
     for (const m of (cfg.scoutedModels || [])) {
@@ -61,8 +65,12 @@ function buildChain(cfg) {
 
 export function hasConfiguredModel(cfg) {
   if (!cfg || !String(cfg.apiUrl || '').trim() || !String(cfg.model || '').trim()) return false;
-  if (String(cfg.provider || '').toLowerCase() === 'none') return false;
-  if (['anthropic', 'gemini'].includes(String(cfg.provider || '').toLowerCase()) && !String(cfg.apiKey || '').trim()) return false;
+  const provider = String(cfg.provider || '').toLowerCase();
+  if (provider === 'none') return false;
+  const url = String(cfg.apiUrl || '');
+  const requiresKey = ['anthropic', 'gemini'].includes(provider)
+    || /https?:\/\/(?:api\.)?openrouter\.ai\b|https?:\/\/api\.openai\.com\b/i.test(url);
+  if (requiresKey && !String(cfg.apiKey || '').trim()) return false;
   return true;
 }
 
@@ -182,7 +190,12 @@ async function chatGemini(cfg, messages) {
     throw new Error(`Gemini request failed (${cfg.model}): ${e.message}`);
   } finally { clearTimeout(timer); }
   if (!res.ok) {
-    const detail = (await res.text().catch(() => '')).slice(0, 800);
+    const raw = await res.text().catch(() => '');
+    let detail = raw.slice(0, 800);
+    try {
+      const parsed = JSON.parse(raw);
+      detail = parsed?.error?.message || parsed?.message || detail;
+    } catch {}
     throw new Error(`Gemini HTTP ${res.status}: ${detail}`);
   }
   const data = await res.json();

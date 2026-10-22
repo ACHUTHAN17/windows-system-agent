@@ -52,8 +52,11 @@ export async function shRun(command, timeoutMs = 20000) {
   return { stdout: (stdout || '').trim(), stderr: (stderr || '').trim() };
 }
 
-// ---------- Linux/macOS screen + input (xdotool X11, wtype Wayland) ----------
+// ---------- Linux/macOS screen + input ----------
 async function xdo(args) {
+  if (isLinux && String(process.env.XDG_SESSION_TYPE || '').toLowerCase() === 'wayland' && !process.env.DISPLAY) {
+    throw new Error('desktop input is not available through xdotool in a pure Wayland session; install/configure a compositor-approved input bridge such as ydotool');
+  }
   const xd = await needBin('xdotool', 'sudo apt install xdotool  (X11 session)');
   const { stdout } = await execFileAsync(xd, args, { timeout: 15000 });
   return (stdout || '').trim();
@@ -112,6 +115,12 @@ export async function scrollUnix(x, y, direction = 'down', amount = 3) {
 }
 
 export async function typeUnix(text, enter = false) {
+  if (isMac) {
+    const lines = [`tell application "System Events" to keystroke ${appleString(text)}`];
+    if (enter) lines.push('tell application "System Events" to key code 36');
+    await execFileAsync('osascript', lines.flatMap(line => ['-e', line]), { timeout: 15000 });
+    return { typedChars: String(text ?? '').length, enter: !!enter, transport: 'macOS Accessibility' };
+  }
   await xdo(['type', '--delay', '12', '--', String(text ?? '')]);
   if (enter) await xdo(['key', 'Return']);
   return { typedChars: String(text ?? '').length, enter: !!enter };
@@ -120,10 +129,44 @@ export async function typeUnix(text, enter = false) {
 const KEYMAP = {
   enter: 'Return', tab: 'Tab', esc: 'Escape', backspace: 'BackSpace', delete: 'Delete',
   up: 'Up', down: 'Down', left: 'Left', right: 'Right', home: 'Home', end: 'End',
-  pgup: 'Page_Up', pgdn: 'Page_Down', space: 'space',
+  pgup: 'Page_Up', pageup: 'Page_Up', pgdn: 'Page_Down', pagedown: 'Page_Down', space: 'space', printscreen: 'Print',
 };
 
+const MAC_KEY_CODES = {
+  enter: 36, return: 36, tab: 48, space: 49, backspace: 51, delete: 117, esc: 53, escape: 53,
+  left: 123, right: 124, down: 125, up: 126, home: 115, end: 119, pageup: 116, pagedown: 121,
+  f1: 122, f2: 120, f3: 99, f4: 118, f5: 96, f6: 97, f7: 98, f8: 100, f9: 101, f10: 109, f11: 103, f12: 111,
+};
+
+function appleString(value) {
+  return '"' + String(value ?? '').replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\r?\n/g, '\\n') + '"';
+}
+
+function appleModifiers(modifiers) {
+  const names = [];
+  for (const modifier of String(modifiers || '').toLowerCase().split(',').filter(Boolean)) {
+    if (modifier.startsWith('ctrl')) names.push('control down');
+    else if (modifier === 'option' || modifier === 'alt') names.push('option down');
+    else if (modifier.startsWith('shift')) names.push('shift down');
+    else if (['command', 'cmd', 'meta', 'win'].includes(modifier)) names.push('command down');
+  }
+  return names.length ? ` using {${names.join(', ')}}` : '';
+}
+
+export function macShortcutScript(key, modifiers = '') {
+  const low = String(key || '').trim().toLowerCase().replace(/[\s_-]+/g, '');
+  const using = appleModifiers(modifiers);
+  const code = MAC_KEY_CODES[low];
+  if (code != null) return `tell application "System Events" to key code ${code}${using}`;
+  if (/^[a-z0-9]$/i.test(low)) return `tell application "System Events" to keystroke ${appleString(low)}${using}`;
+  throw new Error('unknown macOS key: ' + key);
+}
+
 export async function keyUnix(key, modifiers = '') {
+  if (isMac) {
+    await execFileAsync('osascript', ['-e', macShortcutScript(key, modifiers)], { timeout: 15000 });
+    return { key: String(key), modifiers, transport: 'macOS Accessibility' };
+  }
   let k = String(key || '').trim();
   const low = k.toLowerCase();
   let code = KEYMAP[low] || null;
@@ -142,6 +185,7 @@ export async function keyUnix(key, modifiers = '') {
 }
 
 export async function keySequenceUnix(sequence) {
+  if (isMac) throw new Error('macOS key sequences must be sent as individual shortcut actions; grant Accessibility permission to WinAgent for keyboard control');
   const tokens = String(sequence || '').trim().split(/\s+/).filter(Boolean).slice(0, 80);
   if (!tokens.length) throw new Error('sequence is required');
   await xdo(['key', ...tokens]);

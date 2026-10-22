@@ -24,8 +24,17 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 public static class WinAgentInput {
   [StructLayout(LayoutKind.Sequential)] public struct INPUT { public UInt32 type; public InputUnion U; }
-  [StructLayout(LayoutKind.Explicit)] public struct InputUnion { [FieldOffset(0)] public KEYBDINPUT ki; }
+  // INPUT is a tagged union.  On 64-bit Windows the union must be large
+  // enough for MOUSEINPUT (not just KEYBDINPUT), otherwise SendInput receives
+  // the wrong cbSize and fails with ERROR_INVALID_PARAMETER (87).
+  [StructLayout(LayoutKind.Explicit)] public struct InputUnion {
+    [FieldOffset(0)] public MOUSEINPUT mi;
+    [FieldOffset(0)] public KEYBDINPUT ki;
+    [FieldOffset(0)] public HARDWAREINPUT hi;
+  }
+  [StructLayout(LayoutKind.Sequential)] public struct MOUSEINPUT { public Int32 dx; public Int32 dy; public UInt32 mouseData; public UInt32 dwFlags; public UInt32 time; public IntPtr dwExtraInfo; }
   [StructLayout(LayoutKind.Sequential)] public struct KEYBDINPUT { public UInt16 wVk; public UInt16 wScan; public UInt32 dwFlags; public UInt32 time; public IntPtr dwExtraInfo; }
+  [StructLayout(LayoutKind.Sequential)] public struct HARDWAREINPUT { public UInt32 uMsg; public UInt16 wParamL; public UInt16 wParamH; }
   const UInt32 INPUT_KEYBOARD = 1, KEYEVENTF_KEYUP = 0x0002, KEYEVENTF_UNICODE = 0x0004;
   [DllImport("user32.dll", SetLastError=true)] static extern UInt32 SendInput(UInt32 nInputs, INPUT[] pInputs, Int32 cbSize);
   static void Send(UInt16 vk, UInt16 scan, UInt32 flags) {
@@ -36,6 +45,10 @@ public static class WinAgentInput {
   public static void Unicode(String text) { foreach (Char c in text) { Send(0, c, KEYEVENTF_UNICODE); Send(0, c, KEYEVENTF_UNICODE | KEYEVENTF_KEYUP); } }
 }
 '@`;
+
+// Exposed only for regression tests: the native declaration must preserve the
+// complete Win32 INPUT union or keyboard injection silently fails on x64.
+export function nativeInputDefinition() { return NATIVE_INPUT_PREAMBLE; }
 
 function nativeTextCommand(text, enter) {
   const encoded = Buffer.from(String(text || ''), 'utf16le').toString('base64');
@@ -1000,6 +1013,18 @@ export function buildTools() {
       },
     },
     // ---------- C. Deep system ----------
+    {
+      name: 'system_capabilities', description: 'Report current OS control capabilities, including whether this Windows process is elevated. Read-only.',
+      args: {},
+      async run() {
+        try {
+          if (process.platform !== 'win32') return ok({ platform: process.platform, elevated: false, uiControl: process.platform === 'linux', unavailable: ['Windows UAC status is Windows-only', 'BIOS/UEFI direct control', 'kernel/driver modification'] });
+          const { stdout } = await ps(`[bool]([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)`);
+          const elevated = /^true$/i.test(stdout.trim());
+          return ok({ platform: 'win32', elevated, uiControl: true, available: ['files', 'apps', 'windows', 'native keyboard/mouse', 'packages', 'services', 'registry'], unavailable: ['BIOS/UEFI direct control', 'kernel/driver modification', 'DRM or anti-cheat bypass'] });
+        } catch (e) { return fail(e.message); }
+      },
+    },
     {
       name: 'reg_write', description: 'Write a registry value (creates key). Types: String, DWord, QWord, ExpandString. DESTRUCTIVE: needs approval.',
       args: { key: 'e.g. HKCU:\\Software\\WinAgentTest', name: 'value name', value: 'string|number', type: 'String|DWord|QWord|ExpandString (opt)' },

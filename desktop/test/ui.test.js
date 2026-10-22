@@ -7,11 +7,13 @@ const path = require('node:path');
 const { JSDOM } = require('jsdom');
 
 function boot() {
-  const calls = { run: [], approve: [], stop: 0, settings: [] };
+  const calls = { run: [], approve: [], stop: 0, settings: [], elevate: 0 };
   let listener = () => {}; let syncListener = () => {}; let chatSyncListener = () => {}; let learnedListener = () => {}; let prListener = () => {};
   const settings = { preset: 'offline', provider: 'none', apiUrl: '', model: '', fallbackUrl: '', fallbackModel: '', allowedRoots: '', fullAuto: false, hotkey: 'Control+Alt+Space', startWithWindows: false, closeToTray: true, syncOnStart: true, syncMemory: true, syncEngine: false, hasKey: false, keyEncrypted: false, hasFallbackKey: false, fallbackKeyEncrypted: false, githubRepo: '', autoPushLearned: false, syncChats: true, autoSelfImprove: false, hasGithubPat: false, useScoutedModels: false };
   const fake = {
     info: async () => ({ version: '1.0.0', agentDir: 'C:\\agent' }),
+    systemCapabilities: async () => ({ supported: true, elevated: false, detail: 'WinAgent is running as the signed-in standard user.' }),
+    requestElevation: async () => { calls.elevate++; return { ok: false, cancelled: true }; },
     getSettings: async () => ({ ...settings }),
     setSettings: async (p) => { calls.settings.push(p); Object.assign(settings, p); return { settings: { ...settings }, hotkeyOk: true }; },
     run: async (text, history) => { calls.run.push({ text, history }); return { ok: true }; },
@@ -100,6 +102,9 @@ test('errors are shown, settings save incl. key, views open', async () => {
   const patch = b.calls.settings.pop();
   assert.strictEqual(patch.preset, 'cloud-free'); assert.strictEqual(patch.apiKey, 'sk-test'); assert.strictEqual(patch.fallbackKey, 'fallback-test'); assert.strictEqual(patch.fullAuto, true);
   assert.strictEqual(d.getElementById('modeBadge').textContent, 'Full control');
+  assert.ok(d.getElementById('sPrivilege').textContent.includes('standard user'));
+  d.getElementById('sElevate').click(); await tick();
+  assert.strictEqual(b.calls.elevate, 1);
 
   d.querySelector('[data-view=skills]').click(); await tick();
   assert.strictEqual(d.querySelectorAll('#skillList .item').length, 2);
@@ -193,7 +198,7 @@ test('model popover: opens with presets + scouted models, picking one switches s
 
   d.querySelector('.mp-item[data-preset="cloud-free"]').click(); await tick();
   const patch = b.calls.settings.pop();
-  assert.strictEqual(patch.preset, 'cloud-free'); assert.strictEqual(patch.model, 'gemini-3.8-flash');
+  assert.strictEqual(patch.preset, 'cloud-free'); assert.strictEqual(patch.model, 'gemini-2.5-flash');
   assert.ok(d.getElementById('modelPill').textContent.includes('Gemini'));
   assert.strictEqual(d.getElementById('modelPop').hidden, true, 'closes after picking');
 });

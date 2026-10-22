@@ -80,6 +80,8 @@
           <section class="settings-card"><div class="setting-head"><span class="setting-icon">⌘</span><div><h2>Control & access</h2><p>Set how independently the agent may act.</p></div></div>
             <label class="toggle-row"><input id="sFull" type="checkbox"><span><b>Full control</b><small>Act without approval prompts. OS elevation and protected paths still apply.</small></span></label>
             <label>Allowed folders <small>Empty means all non-protected locations.</small><div class="row"><input id="sRoots" placeholder="C:\Users\you\Documents, D:\Projects"><button id="sPick" class="ghost">Add folder</button></div></label>
+            <div class="row"><button id="sElevate" class="ghost">Restart as Administrator</button><span id="sPrivilege" class="field-help"></span></div>
+            <div class="field-help">Administrator mode uses the normal Windows UAC dialog. BIOS/UEFI, kernel changes, DRM and anti-cheat protections remain outside WinAgent.</div>
           </section>
 
           <section class="settings-card"><div class="setting-head"><span class="setting-icon">▣</span><div><h2>Desktop behavior</h2><p>Choose how the app stays available.</p></div></div>

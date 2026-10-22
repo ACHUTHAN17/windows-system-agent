@@ -11,6 +11,8 @@ const listen = (ch, cb) => {
 // The ONLY surface the UI can touch. No Node, no fs, no shell in the renderer.
 contextBridge.exposeInMainWorld('winagent', {
   info: () => invoke('app:info'),
+  systemCapabilities: () => invoke('system:capabilities'),
+  requestElevation: () => invoke('system:elevate'),
   getSettings: () => invoke('settings:get'),
   setSettings: (patch) => invoke('settings:set', patch),
   run: (text, history, chatId) => invoke('agent:run', { text, history, chatId }),

@@ -1,4 +1,37 @@
 # Changelog
+## 1.31.0 — 2026-10-22
+- **Platform shortcut catalog:** Windows, macOS, GNOME/Linux, and Android now
+  have separate semantic shortcut profiles. The planner reports an action's
+  actual operating-system effect before sending input instead of applying a
+  Windows interpretation everywhere.
+- **macOS keyboard control:** keyboard shortcuts and text entry use the native
+  macOS Accessibility automation path (`System Events`); macOS will require
+  the user to grant Accessibility permission to WinAgent.
+- **Honest Linux/Android boundaries:** Linux detects pure Wayland sessions and
+  explains that an approved input bridge is needed; Android refuses modifier
+  chords that the ADB/Termux bridge cannot faithfully emit.
+
+## 1.30.1 — 2026-10-22
+- **Intent-aware local input:** the offline planner now interprets explicit
+  shortcut requests as human actions with known effects. For example, it
+  recognizes that Win+L locks the session, while questions such as “what does
+  Win+L do?” and “should I press Win+L?” are not executed.
+
+## 1.30.0 — 2026-10-22
+- **Reliable native shortcuts:** corrected the 64-bit Windows `SendInput`
+  structure, fixing `ERROR_INVALID_PARAMETER` when simulating shortcuts such
+  as Win+L. Conversational lead-ins before an explicit shortcut now remain on
+  the local action path instead of reaching the cloud planner.
+- **Clearer cloud fallback:** invalid Gemini responses now show the provider's
+  actual message; authenticated services such as OpenRouter are not retried
+  when no key is configured.
+- **Administrator control:** Settings reports the process privilege level and
+  can relaunch WinAgent through the standard Windows UAC consent flow for
+  permitted system settings, services, packages and protected locations.
+- **Control boundary reporting:** `system_capabilities` tells the agent when it
+  can use native desktop input and when an action needs elevation or is outside
+  application control (BIOS/UEFI, kernel, DRM and anti-cheat).
+
 ## 1.29.0 — 2026-10-21
 - **No-local-model planning:** the default is now an offline device executor;
   WinAgent never downloads or launches a local LLM. The Settings control center

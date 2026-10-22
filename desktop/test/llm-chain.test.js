@@ -78,6 +78,20 @@ test('all-fail chain: error names EVERY attempt (primary vs fallback), not just 
   primary.close(); fallback.close();
 });
 
+test('a missing OpenRouter fallback key does not hide the primary error with an authentication retry', async () => {
+  const primary = await server(400, { error: { message: 'configured Gemini model is unavailable' } });
+  const cfg = {
+    provider: 'openai-compatible', apiUrl: url(primary), model: 'primary', timeoutMs: 3000,
+    fallbackUrl: 'https://openrouter.ai/api/v1', fallbackModel: 'openrouter/free', fallbackKey: '', useScoutedModels: false,
+  };
+  await assert.rejects(() => chat(cfg, [{ role: 'user', content: 'hi' }]), (e) => {
+    assert.match(e.message, /configured Gemini model is unavailable/);
+    assert.ok(!e.message.includes('All 2 configured model'));
+    return true;
+  });
+  primary.close();
+});
+
 test('primary fails, a scouted fallback succeeds: returns the answer, chain keeps working', async () => {
   const primary = await server(500, {});
   const good = await server(200, { choices: [{ message: { content: 'hello from fallback' } }] });

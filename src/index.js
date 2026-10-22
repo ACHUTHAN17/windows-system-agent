@@ -414,6 +414,7 @@ export async function createEngine(argvOverride) {
       cfg.onEvent?.({ t: 'route', kind: 'offline', confidence: 'high', reason: offline.reason });
       const reports = [];
       for (const step of offline.steps) {
+        if (step.intent) cfg.onEvent?.({ t: 'step', n: reports.length + 1, text: `${step.intent}: ${step.impact}` });
         const result = await runTool(step.tool, step.args);
         cfg.onEvent?.({ t: 'tool', name: step.tool, ok: result && result.ok, summary: JSON.stringify(result).slice(0, 400) });
         if (!result || !result.ok) return `I couldn't complete that offline request: ${result?.error || 'unknown error'}`;

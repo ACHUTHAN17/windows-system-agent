@@ -12,6 +12,7 @@ const { tryLocalAction } = require('./lib/local-actions');
 const { attachFromPaths, saveBufferIntoUploads } = require('./lib/attachments');
 const { ChatSync } = require('./lib/chat-sync');
 const { OVERLAY_HEIGHT, bottomEdgeBounds, activityOverlayHtml } = require('./lib/activity-overlay');
+const elevation = require('./lib/elevation');
 
 const ICON = path.join(__dirname, 'build', 'icon.png');
 let win = null;
@@ -205,6 +206,26 @@ function readTools() {
 
 function registerIpc() {
   handle('app:info', () => ({ version: app.getVersion(), agentDir, packaged: app.isPackaged, platform: process.platform }));
+  handle('system:capabilities', () => ({
+    ...elevation.status(), uiControl: process.platform === 'win32',
+    systemTools: ['files', 'apps', 'windows', 'native keyboard/mouse', 'packages', 'services', 'registry'],
+    unavailable: ['BIOS/UEFI direct control', 'kernel/driver modification', 'DRM or anti-cheat bypass'],
+  }));
+  handle('system:elevate', async () => {
+    const current = elevation.status();
+    if (!current.supported) return { ok: false, error: current.detail };
+    if (current.elevated) return { ok: true, alreadyElevated: true };
+    const choice = await dialog.showMessageBox(win, {
+      type: 'warning', buttons: ['Cancel', 'Restart as Administrator'], defaultId: 0, cancelId: 0, noLink: true,
+      title: 'Restart WinAgent as Administrator?', message: 'Windows will show its UAC consent dialog.',
+      detail: 'Administrator mode enables permitted system settings, services and protected locations. It does not bypass BIOS/UEFI, kernel, DRM, anti-cheat, or other security controls.',
+    });
+    if (choice.response !== 1) return { ok: false, cancelled: true };
+    const launched = elevation.requestRelaunch();
+    if (!launched.ok) return launched;
+    setTimeout(() => { quitting = true; app.quit(); }, 700);
+    return { ok: true, restarting: true };
+  });
   handle('settings:get', () => settings.publicView());
   handle('settings:set', async (patch) => {
     patch = patch && typeof patch === 'object' ? patch : {};

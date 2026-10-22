@@ -28,6 +28,116 @@ function result(tool, args, label) {
   return { tool, args, label };
 }
 
+// A shortcut is not just a string of key names. These OS profiles retain the
+// system-level consequence that a person expects. The executor still follows
+// the configured approval policy. Sources: Microsoft, Apple, and GNOME's
+// official shortcut references; Android has device-specific key events.
+const effect = (intent, impact, label) => ({ intent, impact, label });
+const SHORTCUT_PROFILES = {
+  win32: {
+    'win+l': effect('lock-session', 'Locks the current Windows session immediately', 'Locked the current Windows session'),
+    'win+i': effect('open-settings', 'Opens Windows Settings', 'Opened Windows Settings'),
+    'win+d': effect('show-desktop', 'Shows or restores the desktop', 'Toggled the desktop view'),
+    'win+e': effect('open-file-explorer', 'Opens File Explorer', 'Opened File Explorer'),
+    'win+r': effect('open-run', 'Opens the Windows Run dialog', 'Opened the Run dialog'),
+    'win+s': effect('open-search', 'Opens Windows Search', 'Opened Windows Search'),
+    'win+m': effect('minimize-all', 'Minimizes all windows', 'Minimized all windows'),
+    'win+tab': effect('task-view', 'Opens Windows Task View', 'Opened Task View'),
+    'win+shift+s': effect('screen-snipping', 'Opens Windows screen snipping', 'Opened screen snipping'),
+    'alt+tab': effect('switch-app', 'Switches the active application', 'Switched the active application'),
+    'alt+f4': effect('close-focused-window', 'Closes the currently focused window', 'Closed the focused window'),
+    'ctrl+s': effect('save-focused-document', 'Saves in the currently focused application', 'Sent Save to the focused application'),
+    'ctrl+shift+s': effect('save-as-focused-document', 'Opens Save As in the currently focused application', 'Opened Save As in the focused application'),
+  },
+  darwin: {
+    'command+c': effect('copy-selection', 'Copies the current selection on macOS', 'Copied the current selection'),
+    'command+v': effect('paste-clipboard', 'Pastes the clipboard into the focused app', 'Pasted the clipboard'),
+    'command+x': effect('cut-selection', 'Cuts the current selection on macOS', 'Cut the current selection'),
+    'command+z': effect('undo', 'Undoes the last action in the focused app', 'Undid the last action'),
+    'shift+command+z': effect('redo', 'Redoes the last action in the focused app', 'Redid the last action'),
+    'command+a': effect('select-all', 'Selects all in the focused app', 'Selected all'),
+    'command+s': effect('save-focused-document', 'Saves in the focused macOS app', 'Saved the focused document'),
+    'command+w': effect('close-focused-window', 'Closes the front window or tab', 'Closed the front window or tab'),
+    'command+q': effect('quit-focused-app', 'Quits the front macOS application', 'Quit the front application'),
+    'command+space': effect('open-spotlight', 'Opens Spotlight search', 'Opened Spotlight'),
+    'command+tab': effect('switch-app', 'Switches between open macOS applications', 'Switched the active application'),
+    'option+command+esc': effect('force-quit-dialog', 'Opens the macOS Force Quit dialog', 'Opened Force Quit'),
+    'shift+command+3': effect('screenshot-full-screen', 'Captures the full screen on macOS', 'Captured a full-screen screenshot'),
+    'shift+command+4': effect('screenshot-selection', 'Starts a macOS selection screenshot', 'Started selection screenshot'),
+  },
+  linux: {
+    'super+l': effect('lock-session', 'Locks the current GNOME session', 'Locked the current GNOME session'),
+    'super+a': effect('show-applications', 'Shows the GNOME applications list', 'Opened the applications list'),
+    'super+tab': effect('switch-app', 'Switches between applications in GNOME', 'Switched the active application'),
+    'super+v': effect('show-notifications', 'Shows GNOME notifications', 'Opened notifications'),
+    'super+pageup': effect('previous-workspace', 'Switches to the previous GNOME workspace', 'Switched workspace'),
+    'super+pagedown': effect('next-workspace', 'Switches to the next GNOME workspace', 'Switched workspace'),
+    'alt+f2': effect('open-run-command', 'Opens the GNOME run command prompt', 'Opened the run command prompt'),
+    'alt+f4': effect('close-focused-window', 'Closes the focused window', 'Closed the focused window'),
+    'ctrl+alt+delete': effect('power-dialog', 'Opens the GNOME power dialog', 'Opened the power dialog'),
+    'printscreen': effect('screenshot-tool', 'Opens the GNOME screenshot tool', 'Opened the screenshot tool'),
+  },
+  android: {
+    home: effect('go-home', 'Returns to the Android home screen', 'Returned to the Android home screen'),
+    back: effect('go-back', 'Navigates back on the Android device', 'Navigated back'),
+    appswitch: effect('show-recents', 'Opens the Android recent-apps view', 'Opened recent apps'),
+    power: effect('power-button', 'Sends the Android power key; device behavior is manufacturer controlled', 'Sent the Android power key'),
+  },
+};
+
+function platformFor(cfg = {}) {
+  const requested = String(cfg.targetPlatform || cfg.platform || '').toLowerCase();
+  if (['android', 'termux'].includes(requested) || process.env.ANDROID_ROOT || process.env.TERMUX_VERSION) return 'android';
+  if (['mac', 'macos', 'darwin'].includes(requested)) return 'darwin';
+  if (['linux', 'gnome'].includes(requested)) return 'linux';
+  if (['win', 'windows', 'win32'].includes(requested)) return 'win32';
+  return process.platform;
+}
+
+function canonicalShortcut(main, modifiers, platform) {
+  const order = platform === 'darwin' ? ['ctrl', 'option', 'shift', 'command']
+    : platform === 'linux' ? ['ctrl', 'alt', 'shift', 'super'] : ['ctrl', 'alt', 'shift', 'win'];
+  const names = String(modifiers || '').toLowerCase().split(',').filter(Boolean).map((value) => {
+    if (value.startsWith('ctrl') || value === 'control') return 'ctrl';
+    if (platform === 'darwin' && /^(cmd|command|meta|win)$/.test(value)) return 'command';
+    if (platform === 'darwin' && /^(alt|option)$/.test(value)) return 'option';
+    if (platform === 'linux' && /^(meta|win|super)$/.test(value)) return 'super';
+    if (value === 'meta') return 'win';
+    return value;
+  });
+  const unique = [...new Set(names)].sort((a, b) => order.indexOf(a) - order.indexOf(b));
+  return [...unique, String(main || '').trim().toLowerCase().replace(/[\s_-]+/g, '')].filter(Boolean).join('+');
+}
+
+// Understand an explicit human request before choosing an input tool.  A
+// greeting or agent name is deliberately ignored; a question about shortcuts
+// is deliberately not an action.  Unknown but unambiguous shortcuts retain a
+// conservative generic meaning rather than being mislabeled.
+export function interpretExplicitInput(text, cfg = {}) {
+  const request = String(text || '').trim();
+  const match = request.match(/(?:^|[.!?]\s*)(?:(?:please|can you|could you)\s+)?(?:press|tap|hit|use)\s+(.+?)\s*[.!?]*$/i);
+  if (!match) return null;
+  const spokenKeys = clean(match[1]).replace(/page\s+up/ig, 'pageup').replace(/page\s+down/ig, 'pagedown').replace(/print\s+screen/ig, 'printscreen').replace(/app\s+switch/ig, 'appswitch');
+  if (!spokenKeys || /\b(?:what|why|how|mean|does)\b/i.test(spokenKeys)) return null;
+  const parts = spokenKeys.split(/[+\s]+/).filter(Boolean);
+  const key = parts.pop() || spokenKeys;
+  const rawModifiers = parts.join(',');
+  const platform = platformFor(cfg);
+  const canonical = canonicalShortcut(key, rawModifiers, platform);
+  const modifierNames = canonical.split('+').slice(0, -1);
+  const modifiers = modifierNames.join(',');
+  const effect = SHORTCUT_PROFILES[platform]?.[canonical];
+  const shortcut = [modifiers, key].filter(Boolean).join('+');
+  return {
+    key,
+    modifiers,
+    intent: effect?.intent || 'send-shortcut-to-focused-window',
+    impact: effect?.impact || `Sends ${shortcut} to the currently focused window`,
+    label: effect?.label || `Pressed ${shortcut}`,
+    platform,
+  };
+}
+
 // The desktop shell appends recent chat messages for model context. Local
 // routing must only inspect the newest request, otherwise an old command can
 // win the regex match and be executed again on every later turn.
@@ -86,7 +196,7 @@ function compoundOfflinePlan(text) {
   return steps.length ? steps : null;
 }
 
-function directInputPlan(text) {
+function directInputPlan(text, cfg) {
   const t = String(text || '').trim();
   let m = t.match(/^(?:click|left[- ]click)\s+(?:at\s+)?(\d+)\s*[, ]\s*(\d+)$/i);
   if (m) return result('screen_click', { x: Number(m[1]), y: Number(m[2]), button: 'left' }, `Clicked at ${m[1]},${m[2]}`);
@@ -100,13 +210,12 @@ function directInputPlan(text) {
   if (m) return result('mouse_move', { x: Number(m[1]), y: Number(m[2]) }, `Moved the pointer to ${m[1]},${m[2]}`);
   m = t.match(/^scroll\s+(up|down|left|right)(?:\s+(\d+))?(?:\s+at\s+(\d+)\s*[, ]\s*(\d+))?$/i);
   if (m) return result('screen_scroll', { direction: m[1].toLowerCase(), amount: Number(m[2] || 3), x: Number(m[3] || 0), y: Number(m[4] || 0) }, `Scrolled ${m[1]}`);
-  m = t.match(/^(?:press|tap)\s+(.+)$/i);
-  if (m) {
-    const key = clean(m[1]);
-    const parts = key.split(/[+\s]+/).filter(Boolean);
-    const main = parts.pop() || key;
-    const modifiers = parts.join(',');
-    return result('key_tap', { key: main, modifiers }, `Pressed ${key}`);
+  const input = interpretExplicitInput(t, cfg);
+  if (input) {
+    const step = result('key_tap', { key: input.key, modifiers: input.modifiers }, input.label);
+    step.intent = input.intent;
+    step.impact = input.impact;
+    return step;
   }
   // "write a file" and "write a Python program" are creation goals, not
   // keystrokes. Keep native text injection explicit so it cannot steal those
@@ -140,7 +249,7 @@ export function offlinePlan(text, cfg = {}) {
     }
   }
 
-  const direct = directInputPlan(t);
+  const direct = directInputPlan(t, cfg);
   if (direct) return { kind: 'offline', steps: [direct], reason: 'explicit computer input request' };
 
   const asksForDiskReport = /\b(?:disk|drive|storage|space)\b/i.test(t)

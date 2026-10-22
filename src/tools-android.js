@@ -47,7 +47,7 @@ async function outputAndroid(args, outPath) {
   return outPath;
 }
 function keyCode(key) {
-  const m = { enter: 'KEYCODE_ENTER', return: 'KEYCODE_ENTER', back: 'KEYCODE_BACK', home: 'KEYCODE_HOME', delete: 'KEYCODE_DEL', backspace: 'KEYCODE_DEL', tab: 'KEYCODE_TAB', escape: 'KEYCODE_ESCAPE', volumeup: 'KEYCODE_VOLUME_UP', volumedown: 'KEYCODE_VOLUME_DOWN', space: 'KEYCODE_SPACE', up: 'KEYCODE_DPAD_UP', down: 'KEYCODE_DPAD_DOWN', left: 'KEYCODE_DPAD_LEFT', right: 'KEYCODE_DPAD_RIGHT' };
+  const m = { enter: 'KEYCODE_ENTER', return: 'KEYCODE_ENTER', back: 'KEYCODE_BACK', home: 'KEYCODE_HOME', appswitch: 'KEYCODE_APP_SWITCH', recent: 'KEYCODE_APP_SWITCH', power: 'KEYCODE_POWER', delete: 'KEYCODE_DEL', backspace: 'KEYCODE_DEL', tab: 'KEYCODE_TAB', escape: 'KEYCODE_ESCAPE', volumeup: 'KEYCODE_VOLUME_UP', volumedown: 'KEYCODE_VOLUME_DOWN', volumemute: 'KEYCODE_VOLUME_MUTE', space: 'KEYCODE_SPACE', up: 'KEYCODE_DPAD_UP', down: 'KEYCODE_DPAD_DOWN', left: 'KEYCODE_DPAD_LEFT', right: 'KEYCODE_DPAD_RIGHT' };
   const k = String(key || '').toLowerCase();
   return m[k] || (/^f\d{1,2}$/.test(k) ? 'KEYCODE_' + k.toUpperCase() : null);
 }
@@ -157,6 +157,7 @@ export async function androidTool(name, a = {}) {
       return { handled: true, result: ok({ typedChars: String(a.text || '').length }) };
     }
     if (name === 'key_tap') {
+      if (String(a.modifiers || '').trim()) return { handled: true, result: fail('Android input does not safely support this modifier shortcut through the current ADB/Termux bridge', 'Use an Android-native action or a connected hardware-keyboard bridge.') };
       const code = keyCode(a.key);
       if (!code) return { handled: true, result: fail('unsupported Android key: ' + a.key) };
       await runAndroid(['shell', 'input', 'keyevent', code]);
