@@ -17,6 +17,59 @@ function ok(data) { return { ok: true, ...data }; }
 function fail(error, hint) { return { ok: false, error: String(error), hint }; }
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
 const localArtifactServers = new Map();
+const SELF_REWRITE_PROTECTED = new Set(['src/safety.js', 'desktop/main.js', 'desktop/preload.js', 'package.json', 'desktop/package.json']);
+
+function isSelfRewriteTarget(file) {
+  const target = String(file || '').replace(/\\/g, '/');
+  if (!target || target.includes('..') || SELF_REWRITE_PROTECTED.has(target)) return false;
+  return /^src\/[A-Za-z0-9_./-]+\.js$/.test(target)
+    || /^desktop\/lib\/[A-Za-z0-9_./-]+\.js$/.test(target)
+    || /^desktop\/renderer\/(?:app\.js|index\.html|styles\.css)$/.test(target)
+    || /^desktop\/test\/[A-Za-z0-9_./-]+\.js$/.test(target)
+    || /^docs\/[A-Za-z0-9_./-]+\.md$/.test(target);
+}
+
+async function syntaxCheckRewrite(files) {
+  const dir = await fsp.mkdtemp(path.join(os.tmpdir(), 'winagent-rewrite-'));
+  try {
+    for (const file of files.filter((f) => f.path.endsWith('.js'))) {
+      const staged = path.join(dir, file.path.replaceAll('/', path.sep));
+      await fsp.mkdir(path.dirname(staged), { recursive: true });
+      await fsp.writeFile(staged, file.newContent, 'utf8');
+      await execFileAsync(process.execPath, ['--check', staged], { timeout: 10000, windowsHide: true });
+    }
+  } finally {
+    await fsp.rm(dir, { recursive: true, force: true });
+  }
+}
+
+async function stageSelfRewrite(a, ctx) {
+  const rationale = String(a.rationale || '').trim().slice(0, 2000);
+  if (!rationale) return fail('rationale is required');
+  const raw = Array.isArray(a.files) ? a.files : [{ path: a.targetFile, newContent: a.newContent }];
+  if (!raw.length || raw.length > 24) return fail('files must contain 1–24 complete file replacements');
+  const files = [];
+  const seen = new Set();
+  for (const item of raw) {
+    const target = String(item?.path || item?.targetFile || '').replace(/\\/g, '/');
+    const newContent = String(item?.newContent ?? item?.content ?? '');
+    if (!isSelfRewriteTarget(target)) return fail(`rewrite target is not allowed: ${target || '(missing)'}`, 'Protected bootstrap, security, package, and workflow files require a human-authored patch.');
+    if (seen.has(target)) return fail(`duplicate rewrite target: ${target}`);
+    if (!newContent.trim()) return fail(`newContent is required for ${target}`);
+    if (newContent.length > 200000) return fail(`${target} is too large (max 200000 chars)`);
+    seen.add(target); files.push({ path: target, newContent });
+  }
+  if (files.reduce((n, f) => n + f.newContent.length, 0) > 600000) return fail('rewrite is too large (max 600000 chars total)');
+  try { await syntaxCheckRewrite(files); } catch (e) { return fail(`rewrite preflight failed: ${e.stderr || e.message}`, 'Fix syntax before staging a proposal.'); }
+  const dir = path.join(ctx.cfg.root, 'self-improvements');
+  const id = `${Date.now()}-rewrite-${files[0].path.replace(/[/.]/g, '-')}`;
+  await fsp.mkdir(dir, { recursive: true });
+  await fsp.writeFile(path.join(dir, id + '.json'), JSON.stringify({
+    kind: 'multi-file-rewrite', files, rationale, createdAt: new Date().toISOString(), status: 'pending-review',
+    preflight: { syntax: 'passed', filesChecked: files.filter((f) => f.path.endsWith('.js')).map((f) => f.path) },
+  }, null, 2), 'utf8');
+  return ok({ proposed: files.map((f) => f.path), file: `self-improvements/${id}.json`, preflight: 'syntax passed', note: 'Staged only. The desktop app creates a reviewable GitHub PR; it never edits the running engine or merges to main.' });
+}
 
 const NATIVE_INPUT_PREAMBLE = `Add-Type @'
 using System;
@@ -427,32 +480,30 @@ export function buildTools() {
     },
     {
       name: 'self_improve_propose',
-      description: 'Propose a change to your OWN engine source code to improve yourself. Does NOT modify the '
-        + 'running engine — it stages the proposal under self-improvements/ with the full new file content and '
-        + 'your rationale. A human (or the desktop app, if the person has enabled it) turns this into a GitHub '
-        + 'pull request for review — it is never merged automatically. Use this for genuine improvements to '
-        + 'src/*.js, not for new capabilities (use tool_create for those instead).',
+      description: 'Propose a single-file improvement to your OWN engine. This legacy convenience form has the '
+        + 'same syntax preflight and reviewable GitHub PR path as self_rewrite_propose; it never edits the '
+        + 'running engine or merges to main.',
       args: {
         targetFile: 'relative path under src/, e.g. "src/llm.js"',
         rationale: 'what this improves and why, one paragraph',
         newContent: 'the COMPLETE new content of the file (not a diff)',
       },
       async run(a, ctx) {
-        try {
-          const target = String(a.targetFile || '').replace(/\\/g, '/');
-          if (!/^src\/[a-zA-Z0-9_\-./]+\.js$/.test(target) || target.includes('..')) return fail('targetFile must be an existing src/*.js path');
-          const rationale = String(a.rationale || '').trim().slice(0, 2000);
-          if (!rationale) return fail('rationale is required');
-          const newContent = String(a.newContent || '');
-          if (!newContent.trim()) return fail('newContent is required');
-          if (newContent.length > 200000) return fail('newContent too large (max 200000 chars)');
-          const dir = path.join(ctx.cfg.root, 'self-improvements');
-          await fsp.mkdir(dir, { recursive: true });
-          const id = `${Date.now()}-${target.replace(/[\/.]/g, '-')}`;
-          const file = path.join(dir, id + '.json');
-          await fsp.writeFile(file, JSON.stringify({ targetFile: target, rationale, newContent, createdAt: new Date().toISOString(), status: 'pending-review' }, null, 2), 'utf8');
-          return ok({ proposed: target, file: `self-improvements/${id}.json`, note: 'Staged only. Not applied to the running engine. A human reviews this as a GitHub pull request before it takes effect.' });
-        } catch (e) { return fail(e.message); }
+        try { return await stageSelfRewrite(a, ctx); } catch (e) { return fail(e.message); }
+      },
+    },
+    {
+      name: 'self_rewrite_propose',
+      description: 'Prepare an atomic MULTI-FILE rewrite of the agent code. Supply complete replacements for each '
+        + 'file, plus tests when behavior changes. WinAgent validates JavaScript syntax before staging it, then '
+        + 'opens one reviewable GitHub PR. It cannot modify protected bootstrap/security files, the live process, '
+        + 'or main directly.',
+      args: {
+        files: 'array of {path, newContent}; 1–24 complete replacements in src/, desktop/lib/, desktop/renderer/, desktop/test/, or docs/',
+        rationale: 'goal, expected behavior, and verification plan',
+      },
+      async run(a, ctx) {
+        try { return await stageSelfRewrite(a, ctx); } catch (e) { return fail(e.message); }
       },
     },
     {

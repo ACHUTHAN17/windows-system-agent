@@ -58,12 +58,14 @@ test('renders welcome cards, sends a task, streams activity, approvals and the m
   assert.ok(d.querySelector('.msg.user .bubble').textContent.includes('clean my downloads'));
   assert.ok(d.querySelector('.spinner'), 'working indicator');
   assert.strictEqual(d.getElementById('stop').hidden, false);
+  assert.ok(d.getElementById('activityRail').textContent.includes('Working on your goal'), 'operator rail reflects live execution');
 
   b.emit({ t: 'step', n: 1, text: 'list the folder' });
   b.emit({ t: 'tool', name: 'file_list', ok: true, summary: '{"ok":true}' });
   b.emit({ t: 'approval', id: 7, kind: 'tool', label: 'Allow file_delete path=C:\\x?', options: ['once', 'deny'] });
   await tick();
   assert.ok(d.querySelector('.approval .lbl').textContent.includes('file_delete'));
+  assert.ok(d.getElementById('activityFeed').textContent.includes('file_list'), 'tool activity is visible outside the chat bubble');
   d.querySelector('.approval .allow').click(); await tick();
   assert.strictEqual(JSON.stringify(b.calls.approve[0]), JSON.stringify([7, 'once']));
   b.emit({ t: 'resolved', decision: 'once' });
@@ -92,6 +94,9 @@ test('errors are shown, settings save incl. key, views open', async () => {
   d.querySelector('[data-view=settings]').click(); await tick();
   assert.strictEqual(d.getElementById('view-settings').hidden, false);
   assert.ok(d.querySelectorAll('.settings-card').length >= 5, 'settings are organized into focused cards');
+  assert.strictEqual(d.querySelectorAll('[data-settings-tab]').length, 4, 'settings use deliberate sections instead of one long form');
+  d.querySelector('[data-settings-tab="automation"]').click(); await tick();
+  assert.strictEqual(d.querySelector('[data-settings-panel="automation"]').hidden, false);
   assert.ok(d.getElementById('sModelStatus').textContent.includes('Offline is ready'));
   const sel = d.getElementById('sPreset'); sel.value = 'cloud-free'; sel.dispatchEvent(new dom.window.Event('change'));
   assert.strictEqual(d.getElementById('sUrl').value, 'https://generativelanguage.googleapis.com/v1beta');

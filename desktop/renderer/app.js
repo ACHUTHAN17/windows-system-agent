@@ -132,6 +132,27 @@
     if (a.k === 'tool') return `<div class="row-i ${a.ok === true ? 'ok' : a.ok === false ? 'bad' : ''}"><span class="dot"></span><span class="txt"><span class="nm">${esc(a.name)}</span> ${esc(a.summary || '')}</span></div>`;
     return `<div class="row-i"><span class="dot"></span><span class="txt">${esc(a.text)}</span></div>`;
   }
+  function renderActivityRail() {
+    const feed = $('activityFeed'); if (!feed) return;
+    const active = S.turn || [...(cur()?.messages || [])].reverse().find(m => m.role === 'assistant');
+    const items = active?.activity || [];
+    const running = !!S.running;
+    $('railTitle').textContent = running ? 'Working on your goal' : (items.length ? 'Last execution' : 'Ready to work');
+    $('railSummary').textContent = running
+      ? 'The agent is planning, using tools, and checking results.'
+      : (items.length ? 'The most recent actions are shown below.' : 'Actions, tool calls, approvals, and results appear here while a task runs.');
+    $('railCount').textContent = String(items.length);
+    $('agentStatus').classList.toggle('working', running);
+    $('agentStatus').querySelector('b').textContent = running ? 'Working' : 'Ready';
+    $('agentStatusDetail').textContent = running ? `${items.length} event${items.length === 1 ? '' : 's'}` : 'local workspace';
+    if (!items.length) { feed.innerHTML = '<div class="rail-empty">No active task</div>'; return; }
+    feed.innerHTML = items.slice(-40).map((a) => {
+      const label = a.k === 'tool' ? `<b>${esc(a.name)}</b> ${esc(a.summary || '')}` : esc(a.text || 'Agent event');
+      const state = a.ok === true ? ' ok' : a.ok === false ? ' bad' : (a.k === 'step' ? ' step' : '');
+      return `<div class="rail-event${state}"><i></i><span>${label}</span></div>`;
+    }).join('');
+    feed.scrollTop = feed.scrollHeight;
+  }
   function assistantNode(m) {
     const n = el('div', 'msg assistant' + (m.instant ? ' instant' : ''));
     const steps = m.activity.filter(a => a.k === 'step' || a.k === 'tool').length;
@@ -177,13 +198,14 @@
   function refreshTurn() {
     const box = $('messages'); const nodes = box.querySelectorAll('.msg');
     const last = nodes[nodes.length - 1]; const s = cur();
-    if (!last || !s) return renderMessages();
+    if (!last || !s) { renderMessages(); renderActivityRail(); return; }
     const near = box.scrollHeight - box.scrollTop - box.clientHeight < 120;
     const wasOpen = last.querySelector('details') ? last.querySelector('details').open : true;
     const fresh = assistantNode(S.turn); const d = fresh.querySelector('details'); if (d && S.turn.status === 'running') d.open = wasOpen;
     box.replaceChild(fresh, last);
     if (near) box.scrollTop = box.scrollHeight;
     loadPendingImages(fresh);
+    renderActivityRail();
   }
 
   // ---------- running ----------
@@ -236,7 +258,7 @@
     if (!r || !r.ok) { turn.status = 'error'; turn.error = `Could not start: ${r && r.error}`; endTurn(); }
   }
   function endTurn() { if (S.turn && S.turn.status === 'running') S.turn.status = 'done'; S.turn = null; setRunning(false); saveSoon(); renderAll(); }
-  function setRunning(v) { S.running = v; $('send').hidden = v; $('stop').hidden = !v; $('input').disabled = false; }
+  function setRunning(v) { S.running = v; $('send').hidden = v; $('stop').hidden = !v; $('input').disabled = false; renderActivityRail(); }
 
   function onEvent(ev) {
     const t = S.turn; if (!t) return;
@@ -264,7 +286,7 @@
     document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('active', b.dataset.view === v));
     if (v === 'skills') loadSkills(); if (v === 'memory') loadMemory(); if (v === 'tools') loadTools(); if (v === 'settings') loadSettings();
   }
-  function renderAll() { renderSidebar(); renderMessages(); $('title').textContent = (cur() && cur().title) || 'New chat'; }
+  function renderAll() { renderSidebar(); renderMessages(); renderActivityRail(); $('title').textContent = (cur() && cur().title) || 'New chat'; }
 
   async function loadSkills() {
     S.skills = await api.skills(); $('skillCount').textContent = S.skills.length || '';
@@ -323,6 +345,10 @@
   }
   async function loadSettings() { S.settings = await api.getSettings(); fillSettings(); const i = await api.info(); $('aboutLine').textContent = `WinAgent desktop ${i.version} · agent folder: ${i.agentDir}`; }
   function updateMode() { const full = S.settings && S.settings.fullAuto; const b = $('modeBadge'); b.textContent = full ? 'Full control' : 'Ask before acting'; b.classList.toggle('full', !!full); }
+  function showSettingsTab(tab) {
+    document.querySelectorAll('[data-settings-tab]').forEach((b) => b.classList.toggle('active', b.dataset.settingsTab === tab));
+    document.querySelectorAll('[data-settings-panel]').forEach((p) => { const on = p.dataset.settingsPanel === tab; p.hidden = !on; p.classList.toggle('active', on); });
+  }
   async function saveSettings() {
     const mcpServers = $('sMcp').value.trim();
     if (mcpServers) { try { JSON.parse(mcpServers); } catch { $('sState').textContent = 'Invalid MCP plugin JSON'; return; } }
@@ -387,6 +413,7 @@
     $('memSave').onclick = async () => { if (!memCur) return; await api.memorySave(memCur, $('memText').value); $('memState').textContent = 'Saved.'; };
     $('memFolder').onclick = () => api.openAgentDir();
     $('sSave').onclick = saveSettings;
+    document.querySelectorAll('[data-settings-tab]').forEach((b) => { b.onclick = () => showSettingsTab(b.dataset.settingsTab); });
     $('sElevate').onclick = async () => {
       const r = await api.requestElevation();
       $('sPrivilege').textContent = r.restarting ? 'Restarting with Windows UAC…' : (r.alreadyElevated ? 'Already running as Administrator.' : (r.error || (r.cancelled ? 'Administrator restart cancelled.' : 'Could not restart as Administrator.')));

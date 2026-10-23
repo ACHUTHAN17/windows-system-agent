@@ -1,4 +1,9 @@
 # Changelog
+## 1.32.0 — 2026-10-23
+- **Operator workspace redesign:** rebuilt the desktop chat view around a focused conversation column and a separate live execution rail. The rail shows routing, planning steps, tool calls, approvals, and results without burying them in chat. The visual system now uses a single professional blue accent instead of a multicolor gradient.
+- **Settings redesign:** Settings is now divided into Brain, Control, Automation, and Integrations sections, while retaining every existing option and making the active planning/control state visible in the header.
+- **Test-gated self-rewrites:** `self_rewrite_propose` can stage an atomic set of 1–24 first-party code, renderer, test, or documentation files. JavaScript syntax is checked before staging. The desktop sync writes the whole set as one Git commit on a new review branch and opens one pull request; it cannot edit the running process, protected bootstrap/security files, or `main`.
+
 ## 1.31.0 — 2026-10-22
 - **Platform shortcut catalog:** Windows, macOS, GNOME/Linux, and Android now
   have separate semantic shortcut profiles. The planner reports an action's

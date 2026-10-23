@@ -10,7 +10,7 @@
 <body>
 <div id="app">
   <aside id="sidebar">
-    <div class="brand drag"><span class="logo">&gt;_</span><span>WinAgent</span></div>
+    <div class="brand drag"><span class="logo">&gt;_</span><span>WinAgent</span><small>operator</small></div>
     <button id="newChat" class="primary wide nodrag">＋ New chat</button>
     <div id="chatList" class="chatlist nodrag"></div>
     <nav class="nav nodrag">
@@ -27,6 +27,7 @@
   <main id="main">
     <header class="topbar drag">
       <span id="title">New chat</span>
+      <span id="agentStatus" class="agent-status"><i></i><b>Ready</b><small id="agentStatusDetail">local workspace</small></span>
       <span class="spacer"></span>
       <div class="modelwrap nodrag">
         <button id="modelPill" class="pill" title="Click to switch models">model: default</button>
@@ -36,17 +37,27 @@
     </header>
 
     <section id="view-chat" class="view">
-      <div id="messages"></div>
-      <div id="composerWrap">
-        <div id="attachRow" class="attachrow" hidden></div>
-        <div id="composer">
-          <button id="attachBtn" class="clip" title="Attach files or images">📎</button>
-          <button id="micBtn" class="clip" title="Voice input">🎤</button>
-          <textarea id="input" rows="1" placeholder="Ask WinAgent to do something on this PC…  (Enter to send, Shift+Enter for a new line)"></textarea>
-          <button id="send" class="send" title="Send">➤</button>
-          <button id="stop" class="send stop" title="Stop" hidden>■</button>
+      <div class="chat-stage">
+        <div class="conversation-column">
+          <div id="messages"></div>
+          <div id="composerWrap">
+            <div id="attachRow" class="attachrow" hidden></div>
+            <div id="composer">
+              <button id="attachBtn" class="clip" title="Attach files or images">📎</button>
+              <button id="micBtn" class="clip" title="Voice input">🎤</button>
+              <textarea id="input" rows="1" placeholder="Describe a goal or direct action…  (Enter to send, Shift+Enter for a new line)"></textarea>
+              <button id="send" class="send" title="Send">➤</button>
+              <button id="stop" class="send stop" title="Stop" hidden>■</button>
+            </div>
+            <div class="hint">Direct tasks run locally. Planning is used only when the request needs it.</div>
+          </div>
         </div>
-        <div class="hint">WinAgent has full control by default and can work across your files, folders, apps and system.</div>
+        <aside id="activityRail" aria-label="Agent execution activity">
+          <div class="rail-head"><div><span class="eyebrow">EXECUTION</span><h2 id="railTitle">Ready to work</h2></div><span id="railCount" class="rail-count">0</span></div>
+          <p id="railSummary">Actions, tool calls, approvals, and results appear here while a task runs.</p>
+          <div id="activityFeed" class="activity-feed"><div class="rail-empty">No active task</div></div>
+          <div class="rail-foot">Every action remains in the chat record.</div>
+        </aside>
       </div>
     </section>
 
@@ -66,9 +77,13 @@
 
     <section id="view-settings" class="view" hidden>
       <div class="settings">
-        <header class="settings-hero"><div><p class="eyebrow">WINAGENT CONTROL CENTER</p><h1>Settings that explain the trade-offs.</h1><p id="sModelStatus" class="dim"></p></div><div class="settings-actions"><button id="sTest" class="ghost">Test brain</button><button id="sSelftest" class="ghost">Run self-test</button></div></header>
+        <header class="settings-hero"><div><p class="eyebrow">WINAGENT CONTROL CENTER</p><h1>Configure the agent, not a maze of toggles.</h1><p id="sModelStatus" class="dim"></p></div><div class="settings-actions"><button id="sTest" class="ghost">Test brain</button><button id="sSelftest" class="ghost">Run self-test</button></div></header>
 
-        <div class="settings-grid">
+        <nav class="settings-nav" aria-label="Settings sections">
+          <button class="active" data-settings-tab="brain">Brain</button><button data-settings-tab="control">Control</button><button data-settings-tab="automation">Automation</button><button data-settings-tab="integrations">Integrations</button>
+        </nav>
+
+        <div class="settings-panel active" data-settings-panel="brain"><div class="settings-grid">
           <section class="settings-card span-2"><div class="setting-head"><span class="setting-icon">◈</span><div><h2>Brain & planning</h2><p>Use a free cloud brain for open-ended goals. WinAgent never downloads or runs a model on this device.</p></div></div>
             <div class="form-grid"><label>Provider preset <select id="sPreset"></select></label><label>Image generation key <input id="sImageKey" type="password" placeholder="Optional Pollinations key" autocomplete="off"></label></div>
             <div id="customFields" class="form-grid three"><label>API URL <input id="sUrl" placeholder="https://…/v1"></label><label>Model name <input id="sModel" placeholder="e.g. gpt-4o-mini"></label><label>API key <input id="sKey" type="password" placeholder="" autocomplete="off"><span class="field-help" id="keyNote"></span></label></div>
@@ -76,7 +91,9 @@
             <div class="field-help">Free services have quotas and can change availability. No billing details are needed; when both providers are unavailable, direct offline tasks still work.</div>
             <label class="toggle-row"><input id="sScouted" type="checkbox"><span><b>Use discovered public fallbacks</b><small>Off by default. Enable only if you accept less predictable free public endpoints.</small></span></label>
           </section>
+        </div></div>
 
+        <div class="settings-panel" data-settings-panel="control" hidden><div class="settings-grid">
           <section class="settings-card"><div class="setting-head"><span class="setting-icon">⌘</span><div><h2>Control & access</h2><p>Set how independently the agent may act.</p></div></div>
             <label class="toggle-row"><input id="sFull" type="checkbox"><span><b>Full control</b><small>Act without approval prompts. OS elevation and protected paths still apply.</small></span></label>
             <label>Allowed folders <small>Empty means all non-protected locations.</small><div class="row"><input id="sRoots" placeholder="C:\Users\you\Documents, D:\Projects"><button id="sPick" class="ghost">Add folder</button></div></label>
@@ -90,13 +107,17 @@
             <label class="toggle-row"><input id="sTray" type="checkbox"><span><b>Keep in tray</b><small>Closing the window keeps the agent ready.</small></span></label>
             <label class="toggle-row"><input id="sReadAloud" type="checkbox"><span><b>Read replies aloud</b><small>Voice input and read-aloud use the app's built-in browser features.</small></span></label>
           </section>
+        </div></div>
 
+        <div class="settings-panel" data-settings-panel="automation" hidden><div class="settings-grid">
           <section class="settings-card span-2"><div class="setting-head"><span class="setting-icon">↻</span><div><h2>GitHub memory & improvement</h2><p>Sync is deliberate: changes go to dedicated branches or reviewable pull requests, never silently to main.</p></div></div>
             <div class="form-grid"><label>GitHub repository <input id="sRepo" placeholder="owner/repository"></label><label>GitHub token <input id="sPat" type="password" placeholder="ghp_…" autocomplete="off"><span class="field-help">Used only for configured sync actions.</span></label></div>
             <div class="toggle-grid"><label class="toggle-row"><input id="sSyncStart" type="checkbox"><span><b>Sync on start</b><small>Pull skills, docs and models.</small></span></label><label class="toggle-row"><input id="sSyncMem" type="checkbox"><span><b>Merge GitHub memory</b><small>Adds notes without overwriting local ones.</small></span></label><label class="toggle-row"><input id="sAutoPush" type="checkbox"><span><b>Push learned skills/tools</b><small>Writes to <code>agent-learned</code>.</small></span></label><label class="toggle-row"><input id="sSyncChats" type="checkbox"><span><b>Checkpoint chats</b><small>Writes task history to <code>agent-chats</code>.</small></span></label><label class="toggle-row"><input id="sSelfImprove" type="checkbox"><span><b>Propose self-improvements</b><small>Opens reviewable PRs; never merges itself.</small></span></label><label class="toggle-row"><input id="sSyncEng" type="checkbox"><span><b>Update agent engine</b><small>Runs new engine code from GitHub.</small></span></label></div>
             <div class="field-help" id="learnState"></div>
           </section>
+        </div></div>
 
+        <div class="settings-panel" data-settings-panel="integrations" hidden><div class="settings-grid">
           <section class="settings-card"><div class="setting-head"><span class="setting-icon">⌁</span><div><h2>Plugins</h2><p>Add only tools you trust.</p></div></div>
             <label>MCP server configuration <textarea id="sMcp" rows="6" spellcheck="false" placeholder='{"filesystem":{"command":"npx","args":["-y","@modelcontextprotocol/server-filesystem","C:/Users/ADMIN"]}}'></textarea><span class="field-help">Tools become available automatically after saving.</span></label>
           </section>
@@ -104,7 +125,7 @@
           <section class="settings-card"><div class="setting-head"><span class="setting-icon">▤</span><div><h2>Android bridge</h2><p>Use a connected device or Termux.</p></div></div>
             <label>Android device serial <input id="sAndroid" placeholder="adb serial (optional)"><span class="field-help">Enable USB or wireless debugging first. Leave blank for Termux.</span></label>
           </section>
-        </div>
+        </div></div>
         <footer class="settings-save"><div><button id="sSave" class="primary">Save changes</button><span id="sState" class="dim"></span></div><div class="dim" id="aboutLine"></div></footer>
       </div>
     </section>
