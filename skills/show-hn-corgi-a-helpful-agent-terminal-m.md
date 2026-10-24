@@ -1,0 +1,17 @@
+# Skill: Show HN: Corgi, a helpful {agent, terminal} multiplexer
+
+Auto-learned 2026-10-23 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions Show HN: Corgi, a helpful {agent, terminal} multiplexer.
+
+## Steps
+1. See sources below and follow the official docs.
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Show HN: Corgi, a helpful {agent, terminal} multiplexer
+  https://memedata.com/post/154010
