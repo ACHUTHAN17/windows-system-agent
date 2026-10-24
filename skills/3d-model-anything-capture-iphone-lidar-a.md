@@ -115,3 +115,36 @@ When the task mentions refresh and verify the 3d-model-anything-capture-iphone-l
 - PDF iPhone LiDAR tutorial - protocols.io
   https://www.protocols.io/view/iphone-lidar-tutorial-ctvzwn76.pdf
 
+
+
+---
+## Field update 2026-10-24
+# Skill: refresh and verify the 3d-model-anything-capture-iphone-lidar-a skill
+
+Auto-learned 2026-10-24 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 3d-model-anything-capture-iphone-lidar-a skill.
+
+## Steps
+1. Open the office viewer · App support This repository includes the 3D Model Anything iPhone app , a Three.js viewer , the scan-to-threejs agent skill , and Wes’s detailed office demo
+2. Run the viewer Use Node.js 22.12+ (or a newer supported release)
+3. Use the skill The skill lives at .agents/skills/scan-to-
+4. Use the skill The skill lives at .agents/skills/scan-to-threejs/SKILL.md
+5. Open this repository in an agent that supports local skills and ask it to use scan-to-threejs with your extracted export
+6. Use Room Scan when you need: A 2D floor plan of a room or multiple rooms Room dimensions and layout reference A spatial reference for renovation planning, property viewing, or documentation Free
+7. Use Scene Scan when you need: A 3D mesh model of an environment or space Fast on-device capture with no upload Spatial reference for architecture, real estate, or 3D modeling Free
+8. Use AI-Enhanced LiDAR when: Scene Scan output quality matters for downstream use The geometry will be imported into 3D software or inspected closely Standard Scene Scan geometry is too noisy or inconsistent for your workflow Pro only
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- GitHub - wesbos/3d-model-anything: Capture iPhone LiDAR and photos ...
+  https://github.com/wesbos/3d-model-anything
+- 3d-model-anything/README.md at main - GitHub
+  https://github.com/wesbos/3d-model-anything/blob/main/README.md
+- iPhone LiDAR 3D Scanning Guide: Room Scan, Scene Scan, Object Capture ...
+  https://www.kiriengine.app/blog/iphone-lidar-3d-scanning-guide
+
