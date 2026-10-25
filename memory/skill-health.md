@@ -1,16 +1,16 @@
 # Skill health — 2026-10-25
 
-416 skills audited, 25 links probed, 2 dead.
+418 skills audited, 25 links probed, 2 dead.
 12 need attention:
 
-## 123456-password-used-in-danish-cpr-data.md (119462 chars)
+## 123456-password-used-in-danish-cpr-data.md (122594 chars)
 - dead link (404): https://hackerfeeds.com/news/123456-password-used-in-danish-cpr-data-b
 
 ## a-privacy-analysis-of-web-and-mobile-con.md (7020 chars)
 - dead link (404): https://jorgegarciaherrero.com/wp-content/interactivos/20260916-Prompt
 
 ## agent-overlay.md (3676 chars)
-- unknown tool refs: click, drag, type, file
+- unknown tool refs: active, click, drag, type, file
 
 ## claude-api.md (8208 chars)
 - unknown tool refs: langchain_openai, fetch, claude-opus-5, max_tokens, budget_tokens, web_search_20250305
