@@ -209,3 +209,34 @@ When the task mentions refresh and verify the 3d-model-anything-capture-iphone-l
 - 3d-model-anything/README.md at main - GitHub
   https://github.com/wesbos/3d-model-anything/blob/main/README.md
 
+
+
+---
+## Field update 2026-10-25
+# Skill: refresh and verify the 3d-model-anything-capture-iphone-lidar-a skill
+
+Auto-learned 2026-10-25 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 3d-model-anything-capture-iphone-lidar-a skill.
+
+## Steps
+1. Open the office viewer · App support This repository includes the 3D Model Anything iPhone app , a Three.js viewer , the scan-to-threejs agent skill , and Wes’s detailed office demo
+2. Run the viewer Use Node.js 22.12+ (or a newer supported release)
+3. Use the skill The skill lives at .agents/skills/scan-to-
+4. Use the skill The skill lives at .agents/skills/scan-to-threejs/SKILL.md
+5. Open this repository in an agent that supports local skills and ask it to use scan-to-threejs with your extracted export
+6. How articles are scored Wes Bos posted a room of his house as a three.js scene this week, with the claim that he had found "the BEST way to get 3D modeling results from LLMs"
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- GitHub - wesbos/3d-model-anything: Capture iPhone LiDAR and photos ...
+  https://github.com/wesbos/3d-model-anything
+- 3d-model-anything/README.md at main - GitHub
+  https://github.com/wesbos/3d-model-anything/blob/main/README.md
+- 3D Model Anything: an iPhone scan, an agent, and a photo it keeps ...
+  https://ai.thesatyajit.com/articles/3d-model-anything
+
