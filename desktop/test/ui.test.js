@@ -250,3 +250,14 @@ test('voice: clicking read-aloud never throws when speechSynthesis is unavailabl
   b.emit({ t: 'answer', text: 'hello there' }); b.emit({ t: 'done', code: 0 }); await tick();
   assert.doesNotThrow(() => d.querySelector('.mact.speak').click());
 });
+
+test('conversation search has an empty state, clears with Escape, and supports the Ctrl+K shortcut', async () => {
+  const b = boot(); const dom = await load(b); const d = dom.window.document;
+  const search = d.getElementById('chatSearch');
+  search.value = 'not-a-real-chat'; search.dispatchEvent(new dom.window.Event('input')); await tick();
+  assert.ok(d.getElementById('chatList').textContent.includes('No matching conversations'));
+  d.dispatchEvent(new dom.window.KeyboardEvent('keydown', { key: 'k', ctrlKey: true }));
+  assert.strictEqual(d.activeElement, search);
+  d.dispatchEvent(new dom.window.KeyboardEvent('keydown', { key: 'Escape' }));
+  assert.strictEqual(search.value, '');
+});

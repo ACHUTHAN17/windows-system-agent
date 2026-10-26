@@ -117,13 +117,16 @@
   }
   function renderSidebar() {
     const box = $('chatList'); box.innerHTML = '';
-    for (const s of S.sessions) {
+    const query = String($('chatSearch')?.value || '').trim().toLowerCase();
+    const visible = S.sessions.filter((s) => !query || `${s.title}\n${s.messages.map((m) => m.text || '').join('\n')}`.toLowerCase().includes(query));
+    for (const s of visible) {
       const it = el('div', 'chatitem' + (s.id === S.cur ? ' active' : ''));
       it.innerHTML = `<span class="t">${esc(s.title)}</span><button class="x" title="Delete chat">✕</button>`;
       it.onclick = () => selectSession(s.id);
       it.querySelector('.x').onclick = (e) => { e.stopPropagation(); deleteSession(s.id); };
       box.appendChild(it);
     }
+    if (!visible.length) box.appendChild(el('div', 'dim', query ? 'No matching conversations' : 'No conversations yet'));
   }
 
   // ---------- messages ----------
@@ -396,11 +399,16 @@
     api.onChatSync((st) => { if (!st.ok) $('syncState').textContent = 'Chat checkpoint delayed: ' + st.error; });
 
     $('newChat').onclick = newSession;
+    $('chatSearch').oninput = renderSidebar;
     $('send').onclick = () => send($('input').value);
     $('stop').onclick = () => api.stop();
     $('input').addEventListener('input', autosize);
     $('input').addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); send($('input').value); } });
-    document.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key.toLowerCase() === 'n') { e.preventDefault(); newSession(); } });
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.key.toLowerCase() === 'n') { e.preventDefault(); newSession(); }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); $('chatSearch').focus(); }
+      if (e.key === 'Escape' && document.activeElement === $('chatSearch')) { $('chatSearch').value = ''; renderSidebar(); $('input').focus(); }
+    });
     document.querySelectorAll('.nav button').forEach(b => { b.onclick = () => showView(S.view === b.dataset.view ? 'chat' : b.dataset.view); });
     $('attachBtn').onclick = pickAttachments;
     $('micBtn').onclick = toggleMic;

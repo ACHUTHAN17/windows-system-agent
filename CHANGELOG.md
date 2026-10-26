@@ -1,4 +1,9 @@
 # Changelog
+## 1.33.0 — 2026-10-26
+- **Desktop shell rebuilt:** replaced the previous operator-heavy interface with a calm, ChatGPT-style application shell: compact conversation sidebar, keyboard-searchable chat history, simplified header, large focused conversation area, rounded composer, and a separate execution drawer.
+- **Reliable interaction states:** conversation search has an explicit empty state, `Ctrl+K` focuses it, and `Esc` clears it and returns focus to the composer. Existing attachments, voice input, streaming activity, approvals, generated images, memory, tools, skills, settings, and model selection stay intact.
+- **No rainbow treatment:** the visual language now uses one restrained green accent, neutral surfaces, strong contrast, responsive breakpoints, and native scroll/focus states.
+
 ## 1.32.0 — 2026-10-23
 - **Operator workspace redesign:** rebuilt the desktop chat view around a focused conversation column and a separate live execution rail. The rail shows routing, planning steps, tool calls, approvals, and results without burying them in chat. The visual system now uses a single professional blue accent instead of a multicolor gradient.
 - **Settings redesign:** Settings is now divided into Brain, Control, Automation, and Integrations sections, while retaining every existing option and making the active planning/control state visible in the header.
