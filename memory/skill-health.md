@@ -1,6 +1,6 @@
-# Skill health — 2026-10-26
+# Skill health — 2026-10-27
 
-427 skills audited, 25 links probed, 2 dead.
+429 skills audited, 25 links probed, 2 dead.
 12 need attention:
 
 ## 123456-password-used-in-danish-cpr-data.md (131028 chars)
