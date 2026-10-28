@@ -221,3 +221,32 @@ When the task mentions refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0
 - Repair a Windows Image | Microsoft Learn
   https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/repair-a-windows-image?view=windows-11
 
+
+
+---
+## Field update 2026-10-28
+# Skill: refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0-3-1-e skill
+
+Auto-learned 2026-10-28 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0-3-1-e skill.
+
+## Steps
+1. How to run If you get an error that VCRUNTIME140.dll is missing, install Microsoft Visual C++ Redistributable for Visual Studio 2017 (32-bit) Drag and drop Win16 executable file to otvdm.exe or execute otvdmw.exe
+2. How to install Download or compile Run "install" shortcut or right-click on install.inf and select "Install" You can execute Win16 binaries directly! If the registry is initialized by Windows Update, perform the above procedure again
+3. How to Run 16-Bit Apps on Windows 11 (NTVDM Alternatives) | Techeia Skip to content `n T Techeia Search for firmware, DevOps tools, guides..
+4. Right-click the executable, open Properties, and check the Compatibility tab
+5. Run your 16-bit program as you normally would
+6. Download the latest release archive from the project's official GitHub releases page
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- GitHub - otya128/winevdm: 16-bit Windows (Windows 1.x, 2.x, 3.0, 3.1 ...
+  https://github.com/otya128/winevdm
+- How to Run 16-Bit Apps on Windows 11 (NTVDM Alternatives)
+  https://www.techeia.com/blog/run-16-bit-apps-windows-11-ntvdm
+
