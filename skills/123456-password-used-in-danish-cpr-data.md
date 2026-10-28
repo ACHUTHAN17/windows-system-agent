@@ -4111,3 +4111,47 @@ When the task mentions refresh and verify the 123456-password-used-in-danish-cpr
 - Denmark CPR breach blamed on &#x27;123456&#x27; password | Cybernews
   https://cybernews.com/security/denmark-cpr-data-breach-weak-password/
 
+
+
+---
+## Field update 2026-10-28
+# Skill: refresh and verify the 123456-password-used-in-danish-cpr-data skill
+
+Auto-learned 2026-10-28 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 123456-password-used-in-danish-cpr-data skill.
+
+## Steps
+1. Cut every SOC alert investigation by 21 min
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Admin Password "123456" Led to 8.8 Million Danish CPR Data Breach
+  https://cybersecuritynews.com/admin-password-danish-data-breach/
+
+
+
+---
+## Field update 2026-10-28
+# Skill: refresh and verify the 123456-password-used-in-danish-cpr-data- skill
+
+Auto-learned 2026-10-28 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 123456-password-used-in-danish-cpr-data- skill.
+
+## Steps
+1. Cut every SOC alert investigation by 21 min
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Admin Password "123456" Led to 8.8 Million Danish CPR Data Breach
+  https://cybersecuritynews.com/admin-password-danish-data-breach/
+
