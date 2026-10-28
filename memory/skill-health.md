@@ -1,12 +1,13 @@
-# Skill health — 2026-10-27
+# Skill health — 2026-10-28
 
-437 skills audited, 25 links probed, 2 dead.
+437 skills audited, 25 links probed, 3 dead.
 12 need attention:
 
-## 123456-password-used-in-danish-cpr-data.md (139842 chars)
+## 123456-password-used-in-danish-cpr-data.md (141454 chars)
 - dead link (404): https://hackerfeeds.com/news/123456-password-used-in-danish-cpr-data-b
 
 ## a-brief-history-of-windows-scroll-bar-sh.md (62856 chars)
+- dead link (429): https://news.ycombinator.com/item?id=49820065
 - dead link (ERR:This operation was aborted): https://outspeaker.com/post/14780
 
 ## agent-overlay.md (3676 chars)
