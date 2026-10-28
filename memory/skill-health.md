@@ -1,12 +1,9 @@
 # Skill health — 2026-10-28
 
-439 skills audited, 25 links probed, 3 dead.
-13 need attention:
+441 skills audited, 25 links probed, 2 dead.
+12 need attention:
 
-## 123456-password-used-in-danish-cpr-data-.md (935 chars)
-- dead link (ERR:ETIMEDOUT): https://thedanishdream.com/cpr-leak-8-8-million-records-stolen-via-123
-
-## 123456-password-used-in-danish-cpr-data.md (142780 chars)
+## 123456-password-used-in-danish-cpr-data.md (144565 chars)
 - dead link (404): https://hackerfeeds.com/news/123456-password-used-in-danish-cpr-data-b
 
 ## a-brief-history-of-windows-scroll-bar-sh.md (62856 chars)
