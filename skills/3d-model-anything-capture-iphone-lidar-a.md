@@ -916,3 +916,37 @@ When the task mentions refresh and verify the 3d-model-anything-capture-iphone-l
 - 3D Model Anything - App Store
   https://apps.apple.com/us/app/3d-model-anything/id6825843398
 
+
+
+---
+## Field update 2026-10-29
+# Skill: refresh and verify the 3d-model-anything-capture-iphone-lidar-a skill
+
+Auto-learned 2026-10-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 3d-model-anything-capture-iphone-lidar-a skill.
+
+## Steps
+1. Open the office viewer · App support This repository includes the 3D Model Anything iPhone app , a Three.js viewer , the scan-to-threejs agent skill , and Wes’s detailed office demo
+2. Run the viewer Use Node.js 22.12+ (or a newer supported release)
+3. Use the skill The skill lives at .agents/skills/scan-to-threejs/SKILL.md
+4. Open this repository in an agent that supports local skills and ask it to use scan-to-threejs with your extracted export
+5. First, open the sample app and point it at the object
+6. Then circle around the object while Object Capture automatically captures the right images for you
+7. Then we'll explain how to create an Object Capture flow on iOS with our Object Capture API
+8. Finally, we will highlight several new enhancements to our model reconstruction capabilities
+9. To create a high-quality 3D model, it's important to select an object with good characteristics
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- GitHub - wesbos/3d-model-anything: Capture iPhone LiDAR and photos ...
+  https://github.com/wesbos/3d-model-anything
+- 3d-model-anything/README.md at main - GitHub
+  https://github.com/wesbos/3d-model-anything/blob/main/README.md
+- Meet Object Capture for iOS - WWDC23 - Videos - Apple Developer
+  https://developer.apple.com/videos/play/wwdc2023/10191/
+
