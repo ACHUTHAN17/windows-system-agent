@@ -4397,3 +4397,57 @@ When the task mentions refresh and verify the 123456-password-used-in-danish-cpr
 - Admin Password "123456" Led to 8.8 Million Danish CPR Data Breach
   https://cybersecuritynews.com/admin-password-danish-data-breach/
 
+
+
+---
+## Field update 2026-10-29
+# Skill: refresh and verify the 123456-password-used-in-danish-cpr-data skill
+
+Auto-learned 2026-10-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 123456-password-used-in-danish-cpr-data skill.
+
+## Steps
+1. How the Breach Unfolded: A Timeline Danish authorities said they discovered the unauthorized access on October 2, 2026, and went public with the announcement three days later, on October 5
+2. Cut every SOC alert investigation by 21 min
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Denmark Breach: 123456 Password Exposed 8.8M [2026]
+  https://trendintech.com/denmark-123456-password-breach-8-8-million-2026/
+- Admin Password "123456" Led to 8.8 Million Danish CPR Data Breach
+  https://cybersecuritynews.com/admin-password-danish-data-breach/
+- Denmark CPR Breach: Pays ApS and the &#x27;123456&#x27; Password | The CyberSec Guru
+  https://thecybersecguru.com/news/denmark-cpr-breach-pays-aps-123456/
+
+
+
+---
+## Field update 2026-10-29
+# Skill: refresh and verify the 123456-password-used-in-danish-cpr-data- skill
+
+Auto-learned 2026-10-29 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 123456-password-used-in-danish-cpr-data- skill.
+
+## Steps
+1. How the Breach Unfolded: A Timeline Danish authorities said they discovered the unauthorized access on October 2, 2026, and went public with the announcement three days later, on October 5
+2. Cut every SOC alert investigation by 21 min
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- Denmark Breach: 123456 Password Exposed 8.8M [2026]
+  https://trendintech.com/denmark-123456-password-breach-8-8-million-2026/
+- Admin Password "123456" Led to 8.8 Million Danish CPR Data Breach
+  https://cybersecuritynews.com/admin-password-danish-data-breach/
+- Denmark CPR Breach: Pays ApS and the &#x27;123456&#x27; Password | The CyberSec Guru
+  https://thecybersecguru.com/news/denmark-cpr-breach-pays-aps-123456/
+
