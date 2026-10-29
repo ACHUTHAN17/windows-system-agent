@@ -1,11 +1,7 @@
 # Skill health — 2026-10-29
 
-458 skills audited, 25 links probed, 4 dead.
-11 need attention:
-
-## 900-page-pre-pantone-guide-to-color-from.md (84636 chars)
-- dead link (ERR:This operation was aborted): https://www.openculture.com/2026/10/a-900-page-pre-pantone-guide-to-co
-- dead link (ERR:This operation was aborted): https://www.openculture.com/2019/10/a-900-page-pre-pantone-guide-to-co
+460 skills audited, 25 links probed, 2 dead.
+10 need attention:
 
 ## a-brief-history-of-the-bloomberg-termina.md (102189 chars)
 - dead link (403): https://agihunt.info/en/p/1a0f31a25f2bdfec108aaac392c
