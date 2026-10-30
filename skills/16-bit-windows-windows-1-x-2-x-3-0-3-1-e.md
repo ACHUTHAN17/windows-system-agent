@@ -477,3 +477,36 @@ When the task mentions refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0
 - Windows Documentation | Microsoft Learn
   https://learn.microsoft.com/en-us/windows/
 
+
+
+---
+## Field update 2026-10-30
+# Skill: refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0-3-1-e skill
+
+Auto-learned 2026-10-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0-3-1-e skill.
+
+## Steps
+1. How to run If you get an error that VCRUNTIME140.dll is missing, install Microsoft Visual C++ Redistributable for Visual Studio 2017 (32-bit) Drag and drop Win16 executable file to otvdm.exe or execute otvdmw.exe
+2. How to install Download or compile Run "install" shortcut or right-click on install.inf and select "Install" You can execute Win16 binaries directly! If the registry is initialized by Windows Update, perform the above procedure again
+3. How to compile(Visual Studio) Install Visual Studio 2017 Edit PropertySheet.props Compile How to compile(cmake) git clone https://github.com/otya128/winevdm.git cd winevdm mkdi
+4. How to fix unsupported 16-bit application error on Windows 11 Skip to primary navigation Skip to main content Skip to primary sidebar The Windows Club TheWindowsClub covers authentic Windows 11 tips, tutorials, how-to, features, freeware
+5. To do this, follow the steps below: Locate the program icon, right-click it, and select Properties from the list of options displayed
+6. Click on the drop-down menu and select an operating system like Windows 8
+7. Finally, select Apply and then OK to complete the process
+8. Run Windows PowerShell ISE as an administrator and use the following commands: To enable NTVDM: DISM /online /enable-feature /all /featurename:NTVDM To disable NTVDM: DISM /online /disable-feature /featurename:NTVDM Having done this, restart your PC and try
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- GitHub - otya128/winevdm: 16-bit Windows (Windows 1.x, 2.x, 3.0, 3.1 ...
+  https://github.com/otya128/winevdm
+- How to fix Unsupported 16-bit Application error on Windows 11
+  https://www.thewindowsclub.com/how-to-fix-unsupported-16-bit-application-error-on-windows
+- Windows help and learning | Microsoft Support
+  https://support.microsoft.com/en-us/windows/
+
