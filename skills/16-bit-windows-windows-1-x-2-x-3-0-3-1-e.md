@@ -445,3 +445,35 @@ When the task mentions refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0
 - How to fix Unsupported 16-bit Application error on Windows 11
   https://www.thewindowsclub.com/how-to-fix-unsupported-16-bit-application-error-on-windows
 
+
+
+---
+## Field update 2026-10-30
+# Skill: refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0-3-1-e skill
+
+Auto-learned 2026-10-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0-3-1-e skill.
+
+## Steps
+1. How to run If you get an error that VCRUNTIME140.dll is missing, install Microsoft Visual C++ Redistributable for Visual Studio 2017 (32-bit) Drag and drop Win16 executable file to otvdm.exe or execute otvdmw.exe
+2. How to install Download or compile Run "install" shortcut or right-click on install.inf and select "Install" You can execute Win16 binaries directly! If the registry is initialized by Windows Update, perform the above procedure again
+3. How to compile(Visual Studio) Install Visual Studio 2017 Edit PropertySheet.props Compile How to compile(cmake) git clone https://github.com/otya128/winevdm.git cd winevdm mkdi
+4. To service the Windows component store, use the DISM /Cleanup-Image option together with one of the following arguments: /CheckHealth – performs a quick check for existing component store corruption flags
+5. To check whether the Windows image has been marked as corrupted by the CBS (Component-Based Servicing) subsystem, open an elevated command prompt and run: DISM /Online /Cleanup-Image /CheckHealth As mentioned earlier, this command doesn’t perform a full scan of the component store
+6. To run a full health check scan against the Windows Component Store, run the command: DISM /Online /Cleanup-Image /ScanHealth Checking the Windows image can take quite a long time (10-30 minutes)
+7. Download Microsoft Edge More info about Internet Explorer and Microsoft Edge Windows technical documentation for developers and IT pros
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- GitHub - otya128/winevdm: 16-bit Windows (Windows 1.x, 2.x, 3.0, 3.1 ...
+  https://github.com/otya128/winevdm
+- Using DISM and SFC to Check and Repair Windows System Files
+  https://woshub.com/dism-cleanup-image-restorehealth/
+- Windows Documentation | Microsoft Learn
+  https://learn.microsoft.com/en-us/windows/
+
