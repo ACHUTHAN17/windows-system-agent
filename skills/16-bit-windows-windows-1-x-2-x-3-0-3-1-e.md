@@ -510,3 +510,38 @@ When the task mentions refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0
 - Windows help and learning | Microsoft Support
   https://support.microsoft.com/en-us/windows/
 
+
+
+---
+## Field update 2026-10-30
+# Skill: refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0-3-1-e skill
+
+Auto-learned 2026-10-30 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0-3-1-e skill.
+
+## Steps
+1. How to run If you get an error that VCRUNTIME140.dll is missing, install Microsoft Visual C++ Redistributable for Visual Studio 2017 (32-bit) Drag and drop Win16 executable file to otvdm.exe or execute otvdmw.exe
+2. How to install Download or compile Run "install" shortcut or right-click on install.inf and select "Install" You can execute Win16 binaries directly! If the registry is initialized by Windows Update, perform the above procedure again
+3. How to compile(Visual Studio) Install Visual Studio 2017 Edit PropertySheet.props Compile How to compile(cmake) git clone https://github.com/otya128/winevdm.git cd winevdm mkdi
+4. Use the System File Checker tool to repair missing or corrupted system files | Microsoft Support Skip to main content Microsoft Support Support Support Home Microsoft 365 Office Products Microsoft 365 Outlook Microsoft Teams OneDrive Microsoft Copilot OneNote Windows more ..
+5. How do I run System File Checker? When critical Windows system files are missing or corrupted, your operating system may begin to malfunction
+6. Step 1: Run DISM DISM provides the files required to repair your corrupted files
+7. To do this: Open an elevated command prompt
+8. To do this, run the following command instead: DISM.exe /Online /Cleanup-Image /RestoreHealth /Source:C:\RepairSource\Windows /LimitAccess In the above command, replace the C:\RepairSource\Windows placeholder with the location of your repair source
+9. Step 2: Run System File Checker In the Command Prompt window, type the following command, and press ENTER: sfc /scannow Warning Do not close this Command Prompt window until the verification is 100% complete
+10. To resolve this problem, perform the System File Checker scan in safe mode
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- GitHub - otya128/winevdm: 16-bit Windows (Windows 1.x, 2.x, 3.0, 3.1 ...
+  https://github.com/otya128/winevdm
+- Windows help and learning | Microsoft Support
+  https://support.microsoft.com/en-us/windows/
+- Use the System File Checker tool to repair missing or corrupted system ...
+  https://support.microsoft.com/en-us/windows/experience/backup-recovery/use-the-system-file-checker-tool-to-repair-missing-or-corrupted-system-files
+
