@@ -66,6 +66,10 @@ export function loadConfig(argv = {}) {
   const configuredProvider = env('MODEL_PROVIDER', json.provider ?? '');
   const configuredUrl = env('MODEL_API_URL', json.apiUrl ?? '');
   const configuredModel = env('MODEL_NAME', json.model ?? json.MODEL_NAME ?? '');
+  const museApiKey = env('MUSE_API_KEY', json.museApiKey ?? '');
+  const orchestraPlannerKey = env('ORCHESTRA_PLANNER_KEY', json.orchestraPlannerKey ?? museApiKey);
+  const orchestraPlannerUrl = env('ORCHESTRA_PLANNER_URL', json.orchestraPlannerUrl ?? (orchestraPlannerKey ? 'https://api.meta.ai/v1' : ''));
+  const orchestraPlannerModel = env('ORCHESTRA_PLANNER_MODEL', json.orchestraPlannerModel ?? (orchestraPlannerKey ? 'muse-spark-1.1' : ''));
   const cfg = {
     root: ROOT,
     // Offline-first: local deterministic actions must work on a fresh install.
@@ -105,8 +109,26 @@ export function loadConfig(argv = {}) {
     useScoutedModels: String(env('USE_SCOUTED_MODELS', json.useScoutedModels ?? false)) === 'true',
     scoutedModels: loadScoutedModels(ROOT),
     shellAllowlist: json.shellAllowlist ?? ['powershell.exe', 'cmd.exe', 'pwsh.exe', 'tasklist.exe', 'taskkill.exe'],
+    // Orchestra adapters. Blank values leave external workers unavailable rather
+    // than guessing a command, endpoint, or cloud credential.
+    orchestraConcurrency: Number(env('ORCHESTRA_CONCURRENCY', json.orchestraConcurrency ?? 2)),
+    orchestraBudgetMs: Number(env('ORCHESTRA_BUDGET_MS', json.orchestraBudgetMs ?? 20 * 60 * 1000)),
+    // The Conductor can use a dedicated planner without changing the normal
+    // agent model. MUSE_API_KEY is a convenient alias for Meta's Model API.
+    orchestraPlannerProvider: env('ORCHESTRA_PLANNER_PROVIDER', json.orchestraPlannerProvider ?? ''),
+    orchestraPlannerUrl,
+    orchestraPlannerModel,
+    orchestraPlannerKey,
+    hermesCommand: env('HERMES_COMMAND', json.hermesCommand ?? ''),
+    openclawCommand: env('OPENCLAW_COMMAND', json.openclawCommand ?? ''),
+    openclawUrl: env('OPENCLAW_URL', json.openclawUrl ?? ''),
+    openclawTaskPath: env('OPENCLAW_TASK_PATH', json.openclawTaskPath ?? '/tasks'),
+    openclawToken: env('OPENCLAW_TOKEN', json.openclawToken ?? ''),
+    cloudWorkflow: env('CLOUD_WORKFLOW', json.cloudWorkflow ?? ''),
+    cloudRef: env('CLOUD_REF', json.cloudRef ?? 'main'),
   };
   cfg.apiUrl = String(cfg.apiUrl).replace(/\/+$/, '');
+  cfg.orchestraPlannerUrl = String(cfg.orchestraPlannerUrl).replace(/\/+$/, '');
   return cfg;
 }
 

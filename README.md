@@ -20,6 +20,10 @@ section](ARCHITECTURE.md#mcp-server-srcmcp-serverjs--winagent-as-a-tool-provider
 
 Any endpoint that speaks `POST /chat/completions` works (vLLM, OpenRouter, Azure proxy, corporate gateway…).
 
+## Orchestra: goal-to-DAG execution
+
+WinAgent includes one shared orchestration layer for CLI, desktop, Telegram, web chat and MCP. Its Conductor can use **Muse Spark 1.1** to form a validated dependency DAG; the scheduler persists every plan, task and event under `runs/<runId>/`, handles resource locks/retries/budgets, and provides a stop switch. Native control remains the default worker; **Hermes** is the optional WSL2 long-horizon worker; **OpenClaw** is the optional gateway/subagent worker; GitHub Actions is the optional cloud worker. See [docs/ORCHESTRA.md](docs/ORCHESTRA.md) for the exact local configuration and bridge contract.
+
 ## Offline by default
 
 WinAgent starts in deterministic offline mode. Opening apps/folders, listing and reading files,

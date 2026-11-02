@@ -1,4 +1,9 @@
 # Changelog
+## 1.34.0 — 2026-11-02
+- **Orchestra:** all agent entry points can now run a goal through a durable Conductor → Scheduler → worker DAG. Each run writes `plan.json`, task state, and `events.jsonl` under `runs/<runId>/`.
+- **Dedicated roles:** Muse Spark 1.1 is a separately configured Conductor planner; Hermes is the opt-in WSL2 long-horizon worker; OpenClaw is the opt-in owner-operated gateway/subagent worker; GitHub Actions remains an opt-in cloud worker. Native WinAgent control stays the dependable fallback.
+- **Fail-safe execution:** dependency checks, cycle rejection, bounded retries, resource locks, run budget, one plan approval, and the desktop stop button's scheduler kill switch are now enforced centrally.
+
 ## 1.33.0 — 2026-10-26
 - **Desktop shell rebuilt:** replaced the previous operator-heavy interface with a calm, ChatGPT-style application shell: compact conversation sidebar, keyboard-searchable chat history, simplified header, large focused conversation area, rounded composer, and a separate execution drawer.
 - **Reliable interaction states:** conversation search has an explicit empty state, `Ctrl+K` focuses it, and `Esc` clears it and returns focus to the composer. Existing attachments, voice input, streaming activity, approvals, generated images, memory, tools, skills, settings, and model selection stay intact.

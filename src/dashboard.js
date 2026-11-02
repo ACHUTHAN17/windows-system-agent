@@ -206,7 +206,7 @@ export async function startDashboard(port) {
           return;
         }
         if (!j.text || !String(j.text).trim()) { res.writeHead(400); res.end('{"error":"text required"}'); return; }
-        if (!runChild(['--once', String(j.text)], true)) { res.writeHead(409); res.end('{"error":"busy"}'); return; }
+        if (!runChild(['--once', '--orchestrate', String(j.text)], true)) { res.writeHead(409); res.end('{"error":"busy"}'); return; }
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end('{"started":true}');
       });

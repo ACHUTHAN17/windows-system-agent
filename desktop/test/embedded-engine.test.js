@@ -39,7 +39,7 @@ test('runs a task in-process: banner, step, tool, answer, done — no child proc
   ]);
   const engine = new EmbeddedEngine(REPO);
   const { evs, done } = collect(engine);
-  const r = await engine.run('what system is this', { env: { MODEL_API_URL: `http://127.0.0.1:${server.address().port}`, MODEL_NAME: 'mock', USE_SCOUTED_MODELS: 'false' } });
+  const r = await engine.run('what system is this', { orchestrate: false, env: { MODEL_API_URL: `http://127.0.0.1:${server.address().port}`, MODEL_NAME: 'mock', USE_SCOUTED_MODELS: 'false' } });
   assert.strictEqual(r.ok, true);
   await done;
   assert.ok(evs.some(e => e.t === 'banner'));
@@ -70,7 +70,7 @@ test('approval flow: allow runs the tool, deny blocks it — same engine instanc
   // rewire the mock server's reply queue for this run
   server.close();
   const s1 = await mockLlm(server.replies);
-  const r1 = await engine.run('write ok', { env: { ...env, MODEL_API_URL: `http://127.0.0.1:${s1.address().port}` } });
+  const r1 = await engine.run('write ok', { orchestrate: false, env: { ...env, MODEL_API_URL: `http://127.0.0.1:${s1.address().port}` } });
   await done;
   assert.ok(evs.find(e => e.t === 'approval' && /file_write/.test(e.label)));
   assert.ok(fs.existsSync(okFile), 'approved write must happen');
@@ -83,7 +83,7 @@ test('approval flow: allow runs the tool, deny blocks it — same engine instanc
   const engine2 = new EmbeddedEngine(REPO);
   const d2 = collect(engine2);
   engine2.on('event', (e) => { if (e.t === 'approval') setTimeout(() => engine2.approve(e.id, 'deny'), 20); });
-  await engine2.run('write no', { env: { ...env, MODEL_API_URL: `http://127.0.0.1:${s2.address().port}` } });
+  await engine2.run('write no', { orchestrate: false, env: { ...env, MODEL_API_URL: `http://127.0.0.1:${s2.address().port}` } });
   await d2.done;
   assert.ok(!fs.existsSync(noFile), 'denied write must NOT happen');
   assert.strictEqual(d2.evs.find(e => e.t === 'tool').ok, false);
@@ -94,7 +94,7 @@ test('all-models-fail surfaces the full aggregate error, done code 1', async () 
   cleanRepoState();
   const engine = new EmbeddedEngine(REPO);
   const { evs, done } = collect(engine);
-  const r = await engine.run('hello', { env: { MODEL_API_URL: 'http://127.0.0.1:1', MODEL_NAME: 'x', USE_SCOUTED_MODELS: 'false', LLM_FALLBACK_URL: '' } });
+  const r = await engine.run('hello', { orchestrate: false, env: { MODEL_API_URL: 'http://127.0.0.1:1', MODEL_NAME: 'x', USE_SCOUTED_MODELS: 'false', LLM_FALLBACK_URL: '' } });
   assert.strictEqual(r.ok, true); // run() itself succeeds; the FAILURE is in the emitted error event
   await done;
   assert.ok(evs.find(e => e.t === 'error'));
@@ -111,9 +111,9 @@ test('busy: a second run() while one is in flight is rejected, not queued or cra
   });
   const engine = new EmbeddedEngine(REPO);
   const env = { MODEL_API_URL: `http://127.0.0.1:${server.address().port}`, MODEL_NAME: 'mock', USE_SCOUTED_MODELS: 'false' };
-  const p1 = engine.run('first', { env });
+  const p1 = engine.run('first', { orchestrate: false, env });
   await new Promise(r => setTimeout(r, 30));
-  const r2 = await engine.run('second', { env });
+  const r2 = await engine.run('second', { orchestrate: false, env });
   assert.deepStrictEqual(r2, { ok: false, error: 'busy' });
   await p1;
   server.close();
@@ -141,12 +141,12 @@ test('switching MODEL_* env between runs actually takes effect (cached engine is
   const base = { MODEL_NAME: 'mock', USE_SCOUTED_MODELS: 'false' };
 
   let d = collect(engine);
-  await engine.run('first', { env: { ...base, MODEL_API_URL: `http://127.0.0.1:${badPort}` } });
+  await engine.run('first', { orchestrate: false, env: { ...base, MODEL_API_URL: `http://127.0.0.1:${badPort}` } });
   await d.done;
   assert.ok(d.evs.find(e => e.t === 'error'), 'first run against the dead port fails as expected');
 
   d = collect(engine);
-  await engine.run('second', { env: { ...base, MODEL_API_URL: `http://127.0.0.1:${good.address().port}` } });
+  await engine.run('second', { orchestrate: false, env: { ...base, MODEL_API_URL: `http://127.0.0.1:${good.address().port}` } });
   await d.done;
   assert.strictEqual(d.evs.find(e => e.t === 'answer')?.text, 'from the new model', 'second run must use the NEW url, not a cached engine pointed at the dead one');
   good.close();
@@ -163,7 +163,7 @@ test('stop() aborts between steps and auto-denies any pending approval', async (
   const engine = new EmbeddedEngine(REPO);
   const { evs, done } = collect(engine);
   const env = { MODEL_API_URL: `http://127.0.0.1:${server.address().port}`, MODEL_NAME: 'mock', USE_SCOUTED_MODELS: 'false' };
-  const p = engine.run('loop forever', { env });
+  const p = engine.run('loop forever', { orchestrate: false, env });
   await new Promise((resolve) => engine.on('event', function onEv(e) { if (e.t === 'tool') { engine.removeListener('event', onEv); resolve(); } }));
   engine.stop();
   await p; await done;
@@ -180,7 +180,7 @@ test('identical model tool calls are blocked and converted into a recovery turn'
   ]);
   const engine = new EmbeddedEngine(REPO);
   const { evs, done } = collect(engine);
-  await engine.run('inspect the computer and finish', { env: { MODEL_API_URL: `http://127.0.0.1:${server.address().port}`, MODEL_NAME: 'mock', USE_SCOUTED_MODELS: 'false' } });
+  await engine.run('inspect the computer and finish', { orchestrate: false, env: { MODEL_API_URL: `http://127.0.0.1:${server.address().port}`, MODEL_NAME: 'mock', USE_SCOUTED_MODELS: 'false' } });
   await done;
   assert.strictEqual(evs.filter(e => e.t === 'tool' && e.name === 'sys_info').length, 1);
   assert.ok(evs.some(e => e.t === 'guard' && e.kind === 'repeat'));
@@ -204,7 +204,7 @@ test('reasoning dump with no JSON triggers one retry, then the tool actually run
   ]);
   const engine = new EmbeddedEngine(REPO);
   const { evs, done } = collect(engine);
-  await engine.run('open windows settings and tell me what you see', { env: { MODEL_API_URL: `http://127.0.0.1:${server.address().port}`, MODEL_NAME: 'mock', USE_SCOUTED_MODELS: 'false' } });
+  await engine.run('open windows settings and tell me what you see', { orchestrate: false, env: { MODEL_API_URL: `http://127.0.0.1:${server.address().port}`, MODEL_NAME: 'mock', USE_SCOUTED_MODELS: 'false' } });
   await done;
   // Must NOT surface the raw reasoning dump as if it were a real answer.
   assert.ok(!evs.some(e => e.t === 'answer' && e.text.includes('ms-settings')), 'the half-finished reasoning must never reach the user as a final answer');
@@ -224,7 +224,7 @@ test('a short genuine conversational answer with no braces is NOT retried (no wa
   await new Promise(r => server.listen(0, '127.0.0.1', r));
   const engine = new EmbeddedEngine(REPO);
   const { evs, done } = collect(engine);
-  await engine.run('hi', { env: { MODEL_API_URL: `http://127.0.0.1:${server.address().port}`, MODEL_NAME: 'mock', USE_SCOUTED_MODELS: 'false' } });
+  await engine.run('hi', { orchestrate: false, env: { MODEL_API_URL: `http://127.0.0.1:${server.address().port}`, MODEL_NAME: 'mock', USE_SCOUTED_MODELS: 'false' } });
   await done;
   assert.strictEqual(callCount, 1, 'a short, clearly-conversational reply must not trigger a retry');
   assert.strictEqual(evs.find(e => e.t === 'answer').text, 'Hello! How can I help you today?');

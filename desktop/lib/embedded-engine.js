@@ -54,6 +54,7 @@ class EmbeddedEngine extends EventEmitter {
   stop() {
     if (!this.engine) return false;
     this.engine.cfg._aborted = true;
+    try { this.engine.cfg._orchestraKill?.('stopped from desktop'); } catch {}
     if (this.pending) this.approve(this.pending.id, 'deny');
     return true;
   }
@@ -78,7 +79,21 @@ class EmbeddedEngine extends EventEmitter {
         this.emit('event', { t: 'banner', text: this.printActiveModel(cfg) });
 
         let answer = '', error = '';
-        try { answer = await engine.agentTask(text); }
+        // Desktop is a goal entry point: use the same Conductor/Scheduler path
+        // as CLI, Telegram, web chat, and MCP. Native worker execution still
+        // delegates to engine.agentTask(), preserving all approvals and tools.
+        try {
+          if (opts.orchestrate === false) {
+            // Test and compatibility escape hatch. Every production renderer
+            // call leaves this unset and therefore uses the shared Orchestra.
+            answer = await engine.agentTask(text);
+          } else {
+            const run = await engine.orchestrate(text, { entry: 'desktop' });
+            answer = run.ok
+              ? `Orchestra run ${run.runId}: ${run.status}\n${run.tasks.map((t) => `- ${t.id}: ${t.status}${t.result ? `\n${String(t.result).slice(0, 6000)}` : ''}`).join('\n')}`
+              : `Orchestra ${run.status || 'failed'}: ${run.error || run.tasks?.map((t) => `${t.id}: ${t.error || t.status}`).join('; ') || 'unknown error'}`;
+          }
+        }
         catch (e) { error = e.message; }
 
         if (answer) this.emit('event', { t: 'answer', text: answer });

@@ -23,6 +23,7 @@ import { localToolCall, resolveFolderTarget, routeText, ROUTER_SYSTEM_PROMPT } f
 import { loadBehavior, recordExperience } from './behavior.js';
 import { latestRequest, offlineHelp, offlinePlan } from './offline.js';
 import { pushLearnedFiles, seedLearnedState } from './github-sync.js';
+import { orchestrateGoal } from './orchestra/index.js';
 
 function parseArgs(raw) {
   const o = { _: [] };
@@ -32,6 +33,8 @@ function parseArgs(raw) {
     else if (a === '--selftest') o.selftest = true;
     else if (a === '--once') o.once = true;
     else if (a === '--plan') o.plan = true;
+    else if (a === '--orchestrate' || a === '--orchestra') o.orchestrate = true;
+    else if (a === '--direct') o.direct = true;
     else if (a === '--every') o.everyMin = Number(raw[++i] || 0);
     else if (a === '--repeat') o.repeatN = Number(raw[++i] || 0);
     else if (a === '--learn') o.learnTopic = raw[++i] || '';
@@ -549,6 +552,22 @@ export async function createEngine(argvOverride) {
     }
   }
 
+  // One goal enters here from CLI, desktop, Telegram, web, or MCP. The native
+  // worker calls agentTask() above, so the existing safety/approval/tool stack
+  // remains the execution authority instead of being duplicated by Orchestra.
+  async function orchestrate(task, options = {}) {
+    if (cfg._orchestraDepth) return { ok: false, status: 'rejected', error: 'nested orchestration is blocked' };
+    cfg._orchestraDepth = (cfg._orchestraDepth || 0) + 1;
+    cfg._aborted = false;
+    try {
+      return await orchestrateGoal({
+        goal: String(task), cfg, engine: { agentTask }, entry: options.entry || 'cli',
+        requirePlanApproval: options.planApproval ?? !!argv.plan,
+        approvePlan: async (plan) => requestApproval(cfg, `Execute orchestra plan with ${plan.tasks.length} task(s)?`),
+      });
+    } finally { cfg._orchestraDepth--; }
+  }
+
   async function selftest() {
     console.log('WinAgent selftest (no LLM needed)');
     const sk = await loadSkills(argv, cfg);
@@ -577,7 +596,7 @@ export async function createEngine(argvOverride) {
     if (line === 'goals') { try { console.log(fs.readFileSync(path.join(cfg.root, 'memory', 'GOALS.md'), 'utf8').slice(0, 2000)); } catch { console.log(' (no goals yet)'); } return; }
     if (line === 'selftest') { await selftest(); return; }
     if (line.startsWith('learn ')) { console.log(await learnCycle(line.slice(6).trim())); return; }
-    try { console.log('\n' + await agentTask(line) + '\n'); }
+    try { console.log('\n' + formatOrchestraResult(await orchestrate(line, { entry: 'cli-repl' })) + '\n'); }
     catch (e) { console.log('\nERROR: ' + e.message + '\n'); }
   }
 
@@ -649,7 +668,10 @@ export async function createEngine(argvOverride) {
       let cap = [];
       await runTelegram({
         root: cfg.root, token, allowFrom: cfg.telegramAllow || process.env.TELEGRAM_ALLOW_FROM || '',
-        runTask: (t) => agentTask(t),
+        runTask: async (t) => {
+          const r = await orchestrate(t, { entry: 'telegram' });
+          return r.ok ? formatOrchestraResult(r) : `Orchestra ${r.status || 'failed'}: ${r.error || r.tasks?.map((x) => `${x.id}: ${x.error || x.status}`).join('; ') || 'unknown error'}`;
+        },
         runSelftest: async () => {
           cap = []; console.log = (...a) => cap.push(a.join(' '));
           try { await selftest(); } finally { console.log = origLog; }
@@ -666,7 +688,7 @@ export async function createEngine(argvOverride) {
       let n = 0;
       for (;;) {
         n++;
-        try { console.log(`[run ${n}] ${await agentTask(stask)}`); }
+        try { console.log(`[run ${n}] ${formatOrchestraResult(await orchestrate(stask, { entry: 'cli-schedule' }))}`); }
         catch (e) { console.log(`[run ${n}] error: ${e.message}`); }
         if (maxR && n >= maxR) break;
         await new Promise(r => setTimeout(r, mins * 60000));
@@ -698,7 +720,7 @@ export async function createEngine(argvOverride) {
     if (!task) return repl();
     if (argv.once) audit(cfg, `TASK: ${task}`);
     try {
-      const answer = await agentTask(task);
+      const answer = argv.direct ? await agentTask(task) : formatOrchestraResult(await orchestrate(task, { entry: 'cli' }));
       // Legacy CLI consumers (older desktop builds, scripts): machine-readable answer
       // boundaries so multi-line answers parse cleanly out of stdout. The current desktop
       // app no longer needs this (it calls agentTask() in-process), kept for compatibility.
@@ -723,7 +745,29 @@ export async function createEngine(argvOverride) {
     finally { delegateDepth--; cfg.maxSteps = keep; }
   };
 
-  return { argv, cfg, tools, byName, agentTask, runTool, selftest, learnCycle, loadSkills, loadCatalog, registerSelfAuthored, main, repl };
+  // Expose a goal-level tool to MCP and other hosts. It cannot recurse from a
+  // native orchestra worker, and task writes still pass through normal safety.
+  const orchestraTool = {
+    name: 'orchestra_run', description: 'Plan and execute a goal as a durable dependency DAG. Creates runs/<runId>/ with plan, task states, and events. External workers run only when explicitly configured.',
+    args: { goal: 'goal to plan and execute', planApproval: 'ask once before starting (optional boolean)' },
+    async run(args) {
+      const r = await orchestrate(String(args?.goal || ''), { planApproval: args?.planApproval === true, entry: 'mcp' });
+      return { ok: !!r.ok, ...r };
+    },
+  };
+  tools.push(orchestraTool); byName[orchestraTool.name] = orchestraTool;
+
+  return { argv, cfg, tools, byName, agentTask, orchestrate, runTool, selftest, learnCycle, loadSkills, loadCatalog, registerSelfAuthored, main, repl };
+}
+
+function formatOrchestraResult(result) {
+  const lines = [`Orchestra run ${result.runId || ''}: ${result.status || (result.ok ? 'completed' : 'failed')}`];
+  for (const task of result.tasks || []) {
+    lines.push(`- ${task.id}: ${task.status}${task.error ? ` — ${task.error}` : ''}`);
+    if (task.result) lines.push(String(task.result).slice(0, 6000));
+  }
+  if (result.blackboard?.dir) lines.push(`Blackboard: ${result.blackboard.dir}`);
+  return lines.join('\n');
 }
 
 // CLI bootstrap: only runs when this file is the process entry point (`node src/index.js ...`),

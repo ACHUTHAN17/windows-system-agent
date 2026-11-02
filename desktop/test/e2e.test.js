@@ -49,7 +49,7 @@ test('CLI subprocess: a tool call then a final answer reaches stdout correctly',
     JSON.stringify({ action: 'tool', tool: 'sys_info', args: {}, thought: 'checking the system' }),
     JSON.stringify({ answer: 'Hello from the CLI' }),
   ]);
-  const r = await runCli(['--once', 'what system is this?'], {
+  const r = await runCli(['--once', '--direct', 'what system is this?'], {
     MODEL_API_URL: `http://127.0.0.1:${server.address().port}`, MODEL_NAME: 'mock', MODEL_API_KEY: 'x',
     SKILL_SOURCE: 'local', USE_SCOUTED_MODELS: 'false',
   });
@@ -66,7 +66,7 @@ test('CLI subprocess: approval prompt (no trailing newline) — allow lets the w
     JSON.stringify({ action: 'tool', tool: 'file_write', args: { path: target, content: 'hi' }, thought: 'write it' }),
     JSON.stringify({ answer: 'written' }),
   ]);
-  const r = await runCli(['--once', 'write a file'], {
+  const r = await runCli(['--once', '--direct', 'write a file'], {
     MODEL_API_URL: `http://127.0.0.1:${server.address().port}`, MODEL_NAME: 'mock', MODEL_API_KEY: 'x',
     SKILL_SOURCE: 'local', USE_SCOUTED_MODELS: 'false',
   }, () => 'y');
@@ -81,7 +81,7 @@ test('CLI subprocess: denying an approval blocks the action', { skip: !haveEngin
     JSON.stringify({ action: 'tool', tool: 'file_write', args: { path: target, content: 'hi' } }),
     JSON.stringify({ answer: 'could not write' }),
   ]);
-  const r = await runCli(['--once', 'write a file'], {
+  const r = await runCli(['--once', '--direct', 'write a file'], {
     MODEL_API_URL: `http://127.0.0.1:${server.address().port}`, MODEL_NAME: 'mock', MODEL_API_KEY: 'x',
     SKILL_SOURCE: 'local', USE_SCOUTED_MODELS: 'false',
   }, () => 'n');
