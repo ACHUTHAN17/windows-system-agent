@@ -925,3 +925,31 @@ When the task mentions refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0
 - Repair a Windows Image | Microsoft Learn
   https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/repair-a-windows-image?view=windows-11
 
+
+
+---
+## Field update 2026-11-02
+# Skill: refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0-3-1-e skill
+
+Auto-learned 2026-11-02 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0-3-1-e skill.
+
+## Steps
+1. How to run If you get an error that VCRUNTIME140.dll is missing, install Microsoft Visual C++ Redistributable for Visual Studio 2017 (32-bit) Drag and drop Win16 executable file to otvdm.exe or execute otvdmw.exe
+2. How to install Download or compile Run "install" shortcut or right-click on install.inf and select "Install" You can execute Win16 binaries directly! If the registry is initialized by Windows Update, perform the above procedure again
+3. How to compile(Visual Studio) Install Visual Studio 2017 Edit PropertySheet.props Compile How to compile(cmake) git clone https://github.com/otya128/winevdm.git cd winevdm mkdi
+4. Download winevdm How to Install Run old 16 bit Windows apps Works on modern 64 bit Windows Simple install process Useful for legacy software Open source compatibility tool Program Manager File Options Window Help Main Games Accessories Start Tools Apps Calculator 0
+5. Download winevdm View Install Guide How winevdm Works A bridge between old apps and new systems
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- GitHub - otya128/winevdm: 16-bit Windows (Windows 1.x, 2.x, 3.0, 3.1 ...
+  https://github.com/otya128/winevdm
+- WineVDM - Download & Run 16-Bit Windows Apps
+  https://winevdm.com/
+
