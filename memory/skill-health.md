@@ -1,22 +1,10 @@
 # Skill health — 2026-11-05
 
-513 skills audited, 25 links probed, 6 dead.
-14 need attention:
-
-## 16-bit-windows-windows-1-x-2-x-3-0-3-1-e.md (80476 chars)
-- dead link (ERR:This operation was aborted): https://github.com/otya128/winevdm
-
-## 3d-model-anything-capture-iphone-lidar-a.md (88811 chars)
-- dead link (ERR:This operation was aborted): https://github.com/ismarsadikovic/3d-model-anything-lidar-images
+515 skills audited, 25 links probed, 2 dead.
+10 need attention:
 
 ## a-brief-history-of-the-bloomberg-termina.md (102189 chars)
 - dead link (403): https://agihunt.info/en/p/1a0f31a25f2bdfec108aaac392c
-
-## a-browser-native-classic-visual-basic-vb.md (2137 chars)
-- dead link (ERR:This operation was aborted): https://github.com/wieslawsoltes/VB6/tree/main
-
-## a-minimal-rust-tui-for-managing-github-r.md (642 chars)
-- dead link (ERR:This operation was aborted): https://github.com/tareqmy/gitwig
 
 ## a-privacy-analysis-of-web-and-mobile-con.md (6246 chars)
 - dead link (404): https://jorgegarciaherrero.com/wp-content/interactivos/20260916-Prompt
