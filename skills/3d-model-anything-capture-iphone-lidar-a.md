@@ -1893,3 +1893,32 @@ When the task mentions refresh and verify the 3d-model-anything-capture-iphone-l
 - GitHub - wesbos/3d-model-anything: Capture iPhone LiDAR...
   https://daily.dev/posts/jyfy9wrxv
 
+
+
+---
+## Field update 2026-11-06
+# Skill: refresh and verify the 3d-model-anything-capture-iphone-lidar-a skill
+
+Auto-learned 2026-11-06 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 3d-model-anything-capture-iphone-lidar-a skill.
+
+## Steps
+1. Open the office viewer · App support This repository includes the 3D Model Anything iPhone app , a Three.js viewer , the scan-to-threejs agent skill , and Wes’s detailed office demo
+2. Run the viewer Use Node.js 22.12+ (or a newer supported release)
+3. Use the skill The skill lives at .agents/skills/scan-to-threejs/SKILL.md
+4. Open this repository in an agent that supports local skills and ask it to use scan-to-threejs with your extracted export
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- GitHub - wesbos/3d-model-anything: Capture iPhone LiDAR and photos ...
+  https://github.com/wesbos/3d-model-anything
+- GitHub - dongqi789192/3d-model-anything_dq: Capture iPhone LiDAR and ...
+  https://github.com/dongqi789192/3d-model-anything_dq
+- GitHub - wesbos/3d-model-anything: Capture iPhone LiDAR...
+  https://daily.dev/posts/jyfy9wrxv
+
