@@ -1338,3 +1338,31 @@ When the task mentions refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0
 - WineVDM - Download & Run 16-Bit Windows Apps
   https://winevdm.com/
 
+
+
+---
+## Field update 2026-11-07
+# Skill: refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0-3-1-e skill
+
+Auto-learned 2026-11-07 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0-3-1-e skill.
+
+## Steps
+1. How to run If you get an error that VCRUNTIME140.dll is missing, install Microsoft Visual C++ Redistributable for Visual Studio 2017 (32-bit) Drag and drop Win16 executable file to otvdm.exe or execute otvdmw.exe
+2. How to install Download or compile Run "install" shortcut or right-click on install.inf and select "Install" You can execute Win16 binaries directly! If the registry is initialized by Windows Update, perform the above procedure again
+3. How to compile(Visual Studio) Install Visual Studio 2017 Edit PropertySheet.props Compile How to compile(cmake) git clone https://github.com/otya128/winevdm.git cd
+4. Note: This feature may not be available in some browsers
+5. Step-by-step: the GIGAZINE test​ GIG
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- GitHub - otya128/winevdm: 16-bit Windows (Windows 1.x, 2.x, 3.0, 3.1 ...
+  https://github.com/otya128/winevdm
+- How to Run 16-Bit Windows Programs on Windows 11 Using winevdm (OTVDM)
+  https://windowsforum.com/news/how-to-run-16-bit-windows-programs-on-windows-11-using-winevdm-otvdm.451298/
+
