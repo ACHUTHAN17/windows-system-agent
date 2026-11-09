@@ -1,13 +1,22 @@
 # Skill health — 2026-11-09
 
-539 skills audited, 25 links probed, 2 dead.
-12 need attention:
+541 skills audited, 25 links probed, 5 dead.
+15 need attention:
 
-## 123456-password-used-in-danish-cpr-data.md (220016 chars)
+## 123456-password-used-in-danish-cpr-data.md (221682 chars)
 - dead link (404): https://hackerfeeds.com/news/123456-password-used-in-danish-cpr-data-b
+
+## 16-bit-windows-windows-1-x-2-x-3-0-3-1-e.md (1760 chars)
+- dead link (ERR:This operation was aborted): https://github.com/otya128/winevdm
+
+## 3d-model-anything-capture-iphone-lidar-a.md (1305 chars)
+- dead link (ERR:This operation was aborted): https://github.com/ismarsadikovic/3d-model-anything-lidar-images
 
 ## a-brief-history-of-windows-scroll-bar-sh.md (62856 chars)
 - dead link (525): https://outspeaker.com/post/14780
+
+## a-browser-native-classic-visual-basic-vb.md (1684 chars)
+- dead link (ERR:This operation was aborted): https://github.com/wieslawsoltes/VB6/tree/main
 
 ## agent-overlay.md (3676 chars)
 - unknown tool refs: active, click, drag, type, file
