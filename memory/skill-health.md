@@ -1,7 +1,10 @@
 # Skill health — 2026-11-10
 
-553 skills audited, 25 links probed, 1 dead.
-9 need attention:
+555 skills audited, 25 links probed, 2 dead.
+10 need attention:
+
+## 3d-model-anything-capture-iphone-lidar-a.md (120884 chars)
+- dead link (ERR:ENOTFOUND): https://forma3d.app/lidar-3d-scanner
 
 ## a-brief-history-of-the-bloomberg-termina.md (102189 chars)
 - dead link (403): https://agihunt.info/en/p/1a0f31a25f2bdfec108aaac392c
