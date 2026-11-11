@@ -1,6 +1,6 @@
 # Skill health — 2026-11-11
 
-557 skills audited, 25 links probed, 1 dead.
+563 skills audited, 25 links probed, 1 dead.
 10 need attention:
 
 ## a-brief-history-of-the-bloomberg-termina.md (102189 chars)
