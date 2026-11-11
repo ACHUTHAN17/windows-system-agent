@@ -7,6 +7,7 @@ import { spawn } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { loadConfig, printActiveModel } from './config.js';
+import { loadUsageModel } from './orchestra/usage-model.js';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')), '..');
 
@@ -60,7 +61,7 @@ button.ghost{background:#161b22}button:disabled{opacity:.4;cursor:default}
 <script>
 const stream=document.getElementById('stream'),task=document.getElementById('task');
 function line(t,cls){const d=document.createElement('div');if(cls)d.className=cls;d.textContent=t;stream.appendChild(d);stream.scrollTop=stream.scrollHeight;}
-fetch('/api/status').then(r=>r.json()).then(s=>{document.getElementById('pills').innerHTML='<span class="pill">'+s.model+'</span><span class="pill">'+s.tools+' tools</span><span class="pill">'+s.skills+' skills</span><span class="pill">mcp: '+s.mcp+'</span>';});
+fetch('/api/status').then(r=>r.json()).then(s=>{document.getElementById('pills').innerHTML='<span class="pill">'+s.model+'</span><span class="pill">agent-use: '+s.agentUseModel+'</span><span class="pill">'+s.tools+' tools</span><span class="pill">'+s.skills+' skills</span><span class="pill">mcp: '+s.mcp+'</span>';});
 fetch('/api/skills').then(r=>r.json()).then(sk=>{document.getElementById('skills').innerHTML=sk.map(s=>'<span class="sk">'+s+'</span>').join('');});
 const es=new EventSource('/api/events');
 es.onmessage=e=>{const m=JSON.parse(e.data);
@@ -171,8 +172,11 @@ export async function startDashboard(port) {
     if (req.method === 'GET' && url.pathname === '/api/status') {
       const skills = bundledSkillNames().length;
       const mcp = (process.env.MCP_SERVERS || cfg.mcpServers) ? 'configured' : 'off';
+      const usage = loadUsageModel(ROOT);
+      const agentUseModel = usage?.algorithm && Number.isFinite(Number(usage.examples))
+        ? `${usage.algorithm} (${usage.examples} examples)` : 'not trained';
       res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ model: printActiveModel(cfg), tools: toolCount(), skills, mcp, busy: !!state.child, pending: !!state.pending }));
+      res.end(JSON.stringify({ model: printActiveModel(cfg), agentUseModel, tools: toolCount(), skills, mcp, busy: !!state.child, pending: !!state.pending }));
       return;
     }
     if (req.method === 'GET' && url.pathname === '/api/skills') {
