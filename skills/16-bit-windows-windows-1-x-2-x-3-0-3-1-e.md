@@ -1727,3 +1727,37 @@ When the task mentions refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0
 - Releases · otya128/winevdm · GitHub
   https://github.com/otya128/winevdm/releases
 
+
+
+---
+## Field update 2026-11-11
+# Skill: refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0-3-1-e skill
+
+Auto-learned 2026-11-11 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0-3-1-e skill.
+
+## Steps
+1. Note: This feature may not be available in some browsers
+2. Step-by-step: the GIGAZINE test​ GIG
+3. How to run If you get an error that VCRUNTIME140.dll is missing, install Microsoft Visual C++ Redistributable for Visual Studio 2017 (32-bit) Drag and drop Win16 executable file to otvdm.exe or execute otvdmw.exe
+4. How to install Download or compile Run "install" shortcut or right-click on install.inf and select "Install" You can execute Win16 binaries directly! If the registry is initialized by Windows Update, perform the above procedure again
+5. How to compile(Visual Studio) Install Visual Studio 2017 Edit PropertySheet.props Compile How to compile(cmake) git clone https://github.com/otya128/winevdm.git cd
+6. How to Run 16-Bit Apps on Windows 11 (NTVDM Alternatives) | Techeia Skip to content T Techeia Search for firmware, DevOps tools, guides..
+7. Right-click the executable, open Properties, and check the Compatibility tab
+8. Run your 16-bit program as you normally would
+9. Download the latest release archive from the project's official GitHub releases page
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- How to Run 16-Bit Windows Programs on Windows 11 Using winevdm (OTVDM)
+  https://windowsforum.com/news/how-to-run-16-bit-windows-programs-on-windows-11-using-winevdm-otvdm.451298/
+- GitHub - otya128/winevdm: 16-bit Windows (Windows 1.x, 2.x, 3.0, 3.1 ...
+  https://github.com/otya128/winevdm
+- How to Run 16-Bit Apps on Windows 11 (NTVDM Alternatives)
+  https://www.techeia.com/blog/run-16-bit-apps-windows-11-ntvdm
+
