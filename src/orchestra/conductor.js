@@ -2,6 +2,7 @@
 // every dependency before the scheduler sees it. It always has a native fallback
 // so deterministic/offline installations remain usable.
 import { chat, hasConfiguredModel } from '../llm.js';
+import { suggestUsageWorker } from './usage-model.js';
 
 const WORKERS = new Set(['native', 'hermes', 'openclaw', 'cloud']);
 const idOf = (value, n) => String(value || `task-${n + 1}`).toLowerCase().replace(/[^a-z0-9_-]/g, '-').replace(/^-+|-+$/g, '').slice(0, 48) || `task-${n + 1}`;
@@ -48,8 +49,15 @@ export function validatePlan(raw, goal) {
   return { version: 1, summary: String(raw.summary || goal).slice(0, 500), tasks };
 }
 
-export function fallbackPlan(goal) {
-  return { version: 1, summary: 'Native single-task fallback', tasks: [{ id: 'native-1', title: 'Complete the requested goal', goal: String(goal), worker: 'native', deps: [], retries: 0, timeoutMs: 180000, resources: ['desktop'] }] };
+export function fallbackPlan(goal, cfg = {}) {
+  const suggestion = suggestUsageWorker(goal, cfg);
+  const worker = suggestion.worker || 'native';
+  return {
+    version: 1,
+    summary: worker === 'native' ? 'Native single-task fallback' : `Learned ${worker} worker fallback`,
+    tasks: [{ id: `${worker}-1`, title: 'Complete the requested goal', goal: String(goal), worker, deps: [], retries: 0, timeoutMs: 180000, resources: worker === 'native' ? ['desktop'] : [] }],
+    learnedRoute: { source: suggestion.source, worker, confidence: suggestion.prediction?.confidence ?? null },
+  };
 }
 
 function conductorConfig(cfg) {
@@ -71,7 +79,7 @@ function conductorConfig(cfg) {
 
 export async function planGoal({ goal, cfg }) {
   const selected = conductorConfig(cfg);
-  if (!hasConfiguredModel(selected.cfg)) return { plan: fallbackPlan(goal), source: 'deterministic-fallback' };
+  if (!hasConfiguredModel(selected.cfg)) return { plan: fallbackPlan(goal, cfg), source: 'deterministic-fallback' };
   const prompt = `You are the WinAgent Conductor. Convert a user goal into a safe, bounded DAG for a worker scheduler.\n`
     + `Reply ONLY with JSON: {"summary":"...","tasks":[{"id":"short-id","title":"...","goal":"precise worker instruction","worker":"native|hermes|openclaw|cloud","deps":["task-id"],"retries":0,"timeoutMs":180000,"resources":["desktop"]}]}.\n`
     + `Use native unless an optional worker is specifically appropriate. Maximum 12 tasks. Every task must have an observable outcome. Do not use workers that are not needed.`;
@@ -79,6 +87,6 @@ export async function planGoal({ goal, cfg }) {
     const raw = jsonFrom(await chat(selected.cfg, [{ role: 'system', content: prompt }, { role: 'user', content: String(goal) }]));
     return { plan: validatePlan(raw, goal), source: selected.source };
   } catch (error) {
-    return { plan: fallbackPlan(goal), source: `${selected.source}-fallback`, warning: error.message };
+    return { plan: fallbackPlan(goal, cfg), source: `${selected.source}-fallback`, warning: error.message };
   }
 }

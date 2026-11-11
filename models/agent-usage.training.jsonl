@@ -1,0 +1,14 @@
+{"text":"open the control panel and change a local system setting","label":"native"}
+{"text":"create a folder, write a report and open the artifact on this computer","label":"native"}
+{"text":"inspect files in Downloads and summarize the largest items","label":"native"}
+{"text":"press ctrl shift s in the focused application","label":"native"}
+{"text":"take a screenshot and save it on the desktop","label":"native"}
+{"text":"use the long-running WSL coding environment to refactor this repository","label":"hermes"}
+{"text":"run a long horizon development task in the Hermes sidecar","label":"hermes"}
+{"text":"continue a multi-hour coding session in WSL and verify tests","label":"hermes"}
+{"text":"delegate this channel and subagent workflow through OpenClaw","label":"openclaw"}
+{"text":"send this task to the OpenClaw gateway and coordinate subagents","label":"openclaw"}
+{"text":"use OpenClaw to handle a connected messaging channel task","label":"openclaw"}
+{"text":"dispatch a matrix build and test job to GitHub Actions","label":"cloud"}
+{"text":"run this cross platform release build in the GitHub Actions cloud worker","label":"cloud"}
+{"text":"use the GitHub cloud workflow to build Linux Windows and macOS artifacts","label":"cloud"}

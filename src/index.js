@@ -24,6 +24,7 @@ import { loadBehavior, recordExperience } from './behavior.js';
 import { latestRequest, offlineHelp, offlinePlan } from './offline.js';
 import { pushLearnedFiles, seedLearnedState } from './github-sync.js';
 import { orchestrateGoal } from './orchestra/index.js';
+import { trainUsageModelAtRoot, loadUsageModel } from './orchestra/usage-model.js';
 
 function parseArgs(raw) {
   const o = { _: [] };
@@ -43,6 +44,8 @@ function parseArgs(raw) {
     else if (a === '--idle-learn') o.idleLearn = true;
     else if (a === '--idle-seconds') o.idleSeconds = Number(raw[++i] || 2);
     else if (a === '--learn-cooldown') o.learnCooldown = Number(raw[++i] || 300);
+    else if (a === '--train-agent-model') o.trainAgentModel = true;
+    else if (a === '--agent-model-status') o.agentModelStatus = true;
     else if (a === '--model') o.MODEL_NAME = raw[++i];
     else if (a === '--url') o.MODEL_API_URL = raw[++i];
     else if (a === '--provider') o.MODEL_PROVIDER = raw[++i];
@@ -696,6 +699,16 @@ export async function createEngine(argvOverride) {
       return;
     }
     if (argv.selftest) return selftest();
+    if (argv.trainAgentModel) {
+      const { file, model } = trainUsageModelAtRoot(cfg.root);
+      console.log(`Trained ${model.algorithm} with ${model.examples} examples: ${file}`);
+      return;
+    }
+    if (argv.agentModelStatus) {
+      const model = loadUsageModel(cfg.root);
+      console.log(model ? `Agent-use model: ${model.algorithm}, ${model.examples} examples, trained ${model.trainedAt}` : 'Agent-use model: not trained (run npm run train:agent-model)');
+      return;
+    }
     if (argv.learnTopic !== undefined) {
       try { console.log(await learnCycle(argv.learnTopic)); }
       catch (e) { console.log('LEARN ERROR: ' + e.message); }

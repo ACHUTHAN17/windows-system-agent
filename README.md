@@ -24,6 +24,8 @@ Any endpoint that speaks `POST /chat/completions` works (vLLM, OpenRouter, Azure
 
 WinAgent includes one shared orchestration layer for CLI, desktop, Telegram, web chat and MCP. Its Conductor can use **Muse Spark 1.1** to form a validated dependency DAG; the scheduler persists every plan, task and event under `runs/<runId>/`, handles resource locks/retries/budgets, and provides a stop switch. Native control remains the default worker; **Hermes** is the optional WSL2 long-horizon worker; **OpenClaw** is the optional gateway/subagent worker; GitHub Actions is the optional cloud worker. See [docs/ORCHESTRA.md](docs/ORCHESTRA.md) for the exact local configuration and bridge contract.
 
+For CPU-only installations, WinAgent also includes a trainable local agent-use routing model. It is a small, auditable decision model for choosing a configured worker—not a replacement for a frontier LLM. Train it with `npm run train:agent-model`; see [docs/AGENT_USAGE_MODEL.md](docs/AGENT_USAGE_MODEL.md).
+
 ## Offline by default
 
 WinAgent starts in deterministic offline mode. Opening apps/folders, listing and reading files,
