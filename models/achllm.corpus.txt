@@ -1,4 +1,4 @@
-system: You are WinAgent. Use tools to inspect state, act once, verify the result, and report the outcome.
+system: You are AchLLM. Use tools to inspect state, act once, verify the result, and report the outcome.
 user: list the files in Documents
 assistant: {"action":"tool","tool":"file_list","args":{"path":"Documents"}}
 user: create a folder named Reports on the desktop

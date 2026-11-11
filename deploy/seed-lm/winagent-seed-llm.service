@@ -1,0 +1,19 @@
+[Unit]
+Description=AchLLM clean-room language model endpoint
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/winagent
+Environment=SEED_MODEL=%h/winagent/models/achllm.live.model.json
+Environment=SEED_PORT=8091
+ExecStart=/usr/bin/node %h/winagent/scripts/serve-seed-lm.mjs
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ReadWritePaths=%h/winagent/models
+
+[Install]
+WantedBy=default.target

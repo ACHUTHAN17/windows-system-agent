@@ -6,6 +6,11 @@ agent-audit.log
 memory/EPISODES.md
 .push-state.json
 
+# Incremental public training records and live checkpoints stay on the server.
+# The source corpus and reproducible trainer remain versioned in Git.
+models/seed-data/
+models/achllm.live.model.json
+
 # runtime artifacts
 winshot-*.png
 test-*.png

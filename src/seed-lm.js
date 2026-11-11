@@ -1,4 +1,4 @@
-// WinAgent Seed: a clean-room, byte-level language-model baseline.
+// AchLLM: a clean-room, byte-level language-model baseline.
 //
 // It intentionally imports no model weights, SDKs, or tokenizers.  Training
 // learns conditional next-byte distributions directly from a local corpus.
@@ -39,7 +39,7 @@ export function trainSeedLm(corpus, { order = 4, maxBytes = 4_000_000 } = {}) {
   const transitions = {};
   for (const [context, row] of table) transitions[context] = [...row.entries()].map(([token, n]) => [token.charCodeAt(0), n]);
   return {
-    format: 'winagent-seed-lm', version: VERSION, order, trainedBytes: seen,
+    format: 'achllm', version: VERSION, order, trainedBytes: seen,
     vocabulary: [...vocabulary].map((c) => c.charCodeAt(0)).sort((a, b) => a - b), transitions,
   };
 }
@@ -57,7 +57,7 @@ function rowFor(model, context) {
 // and making the baseline safe to evaluate. Sampling can be added only after a
 // measured quality gate exists.
 export function completeSeedLm(model, prompt, { maxBytes = 160 } = {}) {
-  if (!model || model.format !== 'winagent-seed-lm') throw new Error('invalid Seed model');
+  if (!model || model.format !== 'achllm') throw new Error('invalid AchLLM model');
   const context = [...Array(model.order).fill(START), ...bytes(prompt).slice(-model.order)];
   const out = [];
   for (let i = 0; i < maxBytes; i++) {
