@@ -5,7 +5,7 @@ const assert = require('node:assert');
 const http = require('node:http');
 const path = require('node:path');
 
-const { chat } = require(path.join('..', '..', 'src', 'llm.js'));
+const { chat, compactToolPrompt, systemPrompt } = require(path.join('..', '..', 'src', 'llm.js'));
 
 function server(status, body) {
   return new Promise((resolve) => {
@@ -149,4 +149,16 @@ test('max_tokens is sent explicitly (reasoning models need real budget, not a pr
   await chat(cfg2, [{ role: 'user', content: 'hi' }]);
   assert.strictEqual(capturedBody.max_tokens, 8192, 'cfg.maxTokens overrides the default');
   srv.close();
+});
+
+test('CPU prompt profile exposes focused core tools and keeps the strict JSON contract', () => {
+  const prompt = compactToolPrompt([
+    { name: 'file_read', args: { path: {} }, description: 'read a file' },
+    { name: 'file_delete', args: { path: {} }, description: 'delete a file' },
+    { name: 'window_focus', args: { title: {} }, description: 'focus a window' },
+  ]);
+  assert.match(prompt, /file_read/);
+  assert.match(prompt, /window_focus/);
+  assert.doesNotMatch(prompt, /file_delete/);
+  assert.match(systemPrompt(prompt, { compact: true }), /EXACTLY one JSON object/);
 });

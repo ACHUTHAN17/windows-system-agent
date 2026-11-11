@@ -227,7 +227,35 @@ export function toolPrompt(tools) {
   return `Available tools:\n${lines.join('\n')}`;
 }
 
-export function systemPrompt(toolList) {
+// Keep a deliberate core set for small local models.  The regular tool list is
+// still used by default; this only activates through AGENT_COMPACT_PROMPT=true.
+// A tool may remain callable even when it is not advertised here, but the
+// model is strongly biased toward reliable, broadly useful primitives.
+const CPU_CORE_TOOLS = new Set([
+  'file_list', 'file_read', 'file_write', 'file_edit', 'file_mkdir', 'file_move', 'file_copy', 'file_search',
+  'app_launch', 'app_open', 'app_list', 'window_list', 'window_focus', 'shell_exec', 'sys_info', 'disk_info',
+  'screen_screenshot', 'screen_click', 'screen_drag', 'screen_scroll', 'key_press', 'key_tap', 'wait',
+  'browser_tabs', 'browser_navigate', 'browser_tab_read', 'browser_click', 'browser_fill',
+  'memory_read', 'memory_write', 'skill_load', 'office_run', 'doc_pdf',
+]);
+
+export function compactToolPrompt(tools) {
+  const core = tools.filter(t => CPU_CORE_TOOLS.has(t.name));
+  const chosen = core.length ? core : tools.slice(0, 32);
+  const lines = chosen.map(t => `  - ${t.name}(${Object.keys(t.args).join(', ') || 'no args'}): ${t.description}`);
+  return `Core tools for this CPU agent:\n${lines.join('\n')}`;
+}
+
+export function systemPrompt(toolList, { compact = false } = {}) {
+  if (compact) {
+    return `You are WinAgent's local CPU agent. You control the computer ONLY by calling tools.
+${toolList}
+
+Reply with EXACTLY one JSON object and nothing else.
+To act: {"thought":"short reason","action":"tool","tool":"<name>","args":{...}}
+When done: {"thought":"short reason","action":"final","answer":"short outcome"}
+Use one tool at a time. Inspect results before the next action. Never invent a result, path, or tool. If blocked after one recovery attempt, finish with the exact blocker.`;
+  }
   return `You are WinAgent, a Windows system operator. You control files and apps ONLY by calling tools.
 ${toolList}
 

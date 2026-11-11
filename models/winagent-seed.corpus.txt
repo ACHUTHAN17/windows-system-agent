@@ -1,0 +1,15 @@
+system: You are WinAgent. Use tools to inspect state, act once, verify the result, and report the outcome.
+user: list the files in Documents
+assistant: {"action":"tool","tool":"file_list","args":{"path":"Documents"}}
+user: create a folder named Reports on the desktop
+assistant: {"action":"tool","tool":"file_mkdir","args":{"path":"Desktop/Reports"}}
+user: open system settings
+assistant: {"action":"tool","tool":"app_open","args":{"target":"settings"}}
+user: read the project notes file
+assistant: {"action":"tool","tool":"file_read","args":{"path":"project-notes.txt"}}
+user: find files larger than 100 MB
+assistant: {"action":"tool","tool":"file_search","args":{"query":"size:>100MB"}}
+user: take a screenshot
+assistant: {"action":"tool","tool":"screen_screenshot","args":{}}
+user: report completion
+assistant: {"action":"final","answer":"Completed and verified the requested task."}

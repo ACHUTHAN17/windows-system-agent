@@ -17,7 +17,7 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { loadConfig, printActiveModel } from './config.js';
 import { buildTools } from './tools.js';
-import { chat, hasConfiguredModel, parseAgentJson, systemPrompt, toolPrompt } from './llm.js';
+import { chat, hasConfiguredModel, parseAgentJson, systemPrompt, toolPrompt, compactToolPrompt } from './llm.js';
 import { needsApproval, askYesNo, audit, isPathAllowed, needsAppApproval, askAppApproval, requestApproval, requestAppApproval } from './safety.js';
 import { localToolCall, resolveFolderTarget, routeText, ROUTER_SYSTEM_PROMPT } from './router.js';
 import { loadBehavior, recordExperience } from './behavior.js';
@@ -143,9 +143,9 @@ function bundledAnthropicCatalog(root) {
   return out;
 }
 
-function skillPrompt(loaded) {
+function skillPrompt(loaded, limit = Infinity) {
   if (!loaded.length) return '';
-  return '\n\nSKILLS (follow these playbooks step by step):\n' + loaded.map(s => `--- ${s.name} ---\n${s.text}`).join('\n');
+  return '\n\nSKILLS (follow these playbooks step by step):\n' + loaded.map(s => `--- ${s.name} ---\n${s.text}`).join('\n').slice(0, limit);
 }
 
 function loadMemory(cfg) {
@@ -217,10 +217,25 @@ async function loadCatalog(cfg) {
   } catch { return { list: [], source: 'none' }; }
 }
 
-function catalogPrompt(catalog) {
+function catalogPrompt(catalog, limit = 40) {
   if (!catalog.list.length) return '';
   return '\n\nSKILL CATALOG — call skill_load {"name"} the moment one fits the task (preloaded skills above are already active, never reload them):\n' +
-    catalog.list.slice(0, 40).map(s => `- ${s.name}: ${(s.description || '').slice(0, 120)}`).join('\n');
+    catalog.list.slice(0, limit).map(s => `- ${s.name}: ${(s.description || '').slice(0, 120)}`).join('\n');
+}
+
+function agentSystemContext(cfg, tools, skills, catalog) {
+  if (!cfg.compactPrompt) {
+    return systemPrompt(toolPrompt(tools)) + loadBehavior(cfg.root) + '\n\n' + ROUTER_SYSTEM_PROMPT + skillPrompt(skills) + catalogPrompt(catalog) + loadMemory(cfg) + loadProjectRules(cfg);
+  }
+  // The deterministic router already ran before this point. Keep a compact,
+  // verifiable contract for the small local model and reserve its context for
+  // the user goal, tool outcomes, and the directly relevant skills.
+  return systemPrompt(compactToolPrompt(tools), { compact: true })
+    + loadBehavior(cfg.root).slice(0, 1800)
+    + skillPrompt(skills, 5000)
+    + catalogPrompt(catalog, 12)
+    + loadMemory(cfg).slice(0, 2500)
+    + loadProjectRules(cfg).slice(0, 1800);
 }
 
 // Keyword preloading: task words vs triggers, threshold >= 2, max 3, deduped.
@@ -479,7 +494,7 @@ export async function createEngine(argvOverride) {
       return `I am running in offline mode and there is no model configured. ${offlineHelp()}`;
     }
     const history = [
-      { role: 'system', content: systemPrompt(toolPrompt(tools)) + loadBehavior(cfg.root) + '\n\n' + ROUTER_SYSTEM_PROMPT + skillPrompt(skills) + catalogPrompt(catalog) + loadMemory(cfg) + loadProjectRules(cfg) },
+      { role: 'system', content: agentSystemContext(cfg, tools, skills, catalog) },
       { role: 'user', content: task },
     ];
     const attemptedCalls = new Map();

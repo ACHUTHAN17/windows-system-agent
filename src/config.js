@@ -86,6 +86,10 @@ export function loadConfig(argv = {}) {
     temperature: Number(env('TEMPERATURE', json.temperature ?? 0.2)),
     maxTokens: Number(env('MODEL_MAX_TOKENS', json.maxTokens ?? 4096)),
     timeoutMs: Number(env('TIMEOUT_MS', json.timeoutMs ?? 60000)),
+    // Small CPU models have much less context headroom than a hosted frontier
+    // model.  This opt-in profile keeps their tool contract focused instead of
+    // overflowing the context with every optional capability and skill.
+    compactPrompt: String(env('AGENT_COMPACT_PROMPT', json.compactPrompt ?? false)) === 'true',
     requireApproval: String(env('REQUIRE_APPROVAL', json.requireApproval ?? true)) !== 'false' && String(env('REQUIRE_APPROVAL', json.requireApproval ?? true)) !== '0',
     autoYes: String(env('AUTO_YES', argv.yes ? 'true' : (json.autoYes ?? false))) === 'true' || argv.yes === true,
     allowedRoots: list(env('ALLOWED_ROOTS', json.allowedRoots ?? [])),

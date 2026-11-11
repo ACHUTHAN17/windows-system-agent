@@ -1,6 +1,6 @@
 {
   "name": "windows-system-agent",
-  "version": "1.35.0",
+  "version": "1.36.0",
   "description": "Cross-platform system agent: offline device control plus optional free cloud planning",
   "type": "module",
   "engines": {
@@ -14,7 +14,9 @@
     "start": "node ./src/index.js",
     "test": "node ./src/index.js --selftest",
     "mcp": "node ./src/mcp-server.js",
-    "train:agent-model": "node ./scripts/train-agent-model.js"
+    "train:agent-model": "node ./scripts/train-agent-model.js",
+    "train:seed-model": "node ./scripts/train-seed-lm.mjs",
+    "serve:seed-model": "node ./scripts/serve-seed-lm.mjs"
   },
   "license": "UNLICENSED"
 }
