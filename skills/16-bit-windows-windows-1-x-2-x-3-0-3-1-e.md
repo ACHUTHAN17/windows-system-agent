@@ -1798,3 +1798,38 @@ When the task mentions refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0
 - How to fix Unsupported 16-bit Application error on Windows 11
   https://www.thewindowsclub.com/how-to-fix-unsupported-16-bit-application-error-on-windows
 
+
+
+---
+## Field update 2026-11-11
+# Skill: refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0-3-1-e skill
+
+Auto-learned 2026-11-11 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0-3-1-e skill.
+
+## Steps
+1. How to run If you get an error that VCRUNTIME140.dll is missing, install Microsoft Visual C++ Redistributable for Visual Studio 2017 (32-bit) Drag and drop Win16 executable file to otvdm.exe or execute otvdmw.exe
+2. How to install Download or compile Run "install" shortcut or right-click on install.inf and select "Install" You can execute Win16 binaries directly! If the registry is initialized by Windows Update, perform the above procedure again
+3. How to compile(Visual Studio) Install Visual Studio 2017 Edit PropertySheet.props Compile How to compile(cmake) git clone https://github.com/otya128/winevdm.git cd
+4. Download winevdm How to Install Run old 16 bit Windows apps Works on modern 64 bit Windows Simple install process Useful for legacy software Open source compatibility tool Program Manager File Options Window Help Main Games Accessories Start Tools Apps Calculator 0
+5. Download winevdm View Install Guide How winevdm Works A bridge between old apps and new systems
+6. Download Microsoft Edge More info about Internet Explorer and Microsoft Edge Table of contents Exit editor mode Ask Learn Ask Learn Reading mode Table of contents Read in English Add Add to Plans Edit Copy Markdown Print Note Access to this page requires authorization
+7. Use 16-bit InstallShield installers to install 32-bit applications If you are using a 16-bit InstallShield installer to install a 32-bit application, download and install the 16-bit InstallShield Support package before launching the 16-bit InstallShield installer
+8. To run such a program, you can install a 32-bit version of Windows in a dual-boot configuration with the 64-bit version of Windows
+9. Then, you can restart your computer to the 32-bit version of Windows and install the 16-bit program or 32-bit program that uses 16-bit processes or 16-bit components
+10. Note The 32-bit version of Windows must be installed on a separate disk volume or separate physical hard disk to function correctly
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- GitHub - otya128/winevdm: 16-bit Windows (Windows 1.x, 2.x, 3.0, 3.1 ...
+  https://github.com/otya128/winevdm
+- WineVDM - Download & Run 16-Bit Windows Apps
+  https://winevdm.com/
+- 64-bit versions of Windows don&#x27;t support 16-bit components, 16-bit ...
+  https://learn.microsoft.com/en-us/troubleshoot/windows-client/application-management/x64-windows-not-support-16-bit-programs
+
