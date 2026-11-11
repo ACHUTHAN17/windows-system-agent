@@ -1761,3 +1761,40 @@ When the task mentions refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0
 - How to Run 16-Bit Apps on Windows 11 (NTVDM Alternatives)
   https://www.techeia.com/blog/run-16-bit-apps-windows-11-ntvdm
 
+
+
+---
+## Field update 2026-11-11
+# Skill: refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0-3-1-e skill
+
+Auto-learned 2026-11-11 from the web (heuristic pass — ask for a refresh once an LLM key is configured).
+
+## When to use
+When the task mentions refresh and verify the 16-bit-windows-windows-1-x-2-x-3-0-3-1-e skill.
+
+## Steps
+1. How to run If you get an error that VCRUNTIME140.dll is missing, install Microsoft Visual C++ Redistributable for Visual Studio 2017 (32-bit) Drag and drop Win16 executable file to otvdm.exe or execute otvdmw.exe
+2. How to install Download or compile Run "install" shortcut or right-click on install.inf and select "Install" You can execute Win16 binaries directly! If the registry is initialized by Windows Update, perform the above procedure again
+3. How to compile(Visual Studio) Install Visual Studio 2017 Edit PropertySheet.props Compile How to compile(cmake) git clone https://github.com/otya128/winevdm.git cd
+4. How to Fix Unsubstantiated 16-Bit Application Error on Windows 10? To resolve no-functional app error on your latest device, follow all the below methods in a step-by-step format
+5. Step 2: Execute the following command there & let the process complete
+6. Step 2: In the newly opened Window, click on the Service Tab & mark the check box To Hide All Microsoft Services
+7. Step 3: In a new small popup message, click on Restart to save the changes
+8. Step 2: In the new window, mark the checkbox Run this Program in Compatibility mode & leave the dropdown menu with the default Windows version
+9. Step 2: Click on the Program option to get the option Turn Windows Features On or Off
+10. Step 3: In the newly opened Window, mark the NTVDM checkbox under the Leagcy Components and press OK
+11. Step 2: In the new window, click on the Virus & Threat Protection
+12. Step 3: Click on the Scan Now button to check & remove viruses
+
+## Verify
+- Re-check one fact against a second source before acting on it.
+- Never run destructive commands from a single source.
+
+## Sources
+- GitHub - otya128/winevdm: 16-bit Windows (Windows 1.x, 2.x, 3.0, 3.1 ...
+  https://github.com/otya128/winevdm
+- 5 Methods To Fix Unsupported 16-bit Application Error on Windows 10
+  https://www.geeksforgeeks.org/techtips/methods-to-fix-unsupported-16-bit-application-error-on-windows-10/
+- How to fix Unsupported 16-bit Application error on Windows 11
+  https://www.thewindowsclub.com/how-to-fix-unsupported-16-bit-application-error-on-windows
+
