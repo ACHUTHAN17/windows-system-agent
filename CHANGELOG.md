@@ -1,4 +1,8 @@
 # Changelog
+## 1.41.5 — 2026-11-12
+- **Isolated browser research:** AchLLM can use the server's headless Chromium once per six training cycles to collect one attributed reference page from its versioned Wikimedia allow-list. It uses a disposable profile and cannot access user browser data.
+- **Agent path:** added a measurable, sandbox-first plan for future observe-only, planned, and controlled agent capabilities. The present baseline remains unauthorised for autonomous system control.
+
 ## 1.41.4 — 2026-11-12
 - **Consent-based chat learning:** an owner can explicitly donate an AchLLM exchange from either chat surface. The server rejects likely credentials, queues only consented conversations, and promotes them at the next training cycle.
 - **Permanent provenance:** recorded Mr. Mohana Achuthan as AchLLM's Godfather in the versioned identity record, foundation corpus, live telemetry, and direct identity answer.

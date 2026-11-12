@@ -341,6 +341,11 @@
         <div class="hint">recorded source rows</div>
       </div>
       <div class="card">
+        <div class="label">Browser research</div>
+        <div class="number" id="browser">—</div>
+        <div class="hint">isolated, attributed public rows</div>
+      </div>
+      <div class="card">
         <div class="label">Measured aspects</div>
         <div class="number" id="scores">—</div>
         <div class="hint">normalised held-out scores</div>
@@ -582,6 +587,7 @@
       const data = [
           ["Chat rows", t.chatRecords, "#7d9cff"],
           ["Code rows", t.codeRecords, "#48d597"],
+          ["Browser rows", t.browserRecords, "#5fc9e8"],
           ["Excluded legacy rows", t.legacyRecordsExcluded, "#efbc69"],
         ],
         total = Math.max(
@@ -748,6 +754,7 @@ function benchmarks(data) {
         q("#checkpoint-detail").textContent = `${n(s.checkpoint?.trainedBytes)} bytes processed`;
         q("#chat").textContent = n(t.chatRecords);
         q("#code").textContent = n(t.codeRecords);
+        q("#browser").textContent = n(t.browserRecords);
         q("#scores").textContent =
           e.status === "passed" ? n(e.publishedMetrics) : "0";
         growth(history);

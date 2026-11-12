@@ -24,6 +24,7 @@ Exit gate: reproducible checkpoint and telemetry for 24 clean training cycles.
 1. Add small, reviewed public datasets with compatible licences, beginning with MIT-licensed chat/code traces.
 2. Deduplicate and split by source before training: 80% train, 10% validation, 10% held out.
 3. Keep total stored data under 12 GB and checkpoint/history storage under 2 GB on this machine.
+4. Run one low-resource Chromium research batch every six cycles against the versioned Wikimedia allow-list only. Use a disposable browser profile; never read user cookies, history, logins, downloads, or private pages.
 
 Exit gate: every data row has provenance and no held-out content appears in training.
 
@@ -51,6 +52,7 @@ Exit gate: the new model beats the baseline on the same held-out tests and stays
 1. Keep planning/tool execution outside AchLLM while it remains unproven.
 2. Introduce read-only tools first in a sandbox with audit logs and per-task limits.
 3. Require explicit verification for file modifications, package changes, account actions, and system settings.
+4. Follow the staged execution gates in [ACHLLM_AGENT_PLAN.md](ACHLLM_AGENT_PLAN.md); the present baseline remains research-only.
 
 Exit gate: repeatable task success, no critical safety failures, and a human-reviewed release.
 

@@ -18,12 +18,12 @@ const averageCandidatesPerLookup = transitionRows.length ? learnedWeights / tran
 let serializedBytes = 0;
 try { serializedBytes = fs.statSync(modelFile).size; } catch {}
 const records = safeRead(manifestFile, '').split(/\r?\n/).filter(Boolean).map((line) => { try { return JSON.parse(line); } catch { return null; } }).filter(Boolean);
-const domains = { chat: 0, code: 0, legacy: 0 };
-for (const record of records) domains[record.domain === 'code' ? 'code' : record.domain === 'chat' ? 'chat' : 'legacy']++;
+const domains = { chat: 0, code: 0, browser: 0, legacy: 0 };
+for (const record of records) domains[record.domain === 'code' ? 'code' : record.domain === 'chat' ? 'chat' : record.domain === 'browser' ? 'browser' : 'legacy']++;
 const status = {
   schema: 3,
   model: 'achllm',
-  scope: ['chat', 'code'],
+  scope: ['chat', 'code', 'licensed browser reference'],
   identity: { godfather: 'Mr. Mohana Achuthan', record: 'docs/ACHLLM_IDENTITY.md' },
   updatedAt: new Date().toISOString(),
   checkpoint: { available: Boolean(model.format), format: model.format || null, order: model.order || null, trainedBytes: model.trainedBytes || 0, serializedBytes },
@@ -39,7 +39,7 @@ const status = {
       note: 'Not applicable: AchLLM is a non-neural count model, not a tensor/FLOPS architecture. The dashboard reports actual transition-weight entries and lookup candidates instead.',
     },
   },
-  training: { records: domains.chat + domains.code, chatRecords: domains.chat, codeRecords: domains.code, legacyRecordsExcluded: domains.legacy, source: 'HuggingFaceH4/ultrachat_200k', license: 'MIT' },
+  training: { records: domains.chat + domains.code + domains.browser, chatRecords: domains.chat, codeRecords: domains.code, browserRecords: domains.browser, legacyRecordsExcluded: domains.legacy, source: 'HuggingFaceH4/ultrachat_200k + Wikimedia allow-list', license: 'MIT + CC BY-SA 4.0/GFDL' },
   publication: {
     status: 'published',
     scope: 'Live telemetry only',
@@ -58,7 +58,7 @@ const status = {
     benchmarkCatalog: 'achllm-benchmarks.json',
     aspects: ['chat', 'code', 'reasoning', 'math', 'multilingual', 'long-context', 'tool-use', 'vision', 'safety', 'efficiency'],
   },
-  security: { publicDataOnly: true, explicitChatDonationOnly: true, noCredentials: true, noPrivatePrompts: true },
+  security: { publicDataOnly: true, explicitChatDonationOnly: true, isolatedBrowserProfile: true, browserSourceAllowlist: ['https://en.wikipedia.org/wiki/'], noCredentials: true, noPrivatePrompts: true },
 };
 const output = path.join(root, 'docs', 'achllm-status.json');
 const historyOutput = path.join(root, 'docs', 'achllm-history.json');
@@ -72,6 +72,7 @@ const point = {
   learnedWeightEntries: status.modelStats.learnedWeightEntries,
   chatRecords: status.training.chatRecords,
   codeRecords: status.training.codeRecords,
+  browserRecords: status.training.browserRecords,
   legacyRecordsExcluded: status.training.legacyRecordsExcluded,
   evaluatedAspects: 0,
 };
