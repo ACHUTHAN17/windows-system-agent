@@ -14,5 +14,21 @@
     "codeRecords": 0,
     "legacyRecordsExcluded": 29,
     "evaluatedAspects": 0
+  },
+  {
+    "updatedAt": "2026-11-12T07:17:35.643Z",
+    "trainedBytes": 136229,
+    "chatRecords": 0,
+    "codeRecords": 0,
+    "legacyRecordsExcluded": 32,
+    "evaluatedAspects": 0
+  },
+  {
+    "updatedAt": "2026-11-12T07:32:37.107Z",
+    "trainedBytes": 152641,
+    "chatRecords": 0,
+    "codeRecords": 0,
+    "legacyRecordsExcluded": 35,
+    "evaluatedAspects": 0
   }
 ]
