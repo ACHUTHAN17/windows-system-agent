@@ -28,6 +28,17 @@ test('text attachment is inlined without needing a PAT', async () => {
   assert.ok(suffix.includes('notes.txt') && suffix.includes('hello world'));
 });
 
+test('AchLLM is selectable on GitHub Pages and keeps gateway credentials session-only', async () => {
+  const dom = await load(); const w = dom.window; const d = w.document;
+  w.setMode('achllm');
+  assert.equal(d.getElementById('mmodel').value, 'achllm:default');
+  assert.equal(w.selected().model, 'achllm');
+  assert.equal(w.localStorage.getItem('wa_achpass'), null);
+  d.getElementById('achuser').value = 'test-user'; d.getElementById('achpass').value = 'test-pass';
+  d.getElementById('achpass').dispatchEvent(new w.Event('change'));
+  assert.equal(w.sessionStorage.getItem('wa_achpass'), 'test-pass');
+});
+
 test('binary attachment needs a PAT, uploads via Contents API when present, chip removable', async () => {
   const dom = await load(); const w = dom.window; const d = w.document;
   // no PAT yet -> should prompt for it, not upload

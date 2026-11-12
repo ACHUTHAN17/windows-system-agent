@@ -1,4 +1,9 @@
 # Changelog
+## 1.41.2 — 2026-11-12
+- **Scorecards:** added two source-linked, multi-model benchmark views. AchLLM is explicitly shown as **Not evaluated** until it runs the matching harness; empty scores are never treated as zero.
+- **Pages chat:** the GitHub Pages chat now offers AchLLM as a selectable hosted model. Its gateway credentials are kept only in browser session storage and sent only to the configured gateway.
+- **Continuous cloud cycles:** the supplied cloud trainer now checkpoints, updates public telemetry, and syncs status every five minutes while its host is running; it restarts safely from its checkpoint.
+
 ## 1.41.1 — 2026-11-12
 - **Live view:** dashboard telemetry now polls the server every two seconds through an origin-restricted, read-only gateway route; model chat remains authenticated.
 

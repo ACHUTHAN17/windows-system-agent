@@ -16,7 +16,7 @@ const records = safeRead(manifestFile, '').split(/\r?\n/).filter(Boolean).map((l
 const domains = { chat: 0, code: 0, legacy: 0 };
 for (const record of records) domains[record.domain === 'code' ? 'code' : record.domain === 'chat' ? 'chat' : 'legacy']++;
 const status = {
-  schema: 2,
+  schema: 3,
   model: 'achllm',
   scope: ['chat', 'code'],
   updatedAt: new Date().toISOString(),
@@ -36,7 +36,8 @@ const status = {
   },
   comparison: {
     status: 'awaiting-normalized-evidence',
-    note: 'Frontier comparison is shown as an evaluation framework only. No vendor or AchLLM capability values are invented.',
+    note: 'Published multi-model references are available in achllm-benchmarks.json. AchLLM remains unscored until it completes the exact benchmark harness.',
+    benchmarkCatalog: 'achllm-benchmarks.json',
     aspects: ['chat', 'code', 'reasoning', 'math', 'multilingual', 'long-context', 'tool-use', 'vision', 'safety', 'efficiency'],
   },
   security: { publicDataOnly: true, noCredentials: true, noPrivatePrompts: true },

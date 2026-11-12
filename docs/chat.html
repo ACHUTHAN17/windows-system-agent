@@ -1,297 +1,1078 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WinAgent online chat</title>
-<style>body{background:#0d1117;color:#e6edf3;font-family:system-ui,Segoe UI,Arial,sans-serif;margin:0;padding:0}
-.top{background:#161b22;border-bottom:1px solid #30363d;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.top b{font-size:16px}.top a{color:#58a6ff;font-size:13px}
-#cfg{background:#0d1117;border-bottom:1px solid #30363d;padding:10px 16px;display:none;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
-#cfg input,#cfg select{background:#161b22;border:1px solid #30363d;color:#e6edf3;border-radius:6px;padding:7px;font-size:13px;width:100%;box-sizing:border-box}
-#modes{background:#0d1117;border-bottom:1px solid #30363d;padding:12px 16px}
-#modes .row{display:flex;gap:8px;flex-wrap:wrap;align-items:stretch}
-#modes button{flex:1;min-width:120px;padding:12px 8px;font-size:14px;line-height:1.3}
-#modes button small{display:block;font-size:11px;font-weight:400;opacity:.75;margin-top:2px}
-#mmodel{flex:2;min-width:180px;padding:10px;border-radius:8px;background:#0d1117;color:#e6edf3;border:1px solid #30363d;font-size:14px}
-#modedesc{font-size:12.5px;color:#8b949e;margin-top:8px}
-#modedesc.ok{color:#3fb950}#modedesc.warn{color:#f0b429}
-#chat{max-width:860px;margin:auto;padding:16px;padding-bottom:230px}
-.msg{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:12px 14px;margin:10px 0;font-size:14.5px;line-height:1.55;white-space:pre-wrap}
-.msg.you{background:#0d419d;border-color:#1f6feb}.msg .who{font-size:11px;color:#8b949e;margin-bottom:6px}
-.msg code{background:#0d1117;border:1px solid #30363d;border-radius:4px;padding:0 5px;font-size:13px}
-.warn{background:#0e2a13;border:1px solid #1f6feb;border-radius:8px;padding:8px 12px;font-size:12.5px;margin:10px 0}
-#bar{position:fixed;bottom:0;left:0;right:0;background:#161b22;border-top:1px solid #30363d;padding:10px}
-#bar .row{max-width:860px;margin:auto;display:flex;gap:8px;margin-bottom:8px}
-#in,#doin{flex:1;padding:11px;border-radius:8px;border:1px solid #30363d;background:#0d1117;color:#e6edf3;font-size:14px}
-button{padding:10px 14px;border-radius:8px;border:1px solid #30363d;background:#1f6feb;color:#fff;font-weight:700;cursor:pointer;font-size:13px}
-button.ghost{background:#21262d}button:disabled{opacity:.35}button.mode-on{outline:2px solid #3fb950}
-.spin{display:inline-block;width:12px;height:12px;border:2px solid #30363d;border-top-color:#58a6ff;border-radius:50%;animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
-#attach{display:flex;flex-wrap:wrap;gap:6px;max-width:860px;margin:0 auto 8px}
-.achip{display:flex;align-items:center;gap:6px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:4px 6px 4px 10px;font-size:12.5px}
-.achip button{border:0;background:none;color:#8b949e;padding:0 4px;font-size:13px;cursor:pointer}
-.achip.err{border-color:#f85149;color:#f85149}
-.genimg{display:block;max-width:min(100%,720px);max-height:720px;border-radius:10px;border:1px solid #30363d;margin-top:8px}
-</style></head>
-<body>
-<div class="top"><b>WinAgent online chat</b>
-<a href="./">skills library</a><a href="https://github.com/ACHUTHAN17/windows-system-agent">repo</a>
-<span class="pillbox" id="backend" style="font-size:12px;color:#3fb950"></span><span id="ghstat" style="font-size:12px;color:#8b949e"></span><button class="ghost" id="cfgbtn" style="margin-left:auto">⚙ keys</button></div>
-<div id="modes"><div class="row">
-<button data-m="free" id="m-free">⚡ Free<small>no key · instant</small></button>
-<button data-m="github-models" id="m-github-models">🐙 GitHub<small>uses your PAT</small></button>
-<button data-m="custom" id="m-custom">🔧 Custom<small>your URL + key</small></button>
-<select id="mmodel"></select>
-</div><div id="modedesc"></div></div>
-<div id="cfg">
-<input id="apiurl" placeholder="Custom model URL (https://…/v1)"><input id="apikey" type="password" placeholder="Custom API key">
-<input id="model" placeholder="Custom model id"><input id="repo" placeholder="owner/repo">
-<input id="pat" type="password" placeholder="GitHub PAT — repo + workflow + models scopes">
-<input id="imagekey" type="password" placeholder="Pollinations image key (for image generation)">
-<button class="ghost" id="test">Test GitHub connection</button>
-</div>
-<div id="chat"><div class="warn">✅ Pick a blue box above, then Send. Local Windows commands are routed without an AI call in the desktop app; the online page can chat, generate images with a Pollinations key, and dispatch agent tasks through GitHub. <b>Teach / Run</b> use the second box. Keys stay in this browser only.</div></div>
-<div id="bar">
-<div class="row"><input id="in" placeholder="chat with the agent…" autocomplete="off"><button id="send">Send</button></div>
-<div id="attach"></div>
-<div class="row"><input id="doin" placeholder="skill or task, e.g. keyboard shortcuts…" autocomplete="off"><input id="file" type="file" multiple style="display:none"><button class="ghost" id="clip" title="Attach files or images — used by ⚙️ Run">📎</button><button class="ghost" id="teach">🧠 Teach</button><button class="ghost" id="teachfree">📝 Issue</button><button class="ghost" id="dotask">⚙️ Run</button><button class="ghost" id="test2">🧪 Test</button></div>
-</div>
-<!-- Load the optional web router without delaying the usable chat/attachment UI. -->
-<script src="./router.js" defer></script>
-<script>
-const $=id=>document.getElementById(id);
-const store={get:(k,d)=>localStorage.getItem('wa_'+k)||d||'',set:(k,v)=>localStorage.setItem('wa_'+k,v)};
-const FREE_URL='https://text.pollinations.ai/openai';
-const GH_MODELS=['gpt-4o-mini','gpt-4o','o4-mini','DeepSeek-V3-0324','Llama-3.3-70B-Versatile','Mistral-Large-2411','Phi-4'];
-if(!store.get('mode'))store.set('mode','free');
-if(!store.get('repo'))store.set('repo','ACHUTHAN17/windows-system-agent');
-['apiurl','apikey','model','repo','pat','imagekey'].forEach(k=>{$(k).value=store.get(k);$(k).onchange=()=>{store.set(k,$(k).value);gate();pill();};});
-let MODELS=null;
-async function loadModels(){
-  try{
-    const r=await fetch('./models.json'); if(!r.ok)throw 0;
-    const j=await r.json(); if(j.live&&j.live.length)MODELS=j.live;
-  }catch(e){}
-  refreshModels();
-}
-function freeEntries(){
-  if(MODELS&&MODELS.length)return MODELS.map((e,i)=>({v:'free:'+i,t:e.label+' ('+(Math.round(e.latencyMs/100)/10)+'s)',e}));
-  return [{v:'free:fb:openai',t:'Pollinations · openai'},{v:'free:fb:openai-fast',t:'Pollinations · openai-fast'}].map(x=>({...x,e:{url:FREE_URL,kind:'openai-post',model:x.v.slice(8),label:x.t}}));
-}
-function refreshModels(){
-  const m=store.get('mode'),sel=$('mmodel');sel.innerHTML='';
-  const add=(v,t)=>{const o=document.createElement('option');o.value=v;o.textContent=t;sel.appendChild(o);};
-  if(m==='free')freeEntries().forEach(e=>add(e.v,e.t));
-  else if(m==='github-models')GH_MODELS.forEach(x=>add('ghm:'+x,x));
-  else add('custom:','Custom — values from ⚙ keys below');
-  const sv=store.get('mmodel');
-  if(sv&&[...sel.options].some(o=>o.value===sv))sel.value=sv;
-  pill();
-}
-function selected(){
-  const v=$('mmodel').value||'';
-  if(v.startsWith('free:fb:'))return {kind:'free',url:FREE_URL,model:v.slice(8),label:'Pollinations · '+v.slice(8)};
-  if(v.startsWith('free:')){const e=(MODELS||[])[Number(v.slice(5))];if(e)return {kind:'free',url:e.url,model:e.model,label:e.label};}
-  if(v.startsWith('ghm:'))return {kind:'github',model:v.slice(4)};
-  return {kind:'custom'};
-}
-$('mmodel').onchange=()=>{store.set('mmodel',$('mmodel').value);pill();};
-function setMode(m){store.set('mode',m);document.querySelectorAll('#modes button').forEach(b=>b.classList.toggle('mode-on',b.dataset.m===m));refreshModels();}
-document.querySelectorAll('#modes button').forEach(b=>b.onclick=()=>setMode(b.dataset.m));
-function pill(){
-  const m=store.get('mode');let t='';
-  if(m==='free'){try{t='⚡ '+selected().label;}catch(e){t='⚡ Free';}}
-  else if(m==='github-models')t='🐙 GitHub Models';
-  else t='🔧 Custom';
-  $('backend').textContent='using: '+t;
-  const d=$('modedesc');
-  if(m==='free'){d.className='ok';d.textContent='✅ No key. No login. Pick a model above and Send.';}
-  else if(m==='github-models'){const ok=!!store.get('pat');d.className=ok?'ok':'warn';d.textContent=ok?'✅ PAT detected — pick a model above and Send.':'⚠ Paste your GitHub PAT in ⚙ keys first (needs models permission), then pick a model.';}
-  else{const ok=store.get('apiurl')&&store.get('apikey');d.className=ok?'ok':'warn';d.textContent=ok?'✅ Custom backend configured.':'⚠ Fill URL + key (+ model id) in ⚙ keys, then Send — or pick ⚡ Free.';}
-}
-$('cfgbtn').onclick=()=>{const c=$('cfg');c.style.display=c.style.display==='grid'?'none':'grid';};
-const hist=[{role:'system',content:'You are WinAgent, a Windows/Linux system agent (63 tools: files, apps, browser CDP, Office docs, MCP, memory, self-learning skills). Repo: ACHUTHAN17/windows-system-agent. Be concise, practical, copy-paste-first. Never ask for secrets in chat.\n\n'+(window.WinAgentRouter?.ROUTER_SYSTEM_PROMPT||'')}];
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
-function bubble(who,text,you){const d=document.createElement('div');d.className='msg'+(you?' you':'');d.innerHTML='<div class="who">'+who+'</div>'+esc(text).replace(/`([^`]+)`/g,'<code>$1</code>');$('chat').appendChild(d);window.scrollTo(0,99999);return d;}
-function busyBubble(text){return bubble('agent','<span class="spin"></span> '+esc(text));}
-function bubbleHtml(who,html){const d=document.createElement('div');d.className='msg';d.innerHTML='<div class="who">'+esc(who)+'</div>'+html;$('chat').appendChild(d);window.scrollTo(0,99999);return d;}
-function renderWebAnswer(text){
-  let html=esc(text);
-  html=html.replace(/\[\[image:(generated\/[A-Za-z0-9._/-]+)\]\]/g,(_,p)=>'<img class="genimg" alt="generated image" src="https://raw.githubusercontent.com/'+encodeURI(store.get('repo'))+'/main/'+p+'">');
-  html=html.replace(/!\[([^\]]*)\]\((https:\/\/[^)]+)\)/g,(_,alt,url)=>'<img class="genimg" alt="'+alt+'" src="'+url+'">');
-  return html.replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\n/g,'<br>');
-}
-async function generateWebImage(prompt){
-  const key=store.get('imagekey')||((store.get('apiurl')||'').includes('pollinations.ai')?store.get('apikey'):'');
-  if(!key)throw new Error('Add a Pollinations image key in ⚙ keys to generate images.');
-  const url='https://gen.pollinations.ai/image/'+encodeURIComponent(prompt)+'?model=flux&width=1024&height=1024&nologo=true';
-  const r=await fetch(url,{headers:{Authorization:'Bearer '+key}});
-  if(!r.ok)throw new Error('image generation failed (HTTP '+r.status+') — check the Pollinations key');
-  return URL.createObjectURL(await r.blob());
-}
-async function postChat(url,model,key,msgs){
-  const headers={'Content-Type':'application/json'};if(key)headers['Authorization']='Bearer '+key;
-  const r=await fetch(url+'/chat/completions',{method:'POST',headers,body:JSON.stringify({model,messages:msgs,temperature:.3})});
-  if(!r.ok)throw {status:r.status};
-  const j=await r.json();return j.choices[0].message.content;
-}
-async function getChat(model,msgs){
-  const sys=encodeURIComponent(msgs[0].content).slice(0,1500);
-  const convo=msgs.slice(1).map(m=>(m.role==='user'?'User: ':'Agent: ')+m.content).join('\n').slice(-6000);
-  const g=await fetch('https://text.pollinations.ai/'+encodeURIComponent(convo)+'?model='+encodeURIComponent(model)+'&system='+sys);
-  if(!g.ok)throw {status:g.status};
-  return await g.text();
-}
-async function talk(){
-  const t=$('in').value.trim();if(!t)return;$('in').value='';bubble('you',t,true);hist.push({role:'user',content:t});
-  const mode=store.get('mode');const b=busyBubble('thinking…');
-  try{
-    const route=window.WinAgentRouter&&window.WinAgentRouter.routeText(t);
-    if(route&&route.kind==='local'){
-      hist.push({role:'assistant',content:'This is a local Windows action. Use the desktop app to execute it directly.'});
-      b.innerHTML='<div class="who">agent · local router</div>'+esc('This is a local Windows action. The online chat cannot control your PC; open WinAgent desktop to execute it directly without an AI call.');
-      return;
-    }
-    if(route&&route.kind==='image'){
-      const src=await generateWebImage(route.prompt);
-      hist.push({role:'assistant',content:'Generated an image: '+route.prompt});
-      b.innerHTML='<div class="who">agent · image generator</div><div>'+esc('Generated: '+route.prompt)+'</div><img class="genimg" alt="generated image" src="'+src+'">';
-      return;
-    }
-    let a,label;
-    if(mode==='free'){
-      const e=selected();
-      try{
-        if(e.kind==='free'&&e.url)a=await postChat(e.url.replace(/\/+$/,''),e.model,'',hist);
-        else a=await getChat(e.model,hist);
-      }catch(err){a=await getChat(e.model,hist);}
-      label='free · '+e.label;
-    }else if(mode==='github-models'){
-      const k=store.get('apikey')||store.get('pat');
-      if(!k)throw {status:401,why:'GitHub Models uses your PAT as its key — paste it in ⚙ keys'};
-      const mdl=($('mmodel').value||'').startsWith('ghm:')?$('mmodel').value.slice(4):(store.get('model')||'gpt-4o-mini');
-      a=await postChat('https://models.github.ai/inference',mdl,k,hist);
-      label='github · '+mdl;
-    }else{
-      const k=store.get('apikey');
-      if(!k||!store.get('apiurl'))throw {status:401,why:'custom backend needs URL + key in ⚙ keys — or pick ⚡ Free'};
-      a=await postChat(store.get('apiurl').replace(/\/+$/,''),store.get('model')||'gpt-4o-mini',k,hist);
-      label='custom';
-    }
-    hist.push({role:'assistant',content:a});
-    b.innerHTML='<div class="who">agent · '+esc(label)+'</div>'+renderWebAnswer(a);
-  }catch(e){
-    const s=e.status||'';
-    b.innerHTML='<div class="who">agent</div>⚠ '+esc(s===401?(e.why||'key rejected — check ⚙ keys, or pick ⚡ Free'):'request failed'+(s?' HTTP '+s:'')+'. Pick ⚡ Free to reset.');
-  }
-  window.scrollTo(0,99999);
-}
-$('send').onclick=talk;$('in').onkeydown=e=>{if(e.key==='Enter')talk();};
-function gate(){
-  const ok=!!store.get('pat');
-  ['teach','dotask','test2'].forEach(id=>{$(id).disabled=!ok;});
-  if(!ok)$('ghstat').textContent='GitHub: PAT needed for cloud DO (or 📝 Issue link)';
-}
-async function gh(path,opts){
-  let r;
-  try{r=await fetch('https://api.github.com/repos/'+store.get('repo')+path,{...(opts||{}),headers:{'Accept':'application/vnd.github+json','Authorization':'Bearer '+store.get('pat')}});}
-  catch(e){throw new Error('network blocked — are you offline?');}
-  if(r.status===401)throw new Error('401 bad PAT — regenerate it (repo + workflow scopes)');
-  if(r.status===404)throw new Error('404 — wrong owner/repo in ⚙, or PAT lacks repo access');
-  if(r.status===422){const t=await r.text();throw new Error('422 rejected: '+t.slice(0,200));}
-  if(!r.ok)throw new Error('GitHub HTTP '+r.status);
-  return r.json();
-}
-$('test').onclick=async()=>{
-  try{
-    const me=await(await fetch('https://api.github.com/user',{headers:{'Authorization':'Bearer '+store.get('pat')}})).json();
-    if(!me.login)throw new Error('bad PAT');
-    $('ghstat').textContent='GitHub: @'+me.login+' ✓';gate();
-    bubble('agent','✅ GitHub connected as @'+me.login+' — cloud buttons unlocked.');
-  }catch(e){bubble('agent','⚠ connection failed: '+e.message);}
-};
-async function dispatch(file,inputs){await gh('/actions/workflows/'+file+'/dispatches',{method:'POST',body:JSON.stringify({ref:'main',inputs})});}
-async function waitRun(since,file){
-  for(let i=0;i<48;i++){
-    await new Promise(r=>setTimeout(r,10000));
-    let j;try{j=await gh('/actions/runs?event=workflow_dispatch&per_page=5');}catch(e){continue;}
-    const run=(j.workflow_runs||[]).find(x=>(x.path==='.github/workflows/'+file)&&new Date(x.created_at).getTime()>since-90000);
-    if(run&&run.status==='completed')return run;
-    if(run)bubble('agent','…still running ('+run.status+') — '+run.html_url);
-  }
-  throw new Error('timed out — watch it here: https://github.com/'+store.get('repo')+'/actions');
-}
-const TEXT_EXT=/\.(txt|md|csv|json|log|js|ts|py|html|css|yml|yaml)$/i;
-let attachments=[];
-function renderAttach(){
-  const box=$('attach');box.innerHTML='';
-  attachments.forEach((a,i)=>{
-    const c=document.createElement('div');c.className='achip'+(a.error?' err':'');
-    c.innerHTML=(a.error?'⚠ ':(a.isImage?'🖼️ ':'📄 '))+esc(a.name)+(a.error?' — '+esc(a.error):'')+' <button>✕</button>';
-    c.querySelector('button').onclick=()=>{attachments.splice(i,1);renderAttach();};
-    box.appendChild(c);
-  });
-}
-function b64(buf){let bin='';const bytes=new Uint8Array(buf);for(let i=0;i<bytes.length;i++)bin+=String.fromCharCode(bytes[i]);return btoa(bin);}
-async function handleFiles(files){
-  for(const f of Array.from(files).slice(0,6)){
-    if(f.size>15*1024*1024){attachments.push({name:f.name,error:'too large (15 MB max)'});continue;}
-    const isImage=/\.(png|jpe?g|gif|webp)$/i.test(f.name);
-    if(TEXT_EXT.test(f.name)&&f.size<50000){
-      const text=await f.text();
-      attachments.push({name:f.name,inline:text,isImage:false});
-    }else{
-      if(!(await needPat())){continue;}
-      try{
-        const buf=await f.arrayBuffer();
-        const rel='uploads/'+Date.now()+'-'+f.name.replace(/[^A-Za-z0-9._-]/g,'_');
-        await gh('/contents/'+rel,{method:'PUT',body:JSON.stringify({message:'chat upload: '+f.name,content:b64(buf),branch:'main'})});
-        attachments.push({name:f.name,path:rel,isImage});
-      }catch(e){attachments.push({name:f.name,error:e.message});}
-    }
-  }
-  renderAttach();
-}
-$('clip').onclick=()=>$('file').click();
-$('file').onchange=(e)=>{handleFiles(e.target.files);e.target.value='';};
-function attachmentsSuffix(){
-  return attachments.filter(a=>!a.error).map(a=>{
-    if(a.inline)return '\n\n[Attached file "'+a.name+'"]\n\`\`\`\n'+a.inline.slice(0,4000)+'\n\`\`\`';
-    return '\n\n[Attached '+(a.isImage?'image':'file')+' "'+a.name+'" committed at '+a.path+' in this repo — use file tools on that path]';
-  }).join('');
-}
-function slugify(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40);}
-async function needPat(){if(store.get('pat'))return true;$('cfg').style.display='grid';bubble('agent','⚠ Paste your GitHub PAT in ⚙ keys first (or use 📝 Issue — no token).');return false;}
-async function doAction(kind){
-  if(!(await needPat()))return;
-  const t=$('doin').value.trim();
-  if(kind!=='test'&&!t){bubble('agent','⚠ Type the skill/topic in the box first.');$('doin').focus();return;}
-  const file=kind==='teach'?'learn-skill.yml':kind==='task'?'agent-task.yml':'daily-sandbox.yml';
-  const fullTask=kind==='task'?t+attachmentsSuffix():t;
-  const inputs=kind==='teach'?{topic:t}:kind==='task'?{task:fullTask}:{};
-  if(kind==='task'){attachments=[];renderAttach();}
-  const prog=busyBubble('dispatched '+file+' — watching GitHub…');
-  try{
-    const since=Date.now();await dispatch(file,inputs);const run=await waitRun(since,file);
-    if(run.conclusion==='success'){
-      if(kind==='teach'){
-        const slug=slugify(t);
-        try{
-          const raw=await(await fetch('https://raw.githubusercontent.com/'+store.get('repo')+'/main/skills/'+slug+'.md')).text();
-          if(raw.startsWith('404'))throw 0;
-          prog.innerHTML='<div class="who">agent · new skill</div>'+esc(raw.slice(0,2500))+'<br><br>📚 Full skill: <a style="color:#58a6ff" href="https://github.com/'+store.get('repo')+'/blob/main/skills/'+slug+'.md">skills/'+slug+'.md</a>';
-        }catch(e){prog.innerHTML='<div class="who">agent</div>✅ done: '+run.html_url+'<br>Library refreshes in ~1 min.';}
-      }else if(kind==='task'){
-        try{const raw=await(await fetch('https://raw.githubusercontent.com/'+store.get('repo')+'/main/runs/'+run.id+'.md')).text();prog.innerHTML='<div class="who">agent · result</div>'+renderWebAnswer(raw.slice(0,3500));}
-        catch(e){prog.innerHTML='<div class="who">agent</div>✅ done: '+run.html_url;}
-      }else prog.innerHTML='<div class="who">agent</div>✅ done: '+run.html_url;
-    }else prog.innerHTML='<div class="who">agent</div>❌ run '+run.conclusion+': '+run.html_url;
-  }catch(e){prog.innerHTML='<div class="who">agent</div>⚠ '+esc(e.message);}
-  window.scrollTo(0,99999);
-}
-$('teach').onclick=()=>doAction('teach');$('dotask').onclick=()=>doAction('task');$('test2').onclick=()=>doAction('test');
-$('doin').onkeydown=e=>{if(e.key==='Enter')doAction('teach');};
-$('teachfree').onclick=()=>{
-  const t=$('doin').value.trim()||'keyboard shortcuts';
-  window.open('https://github.com/'+store.get('repo')+'/issues/new?template=skill-request.yml&title='+encodeURIComponent('teach: '+t),'_blank');
-  bubble('agent','📝 Issue form opened — hit Submit there and the agent learns it. No token needed.');
-};
-setMode(store.get('mode'));gate();loadModels();
-</script></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>WinAgent online chat</title>
+    <style>
+      body {
+        background: #0d1117;
+        color: #e6edf3;
+        font-family:
+          system-ui,
+          Segoe UI,
+          Arial,
+          sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .top {
+        background: #161b22;
+        border-bottom: 1px solid #30363d;
+        padding: 10px 16px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .top b {
+        font-size: 16px;
+      }
+      .top a {
+        color: #58a6ff;
+        font-size: 13px;
+      }
+      #cfg {
+        background: #0d1117;
+        border-bottom: 1px solid #30363d;
+        padding: 10px 16px;
+        display: none;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 8px;
+      }
+      #cfg input,
+      #cfg select {
+        background: #161b22;
+        border: 1px solid #30363d;
+        color: #e6edf3;
+        border-radius: 6px;
+        padding: 7px;
+        font-size: 13px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      #modes {
+        background: #0d1117;
+        border-bottom: 1px solid #30363d;
+        padding: 12px 16px;
+      }
+      #modes .row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: stretch;
+      }
+      #modes button {
+        flex: 1;
+        min-width: 120px;
+        padding: 12px 8px;
+        font-size: 14px;
+        line-height: 1.3;
+      }
+      #modes button small {
+        display: block;
+        font-size: 11px;
+        font-weight: 400;
+        opacity: 0.75;
+        margin-top: 2px;
+      }
+      #mmodel {
+        flex: 2;
+        min-width: 180px;
+        padding: 10px;
+        border-radius: 8px;
+        background: #0d1117;
+        color: #e6edf3;
+        border: 1px solid #30363d;
+        font-size: 14px;
+      }
+      #modedesc {
+        font-size: 12.5px;
+        color: #8b949e;
+        margin-top: 8px;
+      }
+      #modedesc.ok {
+        color: #3fb950;
+      }
+      #modedesc.warn {
+        color: #f0b429;
+      }
+      #chat {
+        max-width: 860px;
+        margin: auto;
+        padding: 16px;
+        padding-bottom: 230px;
+      }
+      .msg {
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 10px;
+        padding: 12px 14px;
+        margin: 10px 0;
+        font-size: 14.5px;
+        line-height: 1.55;
+        white-space: pre-wrap;
+      }
+      .msg.you {
+        background: #0d419d;
+        border-color: #1f6feb;
+      }
+      .msg .who {
+        font-size: 11px;
+        color: #8b949e;
+        margin-bottom: 6px;
+      }
+      .msg code {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 4px;
+        padding: 0 5px;
+        font-size: 13px;
+      }
+      .warn {
+        background: #0e2a13;
+        border: 1px solid #1f6feb;
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 12.5px;
+        margin: 10px 0;
+      }
+      #bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #161b22;
+        border-top: 1px solid #30363d;
+        padding: 10px;
+      }
+      #bar .row {
+        max-width: 860px;
+        margin: auto;
+        display: flex;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      #in,
+      #doin {
+        flex: 1;
+        padding: 11px;
+        border-radius: 8px;
+        border: 1px solid #30363d;
+        background: #0d1117;
+        color: #e6edf3;
+        font-size: 14px;
+      }
+      button {
+        padding: 10px 14px;
+        border-radius: 8px;
+        border: 1px solid #30363d;
+        background: #1f6feb;
+        color: #fff;
+        font-weight: 700;
+        cursor: pointer;
+        font-size: 13px;
+      }
+      button.ghost {
+        background: #21262d;
+      }
+      button:disabled {
+        opacity: 0.35;
+      }
+      button.mode-on {
+        outline: 2px solid #3fb950;
+      }
+      .spin {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border: 2px solid #30363d;
+        border-top-color: #58a6ff;
+        border-radius: 50%;
+        animation: sp 1s linear infinite;
+      }
+      @keyframes sp {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      #attach {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        max-width: 860px;
+        margin: 0 auto 8px;
+      }
+      .achip {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+        padding: 4px 6px 4px 10px;
+        font-size: 12.5px;
+      }
+      .achip button {
+        border: 0;
+        background: none;
+        color: #8b949e;
+        padding: 0 4px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .achip.err {
+        border-color: #f85149;
+        color: #f85149;
+      }
+      .genimg {
+        display: block;
+        max-width: min(100%, 720px);
+        max-height: 720px;
+        border-radius: 10px;
+        border: 1px solid #30363d;
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top">
+      <b>WinAgent online chat</b> <a href="./">skills library</a
+      ><a href="https://github.com/ACHUTHAN17/windows-system-agent">repo</a>
+      <span
+        class="pillbox"
+        id="backend"
+        style="font-size: 12px; color: #3fb950"
+      ></span
+      ><span id="ghstat" style="font-size: 12px; color: #8b949e"></span
+      ><button class="ghost" id="cfgbtn" style="margin-left: auto">
+        ⚙ keys
+      </button>
+    </div>
+    <div id="modes">
+      <div class="row">
+        <button data-m="free" id="m-free">
+          ⚡ Free<small>no key · instant</small>
+        </button>
+        <button data-m="github-models" id="m-github-models">
+          🐙 GitHub<small>uses your PAT</small>
+        </button>
+        <button data-m="achllm" id="m-achllm">
+          🧠 AchLLM<small>your hosted model</small>
+        </button>
+        <button data-m="custom" id="m-custom">
+          🔧 Custom<small>your URL + key</small>
+        </button>
+        <select id="mmodel"></select>
+      </div>
+      <div id="modedesc"></div>
+    </div>
+    <div id="cfg">
+      <input id="apiurl" placeholder="Custom model URL (https://…/v1)" /><input
+        id="apikey"
+        type="password"
+        placeholder="Custom API key"
+      />
+      <input id="model" placeholder="Custom model id" /><input
+        id="repo"
+        placeholder="owner/repo"
+      />
+      <input id="achurl" placeholder="AchLLM gateway URL" /><input
+        id="achuser"
+        autocomplete="username"
+        placeholder="AchLLM gateway username"
+      /><input
+        id="achpass"
+        type="password"
+        autocomplete="current-password"
+        placeholder="AchLLM gateway password"
+      />
+      <input
+        id="pat"
+        type="password"
+        placeholder="GitHub PAT — repo + workflow + models scopes"
+      />
+      <input
+        id="imagekey"
+        type="password"
+        placeholder="Pollinations image key (for image generation)"
+      />
+      <button class="ghost" id="test">Test GitHub connection</button>
+    </div>
+    <div id="chat">
+      <div class="warn">
+        ✅ Pick a blue box above, then Send. Local Windows commands are routed
+        without an AI call in the desktop app; the online page can chat,
+        generate images with a Pollinations key, and dispatch agent tasks
+        through GitHub. <b>Teach / Run</b> use the second box. Keys stay in this
+        browser only.
+      </div>
+    </div>
+    <div id="bar">
+      <div class="row">
+        <input
+          id="in"
+          placeholder="chat with the agent…"
+          autocomplete="off"
+        /><button id="send">Send</button>
+      </div>
+      <div id="attach"></div>
+      <div class="row">
+        <input
+          id="doin"
+          placeholder="skill or task, e.g. keyboard shortcuts…"
+          autocomplete="off"
+        /><input id="file" type="file" multiple style="display: none" /><button
+          class="ghost"
+          id="clip"
+          title="Attach files or images — used by ⚙️ Run"
+        >
+          📎</button
+        ><button class="ghost" id="teach">🧠 Teach</button
+        ><button class="ghost" id="teachfree">📝 Issue</button
+        ><button class="ghost" id="dotask">⚙️ Run</button
+        ><button class="ghost" id="test2">🧪 Test</button>
+      </div>
+    </div>
+    <!-- Load the optional web router without delaying the usable chat/attachment UI. -->
+    <script src="./router.js" defer></script>
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const store = {
+        get: (k, d) => localStorage.getItem("wa_" + k) || d || "",
+        set: (k, v) => localStorage.setItem("wa_" + k, v),
+      };
+      const FREE_URL = "https://text.pollinations.ai/openai";
+      const ACHLLM_URL = "https://8081-agq4tef7viwwfkokmqm7qcstem.instabox.tech/v1";
+      const GH_MODELS = [
+        "gpt-4o-mini",
+        "gpt-4o",
+        "o4-mini",
+        "DeepSeek-V3-0324",
+        "Llama-3.3-70B-Versatile",
+        "Mistral-Large-2411",
+        "Phi-4",
+      ];
+      if (!store.get("mode")) store.set("mode", "free");
+      if (!store.get("repo"))
+        store.set("repo", "ACHUTHAN17/windows-system-agent");
+      ["apiurl", "apikey", "model", "repo", "pat", "imagekey"].forEach((k) => {
+        $(k).value = store.get(k);
+        $(k).onchange = () => {
+          store.set(k, $(k).value);
+          gate();
+          pill();
+        };
+      });
+      $("achurl").value = store.get("achurl", ACHLLM_URL);
+      $("achurl").onchange = () => {
+        store.set("achurl", $("achurl").value);
+        pill();
+      };
+      ["achuser", "achpass"].forEach((k) => {
+        $(k).value = sessionStorage.getItem("wa_" + k) || "";
+        $(k).onchange = () => {
+          sessionStorage.setItem("wa_" + k, $(k).value);
+          pill();
+        };
+      });
+      let MODELS = null;
+      async function loadModels() {
+        try {
+          const r = await fetch("./models.json");
+          if (!r.ok) throw 0;
+          const j = await r.json();
+          if (j.live && j.live.length) MODELS = j.live;
+        } catch (e) {}
+        refreshModels();
+      }
+      function freeEntries() {
+        if (MODELS && MODELS.length)
+          return MODELS.map((e, i) => ({
+            v: "free:" + i,
+            t: e.label + " (" + Math.round(e.latencyMs / 100) / 10 + "s)",
+            e,
+          }));
+        return [
+          { v: "free:fb:openai", t: "Pollinations · openai" },
+          { v: "free:fb:openai-fast", t: "Pollinations · openai-fast" },
+        ].map((x) => ({
+          ...x,
+          e: {
+            url: FREE_URL,
+            kind: "openai-post",
+            model: x.v.slice(8),
+            label: x.t,
+          },
+        }));
+      }
+      function refreshModels() {
+        const m = store.get("mode"),
+          sel = $("mmodel");
+        sel.innerHTML = "";
+        const add = (v, t) => {
+          const o = document.createElement("option");
+          o.value = v;
+          o.textContent = t;
+          sel.appendChild(o);
+        };
+        if (m === "free") freeEntries().forEach((e) => add(e.v, e.t));
+        else if (m === "github-models")
+          GH_MODELS.forEach((x) => add("ghm:" + x, x));
+        else if (m === "achllm") add("achllm:default", "AchLLM · secured InstaBox gateway");
+        else add("custom:", "Custom — values from ⚙ keys below");
+        const sv = store.get("mmodel");
+        if (sv && [...sel.options].some((o) => o.value === sv)) sel.value = sv;
+        pill();
+      }
+      function selected() {
+        const v = $("mmodel").value || "";
+        if (v.startsWith("free:fb:"))
+          return {
+            kind: "free",
+            url: FREE_URL,
+            model: v.slice(8),
+            label: "Pollinations · " + v.slice(8),
+          };
+        if (v.startsWith("free:")) {
+          const e = (MODELS || [])[Number(v.slice(5))];
+          if (e)
+            return { kind: "free", url: e.url, model: e.model, label: e.label };
+        }
+        if (v.startsWith("ghm:")) return { kind: "github", model: v.slice(4) };
+        if (v === "achllm:default")
+          return {
+            kind: "achllm",
+            url: $("achurl").value.trim(),
+            user: $("achuser").value,
+            pass: $("achpass").value,
+            model: "achllm",
+            label: "AchLLM",
+          };
+        return { kind: "custom" };
+      }
+      $("mmodel").onchange = () => {
+        store.set("mmodel", $("mmodel").value);
+        pill();
+      };
+      function setMode(m) {
+        store.set("mode", m);
+        document
+          .querySelectorAll("#modes button")
+          .forEach((b) => b.classList.toggle("mode-on", b.dataset.m === m));
+        refreshModels();
+      }
+      document
+        .querySelectorAll("#modes button")
+        .forEach((b) => (b.onclick = () => setMode(b.dataset.m)));
+      function pill() {
+        const m = store.get("mode");
+        let t = "";
+        if (m === "free") {
+          try {
+            t = "⚡ " + selected().label;
+          } catch (e) {
+            t = "⚡ Free";
+          }
+        } else if (m === "github-models") t = "🐙 GitHub Models";
+        else if (m === "achllm") t = "🧠 AchLLM";
+        else t = "🔧 Custom";
+        $("backend").textContent = "using: " + t;
+        const d = $("modedesc");
+        if (m === "free") {
+          d.className = "ok";
+          d.textContent = "✅ No key. No login. Pick a model above and Send.";
+        } else if (m === "github-models") {
+          const ok = !!store.get("pat");
+          d.className = ok ? "ok" : "warn";
+          d.textContent = ok
+            ? "✅ PAT detected — pick a model above and Send."
+            : "⚠ Paste your GitHub PAT in ⚙ keys first (needs models permission), then pick a model.";
+        } else if (m === "achllm") {
+          const ok = $("achurl").value && $("achuser").value && $("achpass").value;
+          d.className = ok ? "ok" : "warn";
+          d.textContent = ok
+            ? "✅ AchLLM gateway ready — choose it above and Send."
+            : "⚠ Enter your AchLLM gateway username and password in ⚙ keys. They are kept only for this browser session.";
+        } else {
+          const ok = store.get("apiurl") && store.get("apikey");
+          d.className = ok ? "ok" : "warn";
+          d.textContent = ok
+            ? "✅ Custom backend configured."
+            : "⚠ Fill URL + key (+ model id) in ⚙ keys, then Send — or pick ⚡ Free.";
+        }
+      }
+      $("cfgbtn").onclick = () => {
+        const c = $("cfg");
+        c.style.display = c.style.display === "grid" ? "none" : "grid";
+      };
+      const hist = [
+        {
+          role: "system",
+          content:
+            "You are WinAgent, a Windows/Linux system agent (63 tools: files, apps, browser CDP, Office docs, MCP, memory, self-learning skills). Repo: ACHUTHAN17/windows-system-agent. Be concise, practical, copy-paste-first. Never ask for secrets in chat.\n\n" +
+            (window.WinAgentRouter?.ROUTER_SYSTEM_PROMPT || ""),
+        },
+      ];
+      function esc(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+      function bubble(who, text, you) {
+        const d = document.createElement("div");
+        d.className = "msg" + (you ? " you" : "");
+        d.innerHTML =
+          '<div class="who">' +
+          who +
+          "</div>" +
+          esc(text).replace(/`([^`]+)`/g, "<code>$1</code>");
+        $("chat").appendChild(d);
+        window.scrollTo(0, 99999);
+        return d;
+      }
+      function busyBubble(text) {
+        return bubble("agent", '<span class="spin"></span> ' + esc(text));
+      }
+      function bubbleHtml(who, html) {
+        const d = document.createElement("div");
+        d.className = "msg";
+        d.innerHTML = '<div class="who">' + esc(who) + "</div>" + html;
+        $("chat").appendChild(d);
+        window.scrollTo(0, 99999);
+        return d;
+      }
+      function renderWebAnswer(text) {
+        let html = esc(text);
+        html = html.replace(
+          /\[\[image:(generated\/[A-Za-z0-9._/-]+)\]\]/g,
+          (_, p) =>
+            '<img class="genimg" alt="generated image" src="https://raw.githubusercontent.com/' +
+            encodeURI(store.get("repo")) +
+            "/main/" +
+            p +
+            '">',
+        );
+        html = html.replace(
+          /!\[([^\]]*)\]\((https:\/\/[^)]+)\)/g,
+          (_, alt, url) =>
+            '<img class="genimg" alt="' + alt + '" src="' + url + '">',
+        );
+        return html
+          .replace(/`([^`]+)`/g, "<code>$1</code>")
+          .replace(/\n/g, "<br>");
+      }
+      async function generateWebImage(prompt) {
+        const key =
+          store.get("imagekey") ||
+          ((store.get("apiurl") || "").includes("pollinations.ai")
+            ? store.get("apikey")
+            : "");
+        if (!key)
+          throw new Error(
+            "Add a Pollinations image key in ⚙ keys to generate images.",
+          );
+        const url =
+          "https://gen.pollinations.ai/image/" +
+          encodeURIComponent(prompt) +
+          "?model=flux&width=1024&height=1024&nologo=true";
+        const r = await fetch(url, {
+          headers: { Authorization: "Bearer " + key },
+        });
+        if (!r.ok)
+          throw new Error(
+            "image generation failed (HTTP " +
+              r.status +
+              ") — check the Pollinations key",
+          );
+        return URL.createObjectURL(await r.blob());
+      }
+      async function postChat(url, model, key, msgs) {
+        const headers = { "Content-Type": "application/json" };
+        if (key) headers["Authorization"] = "Bearer " + key;
+        const r = await fetch(url + "/chat/completions", {
+          method: "POST",
+          headers,
+          body: JSON.stringify({ model, messages: msgs, temperature: 0.3 }),
+        });
+        if (!r.ok) throw { status: r.status };
+        const j = await r.json();
+        return j.choices[0].message.content;
+      }
+      async function postAchllm(url, user, pass, msgs) {
+        const r = await fetch(url.replace(/\/+$/, "") + "/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Basic " + btoa(`${user}:${pass}`),
+          },
+          body: JSON.stringify({ model: "achllm", messages: msgs, max_tokens: 160 }),
+        });
+        if (!r.ok)
+          throw {
+            status: r.status,
+            why: "AchLLM gateway rejected the request — check the session-only gateway credentials in ⚙ keys.",
+          };
+        const j = await r.json();
+        return j.choices[0].message.content;
+      }
+      async function getChat(model, msgs) {
+        const sys = encodeURIComponent(msgs[0].content).slice(0, 1500);
+        const convo = msgs
+          .slice(1)
+          .map((m) => (m.role === "user" ? "User: " : "Agent: ") + m.content)
+          .join("\n")
+          .slice(-6000);
+        const g = await fetch(
+          "https://text.pollinations.ai/" +
+            encodeURIComponent(convo) +
+            "?model=" +
+            encodeURIComponent(model) +
+            "&system=" +
+            sys,
+        );
+        if (!g.ok) throw { status: g.status };
+        return await g.text();
+      }
+      async function talk() {
+        const t = $("in").value.trim();
+        if (!t) return;
+        $("in").value = "";
+        bubble("you", t, true);
+        hist.push({ role: "user", content: t });
+        const mode = store.get("mode");
+        const b = busyBubble("thinking…");
+        try {
+          const route =
+            window.WinAgentRouter && window.WinAgentRouter.routeText(t);
+          if (route && route.kind === "local") {
+            hist.push({
+              role: "assistant",
+              content:
+                "This is a local Windows action. Use the desktop app to execute it directly.",
+            });
+            b.innerHTML =
+              '<div class="who">agent · local router</div>' +
+              esc(
+                "This is a local Windows action. The online chat cannot control your PC; open WinAgent desktop to execute it directly without an AI call.",
+              );
+            return;
+          }
+          if (route && route.kind === "image") {
+            const src = await generateWebImage(route.prompt);
+            hist.push({
+              role: "assistant",
+              content: "Generated an image: " + route.prompt,
+            });
+            b.innerHTML =
+              '<div class="who">agent · image generator</div><div>' +
+              esc("Generated: " + route.prompt) +
+              '</div><img class="genimg" alt="generated image" src="' +
+              src +
+              '">';
+            return;
+          }
+          let a, label;
+          if (mode === "free") {
+            const e = selected();
+            try {
+              if (e.kind === "free" && e.url)
+                a = await postChat(
+                  e.url.replace(/\/+$/, ""),
+                  e.model,
+                  "",
+                  hist,
+                );
+              else a = await getChat(e.model, hist);
+            } catch (err) {
+              a = await getChat(e.model, hist);
+            }
+            label = "free · " + e.label;
+          } else if (mode === "github-models") {
+            const k = store.get("apikey") || store.get("pat");
+            if (!k)
+              throw {
+                status: 401,
+                why: "GitHub Models uses your PAT as its key — paste it in ⚙ keys",
+              };
+            const mdl = ($("mmodel").value || "").startsWith("ghm:")
+              ? $("mmodel").value.slice(4)
+              : store.get("model") || "gpt-4o-mini";
+            a = await postChat(
+              "https://models.github.ai/inference",
+              mdl,
+              k,
+              hist,
+            );
+            label = "github · " + mdl;
+          } else if (mode === "achllm") {
+            const e = selected();
+            if (!e.url || !e.user || !e.pass)
+              throw {
+                status: 401,
+                why: "AchLLM needs its gateway URL, username, and password in ⚙ keys.",
+              };
+            a = await postAchllm(e.url, e.user, e.pass, hist);
+            label = "achllm · hosted gateway";
+          } else {
+            const k = store.get("apikey");
+            if (!k || !store.get("apiurl"))
+              throw {
+                status: 401,
+                why: "custom backend needs URL + key in ⚙ keys — or pick ⚡ Free",
+              };
+            a = await postChat(
+              store.get("apiurl").replace(/\/+$/, ""),
+              store.get("model") || "gpt-4o-mini",
+              k,
+              hist,
+            );
+            label = "custom";
+          }
+          hist.push({ role: "assistant", content: a });
+          b.innerHTML =
+            '<div class="who">agent · ' +
+            esc(label) +
+            "</div>" +
+            renderWebAnswer(a);
+        } catch (e) {
+          const s = e.status || "";
+          b.innerHTML =
+            '<div class="who">agent</div>⚠ ' +
+            esc(
+              s === 401
+                ? e.why || "key rejected — check ⚙ keys, or pick ⚡ Free"
+                : "request failed" +
+                    (s ? " HTTP " + s : "") +
+                    ". Pick ⚡ Free to reset.",
+            );
+        }
+        window.scrollTo(0, 99999);
+      }
+      $("send").onclick = talk;
+      $("in").onkeydown = (e) => {
+        if (e.key === "Enter") talk();
+      };
+      function gate() {
+        const ok = !!store.get("pat");
+        ["teach", "dotask", "test2"].forEach((id) => {
+          $(id).disabled = !ok;
+        });
+        if (!ok)
+          $("ghstat").textContent =
+            "GitHub: PAT needed for cloud DO (or 📝 Issue link)";
+      }
+      async function gh(path, opts) {
+        let r;
+        try {
+          r = await fetch(
+            "https://api.github.com/repos/" + store.get("repo") + path,
+            {
+              ...(opts || {}),
+              headers: {
+                Accept: "application/vnd.github+json",
+                Authorization: "Bearer " + store.get("pat"),
+              },
+            },
+          );
+        } catch (e) {
+          throw new Error("network blocked — are you offline?");
+        }
+        if (r.status === 401)
+          throw new Error(
+            "401 bad PAT — regenerate it (repo + workflow scopes)",
+          );
+        if (r.status === 404)
+          throw new Error(
+            "404 — wrong owner/repo in ⚙, or PAT lacks repo access",
+          );
+        if (r.status === 422) {
+          const t = await r.text();
+          throw new Error("422 rejected: " + t.slice(0, 200));
+        }
+        if (!r.ok) throw new Error("GitHub HTTP " + r.status);
+        return r.json();
+      }
+      $("test").onclick = async () => {
+        try {
+          const me = await (
+            await fetch("https://api.github.com/user", {
+              headers: { Authorization: "Bearer " + store.get("pat") },
+            })
+          ).json();
+          if (!me.login) throw new Error("bad PAT");
+          $("ghstat").textContent = "GitHub: @" + me.login + " ✓";
+          gate();
+          bubble(
+            "agent",
+            "✅ GitHub connected as @" +
+              me.login +
+              " — cloud buttons unlocked.",
+          );
+        } catch (e) {
+          bubble("agent", "⚠ connection failed: " + e.message);
+        }
+      };
+      async function dispatch(file, inputs) {
+        await gh("/actions/workflows/" + file + "/dispatches", {
+          method: "POST",
+          body: JSON.stringify({ ref: "main", inputs }),
+        });
+      }
+      async function waitRun(since, file) {
+        for (let i = 0; i < 48; i++) {
+          await new Promise((r) => setTimeout(r, 10000));
+          let j;
+          try {
+            j = await gh("/actions/runs?event=workflow_dispatch&per_page=5");
+          } catch (e) {
+            continue;
+          }
+          const run = (j.workflow_runs || []).find(
+            (x) =>
+              x.path === ".github/workflows/" + file &&
+              new Date(x.created_at).getTime() > since - 90000,
+          );
+          if (run && run.status === "completed") return run;
+          if (run)
+            bubble(
+              "agent",
+              "…still running (" + run.status + ") — " + run.html_url,
+            );
+        }
+        throw new Error(
+          "timed out — watch it here: https://github.com/" +
+            store.get("repo") +
+            "/actions",
+        );
+      }
+      const TEXT_EXT = /\.(txt|md|csv|json|log|js|ts|py|html|css|yml|yaml)$/i;
+      let attachments = [];
+      function renderAttach() {
+        const box = $("attach");
+        box.innerHTML = "";
+        attachments.forEach((a, i) => {
+          const c = document.createElement("div");
+          c.className = "achip" + (a.error ? " err" : "");
+          c.innerHTML =
+            (a.error ? "⚠ " : a.isImage ? "🖼️ " : "📄 ") +
+            esc(a.name) +
+            (a.error ? " — " + esc(a.error) : "") +
+            " <button>✕</button>";
+          c.querySelector("button").onclick = () => {
+            attachments.splice(i, 1);
+            renderAttach();
+          };
+          box.appendChild(c);
+        });
+      }
+      function b64(buf) {
+        let bin = "";
+        const bytes = new Uint8Array(buf);
+        for (let i = 0; i < bytes.length; i++)
+          bin += String.fromCharCode(bytes[i]);
+        return btoa(bin);
+      }
+      async function handleFiles(files) {
+        for (const f of Array.from(files).slice(0, 6)) {
+          if (f.size > 15 * 1024 * 1024) {
+            attachments.push({ name: f.name, error: "too large (15 MB max)" });
+            continue;
+          }
+          const isImage = /\.(png|jpe?g|gif|webp)$/i.test(f.name);
+          if (TEXT_EXT.test(f.name) && f.size < 50000) {
+            const text = await f.text();
+            attachments.push({ name: f.name, inline: text, isImage: false });
+          } else {
+            if (!(await needPat())) {
+              continue;
+            }
+            try {
+              const buf = await f.arrayBuffer();
+              const rel =
+                "uploads/" +
+                Date.now() +
+                "-" +
+                f.name.replace(/[^A-Za-z0-9._-]/g, "_");
+              await gh("/contents/" + rel, {
+                method: "PUT",
+                body: JSON.stringify({
+                  message: "chat upload: " + f.name,
+                  content: b64(buf),
+                  branch: "main",
+                }),
+              });
+              attachments.push({ name: f.name, path: rel, isImage });
+            } catch (e) {
+              attachments.push({ name: f.name, error: e.message });
+            }
+          }
+        }
+        renderAttach();
+      }
+      $("clip").onclick = () => $("file").click();
+      $("file").onchange = (e) => {
+        handleFiles(e.target.files);
+        e.target.value = "";
+      };
+      function attachmentsSuffix() {
+        return attachments
+          .filter((a) => !a.error)
+          .map((a) => {
+            if (a.inline)
+              return (
+                '\n\n[Attached file "' +
+                a.name +
+                '"]\n\`\`\`\n' +
+                a.inline.slice(0, 4000) +
+                "\n\`\`\`"
+              );
+            return (
+              "\n\n[Attached " +
+              (a.isImage ? "image" : "file") +
+              ' "' +
+              a.name +
+              '" committed at ' +
+              a.path +
+              " in this repo — use file tools on that path]"
+            );
+          })
+          .join("");
+      }
+      function slugify(s) {
+        return s
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "")
+          .slice(0, 40);
+      }
+      async function needPat() {
+        if (store.get("pat")) return true;
+        $("cfg").style.display = "grid";
+        bubble(
+          "agent",
+          "⚠ Paste your GitHub PAT in ⚙ keys first (or use 📝 Issue — no token).",
+        );
+        return false;
+      }
+      async function doAction(kind) {
+        if (!(await needPat())) return;
+        const t = $("doin").value.trim();
+        if (kind !== "test" && !t) {
+          bubble("agent", "⚠ Type the skill/topic in the box first.");
+          $("doin").focus();
+          return;
+        }
+        const file =
+          kind === "teach"
+            ? "learn-skill.yml"
+            : kind === "task"
+              ? "agent-task.yml"
+              : "daily-sandbox.yml";
+        const fullTask = kind === "task" ? t + attachmentsSuffix() : t;
+        const inputs =
+          kind === "teach"
+            ? { topic: t }
+            : kind === "task"
+              ? { task: fullTask }
+              : {};
+        if (kind === "task") {
+          attachments = [];
+          renderAttach();
+        }
+        const prog = busyBubble("dispatched " + file + " — watching GitHub…");
+        try {
+          const since = Date.now();
+          await dispatch(file, inputs);
+          const run = await waitRun(since, file);
+          if (run.conclusion === "success") {
+            if (kind === "teach") {
+              const slug = slugify(t);
+              try {
+                const raw = await (
+                  await fetch(
+                    "https://raw.githubusercontent.com/" +
+                      store.get("repo") +
+                      "/main/skills/" +
+                      slug +
+                      ".md",
+                  )
+                ).text();
+                if (raw.startsWith("404")) throw 0;
+                prog.innerHTML =
+                  '<div class="who">agent · new skill</div>' +
+                  esc(raw.slice(0, 2500)) +
+                  '<br><br>📚 Full skill: <a style="color:#58a6ff" href="https://github.com/' +
+                  store.get("repo") +
+                  "/blob/main/skills/" +
+                  slug +
+                  '.md">skills/' +
+                  slug +
+                  ".md</a>";
+              } catch (e) {
+                prog.innerHTML =
+                  '<div class="who">agent</div>✅ done: ' +
+                  run.html_url +
+                  "<br>Library refreshes in ~1 min.";
+              }
+            } else if (kind === "task") {
+              try {
+                const raw = await (
+                  await fetch(
+                    "https://raw.githubusercontent.com/" +
+                      store.get("repo") +
+                      "/main/runs/" +
+                      run.id +
+                      ".md",
+                  )
+                ).text();
+                prog.innerHTML =
+                  '<div class="who">agent · result</div>' +
+                  renderWebAnswer(raw.slice(0, 3500));
+              } catch (e) {
+                prog.innerHTML =
+                  '<div class="who">agent</div>✅ done: ' + run.html_url;
+              }
+            } else
+              prog.innerHTML =
+                '<div class="who">agent</div>✅ done: ' + run.html_url;
+          } else
+            prog.innerHTML =
+              '<div class="who">agent</div>❌ run ' +
+              run.conclusion +
+              ": " +
+              run.html_url;
+        } catch (e) {
+          prog.innerHTML = '<div class="who">agent</div>⚠ ' + esc(e.message);
+        }
+        window.scrollTo(0, 99999);
+      }
+      $("teach").onclick = () => doAction("teach");
+      $("dotask").onclick = () => doAction("task");
+      $("test2").onclick = () => doAction("test");
+      $("doin").onkeydown = (e) => {
+        if (e.key === "Enter") doAction("teach");
+      };
+      $("teachfree").onclick = () => {
+        const t = $("doin").value.trim() || "keyboard shortcuts";
+        window.open(
+          "https://github.com/" +
+            store.get("repo") +
+            "/issues/new?template=skill-request.yml&title=" +
+            encodeURIComponent("teach: " + t),
+          "_blank",
+        );
+        bubble(
+          "agent",
+          "📝 Issue form opened — hit Submit there and the agent learns it. No token needed.",
+        );
+      };
+      setMode(store.get("mode"));
+      gate();
+      loadModels();
+    </script>
+  </body>
+</html>

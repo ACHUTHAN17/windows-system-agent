@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "updatedAt": "2026-11-12",
+  "policy": "Reference results are provider-published values. AchLLM is shown as not evaluated until it is run through the identical public task, prompt, and scoring procedure. Missing is never plotted as zero.",
+  "suites": [
+    {
+      "id": "mmlu-openai-simple-evals",
+      "title": "MMLU — published reference",
+      "metric": "accuracy (%)",
+      "source": "https://github.com/openai/simple-evals#benchmark-results",
+      "sourceLabel": "OpenAI simple-evals: benchmark results",
+      "method": "Provider-published MMLU results using the prompt setting reported in the source table. These are references, not a shared re-run.",
+      "models": [
+        { "id": "achllm", "name": "AchLLM", "score": null, "state": "Not evaluated" },
+        { "id": "o3-high", "name": "OpenAI o3-high", "score": 93.3, "state": "Published" },
+        { "id": "o3", "name": "OpenAI o3", "score": 92.9, "state": "Published" },
+        { "id": "o4-mini-high", "name": "OpenAI o4-mini-high", "score": 90.3, "state": "Published" },
+        { "id": "gpt-4-1", "name": "GPT-4.1", "score": 90.2, "state": "Published" },
+        { "id": "gpt-4o", "name": "GPT-4o", "score": 85.7, "state": "Published" }
+      ]
+    },
+    {
+      "id": "mrcr-v2-128k",
+      "title": "MRCR v2 — 128K long-context reference",
+      "metric": "accuracy (%)",
+      "source": "https://storage.googleapis.com/deepmind-media/Model-Cards/Gemini-2-5-Pro-Model-Card.pdf",
+      "sourceLabel": "Google DeepMind: Gemini 2.5 Pro model card",
+      "method": "Provider-published 128K-average MRCR v2 values from one comparison table. Settings and model variants are those reported in that table.",
+      "models": [
+        { "id": "achllm", "name": "AchLLM", "score": null, "state": "Not evaluated" },
+        { "id": "gemini-2-5-pro", "name": "Gemini 2.5 Pro (GA)", "score": 58.0, "state": "Published" },
+        { "id": "o3-high", "name": "OpenAI o3 High", "score": 57.1, "state": "Published" },
+        { "id": "claude-4-sonnet", "name": "Claude 4 Sonnet", "score": 39.1, "state": "Published" },
+        { "id": "o4-mini-high", "name": "OpenAI o4-mini High", "score": 36.3, "state": "Published" },
+        { "id": "grok-3-beta", "name": "Grok 3 Beta Extended Thinking", "score": 34.0, "state": "Published" },
+        { "id": "claude-4-opus", "name": "Claude 4 Opus 32K Thinking", "score": 16.1, "state": "Published" }
+      ]
+    }
+  ]
+}

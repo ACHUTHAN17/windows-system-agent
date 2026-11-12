@@ -24,7 +24,7 @@ The dashboard polls the authenticated gateway's read-only telemetry route every 
 
 WinAgent-authored code, documentation, dashboard, and AchLLM model artefacts are proprietary and carry no licence to use, copy, or redistribute. The upstream UltraChat source remains MIT-licensed; that upstream licence cannot be made private or revoked by this repository.
 
-To make the GitHub Pages copy update from a server, configure a write-capable, least-privilege GitHub deploy credential on that server and then set `ACHLLM_STATUS_PUSH=1` in the trainer service. The trainer publishes only `docs/achllm-status.json` once per hour by default. It never commits prompts, model files, API keys, or system data. The setting is intentionally off by default.
+To make the GitHub Pages copy update from a server, configure a write-capable, least-privilege GitHub deploy credential on that server and then set `ACHLLM_STATUS_PUSH=1` in the trainer service. The supplied user service trains every five minutes while the host is running, publishes non-sensitive status after each cycle, resumes from its checkpoint after service restarts, and never commits prompts, model files, API keys, or system data. A host that pauses or has a maximum runtime cannot provide 24/7 training; it resumes at the next host start.
 
 This is **offline distillation** from an openly published teacher dataset, not unauthorised scraping or replaying a proprietary service. It improves the public training corpus but does not turn the compact CPU model into a frontier LLM.
 

@@ -6,11 +6,15 @@ const path = require('node:path');
 
 const root = path.join(__dirname, '..', '..');
 
-test('AchLLM dashboard exposes zoomable evidence charts and a protected test chat', () => {
+test('AchLLM dashboard exposes zoomable evidence charts, sourced scorecards, and a protected test chat', () => {
   const html = fs.readFileSync(path.join(root, 'docs', 'achllm.html'), 'utf8');
-  for (const text of ['Checkpoint growth', 'Training inventory', 'Evidence readiness', 'Ten-aspect evidence map', 'Ctrl + wheel', 'reasoning', 'multilingual', 'long-context', 'tool-use', 'Test AchLLM', 'Gateway password', 'live refresh 2s', 'setInterval']) {
+  for (const text of ['Checkpoint growth', 'Training inventory', 'Evidence readiness', 'Ten-aspect evidence map', 'Published multi-model scorecard', 'achllm-benchmarks.json', 'Ctrl + wheel', 'reasoning', 'multilingual', 'long-context', 'tool-use', 'Test AchLLM', 'Gateway password', 'live refresh 2s', 'setInterval']) {
     assert.ok(html.includes(text), `missing ${text}`);
   }
+  const benchmarks = JSON.parse(fs.readFileSync(path.join(root, 'docs', 'achllm-benchmarks.json'), 'utf8'));
+  assert.equal(benchmarks.suites.length, 2);
+  assert.equal(benchmarks.suites[0].models[0].score, null, 'AchLLM must not receive an invented score');
+  assert.ok(benchmarks.suites.every((suite) => /^https:\/\//.test(suite.source)));
 });
 
 test('public telemetry distinguishes publication from capability evaluation', () => {
@@ -19,6 +23,7 @@ test('public telemetry distinguishes publication from capability evaluation', ()
   assert.match(script, /codeLicense: 'Proprietary/);
   assert.match(script, /comparableToFrontier: false/);
   assert.match(script, /awaiting-normalized-evidence/);
+  assert.match(script, /benchmarkCatalog/);
   assert.match(script, /achllm-history\.json/);
 });
 

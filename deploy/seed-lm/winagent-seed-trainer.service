@@ -6,11 +6,11 @@ Wants=network-online.target
 [Service]
 Type=simple
 WorkingDirectory=%h/winagent
-Environment=SEED_TRAIN_INTERVAL_MS=900000
+Environment=SEED_TRAIN_INTERVAL_MS=300000
 Environment=SEED_CHAT_BATCH_SIZE=3
 Environment=SEED_DISTILL_BATCH_SIZE=2
 Environment=SEED_DISTILL_EVERY=4
-Environment=SEED_STATUS_SYNC_EVERY=4
+Environment=SEED_STATUS_SYNC_EVERY=1
 Environment=SEED_MAX_BYTES=4000000
 # Keep disabled until the server has a least-privilege GitHub deploy key.
 Environment=ACHLLM_STATUS_PUSH=0
