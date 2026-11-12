@@ -1,10 +1,13 @@
 # Skill health — 2026-11-12
 
-559 skills audited, 25 links probed, 2 dead.
-13 need attention:
+559 skills audited, 25 links probed, 3 dead.
+14 need attention:
 
 ## 123456-password-used-in-danish-cpr-data.md (234971 chars)
 - dead link (404): https://hackerfeeds.com/news/123456-password-used-in-danish-cpr-data-b
+
+## 900-page-pre-pantone-guide-to-color-from.md (1313 chars)
+- dead link (ERR:This operation was aborted): https://designtaxi.com/news/414244/Flip-Through-This-Pre-PANTONE-Color
 
 ## a-brief-history-of-windows-scroll-bar-sh.md (62856 chars)
 - dead link (525): https://outspeaker.com/post/14780
