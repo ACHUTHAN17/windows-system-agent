@@ -8,6 +8,8 @@ Type=simple
 WorkingDirectory=%h/winagent
 Environment=SEED_TRAIN_INTERVAL_MS=900000
 Environment=SEED_BATCH_SIZE=5
+Environment=SEED_DISTILL_BATCH_SIZE=2
+Environment=SEED_DISTILL_EVERY=4
 Environment=SEED_MAX_BYTES=4000000
 Environment=WIKIMEDIA_USER_AGENT=AchLLM/1.37 (https://github.com/ACHUTHAN17/windows-system-agent)
 ExecStart=/usr/local/bin/node %h/winagent/scripts/seed-train-daemon.mjs

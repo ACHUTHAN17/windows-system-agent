@@ -2,7 +2,7 @@
 const test = require('node:test');
 const assert = require('node:assert');
 const path = require('node:path');
-const { recordsFromWikimedia } = require(path.join('..', '..', 'src', 'seed-training.js'));
+const { recordsFromWikimedia, recordsFromUltraChat } = require(path.join('..', '..', 'src', 'seed-training.js'));
 
 test('public training ingestion keeps an attributable source and rejects tiny extracts', () => {
   const records = recordsFromWikimedia({ query: { pages: [
@@ -12,4 +12,16 @@ test('public training ingestion keeps an attributable source and rejects tiny ex
   assert.strictEqual(records.length, 1);
   assert.strictEqual(records[0].source, 'https://en.wikipedia.org/wiki/Example_page');
   assert.match(records[0].license, /CC BY-SA/);
+});
+
+test('teacher distillation ingestion preserves the public dataset source and MIT licence', () => {
+  const records = recordsFromUltraChat({ rows: [{ row_idx: 42, row: { messages: [
+    { role: 'user', content: 'Explain the task.' },
+    { role: 'assistant', content: 'A'.repeat(360) },
+  ] } }] });
+  assert.strictEqual(records.length, 1);
+  assert.strictEqual(records[0].id, 'ultrachat-42');
+  assert.match(records[0].source, /ultrachat_200k/);
+  assert.strictEqual(records[0].license, 'MIT');
+  assert.match(records[0].teacher, /teacher/);
 });

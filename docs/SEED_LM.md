@@ -11,7 +11,13 @@ curl http://127.0.0.1:8091/v1/models
 
 ## Continuous cloud training
 
-The trainer fetches a maximum of five public English Wikipedia extracts every 15 minutes, records source URLs and licence metadata in `models/seed-data/manifest.jsonl`, retrains a bounded 4 MB corpus, and writes `models/achllm.live.model.json`. The serving process detects the new checkpoint automatically. Wikimedia text requires CC BY-SA/GFDL attribution; the provenance manifest is retained for that purpose.
+The trainer fetches a maximum of five public English Wikipedia extracts every 15 minutes and, every fourth cycle, two MIT-licensed UltraChat teacher/student dialogue examples. It records source URLs, teacher lineage, and licence metadata in `models/seed-data/manifest.jsonl`, retrains a bounded 4 MB corpus, and writes `models/achllm.live.model.json`. The serving process detects the new checkpoint automatically. Wikimedia text requires CC BY-SA/GFDL attribution; UltraChat is MIT-licensed. The provenance manifest is retained for that purpose.
+
+```bash
+npm run distill:achllm-once
+```
+
+This is **offline distillation** from an openly published teacher dataset, not unauthorised scraping or replaying a proprietary service. It improves the public training corpus but does not turn the compact CPU model into a frontier LLM.
 
 For a Linux cloud server where the repository lives at `~/winagent`:
 
