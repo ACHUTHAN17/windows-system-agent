@@ -30,5 +30,13 @@
     "codeRecords": 0,
     "legacyRecordsExcluded": 35,
     "evaluatedAspects": 0
+  },
+  {
+    "updatedAt": "2026-11-12T10:06:02.035Z",
+    "trainedBytes": 174478,
+    "chatRecords": 0,
+    "codeRecords": 0,
+    "legacyRecordsExcluded": 38,
+    "evaluatedAspects": 0
   }
 ]
