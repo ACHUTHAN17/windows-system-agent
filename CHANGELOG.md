@@ -1,4 +1,7 @@
 # Changelog
+## 1.41.0 — 2026-11-12
+- **Dashboard charts:** added checkpoint-growth, training-inventory doughnut, evidence-readiness bar chart, and a ten-aspect evaluation map. The server now publishes bounded non-sensitive history with status telemetry.
+
 ## 1.40.0 — 2026-11-12
 - **Evidence dashboard:** added a zoomable comparison workspace spanning chat, code, reasoning, math, multilingual, long-context, tool use, vision, safety, and efficiency without inventing frontier-model scores.
 - **Rights clarity:** added a published-telemetry state and distinct proprietary-project / upstream-data licence disclosures.

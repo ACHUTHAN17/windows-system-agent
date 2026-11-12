@@ -1,0 +1,20 @@
+[Unit]
+Description=WinAgent authenticated public gateway
+After=network-online.target winagent.service winagent-seed-llm.service
+
+[Service]
+Type=simple
+WorkingDirectory=%h/winagent
+EnvironmentFile=%h/.config/winagent-public-proxy.env
+ExecStart=/usr/local/bin/node %h/winagent/deploy/seed-lm/public-proxy.cjs
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+
+[Install]
+WantedBy=default.target

@@ -42,5 +42,22 @@ const status = {
   security: { publicDataOnly: true, noCredentials: true, noPrivatePrompts: true },
 };
 const output = path.join(root, 'docs', 'achllm-status.json');
+const historyOutput = path.join(root, 'docs', 'achllm-history.json');
+let history = [];
+try { history = JSON.parse(safeRead(historyOutput, '[]')); } catch {}
+if (!Array.isArray(history)) history = [];
+const point = {
+  updatedAt: status.updatedAt,
+  trainedBytes: status.checkpoint.trainedBytes,
+  chatRecords: status.training.chatRecords,
+  codeRecords: status.training.codeRecords,
+  legacyRecordsExcluded: status.training.legacyRecordsExcluded,
+  evaluatedAspects: 0,
+};
+const last = history.at(-1);
+if (!last || last.trainedBytes !== point.trainedBytes || last.chatRecords !== point.chatRecords || last.codeRecords !== point.codeRecords) history.push(point);
+else history[history.length - 1] = point;
+history = history.slice(-168);
 fs.writeFileSync(output, `${JSON.stringify(status, null, 2)}\n`);
-console.log(JSON.stringify({ output, updatedAt: status.updatedAt, records: status.training.records, trainedBytes: status.checkpoint.trainedBytes }));
+fs.writeFileSync(historyOutput, `${JSON.stringify(history, null, 2)}\n`);
+console.log(JSON.stringify({ output, historyOutput, updatedAt: status.updatedAt, records: status.training.records, trainedBytes: status.checkpoint.trainedBytes }));
