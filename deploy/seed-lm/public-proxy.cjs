@@ -28,7 +28,7 @@ const server = http.createServer((req, res) => {
   const extra = cors(req);
   const pathname = new URL(req.url, 'http://127.0.0.1').pathname;
   if (req.method === 'OPTIONS') return res.writeHead(req.headers.origin === allowedOrigin ? 204 : 403, extra).end();
-  const liveFile = pathname === '/achllm/status' ? 'docs/achllm-status.json' : pathname === '/achllm/history' ? 'docs/achllm-history.json' : null;
+  const liveFile = pathname === '/achllm/status' ? 'docs/achllm-status.json' : pathname === '/achllm/history' ? 'docs/achllm-history.json' : pathname === '/achllm/benchmarks' ? 'docs/achllm-benchmarks.json' : null;
   if (liveFile) {
     if (req.method !== 'GET' || req.headers.origin !== allowedOrigin) return res.writeHead(403, { 'Content-Type': 'text/plain' }).end('Forbidden');
     try { return res.writeHead(200, { ...extra, 'Cache-Control': 'no-store', 'Content-Type': 'application/json' }).end(fs.readFileSync(path.join(process.cwd(), liveFile))); }

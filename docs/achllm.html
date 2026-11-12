@@ -319,7 +319,7 @@
       <div class="card">
         <div class="label">Checkpoint</div>
         <div class="number" id="checkpoint">—</div>
-        <div class="hint">trained bytes</div>
+        <div class="hint" id="checkpoint-detail">trained corpus</div>
       </div>
       <div class="card">
         <div class="label">Chat traces</div>
@@ -335,6 +335,28 @@
         <div class="label">Measured aspects</div>
         <div class="number" id="scores">—</div>
         <div class="hint">normalised held-out scores</div>
+      </div>
+    </section>
+    <section class="cards">
+      <div class="card">
+        <div class="label">Model vitals · Overall LLM size · Serialized model size</div>
+        <div class="number" id="model-size">—</div>
+        <div class="hint">on-disk checkpoint</div>
+      </div>
+      <div class="card">
+        <div class="label">Parameter count · transition weights</div>
+        <div class="number" id="model-weights">—</div>
+        <div class="hint" id="model-weights-detail">non-neural transition weights</div>
+      </div>
+      <div class="card">
+        <div class="label">Transition contexts</div>
+        <div class="number" id="model-contexts">—</div>
+        <div class="hint" id="model-contexts-detail">vocabulary and lookup data</div>
+      </div>
+      <div class="card">
+        <div class="label">FLOPS / TOPS</div>
+        <div class="number" id="model-compute">—</div>
+        <div class="hint" id="model-compute-detail">measured compute type</div>
       </div>
     </section>
     <section class="charts">
@@ -480,6 +502,14 @@
   <script>
     const q = (s) => document.querySelector(s),
       n = (v) => new Intl.NumberFormat().format(Number(v || 0)),
+      bytes = (value) => {
+        const count = Number(value || 0);
+        if (!Number.isFinite(count) || count <= 0) return "0 B";
+        const units = ["B", "KB", "MB", "GB", "TB"];
+        const index = Math.min(units.length - 1, Math.floor(Math.log(count) / Math.log(1024)));
+        const scaled = count / 1024 ** index;
+        return `${scaled >= 100 || index === 0 ? Math.round(scaled) : scaled.toFixed(scaled >= 10 ? 1 : 2)} ${units[index]}`;
+      },
       esc = (s) =>
         String(s).replace(
           /[&<>]/g,
@@ -534,7 +564,7 @@
       );
       svg(
         q("#growth"),
-        `<path d="M${p} ${h - p}H${w - p}M${p} ${p}V${h - p}" stroke="#33415b"/><path d="M${pts.join(" L")}" fill="none" stroke="#7d9cff" stroke-width="3"/><text x="${p}" y="18" fill="#9aa8c0" font-size="11">${n(max)} bytes</text><text x="${p}" y="${h - 8}" fill="#9aa8c0" font-size="11">${n(min)} bytes</text>`,
+        `<path d="M${p} ${h - p}H${w - p}M${p} ${p}V${h - p}" stroke="#33415b"/><path d="M${pts.join(" L")}" fill="none" stroke="#7d9cff" stroke-width="3"/><text x="${p}" y="18" fill="#9aa8c0" font-size="11">${bytes(max)}</text><text x="${p}" y="${h - 8}" fill="#9aa8c0" font-size="11">${bytes(min)}</text>`,
       );
     }
     function donut(t) {
@@ -625,6 +655,16 @@
       q("#matrix").innerHTML =
         `<div style="display:grid;grid-template-columns:170px repeat(3,1fr);gap:10px;padding:24px;border-bottom:1px solid #202a3b;font-size:11px;color:#9aa8c0;text-transform:uppercase;letter-spacing:.08em"><span>Aspect</span><span>AchLLM evidence</span><span>Frontier reference</span><span>State</span></div>${aspects.map((k) => `<div style="display:grid;grid-template-columns:170px repeat(3,1fr);gap:10px;padding:12px 24px;border-bottom:1px solid #202a3b;align-items:center"><b>${esc(titles[k] || k)}</b><span class="label">Not evaluated</span><span class="label">No normalised baseline</span><span style="color:#efbc69;font-size:12px">Evidence required</span></div>`).join("")}`;
     }
+    function vitals(status) {
+      const stats = status.modelStats || {}, checkpoint = status.checkpoint || {};
+      q("#model-size").textContent = bytes(checkpoint.serializedBytes);
+      q("#model-weights").textContent = n(stats.learnedWeightEntries);
+      q("#model-weights-detail").textContent = "actual non-neural transition weights";
+      q("#model-contexts").textContent = n(stats.transitionContexts);
+      q("#model-contexts-detail").textContent = `${n(stats.vocabularyEntries)} byte vocabulary · ${Number(stats.averageCandidatesPerLookup || 0).toFixed(1)} candidates/lookup`;
+      q("#model-compute").textContent = stats.compute?.flops == null ? "N/A" : bytes(stats.compute.flops);
+      q("#model-compute-detail").textContent = stats.compute?.note || "No compute measurement";
+    }
 function benchmarks(data) {
   const suites = Array.isArray(data?.suites) ? data.suites : [];
   const choose = q("#benchmark-suite");
@@ -674,7 +714,7 @@ function benchmarks(data) {
         const [s, h, b] = await Promise.all([
           json(liveRoot + "/status", "achllm-status.json"),
           json(liveRoot + "/history", "achllm-history.json"),
-          json("achllm-benchmarks.json"),
+          json(liveRoot + "/benchmarks", "achllm-benchmarks.json"),
         ]);
         const t = s.training || {},
           e = s.evaluation || {},
@@ -689,7 +729,8 @@ function benchmarks(data) {
           s.publication?.status === "published"
             ? "✓ Published telemetry"
             : "Telemetry pending";
-        q("#checkpoint").textContent = n(s.checkpoint?.trainedBytes);
+        q("#checkpoint").textContent = bytes(s.checkpoint?.trainedBytes);
+        q("#checkpoint-detail").textContent = `${n(s.checkpoint?.trainedBytes)} bytes processed`;
         q("#chat").textContent = n(t.chatRecords);
         q("#code").textContent = n(t.codeRecords);
         q("#scores").textContent =
@@ -699,6 +740,7 @@ function benchmarks(data) {
         readiness(s);
         radar(x.aspects || Object.keys(titles));
         matrix(x.aspects || Object.keys(titles));
+        vitals(s);
         benchmarks(b);
         q("#comparison-note").textContent =
           x.note || "No normalised comparison evidence is available.";

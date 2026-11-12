@@ -1,4 +1,9 @@
 # Changelog
+## 1.41.3 — 2026-11-12
+- **Live model vitals:** all dashboard datasets now use the live gateway first, refresh every two seconds, and automatically display byte, KB, MB, GB, or TB units.
+- **Honest capacity reporting:** added serialized model size, transition-weight count, context/vocabulary data, and explicit FLOPS/TOPS applicability. The count-model architecture does not have tensor FLOPS/TOPS or neural parameters.
+- **Roadmap:** added a server-budgeted, licensed-data, evaluation-gated AchLLM roadmap.
+
 ## 1.41.2 — 2026-11-12
 - **Scorecards:** added two source-linked, multi-model benchmark views. AchLLM is explicitly shown as **Not evaluated** until it runs the matching harness; empty scores are never treated as zero.
 - **Pages chat:** the GitHub Pages chat now offers AchLLM as a selectable hosted model. Its gateway credentials are kept only in browser session storage and sent only to the configured gateway.

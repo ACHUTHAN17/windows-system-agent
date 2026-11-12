@@ -18,7 +18,7 @@ npm run distill:achllm-once
 npm run status:achllm
 ```
 
-`npm run status:achllm` produces `docs/achllm-status.json` and a bounded `docs/achllm-history.json`, which power the GitHub Pages dashboard at `docs/achllm.html`. The dashboard reports a checkpoint-growth line, data-composition doughnut, evidence-readiness bars, and a ten-aspect evaluation map. Publication means the telemetry has been published; it is not a capability pass. The dashboard deliberately shows comparison values as **not evaluated** until reproducible held-out chat and code tests exist.
+`npm run status:achllm` produces `docs/achllm-status.json` and a bounded `docs/achllm-history.json`, which power the GitHub Pages dashboard at `docs/achllm.html`. The dashboard polls its server-backed status, history, and benchmark catalog every two seconds, with GitHub Pages files only as a fallback. It reports byte-normalized training/checkpoint sizes, serialized model size, actual learned transition-weight entries, contexts, vocabulary entries, and average lookup candidates. AchLLM is a byte-level count model, so FLOPS/TOPS and neural-network parameter counts are deliberately reported as not applicable rather than invented. Publication means the telemetry has been published; it is not a capability pass. The dashboard deliberately shows comparison values as **not evaluated** until reproducible held-out chat and code tests exist.
 
 The dashboard polls the authenticated gateway's read-only telemetry route every two seconds. This refreshes the view without creating rapid Git commits or changing the training cadence. Model chat remains password-protected.
 

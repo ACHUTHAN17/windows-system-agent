@@ -12,6 +12,11 @@ const manifestFile = path.join(seedDir, 'manifest.jsonl');
 const safeRead = (file, fallback) => { try { return fs.readFileSync(file, 'utf8'); } catch { return fallback; } };
 let model = {};
 try { model = JSON.parse(safeRead(modelFile, '{}')); } catch {}
+const transitionRows = Object.values(model.transitions || {});
+const learnedWeights = transitionRows.reduce((total, row) => total + (Array.isArray(row) ? row.length : 0), 0);
+const averageCandidatesPerLookup = transitionRows.length ? learnedWeights / transitionRows.length : 0;
+let serializedBytes = 0;
+try { serializedBytes = fs.statSync(modelFile).size; } catch {}
 const records = safeRead(manifestFile, '').split(/\r?\n/).filter(Boolean).map((line) => { try { return JSON.parse(line); } catch { return null; } }).filter(Boolean);
 const domains = { chat: 0, code: 0, legacy: 0 };
 for (const record of records) domains[record.domain === 'code' ? 'code' : record.domain === 'chat' ? 'chat' : 'legacy']++;
@@ -20,7 +25,19 @@ const status = {
   model: 'achllm',
   scope: ['chat', 'code'],
   updatedAt: new Date().toISOString(),
-  checkpoint: { available: Boolean(model.format), format: model.format || null, order: model.order || null, trainedBytes: model.trainedBytes || 0 },
+  checkpoint: { available: Boolean(model.format), format: model.format || null, order: model.order || null, trainedBytes: model.trainedBytes || 0, serializedBytes },
+  modelStats: {
+    architecture: 'byte-level backoff n-gram',
+    learnedWeightEntries: learnedWeights,
+    transitionContexts: transitionRows.length,
+    vocabularyEntries: Array.isArray(model.vocabulary) ? model.vocabulary.length : 0,
+    averageCandidatesPerLookup,
+    compute: {
+      flops: null,
+      tops: null,
+      note: 'Not applicable: AchLLM is a non-neural count model, not a tensor/FLOPS architecture. The dashboard reports actual transition-weight entries and lookup candidates instead.',
+    },
+  },
   training: { records: domains.chat + domains.code, chatRecords: domains.chat, codeRecords: domains.code, legacyRecordsExcluded: domains.legacy, source: 'HuggingFaceH4/ultrachat_200k', license: 'MIT' },
   publication: {
     status: 'published',
@@ -50,6 +67,8 @@ if (!Array.isArray(history)) history = [];
 const point = {
   updatedAt: status.updatedAt,
   trainedBytes: status.checkpoint.trainedBytes,
+  serializedBytes: status.checkpoint.serializedBytes,
+  learnedWeightEntries: status.modelStats.learnedWeightEntries,
   chatRecords: status.training.chatRecords,
   codeRecords: status.training.codeRecords,
   legacyRecordsExcluded: status.training.legacyRecordsExcluded,
