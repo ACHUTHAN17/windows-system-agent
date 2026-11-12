@@ -253,6 +253,15 @@
       padding: 12px;
       color: #ced8ef;
     }
+    .consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .consent input { width: auto; margin-top: 3px; }
     .footer {
       margin-top: 24px;
       color: var(--muted);
@@ -463,6 +472,7 @@
         Credentials are kept only in this browser session and are sent only to
         your authenticated InstaBox gateway. Nothing is stored in GitHub Pages.
       </p>
+      <div class="note" id="identity">Loading project identity…</div>
       <div class="chat-grid">
         <input
           id="endpoint"
@@ -486,6 +496,7 @@
         aria-label="Message for AchLLM"
         placeholder="Ask AchLLM a short test question…"
       ></textarea>
+      <label class="consent"><input id="donate-chat" type="checkbox" />I own this exchange and explicitly donate this prompt and response to improve AchLLM. Likely credentials are rejected; the donation is queued for the next training cycle.</label>
       <div id="answer" class="answer">
         Enter gateway credentials and a prompt to test the live model.
       </div>
@@ -665,6 +676,10 @@
       q("#model-compute").textContent = stats.compute?.flops == null ? "N/A" : bytes(stats.compute.flops);
       q("#model-compute-detail").textContent = stats.compute?.note || "No compute measurement";
     }
+    function identity(status) {
+      const identity = status.identity || {};
+      q("#identity").innerHTML = `<b>Project identity:</b> ${esc(identity.godfather || "Not recorded")} is the Godfather of AchLLM. <a href="${esc(identity.record || "ACHLLM_IDENTITY.md")}">View provenance</a>`;
+    }
 function benchmarks(data) {
   const suites = Array.isArray(data?.suites) ? data.suites : [];
   const choose = q("#benchmark-suite");
@@ -741,6 +756,7 @@ function benchmarks(data) {
         radar(x.aspects || Object.keys(titles));
         matrix(x.aspects || Object.keys(titles));
         vitals(s);
+        identity(s);
         benchmarks(b);
         q("#comparison-note").textContent =
           x.note || "No normalised comparison evidence is available.";
@@ -783,6 +799,25 @@ function benchmarks(data) {
           );
         answer.textContent =
           data?.choices?.[0]?.message?.content || "No model response returned.";
+        if (q("#donate-chat").checked) {
+          const feedbackEndpoint = endpoint.replace(/\/chat\/completions\/?$/, "/feedback");
+          const feedback = await fetch(feedbackEndpoint, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Basic " + btoa(`${user}:${pass}`),
+            },
+            body: JSON.stringify({
+              consent: true,
+              messages: [
+                { role: "user", content: prompt },
+                { role: "assistant", content: data?.choices?.[0]?.message?.content || "" },
+              ],
+            }),
+          });
+          if (!feedback.ok) throw new Error("chat worked, but the training donation was rejected");
+          answer.textContent += "\n\n✓ Training donation queued for the next cycle.";
+        }
       } catch (error) {
         answer.textContent = `Test failed: ${error.message}`;
       }

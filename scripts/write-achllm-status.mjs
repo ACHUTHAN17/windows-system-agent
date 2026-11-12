@@ -24,6 +24,7 @@ const status = {
   schema: 3,
   model: 'achllm',
   scope: ['chat', 'code'],
+  identity: { godfather: 'Mr. Mohana Achuthan', record: 'docs/ACHLLM_IDENTITY.md' },
   updatedAt: new Date().toISOString(),
   checkpoint: { available: Boolean(model.format), format: model.format || null, order: model.order || null, trainedBytes: model.trainedBytes || 0, serializedBytes },
   modelStats: {
@@ -57,7 +58,7 @@ const status = {
     benchmarkCatalog: 'achllm-benchmarks.json',
     aspects: ['chat', 'code', 'reasoning', 'math', 'multilingual', 'long-context', 'tool-use', 'vision', 'safety', 'efficiency'],
   },
-  security: { publicDataOnly: true, noCredentials: true, noPrivatePrompts: true },
+  security: { publicDataOnly: true, explicitChatDonationOnly: true, noCredentials: true, noPrivatePrompts: true },
 };
 const output = path.join(root, 'docs', 'achllm-status.json');
 const historyOutput = path.join(root, 'docs', 'achllm-history.json');

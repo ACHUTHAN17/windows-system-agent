@@ -2,7 +2,7 @@
 const test = require('node:test');
 const assert = require('node:assert');
 const path = require('node:path');
-const { recordsFromWikimedia, recordsFromUltraChat, recordsFromUltraChatCode } = require(path.join('..', '..', 'src', 'seed-training.js'));
+const { recordsFromWikimedia, recordsFromUltraChat, recordsFromUltraChatCode, recordFromDonatedChat } = require(path.join('..', '..', 'src', 'seed-training.js'));
 
 test('public training ingestion keeps an attributable source and rejects tiny extracts', () => {
   const records = recordsFromWikimedia({ query: { pages: [
@@ -36,4 +36,15 @@ test('code lane keeps only attributable conversational code tasks', () => {
   assert.strictEqual(records[0].domain, 'code');
   assert.strictEqual(records[0].license, 'MIT');
   assert.match(records[0].text, /\n    return/);
+});
+
+test('donated chat requires explicit consent and rejects likely credentials', () => {
+  const accepted = recordFromDonatedChat({ consent: true, messages: [
+    { role: 'user', content: 'How do I write a test?' },
+    { role: 'assistant', content: 'Start with one behaviour and an assertion.' },
+  ] });
+  assert.match(accepted.id, /^donated-chat-/);
+  assert.match(accepted.license, /explicit consent/);
+  assert.throws(() => recordFromDonatedChat({ messages: [{ role: 'user', content: 'hello' }, { role: 'assistant', content: 'world' }] }), /consent/);
+  assert.throws(() => recordFromDonatedChat({ consent: true, messages: [{ role: 'user', content: 'password: super-secret' }, { role: 'assistant', content: 'do not save it' }] }), /credential/);
 });

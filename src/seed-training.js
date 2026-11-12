@@ -8,8 +8,11 @@ import { trainSeedLm } from './seed-lm.js';
 export const WIKIMEDIA_LICENSE = 'CC BY-SA 4.0 and GFDL (see source page)';
 export const ULTRACHAT_LICENSE = 'MIT';
 export const ULTRACHAT_SOURCE = 'https://huggingface.co/datasets/HuggingFaceH4/ultrachat_200k';
+export const ACHLLM_FOUNDER = 'Mr. Mohana Achuthan';
+export const CHAT_FEEDBACK_LICENSE = 'User-provided conversation donated with explicit consent for AchLLM training';
 const clean = (value) => String(value || '').replace(/\[[0-9]+\]/g, '').replace(/\s+/g, ' ').trim();
 const CODE_REQUEST = /```|\b(?:code|program|function|script|algorithm|debug|bug|error|exception|compile|syntax|api|sql|regex|python|javascript|typescript|node(?:\.js)?|react|html|css|java|kotlin|swift|rust|golang|c\+\+|c#|bash|powershell|linux|git)\b/i;
+const SECRET_PATTERN = /\b(?:api[_ -]?key|access[_ -]?token|secret|password|passwd|private[_ -]?key|authorization)\b\s*(?:=|:|is)\s*\S+/i;
 
 export function recordsFromWikimedia(payload) {
   const pages = Array.isArray(payload?.query?.pages) ? payload.query.pages : [];
@@ -116,13 +119,67 @@ export function appendRecords(root, records, { corpusName = 'chat-code-corpus.tx
   return accepted.length;
 }
 
+// Chat learning is opt-in. A conversation is queued locally first, then the
+// trainer promotes it into the attributable corpus on its next cycle. This
+// deliberately rejects likely credentials and never reads a user's chat
+// history without an explicit consent flag from the chat UI.
+export function recordFromDonatedChat(payload) {
+  if (payload?.consent !== true) throw new Error('explicit training consent is required');
+  const messages = Array.isArray(payload?.messages) ? payload.messages : [];
+  if (messages.length < 2 || messages.length > 12) throw new Error('feedback must contain 2 to 12 messages');
+  const normalized = messages.map((message) => {
+    const role = String(message?.role || '').toLowerCase();
+    if (!['user', 'assistant'].includes(role)) throw new Error('feedback messages must be user or assistant turns');
+    const content = String(message?.content || '').trim();
+    if (!content) throw new Error('feedback messages cannot be empty');
+    return { role, content: content.slice(0, 6_000) };
+  });
+  const text = normalized.map((message) => `${message.role}: ${message.content}`).join('\n');
+  if (text.length < 20) throw new Error('feedback is too short to train');
+  if (SECRET_PATTERN.test(text)) throw new Error('feedback appears to contain a credential and was not stored');
+  const hash = crypto.createHash('sha256').update(text).digest('hex').slice(0, 24);
+  return {
+    id: `donated-chat-${hash}`,
+    source: 'AchLLM opt-in chat donation',
+    title: 'User-donated AchLLM chat feedback',
+    text,
+    license: CHAT_FEEDBACK_LICENSE,
+    domain: CODE_REQUEST.test(text) ? 'code' : 'chat',
+    collectedAt: new Date().toISOString(),
+  };
+}
+
+export function queueDonatedChat(root, payload) {
+  const record = recordFromDonatedChat(payload);
+  const dir = path.join(root, 'models', 'seed-data');
+  fs.mkdirSync(dir, { recursive: true });
+  const pending = path.join(dir, 'donated-chat.pending.jsonl');
+  const existing = new Set(safeJsonLines(pending).map((row) => row.id));
+  if (!existing.has(record.id)) fs.appendFileSync(pending, `${JSON.stringify(record)}\n`);
+  return { id: record.id, queued: !existing.has(record.id), domain: record.domain };
+}
+
+function safeJsonLines(file) {
+  try { return fs.readFileSync(file, 'utf8').split(/\r?\n/).filter(Boolean).map((line) => JSON.parse(line)); } catch { return []; }
+}
+
+export function promoteDonatedChats(root) {
+  const pending = path.join(root, 'models', 'seed-data', 'donated-chat.pending.jsonl');
+  const records = safeJsonLines(pending);
+  if (!records.length) return { promoted: 0, queued: 0 };
+  const promoted = appendRecords(root, records);
+  fs.writeFileSync(pending, '');
+  return { promoted, queued: records.length };
+}
+
 export function trainLiveSeed(root, { maxBytes = 4_000_000 } = {}) {
   const base = path.join(root, 'models', 'achllm.corpus.txt');
   const chatCodeCorpus = path.join(root, 'models', 'seed-data', 'chat-code-corpus.txt');
   const chunks = [];
   // Do not reuse legacy general-web or mixed public corpora in the live
   // checkpoint.  The new model scope is conversational and code-oriented.
-  for (const file of [base, chatCodeCorpus]) {
+  const foundation = path.join(root, 'models', 'achllm.foundation.txt');
+  for (const file of [foundation, base, chatCodeCorpus]) {
     try { chunks.push(fs.readFileSync(file, 'utf8')); } catch {}
   }
   const corpus = chunks.join('\n').slice(-maxBytes);

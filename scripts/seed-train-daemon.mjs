@@ -13,6 +13,7 @@ let cycle = 0;
 for (;;) {
   const script = cycle > 0 && cycle % distillEvery === 0 ? 'scripts/seed-distill-once.mjs' : 'scripts/seed-train-once.mjs';
   try {
+    await runOnce('scripts/promote-achllm-feedback.mjs');
     await runOnce(script);
     await runOnce('scripts/write-achllm-status.mjs');
     if (process.env.ACHLLM_STATUS_PUSH === '1' && cycle % statusSyncEvery === 0) await runOnce('scripts/publish-achllm-status.mjs');

@@ -1,4 +1,8 @@
 # Changelog
+## 1.41.4 — 2026-11-12
+- **Consent-based chat learning:** an owner can explicitly donate an AchLLM exchange from either chat surface. The server rejects likely credentials, queues only consented conversations, and promotes them at the next training cycle.
+- **Permanent provenance:** recorded Mr. Mohana Achuthan as AchLLM's Godfather in the versioned identity record, foundation corpus, live telemetry, and direct identity answer.
+
 ## 1.41.3 — 2026-11-12
 - **Live model vitals:** all dashboard datasets now use the live gateway first, refresh every two seconds, and automatically display byte, KB, MB, GB, or TB units.
 - **Honest capacity reporting:** added serialized model size, transition-weight count, context/vocabulary data, and explicit FLOPS/TOPS applicability. The count-model architecture does not have tensor FLOPS/TOPS or neural parameters.

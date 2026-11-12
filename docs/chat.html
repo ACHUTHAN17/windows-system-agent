@@ -233,6 +233,14 @@
         border: 1px solid #30363d;
         margin-top: 8px;
       }
+      .learn {
+        display: block;
+        max-width: 860px;
+        margin: 0 auto 8px;
+        color: #8b949e;
+        font-size: 12px;
+      }
+      .learn input { vertical-align: middle; }
     </style>
   </head>
   <body>
@@ -309,6 +317,7 @@
       </div>
     </div>
     <div id="bar">
+      <label class="learn"><input id="achlearn" type="checkbox" /> I own this AchLLM exchange and explicitly donate it for training. It is queued locally, checked for likely credentials, and used in a later training cycle.</label>
       <div class="row">
         <input
           id="in"
@@ -619,6 +628,19 @@
         const j = await r.json();
         return j.choices[0].message.content;
       }
+      async function donateAchllmChat(url, user, pass, messages) {
+        const root = url.replace(/\/+$/, "");
+        const r = await fetch(root + "/feedback", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Basic " + btoa(`${user}:${pass}`),
+          },
+          body: JSON.stringify({ consent: true, messages }),
+        });
+        if (!r.ok) throw new Error("training donation rejected");
+        return r.json();
+      }
       async function getChat(model, msgs) {
         const sys = encodeURIComponent(msgs[0].content).slice(0, 1500);
         const convo = msgs
@@ -738,6 +760,18 @@
             esc(label) +
             "</div>" +
             renderWebAnswer(a);
+          if (mode === "achllm" && $("achlearn").checked) {
+            const e = selected();
+            try {
+              await donateAchllmChat(e.url, e.user, e.pass, [
+                { role: "user", content: t },
+                { role: "assistant", content: a },
+              ]);
+              b.innerHTML += '<div class="who">training donation queued</div>';
+            } catch (error) {
+              b.innerHTML += '<div class="who">answer was delivered; training donation was not stored</div>';
+            }
+          }
         } catch (e) {
           const s = e.status || "";
           b.innerHTML =
