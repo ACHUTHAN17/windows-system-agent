@@ -9,6 +9,7 @@ export const WIKIMEDIA_LICENSE = 'CC BY-SA 4.0 and GFDL (see source page)';
 export const ULTRACHAT_LICENSE = 'MIT';
 export const ULTRACHAT_SOURCE = 'https://huggingface.co/datasets/HuggingFaceH4/ultrachat_200k';
 const clean = (value) => String(value || '').replace(/\[[0-9]+\]/g, '').replace(/\s+/g, ' ').trim();
+const CODE_REQUEST = /```|\b(?:code|program|function|script|algorithm|debug|bug|error|exception|compile|syntax|api|sql|regex|python|javascript|typescript|node(?:\.js)?|react|html|css|java|kotlin|swift|rust|golang|c\+\+|c#|bash|powershell|linux|git)\b/i;
 
 export function recordsFromWikimedia(payload) {
   const pages = Array.isArray(payload?.query?.pages) ? payload.query.pages : [];
@@ -55,6 +56,30 @@ export function recordsFromUltraChat(payload) {
   }).filter(Boolean);
 }
 
+// The code lane is deliberately a subset of the same MIT-licensed public
+// teacher data.  This avoids mixing in code with unclear per-file licensing
+// while giving the model instruction -> implementation examples.
+export function recordsFromUltraChatCode(payload) {
+  const rows = Array.isArray(payload?.rows) ? payload.rows : [];
+  return rows.map((entry) => {
+    const row = entry?.row || entry || {};
+    const messages = Array.isArray(row.messages) ? row.messages : [];
+    const userText = messages.filter((message) => String(message.role).toLowerCase() === 'user').map((message) => clean(message.content)).join('\n');
+    const assistantText = messages.filter((message) => String(message.role).toLowerCase() === 'assistant').map((message) => String(message.content || '').trim()).join('\n');
+    if (!CODE_REQUEST.test(userText) || assistantText.length < 80) return null;
+    // Preserve line breaks and indentation in code targets.  Collapsing them
+    // would turn Python, YAML, and formatted examples into invalid training data.
+    const text = messages.map((message) => `${message.role || 'user'}: ${String(message.content || '').trim()}`).filter((line) => !line.endsWith(':')).join('\n');
+    if (text.length < 180) return null;
+    const key = row.prompt_id || entry.row_idx || crypto.createHash('sha256').update(text).digest('hex').slice(0, 16);
+    return {
+      id: `ultrachat-code-${key}`, source: ULTRACHAT_SOURCE, title: 'UltraChat public code teacher trace',
+      teacher: 'UltraChat200k public teacher target', text: text.slice(0, 16_000), license: ULTRACHAT_LICENSE,
+      domain: 'code', collectedAt: new Date().toISOString(),
+    };
+  }).filter(Boolean);
+}
+
 export async function fetchUltraChatRecords({ count = 2, offset = 0, fetchImpl = fetch } = {}) {
   const query = new URLSearchParams({ dataset: 'HuggingFaceH4/ultrachat_200k', config: 'default', split: 'train_sft', offset: String(Math.max(0, Number(offset) || 0)), length: String(Math.max(1, Math.min(10, Number(count) || 2))) });
   const response = await fetchImpl(`https://datasets-server.huggingface.co/rows?${query}`, {
@@ -65,7 +90,19 @@ export async function fetchUltraChatRecords({ count = 2, offset = 0, fetchImpl =
   return recordsFromUltraChat(await response.json());
 }
 
-export function appendRecords(root, records) {
+export async function fetchUltraChatCodeRecords({ count = 2, offset = 0, fetchImpl = fetch } = {}) {
+  // Scan a bounded window because coding prompts are interleaved with chat.
+  const scan = Math.max(1, Math.min(10, Math.max(Number(count) || 2, 6)));
+  const query = new URLSearchParams({ dataset: 'HuggingFaceH4/ultrachat_200k', config: 'default', split: 'train_sft', offset: String(Math.max(0, Number(offset) || 0)), length: String(scan) });
+  const response = await fetchImpl(`https://datasets-server.huggingface.co/rows?${query}`, {
+    headers: { 'User-Agent': 'AchLLM-chat-code/1.39 (https://github.com/ACHUTHAN17/windows-system-agent)' },
+    signal: AbortSignal.timeout(45_000),
+  });
+  if (!response.ok) throw new Error(`UltraChat dataset API HTTP ${response.status}`);
+  return { scanned: scan, records: recordsFromUltraChatCode(await response.json()).slice(0, Math.max(1, Math.min(10, Number(count) || 2))) };
+}
+
+export function appendRecords(root, records, { corpusName = 'chat-code-corpus.txt' } = {}) {
   const dir = path.join(root, 'models', 'seed-data');
   fs.mkdirSync(dir, { recursive: true });
   const manifest = path.join(dir, 'manifest.jsonl');
@@ -74,17 +111,18 @@ export function appendRecords(root, records) {
   const accepted = records.filter((record) => !existing.has(record.id));
   if (!accepted.length) return 0;
   const corpus = accepted.map((record) => `${record.title}\n${record.text}\n`).join('\n');
-  fs.appendFileSync(path.join(dir, 'public-corpus.txt'), corpus);
+  fs.appendFileSync(path.join(dir, corpusName), corpus);
   fs.appendFileSync(manifest, accepted.map((record) => JSON.stringify({ ...record, text: undefined })).join('\n') + '\n');
   return accepted.length;
 }
 
 export function trainLiveSeed(root, { maxBytes = 4_000_000 } = {}) {
   const base = path.join(root, 'models', 'achllm.corpus.txt');
-  const publicCorpus = path.join(root, 'models', 'seed-data', 'public-corpus.txt');
-  const legacyWikimediaCorpus = path.join(root, 'models', 'seed-data', 'wikimedia-corpus.txt');
+  const chatCodeCorpus = path.join(root, 'models', 'seed-data', 'chat-code-corpus.txt');
   const chunks = [];
-  for (const file of [base, legacyWikimediaCorpus, publicCorpus]) {
+  // Do not reuse legacy general-web or mixed public corpora in the live
+  // checkpoint.  The new model scope is conversational and code-oriented.
+  for (const file of [base, chatCodeCorpus]) {
     try { chunks.push(fs.readFileSync(file, 'utf8')); } catch {}
   }
   const corpus = chunks.join('\n').slice(-maxBytes);

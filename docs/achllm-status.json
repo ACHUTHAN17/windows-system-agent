@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "model": "achllm",
+  "scope": [
+    "chat",
+    "code"
+  ],
+  "updatedAt": "2026-11-12T05:21:20.153Z",
+  "checkpoint": {
+    "available": true,
+    "format": "achllm",
+    "order": 4,
+    "trainedBytes": 11460
+  },
+  "training": {
+    "records": 0,
+    "chatRecords": 0,
+    "codeRecords": 0,
+    "legacyRecordsExcluded": 3,
+    "source": "HuggingFaceH4/ultrachat_200k",
+    "license": "MIT"
+  },
+  "evaluation": {
+    "status": "baseline-only",
+    "note": "No capability score is published until held-out chat and code evaluations exist."
+  },
+  "security": {
+    "publicDataOnly": true,
+    "noCredentials": true,
+    "noPrivatePrompts": true
+  }
+}

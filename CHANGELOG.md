@@ -1,4 +1,9 @@
 # Changelog
+## 1.39.0 — 2026-11-12
+- **AchLLM scope:** the continuous checkpoint now trains from MIT-licensed conversational teacher traces only, alternating chat with a code-filtered lane. General web and legacy mixed corpora are excluded from the new live checkpoint.
+- **Transparent telemetry:** added a GitHub Pages AchLLM dashboard and machine-readable status document. It reports checkpoint, data lineage, licence, composition, and evaluation state without inventing capability scores.
+- **Safe live publication:** dashboard telemetry can be pushed periodically only after the server operator explicitly enables it with a least-privilege GitHub deploy credential; it is disabled by default.
+
 ## 1.34.0 — 2026-11-02
 - **Orchestra:** all agent entry points can now run a goal through a durable Conductor → Scheduler → worker DAG. Each run writes `plan.json`, task state, and `events.jsonl` under `runs/<runId>/`.
 - **Dedicated roles:** Muse Spark 1.1 is a separately configured Conductor planner; Hermes is the opt-in WSL2 long-horizon worker; OpenClaw is the opt-in owner-operated gateway/subagent worker; GitHub Actions remains an opt-in cloud worker. Native WinAgent control stays the dependable fallback.
