@@ -1,4 +1,7 @@
 # Changelog
+## 1.39.1 — 2026-11-12
+- **Telemetry reliability:** the opt-in status publisher now commits its generated public snapshot before rebasing, so a pending dashboard update cannot block its own GitHub sync.
+
 ## 1.39.0 — 2026-11-12
 - **AchLLM scope:** the continuous checkpoint now trains from MIT-licensed conversational teacher traces only, alternating chat with a code-filtered lane. General web and legacy mixed corpora are excluded from the new live checkpoint.
 - **Transparent telemetry:** added a GitHub Pages AchLLM dashboard and machine-readable status document. It reports checkpoint, data lineage, licence, composition, and evaluation state without inventing capability scores.

@@ -16,7 +16,6 @@ if (process.env.ACHLLM_STATUS_PUSH !== '1') {
   console.log(JSON.stringify({ published: false, reason: 'Set ACHLLM_STATUS_PUSH=1 only after configuring a GitHub deploy credential.' }));
   process.exit(0);
 }
-run(['pull', '--rebase', 'origin', 'main']);
 const pending = run(['status', '--porcelain', '--', 'docs/achllm-status.json']);
 if (!pending) {
   console.log(JSON.stringify({ published: false, reason: 'No dashboard status change.' }));
@@ -24,5 +23,8 @@ if (!pending) {
 }
 run(['add', 'docs/achllm-status.json']);
 run(['-c', 'user.name=AchLLM telemetry', '-c', 'user.email=achllm@users.noreply.github.com', 'commit', '-m', 'chore(achllm): publish training telemetry']);
+// Commit first: this keeps the generated status safe while rebasing against
+// any normal repository changes made between two telemetry intervals.
+run(['pull', '--rebase', 'origin', 'main']);
 run(['push', 'origin', 'main']);
 console.log(JSON.stringify({ published: true, file: 'docs/achllm-status.json' }));
