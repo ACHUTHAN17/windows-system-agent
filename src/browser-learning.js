@@ -22,8 +22,10 @@ const strip = (html) => String(html || '')
 
 export function browserWikimediaRecordFromDom(dom, { url } = {}) {
   const title = strip(String(dom).match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] || '').replace(/ - Wikipedia$/i, '').trim();
-  const main = String(dom).match(/<(?:main|div)[^>]+(?:id=["']content["']|class=["'][^"']*mw-content[^"']*["'])[^>]*>([\s\S]*?)<\/(?:main|div)>/i)?.[1] || dom;
-  const text = strip(main);
+  const main = String(dom).match(/<(?:main|div)[^>]+(?:id=["']content["']|class=["'][^"']*mw-content[^"']*["'])[^>]*>([\s\S]*?)<\/(?:main|div)>/i)?.[1];
+  // Some rendered Wikipedia layouts close a nested content div before the
+  // article body. Fall back to the full rendered document in that case.
+  const text = strip(main).length >= 300 ? strip(main) : strip(dom);
   if (!title || text.length < 300 || !/^https:\/\/en\.wikipedia\.org\/wiki\//.test(String(url || ''))) return null;
   return {
     id: `chromium-wikipedia-${crypto.createHash('sha256').update(`${url}\n${text}`).digest('hex').slice(0, 24)}`,

@@ -1,4 +1,7 @@
 # Changelog
+## 1.41.8 — 2026-11-12
+- **Rendered-page parsing:** browser research now falls back to the full rendered document if a nested Wikimedia content container is too short to be a useful attributable reference.
+
 ## 1.41.7 — 2026-11-12
 - **Browser collector reliability:** increased the bounded rendered-DOM buffer for large Wikimedia pages while retaining only a 12 KB attributable text extract per page.
 
