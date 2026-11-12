@@ -1,11 +1,11 @@
 {
-  "schema": 1,
+  "schema": 2,
   "model": "achllm",
   "scope": [
     "chat",
     "code"
   ],
-  "updatedAt": "2026-11-12T05:45:53.405Z",
+  "updatedAt": "2026-11-12T06:02:29.157Z",
   "checkpoint": {
     "available": true,
     "format": "achllm",
@@ -20,9 +20,33 @@
     "source": "HuggingFaceH4/ultrachat_200k",
     "license": "MIT"
   },
+  "publication": {
+    "status": "published",
+    "scope": "Live telemetry only",
+    "codeLicense": "Proprietary — no permission granted",
+    "modelArtifactLicense": "Proprietary — no permission granted",
+    "sourceDataLicense": "MIT upstream; third-party rights remain with the source"
+  },
   "evaluation": {
-    "status": "baseline-only",
-    "note": "No capability score is published until held-out chat and code evaluations exist."
+    "status": "not-evaluated",
+    "note": "Publication checks pass, but no held-out chat or code benchmark score has been published.",
+    "comparableToFrontier": false
+  },
+  "comparison": {
+    "status": "awaiting-normalized-evidence",
+    "note": "Frontier comparison is shown as an evaluation framework only. No vendor or AchLLM capability values are invented.",
+    "aspects": [
+      "chat",
+      "code",
+      "reasoning",
+      "math",
+      "multilingual",
+      "long-context",
+      "tool-use",
+      "vision",
+      "safety",
+      "efficiency"
+    ]
   },
   "security": {
     "publicDataOnly": true,
