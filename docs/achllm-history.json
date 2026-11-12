@@ -1,0 +1,18 @@
+[
+  {
+    "updatedAt": "2026-11-12T06:32:32.889Z",
+    "trainedBytes": 102057,
+    "chatRecords": 0,
+    "codeRecords": 0,
+    "legacyRecordsExcluded": 26,
+    "evaluatedAspects": 0
+  },
+  {
+    "updatedAt": "2026-11-12T07:02:34.253Z",
+    "trainedBytes": 114972,
+    "chatRecords": 0,
+    "codeRecords": 0,
+    "legacyRecordsExcluded": 29,
+    "evaluatedAspects": 0
+  }
+]

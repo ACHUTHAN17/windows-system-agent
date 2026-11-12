@@ -5,18 +5,18 @@
     "chat",
     "code"
   ],
-  "updatedAt": "2026-11-12T06:02:30.224Z",
+  "updatedAt": "2026-11-12T07:02:34.253Z",
   "checkpoint": {
     "available": true,
     "format": "achllm",
     "order": 4,
-    "trainedBytes": 86096
+    "trainedBytes": 114972
   },
   "training": {
     "records": 0,
     "chatRecords": 0,
     "codeRecords": 0,
-    "legacyRecordsExcluded": 23,
+    "legacyRecordsExcluded": 29,
     "source": "HuggingFaceH4/ultrachat_200k",
     "license": "MIT"
   },
