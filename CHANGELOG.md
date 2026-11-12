@@ -1,4 +1,7 @@
 # Changelog
+## 1.41.7 — 2026-11-12
+- **Browser collector reliability:** increased the bounded rendered-DOM buffer for large Wikimedia pages while retaining only a 12 KB attributable text extract per page.
+
 ## 1.41.6 — 2026-11-12
 - **Container browser compatibility:** preserved Chromium's sandbox and disposable profile while adding the container-safe shared-memory flag required by the hosted machine.
 

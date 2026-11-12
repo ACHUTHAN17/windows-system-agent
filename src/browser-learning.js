@@ -42,7 +42,9 @@ export function renderWithIsolatedChromium(url, { browserBin = process.env.ACHLL
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'achllm-chromium-'));
   try {
     for (const bin of candidates) {
-      const result = spawnSync(bin, ['--headless', '--no-first-run', '--no-default-browser-check', '--disable-extensions', '--disable-sync', '--disable-dev-shm-usage', `--user-data-dir=${profile}`, '--dump-dom', url], { encoding: 'utf8', timeout: 45_000, maxBuffer: 2_000_000 });
+      // Wikipedia's rendered DOM can be several megabytes even though the
+      // retained, attributable training extract is capped at 12 KB below.
+      const result = spawnSync(bin, ['--headless', '--no-first-run', '--no-default-browser-check', '--disable-extensions', '--disable-sync', '--disable-dev-shm-usage', `--user-data-dir=${profile}`, '--dump-dom', url], { encoding: 'utf8', timeout: 45_000, maxBuffer: 8_000_000 });
       if (!result.error && result.status === 0 && result.stdout) return result.stdout;
     }
     throw new Error('No compatible headless Chromium executable was available');
