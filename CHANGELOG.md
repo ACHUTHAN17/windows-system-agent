@@ -1,4 +1,7 @@
 # Changelog
+## 1.41.6 — 2026-11-12
+- **Container browser compatibility:** preserved Chromium's sandbox and disposable profile while adding the container-safe shared-memory flag required by the hosted machine.
+
 ## 1.41.5 — 2026-11-12
 - **Isolated browser research:** AchLLM can use the server's headless Chromium once per six training cycles to collect one attributed reference page from its versioned Wikimedia allow-list. It uses a disposable profile and cannot access user browser data.
 - **Agent path:** added a measurable, sandbox-first plan for future observe-only, planned, and controlled agent capabilities. The present baseline remains unauthorised for autonomous system control.
