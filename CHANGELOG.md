@@ -1,4 +1,8 @@
 # Changelog
+## 1.40.0 — 2026-11-12
+- **Evidence dashboard:** added a zoomable comparison workspace spanning chat, code, reasoning, math, multilingual, long-context, tool use, vision, safety, and efficiency without inventing frontier-model scores.
+- **Rights clarity:** added a published-telemetry state and distinct proprietary-project / upstream-data licence disclosures.
+
 ## 1.39.1 — 2026-11-12
 - **Telemetry reliability:** the opt-in status publisher now commits its generated public snapshot before rebasing, so a pending dashboard update cannot block its own GitHub sync.
 

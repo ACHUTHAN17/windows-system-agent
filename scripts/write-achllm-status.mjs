@@ -16,13 +16,29 @@ const records = safeRead(manifestFile, '').split(/\r?\n/).filter(Boolean).map((l
 const domains = { chat: 0, code: 0, legacy: 0 };
 for (const record of records) domains[record.domain === 'code' ? 'code' : record.domain === 'chat' ? 'chat' : 'legacy']++;
 const status = {
-  schema: 1,
+  schema: 2,
   model: 'achllm',
   scope: ['chat', 'code'],
   updatedAt: new Date().toISOString(),
   checkpoint: { available: Boolean(model.format), format: model.format || null, order: model.order || null, trainedBytes: model.trainedBytes || 0 },
   training: { records: domains.chat + domains.code, chatRecords: domains.chat, codeRecords: domains.code, legacyRecordsExcluded: domains.legacy, source: 'HuggingFaceH4/ultrachat_200k', license: 'MIT' },
-  evaluation: { status: 'baseline-only', note: 'No capability score is published until held-out chat and code evaluations exist.' },
+  publication: {
+    status: 'published',
+    scope: 'Live telemetry only',
+    codeLicense: 'Proprietary — no permission granted',
+    modelArtifactLicense: 'Proprietary — no permission granted',
+    sourceDataLicense: 'MIT upstream; third-party rights remain with the source',
+  },
+  evaluation: {
+    status: 'not-evaluated',
+    note: 'Publication checks pass, but no held-out chat or code benchmark score has been published.',
+    comparableToFrontier: false,
+  },
+  comparison: {
+    status: 'awaiting-normalized-evidence',
+    note: 'Frontier comparison is shown as an evaluation framework only. No vendor or AchLLM capability values are invented.',
+    aspects: ['chat', 'code', 'reasoning', 'math', 'multilingual', 'long-context', 'tool-use', 'vision', 'safety', 'efficiency'],
+  },
   security: { publicDataOnly: true, noCredentials: true, noPrivatePrompts: true },
 };
 const output = path.join(root, 'docs', 'achllm-status.json');

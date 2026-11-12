@@ -18,7 +18,9 @@ npm run distill:achllm-once
 npm run status:achllm
 ```
 
-`npm run status:achllm` produces `docs/achllm-status.json`, which powers the GitHub Pages dashboard at `docs/achllm.html`. The dashboard reports data composition and checkpoint facts. It deliberately labels evaluation as baseline-only until held-out chat and code tests exist.
+`npm run status:achllm` produces `docs/achllm-status.json`, which powers the GitHub Pages dashboard at `docs/achllm.html`. The dashboard reports data composition, checkpoint facts, publication state, and a zoomable evaluation-comparison framework. Publication means the telemetry has been published; it is not a capability pass. The dashboard deliberately shows comparison values as **not evaluated** until reproducible held-out chat and code tests exist.
+
+WinAgent-authored code, documentation, dashboard, and AchLLM model artefacts are proprietary and carry no licence to use, copy, or redistribute. The upstream UltraChat source remains MIT-licensed; that upstream licence cannot be made private or revoked by this repository.
 
 To make the GitHub Pages copy update from a server, configure a write-capable, least-privilege GitHub deploy credential on that server and then set `ACHLLM_STATUS_PUSH=1` in the trainer service. The trainer publishes only `docs/achllm-status.json` once per hour by default. It never commits prompts, model files, API keys, or system data. The setting is intentionally off by default.
 

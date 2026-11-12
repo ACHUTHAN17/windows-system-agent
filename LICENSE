@@ -13,6 +13,13 @@ prior express written permission.
 Viewing the source code in this public repository does not constitute, and
 must not be construed as, a grant of any such license or right.
 
+Third-party materials, including dependencies and public training-data
+references, remain subject to their own licences. This licence grants no
+rights in those materials and does not attempt to revoke rights their authors
+have already granted. AchLLM model artefacts and all WinAgent-authored code,
+documentation, dashboards, and assets are proprietary and may not be used
+without the Owner's prior express written permission.
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
