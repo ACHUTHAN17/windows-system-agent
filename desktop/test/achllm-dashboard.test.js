@@ -8,7 +8,7 @@ const root = path.join(__dirname, '..', '..');
 
 test('AchLLM dashboard exposes zoomable evidence charts and a protected test chat', () => {
   const html = fs.readFileSync(path.join(root, 'docs', 'achllm.html'), 'utf8');
-  for (const text of ['Checkpoint growth', 'Training inventory', 'Evidence readiness', 'Ten-aspect evidence map', 'Ctrl + wheel', 'reasoning', 'multilingual', 'long-context', 'tool-use', 'Test AchLLM', 'Gateway password']) {
+  for (const text of ['Checkpoint growth', 'Training inventory', 'Evidence readiness', 'Ten-aspect evidence map', 'Ctrl + wheel', 'reasoning', 'multilingual', 'long-context', 'tool-use', 'Test AchLLM', 'Gateway password', 'live refresh 2s', 'setInterval']) {
     assert.ok(html.includes(text), `missing ${text}`);
   }
 });
@@ -28,4 +28,5 @@ test('public gateway keeps model access authenticated and origin-restricted', ()
   assert.match(proxy, /WINAGENT_CORS_ORIGIN/);
   assert.match(proxy, /rateAllowed/);
   assert.match(proxy, /v1\/chat\/completions/);
+  assert.match(proxy, /achllm\/status/);
 });

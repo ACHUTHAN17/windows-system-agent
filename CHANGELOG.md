@@ -1,4 +1,7 @@
 # Changelog
+## 1.41.1 — 2026-11-12
+- **Live view:** dashboard telemetry now polls the server every two seconds through an origin-restricted, read-only gateway route; model chat remains authenticated.
+
 ## 1.41.0 — 2026-11-12
 - **Dashboard charts:** added checkpoint-growth, training-inventory doughnut, evidence-readiness bar chart, and a ten-aspect evaluation map. The server now publishes bounded non-sensitive history with status telemetry.
 
