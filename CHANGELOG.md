@@ -1,4 +1,8 @@
 # Changelog
+## 1.42.12 — 2026-11-13
+- **Teacher-guided curriculum:** added original, attributable lessons for chat, code, debugging, planning, privacy, and safety; the installer is idempotent and joins the existing licensed training flow.
+- **Training-data guide:** documented enabled sources, consent rules, and reviewed expansion lanes.
+
 ## 1.42.11 — 2026-11-13
 - **Live dashboard truth:** added a separate low-priority telemetry service that publishes real runtime state every three seconds, without committing private data or creating overlapping trainer jobs.
 

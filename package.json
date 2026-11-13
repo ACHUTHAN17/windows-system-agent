@@ -1,6 +1,6 @@
 {
   "name": "windows-system-agent",
-  "version": "1.42.11",
+  "version": "1.42.12",
   "description": "Cross-platform system agent: offline device control plus optional free cloud planning",
   "type": "module",
   "engines": {
@@ -20,6 +20,7 @@
     "train:seed-once": "node ./scripts/seed-train-once.mjs",
     "train:seed-daemon": "node ./scripts/seed-train-daemon.mjs",
     "distill:achllm-once": "node ./scripts/seed-distill-once.mjs",
+    "teach:achllm": "node ./scripts/install-achllm-teacher-curriculum.mjs",
     "status:achllm": "node ./scripts/write-achllm-status.mjs",
     "publish:achllm-status": "node ./scripts/publish-achllm-status.mjs",
     "train:achllm-neural": "python3 ./neural/train.py",

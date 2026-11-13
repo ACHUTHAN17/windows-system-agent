@@ -14,6 +14,7 @@ let cycle = 0;
 for (;;) {
   const script = cycle > 0 && cycle % browserEvery === 0 ? 'scripts/seed-browser-once.mjs' : cycle > 0 && cycle % distillEvery === 0 ? 'scripts/seed-distill-once.mjs' : 'scripts/seed-train-once.mjs';
   try {
+    if (process.env.ACHLLM_TEACHER_CURRICULUM !== '0') await runOnce('scripts/install-achllm-teacher-curriculum.mjs');
     await runOnce('scripts/promote-achllm-feedback.mjs');
     await runOnce(script);
     await runOnce('scripts/write-achllm-status.mjs');

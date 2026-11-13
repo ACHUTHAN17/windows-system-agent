@@ -3,6 +3,7 @@ const test = require('node:test');
 const assert = require('node:assert');
 const fs = require('node:fs');
 const path = require('node:path');
+const { pathToFileURL } = require('node:url');
 
 const root = path.join(__dirname, '..', '..');
 
@@ -40,4 +41,16 @@ test('AchLLM continuous trainer uses serial micro-cycles with CPU limits', () =>
   assert.match(telemetry, /write-achllm-status\.mjs/);
   assert.match(telemetry, /sleep 3/);
   assert.match(service, /Nice=10/);
+});
+
+test('AchLLM teacher curriculum is attributable, small, and chat shaped', async () => {
+  const curriculum = await import(pathToFileURL(path.join(root, 'src', 'teacher-curriculum.js')).href);
+  const lessons = curriculum.teacherCurriculumRecords();
+  assert.ok(lessons.length >= 12);
+  assert.ok(lessons.every((lesson) => lesson.id.startsWith('achllm-teacher-v1-') && lesson.license === curriculum.TEACHER_CURRICULUM_LICENSE));
+  assert.ok(lessons.every((lesson) => /^user: .+\nassistant: /s.test(lesson.text)));
+  const guide = fs.readFileSync(path.join(root, 'docs', 'ACHLLM_TRAINING_DATA.md'), 'utf8');
+  assert.match(guide, /UltraChat 200k/);
+  assert.match(guide, /OpenAssistant OASST1/);
+  assert.match(guide, /Do not ingest/);
 });
