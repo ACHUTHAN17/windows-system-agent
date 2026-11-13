@@ -1,0 +1,18 @@
+[Unit]
+Description=AchLLM neural loopback endpoint
+After=winagent-neural-trainer.service
+
+[Service]
+Type=simple
+WorkingDirectory=%h/winagent
+Environment=ACHLLM_NEURAL_PORT=8092
+ExecStart=%h/.local/share/achllm-neural/bin/python %h/winagent/neural/serve.py
+Restart=on-failure
+RestartSec=30
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ReadOnlyPaths=%h/winagent/models
+
+[Install]
+WantedBy=default.target

@@ -9,10 +9,13 @@ import { agentReadinessReport } from '../src/achllm-agent-readiness.js';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const seedDir = path.join(root, 'models', 'seed-data');
 const modelFile = path.join(root, 'models', 'achllm.live.model.json');
+const neuralMetadataFile = path.join(root, 'models', 'achllm-neural', 'metadata.json');
 const manifestFile = path.join(seedDir, 'manifest.jsonl');
 const safeRead = (file, fallback) => { try { return fs.readFileSync(file, 'utf8'); } catch { return fallback; } };
 let model = {};
 try { model = JSON.parse(safeRead(modelFile, '{}')); } catch {}
+let neural = null;
+try { neural = JSON.parse(safeRead(neuralMetadataFile, 'null')); } catch {}
 const transitionRows = Object.values(model.transitions || {});
 const learnedWeights = transitionRows.reduce((total, row) => total + (Array.isArray(row) ? row.length : 0), 0);
 const averageCandidatesPerLookup = transitionRows.length ? learnedWeights / transitionRows.length : 0;
@@ -39,6 +42,17 @@ const status = {
       tops: null,
       note: 'Not applicable: AchLLM is a non-neural count model, not a tensor/FLOPS architecture. The dashboard reports actual transition-weight entries and lookup candidates instead.',
     },
+  },
+  neural: neural?.format === 'achllm-neural' ? {
+    status: neural.status || 'checkpoint-ready', architecture: neural.architecture || null,
+    checkpoint: neural.checkpoint || null, checkpointBytes: Number(neural.checkpointBytes || 0),
+    parameters: Number(neural.parameters || 0), metrics: neural.metrics || null,
+    estimatedTrainingFlops: Number(neural.estimatedTrainingFlops || 0),
+    estimatedTrainingFlopsNote: neural.estimatedTrainingFlopsNote || null,
+    evaluation: 'validation and held-out loss recorded; capability is not established',
+  } : {
+    status: 'not-trained',
+    evaluation: 'Optional neural pipeline is installed in the repository but has not produced a checkpoint.',
   },
   training: { records: domains.chat + domains.code + domains.browser, chatRecords: domains.chat, codeRecords: domains.code, browserRecords: domains.browser, legacyRecordsExcluded: domains.legacy, source: 'HuggingFaceH4/ultrachat_200k + Wikimedia allow-list', license: 'MIT + CC BY-SA 4.0/GFDL' },
   publication: {

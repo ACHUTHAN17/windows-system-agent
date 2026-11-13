@@ -1,4 +1,8 @@
 # Changelog
+## 1.42.0 — 2026-11-13
+- **Neural pipeline:** added the optional CPU-first AchLLM-Neural decoder-only byte-transformer path. It initializes from random weights, trains only from the attributable local chat/code corpus, uses a document-level train/validation/held-out split, writes checkpoints atomically, and records real loss/parameter/size metadata.
+- **Safe deployment:** added loopback-only neural inference and restartable user services. The neural path remains an evaluated research model; it is not publicly exposed or connected to system controls.
+
 ## 1.41.9 — 2026-11-13
 - **Agent-readiness gate:** added a strict, authenticated read-only plan validator. It accepts only bounded `system_info` and Wikimedia-reference plans, rejects secrets and all execution tools, and records that no action was executed.
 - **Live readiness:** dashboard telemetry now reports the current `research-only` stage and the evidence required before any capability can advance.

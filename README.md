@@ -26,7 +26,7 @@ WinAgent includes one shared orchestration layer for CLI, desktop, Telegram, web
 
 For CPU-only installations, WinAgent also includes a trainable local agent-use routing model. It is a small, auditable decision model for choosing a configured worker—not a replacement for a frontier LLM. Train it with `npm run train:agent-model`; see [docs/AGENT_USAGE_MODEL.md](docs/AGENT_USAGE_MODEL.md).
 
-WinAgent also includes **AchLLM**, a clean-room language-model research baseline trained from this repository's own corpus, without importing any existing model weights. It is intentionally separate from the agent driver until it passes task evaluations; see [docs/SEED_LM.md](docs/SEED_LM.md).
+WinAgent also includes **AchLLM**, a clean-room language-model research baseline trained from this repository's own corpus, without importing any existing model weights. It is intentionally separate from the agent driver until it passes task evaluations; see [docs/SEED_LM.md](docs/SEED_LM.md). The optional CPU-first transformer successor is documented in [docs/ACHLLM_NEURAL.md](docs/ACHLLM_NEURAL.md); it starts from random weights and remains evaluation-only.
 
 ## Offline by default
 

@@ -40,4 +40,6 @@ systemctl --user status winagent-seed-trainer.service winagent-seed-llm.service
 
 The implementation uses a backoff next-byte model with a compact serialized state. It is a real model trained from scratch, but it is intentionally a research baseline: the small corpus and CPU-only hardware cannot produce broad language understanding, reliable plans, or frontier-model quality. It is therefore **not connected to tool execution**. That safety boundary prevents an unproven model from controlling files, applications, or system settings.
 
+The optional next architecture is [AchLLM-Neural](ACHLLM_NEURAL.md): a CPU-first decoder transformer that initializes from random weights and records document-level validation/held-out loss. It is a pipeline validation and small-model research path, not a promise of general chat capability or an automatic replacement for this baseline.
+
 To progress it responsibly, add licensed task traces to `models/winagent-seed.corpus.txt`, evaluate held-out completions, and only consider tool integration after it reaches a documented success threshold. A model able to compete with leading commercial models requires orders of magnitude more data, accelerator compute, and evaluation infrastructure than a free CPU server provides.

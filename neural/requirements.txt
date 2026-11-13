@@ -1,0 +1,2 @@
+# CPU-only neural training is optional. Install into an isolated virtualenv.
+torch>=2.2,<2.8
