@@ -532,7 +532,7 @@
         <div class="neural-caption"><span id="network-meta">Waiting for neural checkpoint metadata…</span><span>Drag to rotate · scroll or use +/- to zoom · click a node to inspect</span></div>
       </div>
       <div class="network-layers" id="network-layers" aria-label="Neural architecture layer legend"></div>
-      <div class="node-inspector" id="node-inspector" aria-live="polite"><h3>Select a sample node</h3><p>Click a node in the 3D view to see its structural role and the current trainer state.</p><span class="hint">Each dot is a readable sample of a layer, not a separately measured thought or memory.</span></div>
+      <div class="node-inspector" id="node-inspector" aria-live="polite"><h3>Select a structural unit</h3><p>Click a node in the 3D view to see its architectural role and the current trainer state.</p><span class="hint">Each dot maps to one configured model dimension or vocabulary entry; it is not a separately measured thought or memory.</span></div>
       <div class="runtime-grid">
         <div class="runtime-item"><span class="label">Current work</span><b id="training-now">Waiting for trainer telemetry…</b></div>
         <div class="runtime-item"><span class="label">Checkpoint training</span><b id="training-steps">—</b></div>
@@ -798,12 +798,13 @@
       const identity = status.identity || {};
       q("#identity").innerHTML = `<b>Project identity:</b> ${esc(identity.godfather || "Not recorded")} is the Godfather of AchLLM. <a href="${esc(identity.record || "ACHLLM_IDENTITY.md")}">View provenance</a>`;
     }
-    const neuralView = { yaw: -0.48, pitch: -0.16, zoom: 1, drag: null, neural: null, runtime: {}, projected: [], selectedKey: null };
+    const neuralView = { yaw: -0.48, pitch: -0.16, zoom: 1, drag: null, neural: null, runtime: {}, projected: [], selectedKey: null, animationTimer: null };
     function sampledLayers(neural) {
       const config = neural?.config || {}, width = Math.max(1, Number(config.width || 0)), blocks = Math.max(0, Number(config.layers || 0));
-      const layers = [["Input bytes", 8], ["Token embedding", Math.min(14, width || 12)]];
-      for (let index = 0; index < blocks; index++) layers.push([`Transformer ${index + 1}`, Math.min(16, width || 12)]);
-      layers.push(["Vocabulary logits", 8]);
+      const context = Math.max(1, Number(config.context || 0)), vocabulary = Math.max(1, Number(neural?.vocab?.size || 259));
+      const layers = [["Byte vocabulary", vocabulary], ["Token embedding", width], ["Position embedding", context]];
+      for (let index = 0; index < blocks; index++) layers.push([`Transformer ${index + 1}`, width]);
+      layers.push(["Layer normalization", width], ["Vocabulary logits", vocabulary]);
       return layers;
     }
     function nodesFor(neural) {
@@ -828,22 +829,24 @@
     function nodeDescription(node, neural, runtime) {
       const config = neural?.config || {}, layers = Number(config.layers || 0), state = runtime?.state || "unknown";
       let role;
-      if (node.label === "Input bytes") role = "Input sample: represents a byte position from the active training or chat text.";
-      else if (node.label === "Token embedding") role = "Token embedding sample: represents the learned vector lookup stage shared by the model.";
-      else if (node.label === "Vocabulary logits") role = "Output sample: contributes to the score distribution used to choose the next byte/token.";
-      else role = `Transformer block ${node.layer - 1} of ${layers}: a sampled position in the shared attention and feed-forward computation.`;
-      const work = state === "training" ? "The trainer is currently updating shared checkpoint weights from the approved corpus. Node-level loss is not measured separately." : state === "evaluating" ? "The checkpoint is being tested with direct prompts. This view has no per-node evaluation metric." : state === "error" ? "The last trainer cycle reported an issue. This node remains a structural sample until the next successful cycle." : "The trainer is idle between scheduled cycles. This node is ready for the next shared-weight update.";
+      if (node.label === "Byte vocabulary") role = `Byte vocabulary entry ${node.index + 1}: one real input/output byte class configured in the checkpoint.`;
+      else if (node.label === "Token embedding") role = `Token embedding dimension ${node.index + 1}: one of the model's ${config.width} hidden features.`;
+      else if (node.label === "Position embedding") role = `Position embedding ${node.index + 1}: one of the model's ${config.context} context positions.`;
+      else if (node.label === "Layer normalization") role = `Normalization feature ${node.index + 1}: one of the ${config.width} final hidden dimensions.`;
+      else if (node.label === "Vocabulary logits") role = `Vocabulary output ${node.index + 1}: one real output score class in the byte vocabulary.`;
+      else role = `Transformer block ${node.layer - 2} of ${layers}: hidden feature ${node.index + 1} of ${config.width} in the shared attention and feed-forward computation.`;
+      const work = state === "training" ? "The trainer is updating shared checkpoint weights from the approved corpus. Animated path activity is shown while this compute state is live; node-level loss is not measured separately." : state === "evaluating" ? "The checkpoint is being evaluated with direct prompts. Animated path activity is shown while this compute state is live; this view has no per-node quality metric." : state === "error" ? "The last trainer cycle reported an issue. Live path activity is paused until the next successful cycle." : "The trainer is idle between scheduled cycles. No path animation is shown because no live training or evaluation compute is running.";
       return { role, work };
     }
     function renderNodeInspector() {
       const holder = q("#node-inspector"), neural = neuralView.neural;
       const chosen = neuralView.projected.find((item) => nodeKey(item.node) === neuralView.selectedKey);
       if (!chosen || !neural) {
-        holder.innerHTML = '<h3>Select a sample node</h3><p>Click a node in the 3D view to see its structural role and the current trainer state.</p><span class="hint">Each dot is a readable sample of a layer, not a separately measured thought or memory.</span>';
+        holder.innerHTML = '<h3>Select a structural unit</h3><p>Click a node in the 3D view to see its architectural role and the current trainer state.</p><span class="hint">Each dot maps to one configured model dimension or vocabulary entry; it is not a separately measured thought or memory.</span>';
         return;
       }
       const detail = nodeDescription(chosen.node, neural, neuralView.runtime);
-      holder.innerHTML = `<h3>${esc(chosen.node.label)} · sample ${chosen.node.index + 1}</h3><p>${esc(detail.role)}</p><p><b>Current status:</b> ${esc(detail.work)}</p><span class="hint">This is architecture and runtime telemetry, not a claim that the model stores one isolated fact in this dot.</span>`;
+      holder.innerHTML = `<h3>${esc(chosen.node.label)} · unit ${chosen.node.index + 1}</h3><p>${esc(detail.role)}</p><p><b>Current status:</b> ${esc(detail.work)}</p><span class="hint">This is architecture and runtime telemetry, not a claim that the model stores one isolated fact in this dot.</span>`;
     }
     function setNeuralZoom(value) {
       neuralView.zoom = Math.max(0.65, Math.min(2.4, value));
@@ -863,15 +866,26 @@
       const projected = raw.map((item) => ({ ...item, x: width / 2 + (item.x - (bounds.minX + bounds.maxX) / 2) * scale, y: height / 2 + 22 + (item.y - (bounds.minY + bounds.maxY) / 2) * scale, radius: Math.max(3.2, Math.min(10, 4.5 + item.depth * 0.16)) }));
       neuralView.projected = projected;
       const byLayer = model.layers.map((_, layer) => projected.filter((item) => item.node.layer === layer));
-      ctx.lineWidth = 0.65;
-      for (let layer = 0; layer < byLayer.length - 1; layer++) {
-        const current = byLayer[layer], next = byLayer[layer + 1];
-        current.forEach((from, index) => {
-          for (let path = 0; path < Math.min(3, next.length); path++) {
-            const to = next[(index * 5 + path * 3) % next.length];
-            const alpha = Math.max(0.05, Math.min(0.28, 0.13 + (from.depth + to.depth) / 95));
-            ctx.strokeStyle = `rgba(74, 205, 240, ${alpha})`; ctx.beginPath(); ctx.moveTo(from.x, from.y); ctx.lineTo(to.x, to.y); ctx.stroke();
-          }
+      const activeCompute = ["training", "evaluating"].includes(neuralView.runtime?.state);
+      const connections = [];
+      if (activeCompute) {
+        ctx.lineWidth = 0.65;
+        for (let layer = 0; layer < byLayer.length - 1; layer++) {
+          const current = byLayer[layer], next = byLayer[layer + 1];
+          current.forEach((from, index) => {
+            for (let path = 0; path < Math.min(3, next.length); path++) {
+              const to = next[(index * 5 + path * 3) % next.length];
+              const alpha = Math.max(0.045, Math.min(0.16, 0.08 + (from.depth + to.depth) / 160));
+              ctx.strokeStyle = `rgba(74, 205, 240, ${alpha})`; ctx.beginPath(); ctx.moveTo(from.x, from.y); ctx.lineTo(to.x, to.y); ctx.stroke();
+              connections.push({ from, to, layer, index, path });
+            }
+          });
+        }
+        const now = Date.now() / 850;
+        connections.filter((_, index) => index % 5 === 0).forEach((link, index) => {
+          const travel = (now + link.layer * 0.17 + index * 0.071) % 1;
+          const x = link.from.x + (link.to.x - link.from.x) * travel, y = link.from.y + (link.to.y - link.from.y) * travel;
+          ctx.fillStyle = "rgba(172, 250, 255, .95)"; ctx.beginPath(); ctx.arc(x, y, 2.1, 0, Math.PI * 2); ctx.fill();
         });
       }
       projected.sort((a, b) => a.depth - b.depth).forEach((item) => {
@@ -880,15 +894,19 @@
         ctx.fillStyle = selected ? "rgba(255, 206, 112, .94)" : `rgba(96, 220, 245, ${0.25 + glow * 0.6})`; ctx.beginPath(); ctx.arc(item.x, item.y, item.radius + (selected ? 4 : 2), 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = `rgba(202, 250, 255, ${0.55 + glow * 0.4})`; ctx.beginPath(); ctx.arc(item.x, item.y, item.radius, 0, Math.PI * 2); ctx.fill();
       });
+      ctx.font = "12px system-ui";
+      ctx.fillStyle = activeCompute ? "#7ee4ed" : "#8391a6";
+      ctx.fillText(activeCompute ? `LIVE ${String(neuralView.runtime.state).toUpperCase()} COMPUTE · animated markers show active phase` : "IDLE · no live transfer path shown", 14, 24);
       renderNodeInspector();
+      if (activeCompute && !neuralView.animationTimer) neuralView.animationTimer = setTimeout(() => { neuralView.animationTimer = null; drawNeuralView(); }, 180);
     }
     function neuralRuntime(status) {
       const neural = status.neural || {}, runtime = neural.runtime || {}, config = neural.config || {}, training = neural.training || {}, quality = neural.chatEvaluation?.qualityGate;
       neuralView.neural = neural;
       neuralView.runtime = runtime;
       const sampled = nodesFor(neural).nodes.length;
-      q("#network-meta").textContent = neural.parameters ? `${n(neural.parameters)} actual parameters · ${config.layers || 0} transformer layers · ${config.width || 0} hidden width · ${sampled} displayed sample nodes` : "No neural checkpoint available yet";
-      q("#network-layers").innerHTML = sampledLayers(neural).map(([label, count]) => `<span class="network-layer">${esc(label)} · ${n(count)} samples</span>`).join("");
+      q("#network-meta").textContent = neural.parameters ? `${n(neural.parameters)} actual parameters · ${config.layers || 0} transformer layers · ${config.width || 0} hidden width · ${sampled} structural units shown from checkpoint dimensions` : "No neural checkpoint available yet";
+      q("#network-layers").innerHTML = sampledLayers(neural).map(([label, count]) => `<span class="network-layer">${esc(label)} · ${n(count)} units</span>`).join("");
       q("#training-now").textContent = runtime.state === "training" ? "Training checkpoint on CPU" : runtime.state === "evaluating" ? "Evaluating direct checkpoint samples" : runtime.state === "idle" ? "Idle until the next scheduled training cycle" : runtime.state === "error" ? "Last training cycle needs attention" : "Awaiting first trainer report";
       q("#training-steps").textContent = training.cumulativeSteps != null ? `${n(training.cumulativeSteps)} cumulative steps · ${n(training.cycleSteps)} latest cycle` : "No checkpoint steps recorded";
       q("#training-quality").textContent = quality ? `${quality.passed ? "Passed mechanical screen" : "Blocked: repetitive output detected"} (${n(quality.mechanicallyHealthy)}/${n(quality.total)} samples)` : "Evaluation report pending";

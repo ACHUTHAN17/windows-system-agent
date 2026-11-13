@@ -53,7 +53,7 @@ const status = {
     status: neural.status || 'checkpoint-ready', architecture: neural.architecture || null,
     checkpoint: neural.checkpoint || null, checkpointBytes: Number(neural.checkpointBytes || 0),
     parameters: Number(neural.parameters || 0), metrics: neural.metrics || null,
-    config: neural.config || null,
+    config: neural.config || null, vocab: neural.vocab || null,
     training: neural.training || null,
     runtime: neuralRuntime || { state: 'unknown', note: 'trainer has not written runtime state yet' },
     estimatedTrainingFlops: Number(neural.estimatedTrainingFlops || 0),
