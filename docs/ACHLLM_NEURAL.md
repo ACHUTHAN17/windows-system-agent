@@ -34,3 +34,7 @@ curl http://127.0.0.1:8092/v1/models
 ```
 
 The endpoint binds only to `127.0.0.1`. It is intentionally not exposed publicly or connected to system-tool execution. The free host can pause or stop after its runtime limit, so the service resumes rather than providing a literal 24/7 guarantee.
+
+## Chat reliability gate
+
+The public AchLLM chat service uses attributable retrieval from the licensed local corpus while the neural model is immature. It will not surface neural generations until the checkpoint has at least 3,000 training documents, validation loss at or below 2.0, and held-out loss at or below 2.2. Until then, unknown questions receive an honest limitation instead of a fabricated answer.

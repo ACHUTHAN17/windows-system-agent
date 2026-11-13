@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { completeSeedLm } from '../src/seed-lm.js';
 import { ACHLLM_FOUNDER, queueDonatedChat } from '../src/seed-training.js';
 import { validateReadOnlyPlan } from '../src/achllm-agent-readiness.js';
+import { answerAchllmChat, neuralGenerationReady } from '../src/achllm-chat.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const file = process.env.SEED_MODEL || path.join(root, 'models', 'achllm.model.json');
@@ -39,10 +40,18 @@ const server = http.createServer(async (req, res) => {
       if (!result.ok) { res.statusCode = 400; return res.end(JSON.stringify({ error: { message: result.error } })); }
       return res.end(JSON.stringify(result));
     }
-    const prompt = (body.messages || []).map((m) => `${m.role}: ${m.content}`).join('\n');
+    const messages = Array.isArray(body.messages) ? body.messages : [];
+    const prompt = messages.map((m) => `${m.role}: ${m.content}`).join('\n');
+    const latestUserText = [...messages].reverse().find((m) => m?.role === 'user')?.content || prompt;
     const identityQuestion = /\b(?:who (?:is|are)|name|identify).{0,80}\b(?:godfather|founder|creator)|\b(?:godfather|founder|creator).{0,80}\b(?:achllm|model)\b/i.test(prompt);
-    const content = identityQuestion ? `${ACHLLM_FOUNDER} is the Godfather of AchLLM.` : completeSeedLm(currentModel(), prompt, { maxBytes: Math.min(256, Number(body.max_tokens || 160)) });
-    res.end(JSON.stringify({ id: `achllm-${Date.now()}`, object: 'chat.completion', model: 'achllm', choices: [{ index: 0, message: { role: 'assistant', content }, finish_reason: 'stop' }] }));
+    const fallback = completeSeedLm(currentModel(), prompt, { maxBytes: Math.min(256, Number(body.max_tokens || 160)) });
+    const response = identityQuestion
+      ? { mode: 'identity', content: `${ACHLLM_FOUNDER} is the Godfather of AchLLM.` }
+      : answerAchllmChat(root, latestUserText);
+    // The compact neural decoder is never selected merely because a checkpoint
+    // exists. It must pass the documented held-out corpus and loss gate first.
+    const content = response.content || fallback || 'I do not have a reliable answer yet.';
+    res.end(JSON.stringify({ id: `achllm-${Date.now()}`, object: 'chat.completion', model: 'achllm', system_fingerprint: `achllm-${response.mode}-${neuralGenerationReady(root) ? 'neural-ready' : 'neural-training'}`, choices: [{ index: 0, message: { role: 'assistant', content }, finish_reason: 'stop' }] }));
   } catch (error) { res.statusCode = 400; res.end(JSON.stringify({ error: { message: error.message } })); }
 });
 server.listen(port, '127.0.0.1', () => console.log(`AchLLM research endpoint: http://127.0.0.1:${port}/v1`));

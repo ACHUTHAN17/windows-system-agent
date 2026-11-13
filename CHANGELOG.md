@@ -1,4 +1,8 @@
 # Changelog
+## 1.42.1 — 2026-11-13
+- **Reliable chat gate:** AchLLM chat now uses attributable corpus retrieval while its neural decoder is below the measured quality gate. It refuses unknown topics rather than presenting low-quality generated text as a fact.
+- **Neural promotion criteria:** a neural checkpoint must have 3,000 training documents and pass fixed validation/held-out loss thresholds before it can be considered for chat generation.
+
 ## 1.42.0 — 2026-11-13
 - **Neural pipeline:** added the optional CPU-first AchLLM-Neural decoder-only byte-transformer path. It initializes from random weights, trains only from the attributable local chat/code corpus, uses a document-level train/validation/held-out split, writes checkpoints atomically, and records real loss/parameter/size metadata.
 - **Safe deployment:** added loopback-only neural inference and restartable user services. The neural path remains an evaluated research model; it is not publicly exposed or connected to system controls.
