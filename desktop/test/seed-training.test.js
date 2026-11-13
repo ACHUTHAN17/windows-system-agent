@@ -45,6 +45,7 @@ test('donated chat requires explicit consent and rejects likely credentials', ()
   ] });
   assert.match(accepted.id, /^donated-chat-/);
   assert.match(accepted.license, /explicit consent/);
+  assert.equal(accepted.language.code, 'latin');
   assert.throws(() => recordFromDonatedChat({ messages: [{ role: 'user', content: 'hello' }, { role: 'assistant', content: 'world' }] }), /consent/);
   assert.throws(() => recordFromDonatedChat({ consent: true, messages: [{ role: 'user', content: 'password: super-secret' }, { role: 'assistant', content: 'do not save it' }] }), /credential/);
 });

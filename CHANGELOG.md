@@ -1,4 +1,8 @@
 # Changelog
+## 1.42.13 — 2026-11-13
+- **Owner donation default:** the private owner dashboard now enables its visible training donation control by default; a per-send opt-out remains available and consent is still stored with every donated record.
+- **Multilingual lane:** added offline script detection, language provenance for donations, and original seed lessons in Spanish, Tamil, Hindi, Arabic, Japanese, and Chinese.
+
 ## 1.42.12 — 2026-11-13
 - **Teacher-guided curriculum:** added original, attributable lessons for chat, code, debugging, planning, privacy, and safety; the installer is idempotent and joins the existing licensed training flow.
 - **Training-data guide:** documented enabled sources, consent rules, and reviewed expansion lanes.

@@ -53,4 +53,8 @@ test('AchLLM teacher curriculum is attributable, small, and chat shaped', async 
   assert.match(guide, /UltraChat 200k/);
   assert.match(guide, /OpenAssistant OASST1/);
   assert.match(guide, /Do not ingest/);
+  const languages = await import(pathToFileURL(path.join(root, 'src', 'language-profile.js')).href);
+  assert.equal(languages.languageProfile('வணக்கம்').code, 'ta');
+  assert.equal(languages.languageProfile('مرحبا').code, 'ar');
+  assert.equal(languages.languageProfile('Hello').code, 'latin');
 });

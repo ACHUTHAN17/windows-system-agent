@@ -25,6 +25,12 @@ const lessons = [
   ['citations', 'When should an assistant cite a source?', 'Cite a source when a claim comes from external material, can change over time, or needs verification. The citation should point to the specific source supporting the claim.'],
   ['review', 'What should a code review look for?', 'Check correctness, security, error handling, tests, maintainability, and whether the change stays within the requested scope.'],
   ['plan', 'How should an agent plan a task?', 'Define the outcome, list dependencies and risks, choose bounded steps, verify each important result, and stop or ask when required authority is missing.'],
+  ['spanish', 'Hola, ¿cómo estás?', 'Hola. Estoy aquí para ayudar. Puedo responder de forma breve y decir cuándo no tengo suficiente información.'],
+  ['tamil', 'வணக்கம், நீங்கள் எப்படி இருக்கிறீர்கள்?', 'வணக்கம். உதவ தயாராக இருக்கிறேன். உறுதிப்படுத்தப்பட்ட தகவல் இல்லையெனில் அதைத் தெளிவாகச் சொல்வேன்.'],
+  ['hindi', 'नमस्ते, आप कैसे हैं?', 'नमस्ते। मैं मदद के लिए तैयार हूँ। यदि जानकारी निश्चित नहीं है, तो मैं अनुमान लगाने के बजाय यह स्पष्ट करूँगा।'],
+  ['arabic', 'مرحباً، كيف حالك؟', 'مرحباً. أنا هنا للمساعدة. عندما لا تكون المعلومة مؤكدة، سأوضح ذلك بدلاً من التخمين.'],
+  ['japanese', 'こんにちは、元気ですか？', 'こんにちは。お手伝いします。確かな情報がないときは、推測せずに不確かだと伝えます。'],
+  ['chinese', '你好，你怎么样？', '你好。我会尽力帮助你；当信息不确定时，我会明确说明，而不会编造答案。'],
 ];
 
 export function teacherCurriculumRecords() {

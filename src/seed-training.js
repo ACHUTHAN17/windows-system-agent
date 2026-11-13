@@ -4,6 +4,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { trainSeedLm } from './seed-lm.js';
+import { languageProfile } from './language-profile.js';
 
 export const WIKIMEDIA_LICENSE = 'CC BY-SA 4.0 and GFDL (see source page)';
 export const ULTRACHAT_LICENSE = 'MIT';
@@ -144,6 +145,7 @@ export function recordFromDonatedChat(payload) {
     title: 'User-donated AchLLM chat feedback',
     text,
     license: CHAT_FEEDBACK_LICENSE,
+    language: languageProfile(text),
     domain: CODE_REQUEST.test(text) ? 'code' : 'chat',
     collectedAt: new Date().toISOString(),
   };

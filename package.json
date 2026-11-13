@@ -1,6 +1,6 @@
 {
   "name": "windows-system-agent",
-  "version": "1.42.12",
+  "version": "1.42.13",
   "description": "Cross-platform system agent: offline device control plus optional free cloud planning",
   "type": "module",
   "engines": {
