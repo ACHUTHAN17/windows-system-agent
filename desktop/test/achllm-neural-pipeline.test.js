@@ -23,4 +23,6 @@ test('AchLLM does not auto-promote a neural checkpoint without an evaluation dec
   assert.match(chat, /evaluation\?\.promotionEligible === true/);
   const evalScript = fs.readFileSync(path.join(root, 'neural', 'eval_chat.py'), 'utf8');
   assert.match(evalScript, /promotionEligible": False/);
+  assert.match(evalScript, /low-lexical-diversity/);
+  assert.match(evalScript, /repeated-word-run/);
 });

@@ -56,6 +56,7 @@ const status = {
     chatEvaluation: neuralEvaluation ? {
       createdAt: neuralEvaluation.createdAt || null,
       formatChecks: neuralEvaluation.formatChecks || null,
+      qualityGate: neuralEvaluation.qualityGate || null,
       promotionEligible: neuralEvaluation.promotionEligible === true,
       note: neuralEvaluation.note || null,
     } : null,

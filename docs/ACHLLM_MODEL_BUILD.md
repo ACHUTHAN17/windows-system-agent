@@ -6,7 +6,7 @@ AchLLM now has the required pieces for a small, auditable chat-model project:
 2. **Reproducible neural checkpoint.** The CPU trainer starts from random weights, resumes only compatible checkpoints, writes atomically, and records architecture, parameter count, split sizes, loss, and source hashes.
 3. **Private neural test server.** `neural/serve.py` exposes an OpenAI-compatible loopback endpoint with bounded input, bounded generation, checkpoint hot reload, and health checks.
 4. **Reliable public chat.** The public `achllm` and `achllm-auto` modes use the reviewed foundation plus attributable retrieval until the neural checkpoint earns promotion.
-5. **Evaluation instead of claims.** `neural/eval_chat.py` writes direct held-out prompt completions for review. It cannot promote the model or fabricate frontier comparisons.
+5. **Evaluation instead of claims.** `neural/eval_chat.py` writes direct held-out prompt completions for review and flags collapsed, repetitive decoding. It cannot promote the model or fabricate frontier comparisons.
 6. **Data governance.** Only versioned, licensed, attributable sources and explicitly donated chats enter the corpus. Credentials, browser history, arbitrary web pages, and unconsented chats remain excluded.
 
 ## Next measurable milestones

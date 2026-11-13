@@ -41,7 +41,7 @@ Create a reviewable direct-checkpoint chat report after each meaningful training
 ~/.local/share/achllm-neural/bin/python neural/eval_chat.py
 ```
 
-This records the real completions in `models/achllm-neural/chat-evaluation.json`. It does **not** invent a benchmark score or promote the checkpoint. Promotion requires an independently measured held-out chat-and-code evaluation, the data/loss gates below, and an explicit review decision.
+This records the real completions in `models/achllm-neural/chat-evaluation.json`. It detects obvious collapsed output such as repeated characters or words, but does **not** invent a benchmark score or promote the checkpoint. Promotion requires independently measured held-out chat, code, safety, and tool-use evaluation, the data/loss gates below, and an explicit review decision.
 
 ## Chat reliability gate
 

@@ -1,4 +1,7 @@
 # Changelog
+## 1.42.5 — 2026-11-13
+- **Neural quality gate:** direct checkpoint evaluation now detects collapsed repeated-character and repeated-word output rather than treating any non-empty completion as acceptable.
+
 ## 1.42.4 — 2026-11-13
 - **Chat-shaped neural training:** records are converted into explicit system, user, assistant, and end-of-turn transcripts before the experimental decoder is trained.
 - **Measured neural testing:** added loopback health checks, bounded chat prompts, stop markers, and a reviewable direct-checkpoint chat report. Auto remains on reliable attributable chat until independent held-out evaluation explicitly approves a neural checkpoint.
