@@ -4,6 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { agentReadinessReport } from '../src/achllm-agent-readiness.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const seedDir = path.join(root, 'models', 'seed-data');
@@ -58,6 +59,7 @@ const status = {
     benchmarkCatalog: 'achllm-benchmarks.json',
     aspects: ['chat', 'code', 'reasoning', 'math', 'multilingual', 'long-context', 'tool-use', 'vision', 'safety', 'efficiency'],
   },
+  agentReadiness: agentReadinessReport(),
   security: { publicDataOnly: true, explicitChatDonationOnly: true, isolatedBrowserProfile: true, browserSourceAllowlist: ['https://en.wikipedia.org/wiki/'], noCredentials: true, noPrivatePrompts: true },
 };
 const output = path.join(root, 'docs', 'achllm-status.json');

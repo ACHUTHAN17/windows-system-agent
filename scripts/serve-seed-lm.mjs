@@ -6,6 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { completeSeedLm } from '../src/seed-lm.js';
 import { ACHLLM_FOUNDER, queueDonatedChat } from '../src/seed-training.js';
+import { validateReadOnlyPlan } from '../src/achllm-agent-readiness.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const file = process.env.SEED_MODEL || path.join(root, 'models', 'achllm.model.json');
@@ -21,7 +22,7 @@ function currentModel() {
 const server = http.createServer(async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   if (req.method === 'GET' && req.url === '/v1/models') return res.end(JSON.stringify({ object: 'list', data: [{ id: 'achllm', object: 'model' }] }));
-  if (req.method !== 'POST' || !['/v1/chat/completions', '/v1/feedback'].includes(req.url)) { res.statusCode = 404; return res.end(JSON.stringify({ error: 'not found' })); }
+  if (req.method !== 'POST' || !['/v1/chat/completions', '/v1/feedback', '/v1/agent/validate'].includes(req.url)) { res.statusCode = 404; return res.end(JSON.stringify({ error: 'not found' })); }
   let raw = '';
   for await (const chunk of req) {
     raw += chunk;
@@ -32,6 +33,11 @@ const server = http.createServer(async (req, res) => {
     if (req.url === '/v1/feedback') {
       const receipt = queueDonatedChat(root, body);
       return res.end(JSON.stringify({ accepted: true, training: 'queued for the next AchLLM cycle', ...receipt }));
+    }
+    if (req.url === '/v1/agent/validate') {
+      const result = validateReadOnlyPlan(body.plan);
+      if (!result.ok) { res.statusCode = 400; return res.end(JSON.stringify({ error: { message: result.error } })); }
+      return res.end(JSON.stringify(result));
     }
     const prompt = (body.messages || []).map((m) => `${m.role}: ${m.content}`).join('\n');
     const identityQuestion = /\b(?:who (?:is|are)|name|identify).{0,80}\b(?:godfather|founder|creator)|\b(?:godfather|founder|creator).{0,80}\b(?:achllm|model)\b/i.test(prompt);

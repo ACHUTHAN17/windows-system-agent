@@ -35,7 +35,7 @@ const server = http.createServer((req, res) => {
     catch { return res.writeHead(503, { ...extra, 'Cache-Control': 'no-store', 'Content-Type': 'application/json' }).end('{"error":"Telemetry unavailable"}'); }
   }
   if (req.headers.authorization !== expected) return res.writeHead(401, { ...extra, 'WWW-Authenticate': 'Basic realm="WinAgent"', 'Cache-Control': 'no-store', 'Content-Type': 'text/plain' }).end('Authentication required');
-  const isModel = pathname === '/v1/models' || pathname === '/v1/chat/completions' || pathname === '/v1/feedback';
+  const isModel = pathname === '/v1/models' || pathname === '/v1/chat/completions' || pathname === '/v1/feedback' || pathname === '/v1/agent/validate';
   if (pathname.startsWith('/v1/') && !isModel) return res.writeHead(404, { ...extra, 'Content-Type': 'text/plain' }).end('Not found');
   if (isModel && !rateAllowed(req.socket.remoteAddress || 'unknown')) return res.writeHead(429, { ...extra, 'Content-Type': 'text/plain' }).end('Rate limit exceeded');
   if (isModel && Number(req.headers['content-length'] || 0) > 65_536) return res.writeHead(413, { ...extra, 'Content-Type': 'text/plain' }).end('Request too large');

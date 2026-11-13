@@ -1,4 +1,8 @@
 # Changelog
+## 1.41.9 — 2026-11-13
+- **Agent-readiness gate:** added a strict, authenticated read-only plan validator. It accepts only bounded `system_info` and Wikimedia-reference plans, rejects secrets and all execution tools, and records that no action was executed.
+- **Live readiness:** dashboard telemetry now reports the current `research-only` stage and the evidence required before any capability can advance.
+
 ## 1.41.8 — 2026-11-12
 - **Rendered-page parsing:** browser research now falls back to the full rendered document if a nested Wikimedia content container is too short to be a useful attributable reference.
 

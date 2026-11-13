@@ -372,6 +372,11 @@
         <div class="number" id="model-compute">—</div>
         <div class="hint" id="model-compute-detail">measured compute type</div>
       </div>
+      <div class="card">
+        <div class="label">Agent readiness</div>
+        <div class="number" id="agent-stage">—</div>
+        <div class="hint" id="agent-stage-detail">validation-only safety gate</div>
+      </div>
     </section>
     <section class="charts">
       <figure class="panel">
@@ -682,6 +687,11 @@
       q("#model-compute").textContent = stats.compute?.flops == null ? "N/A" : bytes(stats.compute.flops);
       q("#model-compute-detail").textContent = stats.compute?.note || "No compute measurement";
     }
+    function agentReadiness(status) {
+      const agent = status.agentReadiness || {};
+      q("#agent-stage").textContent = agent.stage || "Not configured";
+      q("#agent-stage-detail").textContent = agent.executable ? "execution enabled" : agent.nextGate || "validation-only safety gate";
+    }
     function identity(status) {
       const identity = status.identity || {};
       q("#identity").innerHTML = `<b>Project identity:</b> ${esc(identity.godfather || "Not recorded")} is the Godfather of AchLLM. <a href="${esc(identity.record || "ACHLLM_IDENTITY.md")}">View provenance</a>`;
@@ -763,6 +773,7 @@ function benchmarks(data) {
         radar(x.aspects || Object.keys(titles));
         matrix(x.aspects || Object.keys(titles));
         vitals(s);
+        agentReadiness(s);
         identity(s);
         benchmarks(b);
         q("#comparison-note").textContent =
