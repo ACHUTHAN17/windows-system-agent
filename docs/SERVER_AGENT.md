@@ -22,6 +22,18 @@ ssh -L 8080:127.0.0.1:8080 user@your-server
 
 Then browse to `http://127.0.0.1:8080` locally. The dashboard supports chat tasks, live logs, stop, self-test, and one-time or always-allow approvals.
 
+## Desktop launcher
+
+The supplied launcher opens the locally running dashboard in Chromium as **WinAgent**. Install it in both the application menu and the desktop:
+
+```bash
+mkdir -p ~/.local/share/applications ~/Desktop
+install -m 755 deploy/server/winagent.desktop ~/.local/share/applications/winagent.desktop
+install -m 755 deploy/server/winagent.desktop ~/Desktop/winagent.desktop
+```
+
+If the desktop environment asks whether to trust or allow launching the icon, approve that local launcher once.
+
 ## Server capabilities and boundaries
 
 - It runs the Linux implementations of WinAgent's file, process, shell, package, service, screenshot, and browser-related tools when the host provides the relevant binaries.

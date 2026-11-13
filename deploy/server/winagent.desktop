@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=WinAgent
+Comment=Open the local WinAgent control dashboard
+Exec=/usr/bin/chromium --app=http://127.0.0.1:8080
+TryExec=/usr/bin/chromium
+Icon=utilities-terminal
+Terminal=false
+Categories=Utility;Development;
+Keywords=agent;automation;AI;tools;
+StartupNotify=true
