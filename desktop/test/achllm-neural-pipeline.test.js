@@ -15,6 +15,7 @@ test('AchLLM neural pipeline trains and serves the same explicit chat template',
   assert.match(server, /def chat_prompt/);
   assert.match(server, /\/healthz/);
   assert.match(server, /ASSISTANT_MARKER/);
+  assert.match(server, /END_MARKER, EOS, TinyDecoder/);
 });
 
 test('AchLLM does not auto-promote a neural checkpoint without an evaluation decision', () => {

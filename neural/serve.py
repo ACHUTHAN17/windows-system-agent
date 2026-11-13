@@ -9,7 +9,7 @@ from pathlib import Path
 
 import torch
 
-from train import ASSISTANT_MARKER, BOS, CHECKPOINT, Config, END_MARKER, TinyDecoder, USER_MARKER, ByteTokenizer, SYSTEM_PROMPT
+from train import ASSISTANT_MARKER, BOS, CHECKPOINT, Config, END_MARKER, EOS, TinyDecoder, USER_MARKER, ByteTokenizer, SYSTEM_PROMPT
 
 PORT = int(os.environ.get("ACHLLM_NEURAL_PORT", "8092"))
 MAX_BODY = 65_536
