@@ -165,6 +165,17 @@ def parameter_count(model: nn.Module) -> int:
     return sum(parameter.numel() for parameter in model.parameters())
 
 
+def compatible_checkpoint(checkpoint: object, config: Config) -> bool:
+    """Only resume weights when the tensor shape contract is unchanged."""
+    if not isinstance(checkpoint, dict) or checkpoint.get("format") != FORMAT:
+        return False
+    saved = checkpoint.get("config")
+    if not isinstance(saved, dict):
+        return False
+    # Optimisation values may change between cycles; architecture may not.
+    return all(saved.get(key) == getattr(config, key) for key in ("context", "width", "layers", "heads", "dropout"))
+
+
 def atomic_torch_save(value: object, target: Path) -> None:
     target.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile(dir=target.parent, prefix=f".{target.name}.", delete=False) as handle:
@@ -201,6 +212,17 @@ def train(config: Config, max_checkpoint_mb: int) -> dict[str, object]:
     validation_rows = encoded_documents(validation_docs, tokenizer)
     heldout_rows = encoded_documents(heldout_docs, tokenizer)
     model = TinyDecoder(config)
+    resumed_from = None
+    cumulative_steps = 0
+    if CHECKPOINT.exists():
+        try:
+            previous = torch.load(CHECKPOINT, map_location="cpu", weights_only=False)
+            if compatible_checkpoint(previous, config):
+                model.load_state_dict(previous["state_dict"])
+                resumed_from = previous.get("createdAt")
+                cumulative_steps = int(previous.get("training", {}).get("cumulativeSteps", 0))
+        except Exception as error:
+            print(f"Ignoring incompatible neural checkpoint: {error}", flush=True)
     optimizer = torch.optim.AdamW(model.parameters(), lr=config.learning_rate, weight_decay=config.weight_decay)
     started = time.time()
     losses: list[float] = []
@@ -225,6 +247,7 @@ def train(config: Config, max_checkpoint_mb: int) -> dict[str, object]:
         "vocab": {"kind": "utf8-byte", "size": VOCAB_SIZE, "bos": 1, "byteOffset": 2},
         "state_dict": model.state_dict(),
         "metrics": {"lastTrainLoss": losses[-1], "meanTrainLoss": sum(losses) / len(losses), "validationLoss": validation_loss, "heldoutLoss": heldout_loss},
+        "training": {"resumedFrom": resumed_from, "cycleSteps": config.steps, "cumulativeSteps": cumulative_steps + config.steps},
         "provenance": provenance,
     }
     atomic_torch_save(checkpoint, CHECKPOINT)
@@ -245,6 +268,7 @@ def train(config: Config, max_checkpoint_mb: int) -> dict[str, object]:
         "parameters": parameters,
         "config": asdict(config),
         "metrics": checkpoint["metrics"],
+        "training": checkpoint["training"],
         "documents": {"total": len(documents), "train": len(train_docs), "validation": len(validation_docs), "heldout": len(heldout_docs)},
         "estimatedTrainingFlops": estimated_training_flops,
         "estimatedTrainingFlopsNote": "Architecture estimate: 6 x parameters x context x batch x optimizer steps. Not a measured throughput or TOPS claim.",
