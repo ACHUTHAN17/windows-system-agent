@@ -27,23 +27,35 @@ def load_model():
 
 
 MODEL, CONFIG, TOKENIZER = load_model()
+CHECKPOINT_MTIME = CHECKPOINT.stat().st_mtime_ns
+
+
+def current_runtime():
+    """Atomically pick up a trainer-written checkpoint between requests."""
+    global MODEL, CONFIG, TOKENIZER, CHECKPOINT_MTIME
+    modified = CHECKPOINT.stat().st_mtime_ns
+    if modified != CHECKPOINT_MTIME:
+        MODEL, CONFIG, TOKENIZER = load_model()
+        CHECKPOINT_MTIME = modified
+    return MODEL, CONFIG, TOKENIZER
 
 
 @torch.no_grad()
 def complete(prompt: str, max_tokens: int) -> str:
+    model, config, tokenizer = current_runtime()
     # Do not seed decoding with an end-of-document marker. The continuation
     # starts immediately after the user's final byte, not after EOS.
-    prompt_tokens = TOKENIZER.encode(prompt)[:-1]
-    tokens = prompt_tokens[-CONFIG.context:]
+    prompt_tokens = tokenizer.encode(prompt)[:-1]
+    tokens = prompt_tokens[-config.context:]
     for _ in range(min(max(1, max_tokens), 128)):
-        input_ids = torch.tensor([tokens[-CONFIG.context:]], dtype=torch.long)
-        logits = MODEL(input_ids)[0, -1]
+        input_ids = torch.tensor([tokens[-config.context:]], dtype=torch.long)
+        logits = model(input_ids)[0, -1]
         # Greedy decoding remains reproducible during evaluation.
         next_token = int(torch.argmax(logits).item())
         if next_token == EOS:
             break
         tokens.append(next_token)
-    return TOKENIZER.decode(tokens[len(prompt_tokens[-CONFIG.context:]):])
+    return tokenizer.decode(tokens[len(prompt_tokens[-config.context:]):])
 
 
 class Handler(BaseHTTPRequestHandler):
