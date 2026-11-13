@@ -26,7 +26,7 @@ systemctl --user daemon-reload
 systemctl --user enable --now winagent-neural-trainer.service
 ```
 
-The supplied user service runs one serial, one-step CPU micro-cycle every three seconds, evaluates every twentieth cycle, runs at reduced process priority, and is capped at 65% CPU. Cycles never overlap. The live dashboard distinguishes active training/evaluation from the short rate-limited interval between them, and only animates paths during actual compute.
+The supplied user service runs one serial, one-step CPU micro-cycle every three seconds, evaluates every twentieth cycle, runs at reduced process priority, and is capped at 90% CPU and 90% RAM (with early memory pressure at 85%). Cycles never overlap. The live dashboard distinguishes active training/evaluation from the short rate-limited interval between them, and only animates paths during actual compute.
 
 After the first checkpoint succeeds, start its private test endpoint:
 

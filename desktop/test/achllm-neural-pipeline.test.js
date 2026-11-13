@@ -34,6 +34,7 @@ test('AchLLM continuous trainer uses serial micro-cycles with CPU limits', () =>
   assert.match(daemon, /ACHLLM_NEURAL_MICRO_STEPS/);
   assert.match(daemon, /cycle_number % EVALUATE_EVERY/);
   assert.match(daemon, /"continuous"/);
-  assert.match(service, /CPUQuota=65%/);
+  assert.match(service, /CPUQuota=90%/);
+  assert.match(service, /MemoryMax=90%/);
   assert.match(service, /Nice=10/);
 });

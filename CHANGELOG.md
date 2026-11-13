@@ -1,4 +1,7 @@
 # Changelog
+## 1.42.10 — 2026-11-13
+- **Training resources:** raised the protected continuous-trainer cap to 90% CPU and 90% RAM, with memory pressure handling at 85%.
+
 ## 1.42.9 — 2026-11-13
 - **Continuous protected training:** replaced the idle scheduler with serial three-second CPU micro-cycles, periodic evaluation, no overlapping jobs, reduced process priority, and a 65% CPU cap.
 
