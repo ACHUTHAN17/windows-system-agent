@@ -10,12 +10,15 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const seedDir = path.join(root, 'models', 'seed-data');
 const modelFile = path.join(root, 'models', 'achllm.live.model.json');
 const neuralMetadataFile = path.join(root, 'models', 'achllm-neural', 'metadata.json');
+const neuralEvaluationFile = path.join(root, 'models', 'achllm-neural', 'chat-evaluation.json');
 const manifestFile = path.join(seedDir, 'manifest.jsonl');
 const safeRead = (file, fallback) => { try { return fs.readFileSync(file, 'utf8'); } catch { return fallback; } };
 let model = {};
 try { model = JSON.parse(safeRead(modelFile, '{}')); } catch {}
 let neural = null;
 try { neural = JSON.parse(safeRead(neuralMetadataFile, 'null')); } catch {}
+let neuralEvaluation = null;
+try { neuralEvaluation = JSON.parse(safeRead(neuralEvaluationFile, 'null')); } catch {}
 const transitionRows = Object.values(model.transitions || {});
 const learnedWeights = transitionRows.reduce((total, row) => total + (Array.isArray(row) ? row.length : 0), 0);
 const averageCandidatesPerLookup = transitionRows.length ? learnedWeights / transitionRows.length : 0;
@@ -49,7 +52,16 @@ const status = {
     parameters: Number(neural.parameters || 0), metrics: neural.metrics || null,
     estimatedTrainingFlops: Number(neural.estimatedTrainingFlops || 0),
     estimatedTrainingFlopsNote: neural.estimatedTrainingFlopsNote || null,
-    evaluation: 'validation and held-out loss recorded; capability is not established',
+    chatTraining: neural.chatTraining || null,
+    chatEvaluation: neuralEvaluation ? {
+      createdAt: neuralEvaluation.createdAt || null,
+      formatChecks: neuralEvaluation.formatChecks || null,
+      promotionEligible: neuralEvaluation.promotionEligible === true,
+      note: neuralEvaluation.note || null,
+    } : null,
+    evaluation: neuralEvaluation?.promotionEligible === true
+      ? 'independent evaluation marked this checkpoint eligible; release review still required'
+      : 'validation and held-out loss recorded; direct samples require review and capability is not established',
   } : {
     status: 'not-trained',
     evaluation: 'Optional neural pipeline is installed in the repository but has not produced a checkpoint.',

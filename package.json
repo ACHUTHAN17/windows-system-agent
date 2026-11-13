@@ -1,6 +1,6 @@
 {
   "name": "windows-system-agent",
-  "version": "1.42.3",
+  "version": "1.42.4",
   "description": "Cross-platform system agent: offline device control plus optional free cloud planning",
   "type": "module",
   "engines": {
@@ -23,7 +23,8 @@
     "status:achllm": "node ./scripts/write-achllm-status.mjs",
     "publish:achllm-status": "node ./scripts/publish-achllm-status.mjs",
     "train:achllm-neural": "python3 ./neural/train.py",
-    "serve:achllm-neural": "python3 ./neural/serve.py"
+    "serve:achllm-neural": "python3 ./neural/serve.py",
+    "eval:achllm-neural": "python3 ./neural/eval_chat.py"
   },
   "license": "UNLICENSED"
 }

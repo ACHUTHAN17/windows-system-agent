@@ -1,4 +1,8 @@
 # Changelog
+## 1.42.4 — 2026-11-13
+- **Chat-shaped neural training:** records are converted into explicit system, user, assistant, and end-of-turn transcripts before the experimental decoder is trained.
+- **Measured neural testing:** added loopback health checks, bounded chat prompts, stop markers, and a reviewable direct-checkpoint chat report. Auto remains on reliable attributable chat until independent held-out evaluation explicitly approves a neural checkpoint.
+
 ## 1.42.3 — 2026-11-13
 - **Three-engine Auto coordinator:** Auto now evaluates the baseline, verified retrieval, and neural checkpoint on every message. It records whether the neural response ran in shadow mode, and promotes it only after the measured quality gate passes.
 

@@ -34,7 +34,10 @@ MODEL_DIR = ROOT / "models" / "achllm-neural"
 CHECKPOINT = MODEL_DIR / "achllm-neural.pt"
 METADATA = MODEL_DIR / "metadata.json"
 FORMAT = "achllm-neural"
-VERSION = 2
+# Version 3 adds an explicit conversation template.  Version 2 checkpoints are
+# intentionally not resumed because they were trained as unstructured text and
+# therefore do not provide a sound base for a chat model.
+VERSION = 3
 PAD = 0
 BOS = 1
 EOS = 2
@@ -62,6 +65,44 @@ class ByteTokenizer:
 
     def decode(self, ids: Iterable[int]) -> str:
         return bytes(token - BYTE_OFFSET for token in ids if token >= BYTE_OFFSET).decode("utf-8", errors="replace")
+
+
+SYSTEM_PROMPT = "You are AchLLM, a helpful chat and code assistant. Answer accurately, briefly, and say when you are uncertain."
+USER_MARKER = "<|user|>"
+ASSISTANT_MARKER = "<|assistant|>"
+END_MARKER = "<|end|>"
+
+
+def as_chat_document(text: str) -> str:
+    """Turn an attributable record into one consistent chat training example.
+
+    Existing UltraChat rows already contain role labels.  Reference documents
+    do not, so they become a factual-answer exercise.  The conversion is
+    deterministic and keeps the source text intact; it never invents a
+    teacher answer or consumes private conversations.
+    """
+    text = text.strip()
+    lowered = text.lower()
+    if "assistant:" in lowered or USER_MARKER in text or ASSISTANT_MARKER in text:
+        turns: list[str] = []
+        active_role = "user"
+        buffer: list[str] = []
+        for raw in text.splitlines():
+            line = raw.strip()
+            role, separator, value = line.partition(":")
+            normalized = role.lower().strip()
+            if separator and normalized in {"user", "assistant", "system"}:
+                if buffer:
+                    turns.append(f"{USER_MARKER if active_role == 'user' else ASSISTANT_MARKER} {' '.join(buffer).strip()}")
+                active_role = "assistant" if normalized == "assistant" else "user"
+                buffer = [value.strip()]
+            elif line:
+                buffer.append(line)
+        if buffer:
+            turns.append(f"{USER_MARKER if active_role == 'user' else ASSISTANT_MARKER} {' '.join(buffer).strip()}")
+        if any(turn.startswith(ASSISTANT_MARKER) for turn in turns):
+            return f"<|system|> {SYSTEM_PROMPT}\n" + "\n".join(turns) + f"\n{END_MARKER}"
+    return f"<|system|> {SYSTEM_PROMPT}\n{USER_MARKER} Give a concise factual explanation.\n{ASSISTANT_MARKER} {text}\n{END_MARKER}"
 
 
 class TinyDecoder(nn.Module):
@@ -111,7 +152,7 @@ def corpus_documents(files: Iterable[Path]) -> tuple[list[str], list[dict[str, s
             if digest in seen:
                 continue
             seen.add(digest)
-            documents.append(text)
+            documents.append(as_chat_document(text))
             provenance.append({"file": str(file.relative_to(ROOT)).replace("\\", "/"), "sha256": digest})
     if len(documents) < 3:
         raise ValueError("Need at least three attributable local documents before neural training")
@@ -265,7 +306,7 @@ def train(config: Config, max_checkpoint_mb: int) -> dict[str, object]:
         "format": FORMAT,
         "version": VERSION,
         "status": "checkpoint-ready",
-        "architecture": "decoder-only byte transformer",
+        "architecture": "decoder-only byte transformer with explicit chat turns",
         "device": "cpu",
         "checkpoint": str(CHECKPOINT.relative_to(ROOT)).replace("\\", "/"),
         "checkpointBytes": size,
@@ -274,6 +315,12 @@ def train(config: Config, max_checkpoint_mb: int) -> dict[str, object]:
         "metrics": checkpoint["metrics"],
         "training": checkpoint["training"],
         "documents": {"total": len(documents), "train": len(train_docs), "validation": len(validation_docs), "heldout": len(heldout_docs)},
+        "chatTraining": {
+            "template": "<|system|>, <|user|>, <|assistant|>, <|end|>",
+            "assistantTurnMarker": ASSISTANT_MARKER,
+            "recordFormat": "structured chat transcript",
+            "promotion": "requires independent held-out chat and code evaluation; loss alone is not a capability claim",
+        },
         "estimatedTrainingFlops": estimated_training_flops,
         "estimatedTrainingFlopsNote": "Architecture estimate: 6 x parameters x context x batch x optimizer steps. Not a measured throughput or TOPS claim.",
         "elapsedSeconds": elapsed,

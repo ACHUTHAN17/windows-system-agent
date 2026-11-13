@@ -41,12 +41,16 @@ function score(queryTerms, candidate) {
 export function neuralGenerationReady(root) {
   try {
     const info = JSON.parse(fs.readFileSync(path.join(root, 'models', 'achllm-neural', 'metadata.json'), 'utf8'));
+    const evaluation = JSON.parse(fs.readFileSync(path.join(root, 'models', 'achllm-neural', 'chat-evaluation.json'), 'utf8'));
     const metrics = info.metrics || {};
     return Boolean(
       info.status === 'checkpoint-ready'
       && Number(info.documents?.train || 0) >= 3_000
       && Number(metrics.validationLoss) > 0 && Number(metrics.validationLoss) <= 2.0
-      && Number(metrics.heldoutLoss) > 0 && Number(metrics.heldoutLoss) <= 2.2,
+      && Number(metrics.heldoutLoss) > 0 && Number(metrics.heldoutLoss) <= 2.2
+      // A low token loss is not enough to claim that a chat model is safe or
+      // helpful.  A separate evaluation report must explicitly promote it.
+      && evaluation?.promotionEligible === true,
     );
   } catch { return false; }
 }
