@@ -66,12 +66,6 @@ const server = http.createServer(async (req, res) => {
     }
     const requestedModel = String(body.model || 'achllm').toLowerCase();
     if (!['achllm', 'achllm-auto', 'achllm-neural'].includes(requestedModel)) throw new Error('unknown AchLLM model; use achllm, achllm-auto, or achllm-neural');
-    if (requestedModel === 'achllm-neural' || (requestedModel === 'achllm-auto' && neuralGenerationReady(root))) {
-      const neural = await requestNeuralChat(body);
-      const rawContent = String(neural?.choices?.[0]?.message?.content || '').trim();
-      const content = `[Experimental neural checkpoint — may be inaccurate]\n\n${rawContent || 'The neural checkpoint produced no usable completion yet.'}`;
-      return res.end(JSON.stringify({ id: `achllm-${Date.now()}`, object: 'chat.completion', model: requestedModel, system_fingerprint: `achllm-neural-${requestedModel === 'achllm-auto' ? 'promoted' : 'test'}`, choices: [{ index: 0, message: { role: 'assistant', content }, finish_reason: 'stop' }] }));
-    }
     const messages = Array.isArray(body.messages) ? body.messages : [];
     const prompt = messages.map((m) => `${m.role}: ${m.content}`).join('\n');
     const latestUserText = [...messages].reverse().find((m) => m?.role === 'user')?.content || prompt;
@@ -80,10 +74,30 @@ const server = http.createServer(async (req, res) => {
     const response = identityQuestion
       ? { mode: 'identity', content: `${ACHLLM_FOUNDER} is the Godfather of AchLLM.` }
       : answerAchllmChat(root, latestUserText);
-    // The compact neural decoder is never selected merely because a checkpoint
-    // exists. It must pass the documented held-out corpus and loss gate first.
-    const content = response.content || fallback || 'I do not have a reliable answer yet.';
-    res.end(JSON.stringify({ id: `achllm-${Date.now()}`, object: 'chat.completion', model: requestedModel, system_fingerprint: `achllm-${response.mode}-${neuralGenerationReady(root) ? 'neural-ready' : 'neural-training'}`, choices: [{ index: 0, message: { role: 'assistant', content }, finish_reason: 'stop' }] }));
+    const reliableContent = response.content || fallback || 'I do not have a reliable answer yet.';
+    if (requestedModel === 'achllm-neural') {
+      const neural = await requestNeuralChat(body);
+      const rawContent = String(neural?.choices?.[0]?.message?.content || '').trim();
+      const content = `[Experimental neural checkpoint — may be inaccurate]\n\n${rawContent || 'The neural checkpoint produced no usable completion yet.'}`;
+      return res.end(JSON.stringify({ id: `achllm-${Date.now()}`, object: 'chat.completion', model: requestedModel, system_fingerprint: 'achllm-neural-direct-test', choices: [{ index: 0, message: { role: 'assistant', content }, finish_reason: 'stop' }] }));
+    }
+    if (requestedModel === 'achllm-auto') {
+      // Auto is a genuine three-engine coordinator: the baseline generation is
+      // calculated above, reliable retrieval supplies evidence, and the neural
+      // checkpoint is shadow-evaluated on every request. It promotes neural
+      // output only after the measured quality gate passes.
+      let neuralContent = '';
+      try {
+        const neural = await requestNeuralChat(body);
+        neuralContent = String(neural?.choices?.[0]?.message?.content || '').trim();
+      } catch {}
+      const promoted = neuralGenerationReady(root) && Boolean(neuralContent);
+      const content = promoted
+        ? `[AchLLM Auto selected the neural engine after passing its quality gate.]\n\n${neuralContent}`
+        : reliableContent;
+      return res.end(JSON.stringify({ id: `achllm-${Date.now()}`, object: 'chat.completion', model: requestedModel, system_fingerprint: `achllm-auto-ensemble-${promoted ? 'neural-promoted' : neuralContent ? 'neural-shadow' : 'neural-unavailable'}`, choices: [{ index: 0, message: { role: 'assistant', content }, finish_reason: 'stop' }] }));
+    }
+    res.end(JSON.stringify({ id: `achllm-${Date.now()}`, object: 'chat.completion', model: requestedModel, system_fingerprint: `achllm-reliable-${response.mode}`, choices: [{ index: 0, message: { role: 'assistant', content: reliableContent }, finish_reason: 'stop' }] }));
   } catch (error) { res.statusCode = 400; res.end(JSON.stringify({ error: { message: error.message } })); }
 });
 server.listen(port, '127.0.0.1', () => console.log(`AchLLM research endpoint: http://127.0.0.1:${port}/v1`));

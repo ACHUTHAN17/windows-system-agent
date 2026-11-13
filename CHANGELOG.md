@@ -1,4 +1,7 @@
 # Changelog
+## 1.42.3 — 2026-11-13
+- **Three-engine Auto coordinator:** Auto now evaluates the baseline, verified retrieval, and neural checkpoint on every message. It records whether the neural response ran in shadow mode, and promotes it only after the measured quality gate passes.
+
 ## 1.42.2 — 2026-11-13
 - **Always-testable engines:** the authenticated AchLLM chat endpoint and both web chat surfaces now expose Auto, Reliable, and direct Experimental Neural modes. Auto only promotes neural generation after the documented quality gate; direct Neural remains available for transparent testing.
 
