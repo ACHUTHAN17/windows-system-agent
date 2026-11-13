@@ -197,6 +197,37 @@
       color: var(--muted);
       font-size: 12px;
     }
+    .network-layers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin: 12px 0 0;
+    }
+    .network-layer {
+      padding: 5px 8px;
+      border: 1px solid #31516a;
+      border-radius: 999px;
+      color: #b8d9e8;
+      background: #0d1723;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .node-inspector {
+      min-height: 96px;
+      margin-top: 12px;
+      padding: 14px;
+      border: 1px solid #31516a;
+      border-radius: 10px;
+      background: #0b1420;
+    }
+    .node-inspector h3 { margin: 0 0 6px; font-size: 14px; }
+    .node-inspector p { margin: 5px 0 0; font-size: 13px; }
+    .node-inspector .hint { display: block; margin-top: 7px; }
+    @media (max-width: 620px) {
+      #neural-3d { height: 380px; }
+      .neural-stage { min-height: 380px; }
+      .neural-caption { align-items: flex-start; flex-direction: column; }
+    }
     .runtime-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -494,12 +525,14 @@
           <h2>Neural architecture · live 3D view</h2>
           <p>Drag to rotate. Nodes and paths are a sampled projection of the real checkpoint shape; they are not a claim that each dot is a separately measured learned concept.</p>
         </div>
-        <div class="controls"><button id="network-reset" type="button">Reset view</button></div>
+        <div class="controls"><button id="network-out" type="button" aria-label="Zoom out">−</button><button id="network-zoom" type="button">100%</button><button id="network-in" type="button" aria-label="Zoom in">+</button><button id="network-reset" type="button">Reset</button></div>
       </div>
       <div class="neural-stage">
-        <canvas id="neural-3d" aria-label="Rotatable 3D projection of AchLLM neural architecture"></canvas>
-        <div class="neural-caption"><span id="network-meta">Waiting for neural checkpoint metadata…</span><span>Drag to rotate · sampled structure</span></div>
+        <canvas id="neural-3d" aria-label="Rotatable and zoomable 3D projection of AchLLM neural architecture"></canvas>
+        <div class="neural-caption"><span id="network-meta">Waiting for neural checkpoint metadata…</span><span>Drag to rotate · scroll or use +/- to zoom · click a node to inspect</span></div>
       </div>
+      <div class="network-layers" id="network-layers" aria-label="Neural architecture layer legend"></div>
+      <div class="node-inspector" id="node-inspector" aria-live="polite"><h3>Select a sample node</h3><p>Click a node in the 3D view to see its structural role and the current trainer state.</p><span class="hint">Each dot is a readable sample of a layer, not a separately measured thought or memory.</span></div>
       <div class="runtime-grid">
         <div class="runtime-item"><span class="label">Current work</span><b id="training-now">Waiting for trainer telemetry…</b></div>
         <div class="runtime-item"><span class="label">Checkpoint training</span><b id="training-steps">—</b></div>
@@ -765,7 +798,7 @@
       const identity = status.identity || {};
       q("#identity").innerHTML = `<b>Project identity:</b> ${esc(identity.godfather || "Not recorded")} is the Godfather of AchLLM. <a href="${esc(identity.record || "ACHLLM_IDENTITY.md")}">View provenance</a>`;
     }
-    const neuralView = { yaw: -0.48, pitch: -0.16, drag: null, neural: null };
+    const neuralView = { yaw: -0.48, pitch: -0.16, zoom: 1, drag: null, neural: null, runtime: {}, projected: [], selectedKey: null };
     function sampledLayers(neural) {
       const config = neural?.config || {}, width = Math.max(1, Number(config.width || 0)), blocks = Math.max(0, Number(config.layers || 0));
       const layers = [["Input bytes", 8], ["Token embedding", Math.min(14, width || 12)]];
@@ -784,12 +817,38 @@
       });
       return { layers, nodes };
     }
-    function projectNode(node, width, height) {
+    function projectNode(node) {
       const cy = Math.cos(neuralView.yaw), sy = Math.sin(neuralView.yaw), cp = Math.cos(neuralView.pitch), sp = Math.sin(neuralView.pitch);
       const x = node.x * cy - node.z * sy, z = node.x * sy + node.z * cy;
       const y = node.y * cp - z * sp, depth = node.y * sp + z * cp;
-      const scale = Math.min(width, height) * 0.47 / (12 - depth);
-      return { x: width / 2 + x * scale, y: height / 2 + y * scale, depth, radius: Math.max(2.5, Math.min(9, scale * 0.115)) };
+      const perspective = 1 + depth * 0.035;
+      return { x: x * perspective, y: y * perspective, depth };
+    }
+    function nodeKey(node) { return `${node.layer}:${node.index}`; }
+    function nodeDescription(node, neural, runtime) {
+      const config = neural?.config || {}, layers = Number(config.layers || 0), state = runtime?.state || "unknown";
+      let role;
+      if (node.label === "Input bytes") role = "Input sample: represents a byte position from the active training or chat text.";
+      else if (node.label === "Token embedding") role = "Token embedding sample: represents the learned vector lookup stage shared by the model.";
+      else if (node.label === "Vocabulary logits") role = "Output sample: contributes to the score distribution used to choose the next byte/token.";
+      else role = `Transformer block ${node.layer - 1} of ${layers}: a sampled position in the shared attention and feed-forward computation.`;
+      const work = state === "training" ? "The trainer is currently updating shared checkpoint weights from the approved corpus. Node-level loss is not measured separately." : state === "evaluating" ? "The checkpoint is being tested with direct prompts. This view has no per-node evaluation metric." : state === "error" ? "The last trainer cycle reported an issue. This node remains a structural sample until the next successful cycle." : "The trainer is idle between scheduled cycles. This node is ready for the next shared-weight update.";
+      return { role, work };
+    }
+    function renderNodeInspector() {
+      const holder = q("#node-inspector"), neural = neuralView.neural;
+      const chosen = neuralView.projected.find((item) => nodeKey(item.node) === neuralView.selectedKey);
+      if (!chosen || !neural) {
+        holder.innerHTML = '<h3>Select a sample node</h3><p>Click a node in the 3D view to see its structural role and the current trainer state.</p><span class="hint">Each dot is a readable sample of a layer, not a separately measured thought or memory.</span>';
+        return;
+      }
+      const detail = nodeDescription(chosen.node, neural, neuralView.runtime);
+      holder.innerHTML = `<h3>${esc(chosen.node.label)} · sample ${chosen.node.index + 1}</h3><p>${esc(detail.role)}</p><p><b>Current status:</b> ${esc(detail.work)}</p><span class="hint">This is architecture and runtime telemetry, not a claim that the model stores one isolated fact in this dot.</span>`;
+    }
+    function setNeuralZoom(value) {
+      neuralView.zoom = Math.max(0.65, Math.min(2.4, value));
+      q("#network-zoom").textContent = `${Math.round(neuralView.zoom * 100)}%`;
+      drawNeuralView();
     }
     function drawNeuralView() {
       const canvas = q("#neural-3d"), neural = neuralView.neural;
@@ -797,7 +856,12 @@
       const box = canvas.getBoundingClientRect(), ratio = Math.min(2, window.devicePixelRatio || 1), width = Math.max(1, box.width), height = Math.max(1, box.height);
       canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio);
       const ctx = canvas.getContext("2d"); ctx.setTransform(ratio, 0, 0, ratio, 0, 0); ctx.clearRect(0, 0, width, height);
-      const model = nodesFor(neural), projected = model.nodes.map((node) => ({ node, ...projectNode(node, width, height) }));
+      const model = nodesFor(neural), raw = model.nodes.map((node) => ({ node, ...projectNode(node) }));
+      const bounds = raw.reduce((all, item) => ({ minX: Math.min(all.minX, item.x), maxX: Math.max(all.maxX, item.x), minY: Math.min(all.minY, item.y), maxY: Math.max(all.maxY, item.y) }), { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity });
+      const spanX = Math.max(1, bounds.maxX - bounds.minX), spanY = Math.max(1, bounds.maxY - bounds.minY);
+      const scale = Math.min((width - 86) / spanX, (height - 132) / spanY) * neuralView.zoom;
+      const projected = raw.map((item) => ({ ...item, x: width / 2 + (item.x - (bounds.minX + bounds.maxX) / 2) * scale, y: height / 2 + 22 + (item.y - (bounds.minY + bounds.maxY) / 2) * scale, radius: Math.max(3.2, Math.min(10, 4.5 + item.depth * 0.16)) }));
+      neuralView.projected = projected;
       const byLayer = model.layers.map((_, layer) => projected.filter((item) => item.node.layer === layer));
       ctx.lineWidth = 0.65;
       for (let layer = 0; layer < byLayer.length - 1; layer++) {
@@ -812,17 +876,19 @@
       }
       projected.sort((a, b) => a.depth - b.depth).forEach((item) => {
         const glow = Math.max(0.28, Math.min(1, (item.depth + 8) / 16));
-        ctx.fillStyle = `rgba(96, 220, 245, ${0.25 + glow * 0.6})`; ctx.beginPath(); ctx.arc(item.x, item.y, item.radius + 2, 0, Math.PI * 2); ctx.fill();
+        const selected = nodeKey(item.node) === neuralView.selectedKey;
+        ctx.fillStyle = selected ? "rgba(255, 206, 112, .94)" : `rgba(96, 220, 245, ${0.25 + glow * 0.6})`; ctx.beginPath(); ctx.arc(item.x, item.y, item.radius + (selected ? 4 : 2), 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = `rgba(202, 250, 255, ${0.55 + glow * 0.4})`; ctx.beginPath(); ctx.arc(item.x, item.y, item.radius, 0, Math.PI * 2); ctx.fill();
       });
-      ctx.font = "12px system-ui"; ctx.fillStyle = "#b8c7dd";
-      byLayer.forEach((items, index) => { const x = items.reduce((sum, item) => sum + item.x, 0) / Math.max(1, items.length); ctx.fillText(model.layers[index][0], x - ctx.measureText(model.layers[index][0]).width / 2, 24); });
+      renderNodeInspector();
     }
     function neuralRuntime(status) {
       const neural = status.neural || {}, runtime = neural.runtime || {}, config = neural.config || {}, training = neural.training || {}, quality = neural.chatEvaluation?.qualityGate;
       neuralView.neural = neural;
+      neuralView.runtime = runtime;
       const sampled = nodesFor(neural).nodes.length;
       q("#network-meta").textContent = neural.parameters ? `${n(neural.parameters)} actual parameters · ${config.layers || 0} transformer layers · ${config.width || 0} hidden width · ${sampled} displayed sample nodes` : "No neural checkpoint available yet";
+      q("#network-layers").innerHTML = sampledLayers(neural).map(([label, count]) => `<span class="network-layer">${esc(label)} · ${n(count)} samples</span>`).join("");
       q("#training-now").textContent = runtime.state === "training" ? "Training checkpoint on CPU" : runtime.state === "evaluating" ? "Evaluating direct checkpoint samples" : runtime.state === "idle" ? "Idle until the next scheduled training cycle" : runtime.state === "error" ? "Last training cycle needs attention" : "Awaiting first trainer report";
       q("#training-steps").textContent = training.cumulativeSteps != null ? `${n(training.cumulativeSteps)} cumulative steps · ${n(training.cycleSteps)} latest cycle` : "No checkpoint steps recorded";
       q("#training-quality").textContent = quality ? `${quality.passed ? "Passed mechanical screen" : "Blocked: repetitive output detected"} (${n(quality.mechanicallyHealthy)}/${n(quality.total)} samples)` : "Evaluation report pending";
@@ -983,10 +1049,14 @@ function benchmarks(data) {
         answer.textContent = `Test failed: ${error.message}`;
       }
     };
-    q("#network-reset").onclick = () => { neuralView.yaw = -0.48; neuralView.pitch = -0.16; drawNeuralView(); };
-    q("#neural-3d").addEventListener("pointerdown", (event) => { neuralView.drag = { x: event.clientX, y: event.clientY }; event.currentTarget.setPointerCapture(event.pointerId); });
-    q("#neural-3d").addEventListener("pointermove", (event) => { if (!neuralView.drag) return; neuralView.yaw += (event.clientX - neuralView.drag.x) * 0.009; neuralView.pitch = Math.max(-0.75, Math.min(0.75, neuralView.pitch + (event.clientY - neuralView.drag.y) * 0.009)); neuralView.drag = { x: event.clientX, y: event.clientY }; drawNeuralView(); });
-    q("#neural-3d").addEventListener("pointerup", () => { neuralView.drag = null; });
+    q("#network-reset").onclick = () => { neuralView.yaw = -0.48; neuralView.pitch = -0.16; setNeuralZoom(1); };
+    q("#network-out").onclick = () => setNeuralZoom(neuralView.zoom - 0.15);
+    q("#network-in").onclick = () => setNeuralZoom(neuralView.zoom + 0.15);
+    q("#network-zoom").onclick = () => setNeuralZoom(1);
+    q("#neural-3d").addEventListener("pointerdown", (event) => { neuralView.drag = { x: event.clientX, y: event.clientY, moved: false }; event.currentTarget.setPointerCapture(event.pointerId); });
+    q("#neural-3d").addEventListener("pointermove", (event) => { if (!neuralView.drag) return; const dx = event.clientX - neuralView.drag.x, dy = event.clientY - neuralView.drag.y; neuralView.drag.moved ||= Math.abs(dx) + Math.abs(dy) > 3; neuralView.yaw += dx * 0.009; neuralView.pitch = Math.max(-0.75, Math.min(0.75, neuralView.pitch + dy * 0.009)); neuralView.drag.x = event.clientX; neuralView.drag.y = event.clientY; drawNeuralView(); });
+    q("#neural-3d").addEventListener("pointerup", (event) => { const drag = neuralView.drag; neuralView.drag = null; if (!drag || drag.moved) return; const rect = event.currentTarget.getBoundingClientRect(), x = event.clientX - rect.left, y = event.clientY - rect.top; const hit = neuralView.projected.map((item) => ({ item, distance: Math.hypot(item.x - x, item.y - y) })).filter((item) => item.distance < Math.max(16, item.item.radius + 8)).sort((a, b) => a.distance - b.distance)[0]; neuralView.selectedKey = hit ? nodeKey(hit.item.node) : null; drawNeuralView(); });
+    q("#neural-3d").addEventListener("wheel", (event) => { event.preventDefault(); setNeuralZoom(neuralView.zoom + (event.deltaY < 0 ? 0.12 : -0.12)); }, { passive: false });
     window.addEventListener("resize", drawNeuralView);
     load().catch(
       () => (q("#publication").textContent = "Telemetry files unavailable"),

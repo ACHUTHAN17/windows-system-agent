@@ -1,4 +1,7 @@
 # Changelog
+## 1.42.7 — 2026-11-13
+- **Inspectable neural view:** fixed projection alignment, added zoom buttons/wheel zoom, a clear layer legend, and node inspection with structural role plus current trainer state.
+
 ## 1.42.6 — 2026-11-13
 - **Live neural view:** added a rotatable 3D architecture sampler based on the actual neural checkpoint configuration, with visible layer counts, parameter count, and explicit non-deceptive sampling labels.
 - **Runtime and security telemetry:** the neural daemon now publishes training, evaluating, idle, or error state; dashboard telemetry includes the loopback, atomic-write, and service-hardening posture.

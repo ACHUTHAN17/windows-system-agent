@@ -8,7 +8,7 @@ const root = path.join(__dirname, '..', '..');
 
 test('AchLLM dashboard exposes zoomable evidence charts, sourced scorecards, and a protected test chat', () => {
   const html = fs.readFileSync(path.join(root, 'docs', 'achllm.html'), 'utf8');
-  for (const text of ['Checkpoint growth', 'Training inventory', 'Browser research', 'Agent readiness', 'Model vitals', 'Serialized model size', 'FLOPS / TOPS', 'Neural architecture · live 3D view', 'Rotatable 3D projection', 'sampled structure', 'Current work', 'Security posture', 'neuralLoopbackOnly', 'Published multi-model scorecard', '"/benchmarks"', 'achllm-benchmarks.json', 'Ctrl + wheel', 'reasoning', 'multilingual', 'long-context', 'tool-use', 'Test AchLLM', 'Gateway password', 'donate this prompt and response', 'Project identity', 'live refresh 2s', 'setInterval']) {
+  for (const text of ['Checkpoint growth', 'Training inventory', 'Browser research', 'Agent readiness', 'Model vitals', 'Serialized model size', 'FLOPS / TOPS', 'Neural architecture · live 3D view', 'Rotatable and zoomable 3D projection', 'sampled projection', 'Current work', 'Security posture', 'neuralLoopbackOnly', 'network-out', 'network-in', 'Select a sample node', 'Current status:', 'nodeDescription', 'Published multi-model scorecard', '"/benchmarks"', 'achllm-benchmarks.json', 'Ctrl + wheel', 'reasoning', 'multilingual', 'long-context', 'tool-use', 'Test AchLLM', 'Gateway password', 'donate this prompt and response', 'Project identity', 'live refresh 2s', 'setInterval']) {
     assert.ok(html.includes(text), `missing ${text}`);
   }
   const benchmarks = JSON.parse(fs.readFileSync(path.join(root, 'docs', 'achllm-benchmarks.json'), 'utf8'));
