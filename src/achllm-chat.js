@@ -7,6 +7,13 @@ import path from 'node:path';
 
 const STOP = new Set('about after again also among and are because been before being between both but can cannot could did does each for from had has have how into its just like more most not only other our out over should some such than that the their then there these this those through too use used using want was were what when where which who why will with would you your'.split(' '));
 const cache = new Map();
+const FOUNDATION = [
+  { match: /\bwhat (?:is|does).{0,60}\balgorithm\b|\balgorithm\b.{0,60}\bwhat\b/i, content: 'An algorithm is a finite, ordered set of steps that transforms inputs into an intended output. Good algorithms define their inputs, outputs, and stopping condition.' },
+  { match: /\bwhat (?:is|does).{0,60}\b(?:programming|code|coding)\b/i, content: 'Programming is the process of expressing instructions in a language that a computer can execute. It combines problem decomposition, implementation, testing, and maintenance.' },
+  { match: /\bwhat (?:is|does).{0,60}\boperating system\b/i, content: 'An operating system manages a computer’s hardware and shared resources, then provides the interfaces and services that applications use.' },
+  { match: /\bwhat (?:is|does).{0,60}\bdatabase\b/i, content: 'A database is an organized system for storing and retrieving data. A database management system controls how that data is structured, queried, updated, and protected.' },
+  { match: /\bwhat (?:is|does).{0,60}\b(?:computer )?network\b/i, content: 'A computer network connects devices so they can exchange data through agreed communication rules, called protocols.' },
+];
 
 function terms(value) {
   return [...new Set(String(value || '').toLowerCase().match(/[a-z][a-z0-9_+-]{2,}/g)?.filter((word) => !STOP.has(word)) || [])];
@@ -27,7 +34,7 @@ function corpusAt(root) {
 function score(queryTerms, candidate) {
   const text = String(candidate || '').toLowerCase();
   let matched = 0;
-  for (const term of queryTerms) if (text.includes(term)) matched++;
+  for (const term of queryTerms) if (new RegExp(`\\b${term.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&')}\\b`, 'i').test(text)) matched++;
   return matched / Math.max(queryTerms.length, 1);
 }
 
@@ -50,6 +57,8 @@ export function answerAchllmChat(root, prompt) {
   if (/^(?:hi|hello|hey|yo)(?:\s|!|\.|$)/i.test(question)) {
     return { mode: 'chat', content: 'Hi — I am AchLLM. I answer from my attributable training corpus while the neural model continues training and evaluation.' };
   }
+  const foundation = FOUNDATION.find((item) => item.match.test(question));
+  if (foundation) return { mode: 'foundation', content: foundation.content };
   const queryTerms = terms(question);
   const chunks = corpusAt(root);
   let best = '', bestScore = 0;
@@ -59,7 +68,7 @@ export function answerAchllmChat(root, prompt) {
   }
   // Require enough distinct topical overlap. A generic shared word is not
   // evidence that a corpus passage answers the user's question.
-  if (bestScore >= 0.35 && best) {
+  if (queryTerms.length >= 2 && bestScore >= 0.5 && best) {
     const excerpt = best.slice(0, 900).replace(/\s+/g, ' ').trim();
     return {
       mode: 'retrieval',

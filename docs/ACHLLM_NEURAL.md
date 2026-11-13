@@ -37,4 +37,4 @@ The endpoint binds only to `127.0.0.1`. It is intentionally not exposed publicly
 
 ## Chat reliability gate
 
-The public AchLLM chat service uses attributable retrieval from the licensed local corpus while the neural model is immature. It will not surface neural generations until the checkpoint has at least 3,000 training documents, validation loss at or below 2.0, and held-out loss at or below 2.2. Until then, unknown questions receive an honest limitation instead of a fabricated answer.
+The public AchLLM chat service uses a small reviewed technical foundation and attributable retrieval from the licensed local corpus while the neural model is immature. It will not surface neural generations until the checkpoint has at least 3,000 training documents, validation loss at or below 2.0, and held-out loss at or below 2.2. Until then, unknown questions receive an honest limitation instead of a fabricated answer.
