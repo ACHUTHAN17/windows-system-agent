@@ -1,4 +1,7 @@
 # Changelog
+## 1.42.9 — 2026-11-13
+- **Continuous protected training:** replaced the idle scheduler with serial three-second CPU micro-cycles, periodic evaluation, no overlapping jobs, reduced process priority, and a 65% CPU cap.
+
 ## 1.42.8 — 2026-11-13
 - **Truthful live-path display:** all dots now derive from actual checkpoint dimensions and vocabulary size. Connection paths and moving markers render only during a reported training or evaluation phase; idle views explicitly show no live transfer path.
 

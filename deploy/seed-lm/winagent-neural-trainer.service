@@ -6,12 +6,16 @@ Wants=network-online.target
 [Service]
 Type=simple
 WorkingDirectory=%h/winagent
-Environment=ACHLLM_NEURAL_INTERVAL_SECONDS=21600
-Environment=ACHLLM_NEURAL_STEPS=200
+Environment=ACHLLM_NEURAL_CYCLE_SECONDS=3
+Environment=ACHLLM_NEURAL_MICRO_STEPS=1
+Environment=ACHLLM_NEURAL_EVALUATE_EVERY=20
+Environment=ACHLLM_NEURAL_BATCH=1
 Environment=ACHLLM_NEURAL_MAX_MB=512
 ExecStart=%h/.local/share/achllm-neural/bin/python %h/winagent/neural/daemon.py
 Restart=always
 RestartSec=60
+Nice=10
+CPUQuota=65%
 NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=full

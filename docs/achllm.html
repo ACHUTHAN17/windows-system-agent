@@ -896,7 +896,7 @@
       });
       ctx.font = "12px system-ui";
       ctx.fillStyle = activeCompute ? "#7ee4ed" : "#8391a6";
-      ctx.fillText(activeCompute ? `LIVE ${String(neuralView.runtime.state).toUpperCase()} COMPUTE · animated markers show active phase` : "IDLE · no live transfer path shown", 14, 24);
+      ctx.fillText(activeCompute ? `LIVE ${String(neuralView.runtime.state).toUpperCase()} COMPUTE · animated markers show active phase` : "CONTINUOUS RATE-LIMITED CYCLE · no live transfer path shown", 14, 24);
       renderNodeInspector();
       if (activeCompute && !neuralView.animationTimer) neuralView.animationTimer = setTimeout(() => { neuralView.animationTimer = null; drawNeuralView(); }, 180);
     }
@@ -907,7 +907,7 @@
       const sampled = nodesFor(neural).nodes.length;
       q("#network-meta").textContent = neural.parameters ? `${n(neural.parameters)} actual parameters · ${config.layers || 0} transformer layers · ${config.width || 0} hidden width · ${sampled} structural units shown from checkpoint dimensions` : "No neural checkpoint available yet";
       q("#network-layers").innerHTML = sampledLayers(neural).map(([label, count]) => `<span class="network-layer">${esc(label)} · ${n(count)} units</span>`).join("");
-      q("#training-now").textContent = runtime.state === "training" ? "Training checkpoint on CPU" : runtime.state === "evaluating" ? "Evaluating direct checkpoint samples" : runtime.state === "idle" ? "Idle until the next scheduled training cycle" : runtime.state === "error" ? "Last training cycle needs attention" : "Awaiting first trainer report";
+      q("#training-now").textContent = runtime.state === "training" ? `Live CPU micro-training · cycle ${runtime.cycleNumber || "?"}` : runtime.state === "evaluating" ? "Evaluating direct checkpoint samples" : runtime.state === "continuous" ? `Continuous ${runtime.cycleSeconds || 3}-second micro-training loop · CPU rate-limited between steps` : runtime.state === "error" ? "Last training cycle needs attention" : "Awaiting first trainer report";
       q("#training-steps").textContent = training.cumulativeSteps != null ? `${n(training.cumulativeSteps)} cumulative steps · ${n(training.cycleSteps)} latest cycle` : "No checkpoint steps recorded";
       q("#training-quality").textContent = quality ? `${quality.passed ? "Passed mechanical screen" : "Blocked: repetitive output detected"} (${n(quality.mechanicallyHealthy)}/${n(quality.total)} samples)` : "Evaluation report pending";
       drawNeuralView();

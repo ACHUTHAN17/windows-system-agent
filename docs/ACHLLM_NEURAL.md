@@ -17,7 +17,7 @@ python3 -m venv ~/.local/share/achllm-neural
 
 The default model is deliberately small (about hundreds of thousands of parameters) and CPU-safe. It validates the full path: training, held-out evaluation, atomic checkpoint write, and loopback-only inference. It is not expected to provide general chat quality.
 
-To run restartable smoke training while the host is available:
+To run restartable continuous micro-training while the host is available:
 
 ```bash
 mkdir -p ~/.config/systemd/user
@@ -25,6 +25,8 @@ cp deploy/seed-lm/winagent-neural-*.service ~/.config/systemd/user/
 systemctl --user daemon-reload
 systemctl --user enable --now winagent-neural-trainer.service
 ```
+
+The supplied user service runs one serial, one-step CPU micro-cycle every three seconds, evaluates every twentieth cycle, runs at reduced process priority, and is capped at 65% CPU. Cycles never overlap. The live dashboard distinguishes active training/evaluation from the short rate-limited interval between them, and only animates paths during actual compute.
 
 After the first checkpoint succeeds, start its private test endpoint:
 
