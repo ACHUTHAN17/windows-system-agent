@@ -11,6 +11,7 @@ const seedDir = path.join(root, 'models', 'seed-data');
 const modelFile = path.join(root, 'models', 'achllm.live.model.json');
 const neuralMetadataFile = path.join(root, 'models', 'achllm-neural', 'metadata.json');
 const neuralEvaluationFile = path.join(root, 'models', 'achllm-neural', 'chat-evaluation.json');
+const neuralRuntimeFile = path.join(root, 'models', 'achllm-neural', 'training-state.json');
 const manifestFile = path.join(seedDir, 'manifest.jsonl');
 const safeRead = (file, fallback) => { try { return fs.readFileSync(file, 'utf8'); } catch { return fallback; } };
 let model = {};
@@ -19,6 +20,8 @@ let neural = null;
 try { neural = JSON.parse(safeRead(neuralMetadataFile, 'null')); } catch {}
 let neuralEvaluation = null;
 try { neuralEvaluation = JSON.parse(safeRead(neuralEvaluationFile, 'null')); } catch {}
+let neuralRuntime = null;
+try { neuralRuntime = JSON.parse(safeRead(neuralRuntimeFile, 'null')); } catch {}
 const transitionRows = Object.values(model.transitions || {});
 const learnedWeights = transitionRows.reduce((total, row) => total + (Array.isArray(row) ? row.length : 0), 0);
 const averageCandidatesPerLookup = transitionRows.length ? learnedWeights / transitionRows.length : 0;
@@ -50,6 +53,9 @@ const status = {
     status: neural.status || 'checkpoint-ready', architecture: neural.architecture || null,
     checkpoint: neural.checkpoint || null, checkpointBytes: Number(neural.checkpointBytes || 0),
     parameters: Number(neural.parameters || 0), metrics: neural.metrics || null,
+    config: neural.config || null,
+    training: neural.training || null,
+    runtime: neuralRuntime || { state: 'unknown', note: 'trainer has not written runtime state yet' },
     estimatedTrainingFlops: Number(neural.estimatedTrainingFlops || 0),
     estimatedTrainingFlopsNote: neural.estimatedTrainingFlopsNote || null,
     chatTraining: neural.chatTraining || null,
@@ -87,7 +93,13 @@ const status = {
     aspects: ['chat', 'code', 'reasoning', 'math', 'multilingual', 'long-context', 'tool-use', 'vision', 'safety', 'efficiency'],
   },
   agentReadiness: agentReadinessReport(),
-  security: { publicDataOnly: true, explicitChatDonationOnly: true, isolatedBrowserProfile: true, browserSourceAllowlist: ['https://en.wikipedia.org/wiki/'], noCredentials: true, noPrivatePrompts: true },
+  security: {
+    publicDataOnly: true, explicitChatDonationOnly: true, isolatedBrowserProfile: true,
+    browserSourceAllowlist: ['https://en.wikipedia.org/wiki/'], noCredentials: true,
+    noPrivatePrompts: true, neuralLoopbackOnly: true, checkpointAtomicWrites: true,
+    serviceHardening: ['NoNewPrivileges', 'PrivateTmp', 'ProtectSystem=full'],
+    note: 'Credentials and private prompts stay outside the corpus; the neural test endpoint listens only on loopback.',
+  },
 };
 const output = path.join(root, 'docs', 'achllm-status.json');
 const historyOutput = path.join(root, 'docs', 'achllm-history.json');

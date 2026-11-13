@@ -168,6 +168,50 @@
     .wide {
       margin-top: 12px;
     }
+    .neural-stage {
+      position: relative;
+      min-height: 440px;
+      margin-top: 12px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: radial-gradient(circle at 50% 45%, #10213b 0%, #0a0e15 58%);
+    }
+    #neural-3d {
+      display: block;
+      width: 100%;
+      height: 440px;
+      cursor: grab;
+      touch-action: none;
+    }
+    #neural-3d:active { cursor: grabbing; }
+    .neural-caption {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      pointer-events: none;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .runtime-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .runtime-item {
+      min-height: 76px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #0a0e15;
+    }
+    .runtime-item b { display: block; margin-top: 5px; color: #dfe8f8; }
+    .runtime-item .label { font-size: 11px; }
     .toolbar {
       display: flex;
       align-items: center;
@@ -288,6 +332,7 @@
       .chat-grid {
         grid-template-columns: 1fr 1fr;
       }
+      .runtime-grid { grid-template-columns: 1fr; }
       .send {
         min-height: 42px;
       }
@@ -442,6 +487,29 @@
           >
         </figcaption>
       </figure>
+    </section>
+    <section class="panel wide">
+      <div class="toolbar">
+        <div>
+          <h2>Neural architecture · live 3D view</h2>
+          <p>Drag to rotate. Nodes and paths are a sampled projection of the real checkpoint shape; they are not a claim that each dot is a separately measured learned concept.</p>
+        </div>
+        <div class="controls"><button id="network-reset" type="button">Reset view</button></div>
+      </div>
+      <div class="neural-stage">
+        <canvas id="neural-3d" aria-label="Rotatable 3D projection of AchLLM neural architecture"></canvas>
+        <div class="neural-caption"><span id="network-meta">Waiting for neural checkpoint metadata…</span><span>Drag to rotate · sampled structure</span></div>
+      </div>
+      <div class="runtime-grid">
+        <div class="runtime-item"><span class="label">Current work</span><b id="training-now">Waiting for trainer telemetry…</b></div>
+        <div class="runtime-item"><span class="label">Checkpoint training</span><b id="training-steps">—</b></div>
+        <div class="runtime-item"><span class="label">Quality gate</span><b id="training-quality">—</b></div>
+      </div>
+    </section>
+    <section class="panel wide">
+      <h2>Security posture</h2>
+      <p id="security-note">Loading live security telemetry…</p>
+      <div class="runtime-grid" id="security-grid"></div>
     </section>
     <section class="panel wide">
       <div class="toolbar">
@@ -697,6 +765,78 @@
       const identity = status.identity || {};
       q("#identity").innerHTML = `<b>Project identity:</b> ${esc(identity.godfather || "Not recorded")} is the Godfather of AchLLM. <a href="${esc(identity.record || "ACHLLM_IDENTITY.md")}">View provenance</a>`;
     }
+    const neuralView = { yaw: -0.48, pitch: -0.16, drag: null, neural: null };
+    function sampledLayers(neural) {
+      const config = neural?.config || {}, width = Math.max(1, Number(config.width || 0)), blocks = Math.max(0, Number(config.layers || 0));
+      const layers = [["Input bytes", 8], ["Token embedding", Math.min(14, width || 12)]];
+      for (let index = 0; index < blocks; index++) layers.push([`Transformer ${index + 1}`, Math.min(16, width || 12)]);
+      layers.push(["Vocabulary logits", 8]);
+      return layers;
+    }
+    function nodesFor(neural) {
+      const layers = sampledLayers(neural), nodes = [], layerGap = 3.1;
+      layers.forEach(([label, count], layerIndex) => {
+        const columns = Math.ceil(Math.sqrt(count)), rows = Math.ceil(count / columns);
+        for (let index = 0; index < count; index++) {
+          const column = index % columns, row = Math.floor(index / columns);
+          nodes.push({ label, layer: layerIndex, index, x: (column - (columns - 1) / 2) * 1.1, y: (row - (rows - 1) / 2) * 1.1, z: (layerIndex - (layers.length - 1) / 2) * layerGap });
+        }
+      });
+      return { layers, nodes };
+    }
+    function projectNode(node, width, height) {
+      const cy = Math.cos(neuralView.yaw), sy = Math.sin(neuralView.yaw), cp = Math.cos(neuralView.pitch), sp = Math.sin(neuralView.pitch);
+      const x = node.x * cy - node.z * sy, z = node.x * sy + node.z * cy;
+      const y = node.y * cp - z * sp, depth = node.y * sp + z * cp;
+      const scale = Math.min(width, height) * 0.47 / (12 - depth);
+      return { x: width / 2 + x * scale, y: height / 2 + y * scale, depth, radius: Math.max(2.5, Math.min(9, scale * 0.115)) };
+    }
+    function drawNeuralView() {
+      const canvas = q("#neural-3d"), neural = neuralView.neural;
+      if (!canvas || !neural) return;
+      const box = canvas.getBoundingClientRect(), ratio = Math.min(2, window.devicePixelRatio || 1), width = Math.max(1, box.width), height = Math.max(1, box.height);
+      canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio);
+      const ctx = canvas.getContext("2d"); ctx.setTransform(ratio, 0, 0, ratio, 0, 0); ctx.clearRect(0, 0, width, height);
+      const model = nodesFor(neural), projected = model.nodes.map((node) => ({ node, ...projectNode(node, width, height) }));
+      const byLayer = model.layers.map((_, layer) => projected.filter((item) => item.node.layer === layer));
+      ctx.lineWidth = 0.65;
+      for (let layer = 0; layer < byLayer.length - 1; layer++) {
+        const current = byLayer[layer], next = byLayer[layer + 1];
+        current.forEach((from, index) => {
+          for (let path = 0; path < Math.min(3, next.length); path++) {
+            const to = next[(index * 5 + path * 3) % next.length];
+            const alpha = Math.max(0.05, Math.min(0.28, 0.13 + (from.depth + to.depth) / 95));
+            ctx.strokeStyle = `rgba(74, 205, 240, ${alpha})`; ctx.beginPath(); ctx.moveTo(from.x, from.y); ctx.lineTo(to.x, to.y); ctx.stroke();
+          }
+        });
+      }
+      projected.sort((a, b) => a.depth - b.depth).forEach((item) => {
+        const glow = Math.max(0.28, Math.min(1, (item.depth + 8) / 16));
+        ctx.fillStyle = `rgba(96, 220, 245, ${0.25 + glow * 0.6})`; ctx.beginPath(); ctx.arc(item.x, item.y, item.radius + 2, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = `rgba(202, 250, 255, ${0.55 + glow * 0.4})`; ctx.beginPath(); ctx.arc(item.x, item.y, item.radius, 0, Math.PI * 2); ctx.fill();
+      });
+      ctx.font = "12px system-ui"; ctx.fillStyle = "#b8c7dd";
+      byLayer.forEach((items, index) => { const x = items.reduce((sum, item) => sum + item.x, 0) / Math.max(1, items.length); ctx.fillText(model.layers[index][0], x - ctx.measureText(model.layers[index][0]).width / 2, 24); });
+    }
+    function neuralRuntime(status) {
+      const neural = status.neural || {}, runtime = neural.runtime || {}, config = neural.config || {}, training = neural.training || {}, quality = neural.chatEvaluation?.qualityGate;
+      neuralView.neural = neural;
+      const sampled = nodesFor(neural).nodes.length;
+      q("#network-meta").textContent = neural.parameters ? `${n(neural.parameters)} actual parameters · ${config.layers || 0} transformer layers · ${config.width || 0} hidden width · ${sampled} displayed sample nodes` : "No neural checkpoint available yet";
+      q("#training-now").textContent = runtime.state === "training" ? "Training checkpoint on CPU" : runtime.state === "evaluating" ? "Evaluating direct checkpoint samples" : runtime.state === "idle" ? "Idle until the next scheduled training cycle" : runtime.state === "error" ? "Last training cycle needs attention" : "Awaiting first trainer report";
+      q("#training-steps").textContent = training.cumulativeSteps != null ? `${n(training.cumulativeSteps)} cumulative steps · ${n(training.cycleSteps)} latest cycle` : "No checkpoint steps recorded";
+      q("#training-quality").textContent = quality ? `${quality.passed ? "Passed mechanical screen" : "Blocked: repetitive output detected"} (${n(quality.mechanicallyHealthy)}/${n(quality.total)} samples)` : "Evaluation report pending";
+      drawNeuralView();
+    }
+    function securityPanel(status) {
+      const sec = status.security || {}, items = [
+        ["Corpus privacy", sec.noPrivatePrompts && sec.noCredentials, "Private prompts and credentials excluded"],
+        ["Neural endpoint", sec.neuralLoopbackOnly, "Loopback-only test endpoint"],
+        ["Checkpoint safety", sec.checkpointAtomicWrites, "Atomic checkpoint writes"],
+      ];
+      q("#security-note").textContent = sec.note || "Security telemetry is not available yet.";
+      q("#security-grid").innerHTML = items.map(([label, ok, detail]) => `<div class="runtime-item"><span class="label">${esc(label)}</span><b style="color:${ok ? "#48d597" : "#efbc69"}">${ok ? "Active" : "Unknown"}</b><span class="hint">${esc(detail)}</span></div>`).join("");
+    }
 function benchmarks(data) {
   const suites = Array.isArray(data?.suites) ? data.suites : [];
   const choose = q("#benchmark-suite");
@@ -776,6 +916,8 @@ function benchmarks(data) {
         vitals(s);
         agentReadiness(s);
         identity(s);
+        neuralRuntime(s);
+        securityPanel(s);
         benchmarks(b);
         q("#comparison-note").textContent =
           x.note || "No normalised comparison evidence is available.";
@@ -841,6 +983,11 @@ function benchmarks(data) {
         answer.textContent = `Test failed: ${error.message}`;
       }
     };
+    q("#network-reset").onclick = () => { neuralView.yaw = -0.48; neuralView.pitch = -0.16; drawNeuralView(); };
+    q("#neural-3d").addEventListener("pointerdown", (event) => { neuralView.drag = { x: event.clientX, y: event.clientY }; event.currentTarget.setPointerCapture(event.pointerId); });
+    q("#neural-3d").addEventListener("pointermove", (event) => { if (!neuralView.drag) return; neuralView.yaw += (event.clientX - neuralView.drag.x) * 0.009; neuralView.pitch = Math.max(-0.75, Math.min(0.75, neuralView.pitch + (event.clientY - neuralView.drag.y) * 0.009)); neuralView.drag = { x: event.clientX, y: event.clientY }; drawNeuralView(); });
+    q("#neural-3d").addEventListener("pointerup", () => { neuralView.drag = null; });
+    window.addEventListener("resize", drawNeuralView);
     load().catch(
       () => (q("#publication").textContent = "Telemetry files unavailable"),
     );
