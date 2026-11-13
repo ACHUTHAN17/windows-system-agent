@@ -428,7 +428,11 @@
         if (m === "free") freeEntries().forEach((e) => add(e.v, e.t));
         else if (m === "github-models")
           GH_MODELS.forEach((x) => add("ghm:" + x, x));
-        else if (m === "achllm") add("achllm:default", "AchLLM · secured InstaBox gateway");
+        else if (m === "achllm") {
+          add("achllm:auto", "AchLLM Auto · reliable until neural passes");
+          add("achllm:reliable", "AchLLM Reliable · foundation + retrieval");
+          add("achllm:neural", "AchLLM Neural · experimental direct test");
+        }
         else add("custom:", "Custom — values from ⚙ keys below");
         const sv = store.get("mmodel");
         if (sv && [...sel.options].some((o) => o.value === sv)) sel.value = sv;
@@ -449,14 +453,14 @@
             return { kind: "free", url: e.url, model: e.model, label: e.label };
         }
         if (v.startsWith("ghm:")) return { kind: "github", model: v.slice(4) };
-        if (v === "achllm:default")
+        if (v.startsWith("achllm:"))
           return {
             kind: "achllm",
             url: $("achurl").value.trim(),
             user: $("achuser").value,
             pass: $("achpass").value,
-            model: "achllm",
-            label: "AchLLM",
+            model: v === "achllm:neural" ? "achllm-neural" : v === "achllm:reliable" ? "achllm" : "achllm-auto",
+            label: v === "achllm:neural" ? "AchLLM Neural · experimental" : v === "achllm:reliable" ? "AchLLM Reliable" : "AchLLM Auto",
           };
         return { kind: "custom" };
       }
@@ -611,14 +615,14 @@
         const j = await r.json();
         return j.choices[0].message.content;
       }
-      async function postAchllm(url, user, pass, msgs) {
+      async function postAchllm(url, user, pass, model, msgs) {
         const r = await fetch(url.replace(/\/+$/, "") + "/chat/completions", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: "Basic " + btoa(`${user}:${pass}`),
           },
-          body: JSON.stringify({ model: "achllm", messages: msgs, max_tokens: 160 }),
+          body: JSON.stringify({ model, messages: msgs, max_tokens: 160 }),
         });
         if (!r.ok)
           throw {
@@ -737,8 +741,8 @@
                 status: 401,
                 why: "AchLLM needs its gateway URL, username, and password in ⚙ keys.",
               };
-            a = await postAchllm(e.url, e.user, e.pass, hist);
-            label = "achllm · hosted gateway";
+            a = await postAchllm(e.url, e.user, e.pass, e.model, hist);
+            label = "achllm · " + e.label;
           } else {
             const k = store.get("apikey");
             if (!k || !store.get("apiurl"))

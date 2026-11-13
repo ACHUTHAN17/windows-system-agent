@@ -484,6 +484,7 @@
       </p>
       <div class="note" id="identity">Loading project identity…</div>
       <div class="chat-grid">
+        <select id="engine" aria-label="AchLLM chat engine"><option value="achllm-auto">AchLLM Auto · reliable until neural passes</option><option value="achllm">AchLLM Reliable · foundation + retrieval</option><option value="achllm-neural">AchLLM Neural · experimental direct test</option></select>
         <input
           id="endpoint"
           aria-label="Model endpoint"
@@ -805,7 +806,7 @@ function benchmarks(data) {
             Authorization: "Basic " + btoa(`${user}:${pass}`),
           },
           body: JSON.stringify({
-            model: "achllm",
+            model: q("#engine").value,
             messages: [{ role: "user", content: prompt }],
             max_tokens: 160,
           }),

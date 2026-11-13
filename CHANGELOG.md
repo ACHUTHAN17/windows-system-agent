@@ -1,4 +1,7 @@
 # Changelog
+## 1.42.2 — 2026-11-13
+- **Always-testable engines:** the authenticated AchLLM chat endpoint and both web chat surfaces now expose Auto, Reliable, and direct Experimental Neural modes. Auto only promotes neural generation after the documented quality gate; direct Neural remains available for transparent testing.
+
 ## 1.42.1 — 2026-11-13
 - **Reliable chat gate:** AchLLM chat now uses attributable corpus retrieval while its neural decoder is below the measured quality gate. It refuses unknown topics rather than presenting low-quality generated text as a fact.
 - **Neural promotion criteria:** a neural checkpoint must have 3,000 training documents and pass fixed validation/held-out loss thresholds before it can be considered for chat generation.
