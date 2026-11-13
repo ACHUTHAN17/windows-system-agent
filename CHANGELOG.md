@@ -1,4 +1,7 @@
 # Changelog
+## 1.42.11 — 2026-11-13
+- **Live dashboard truth:** added a separate low-priority telemetry service that publishes real runtime state every three seconds, without committing private data or creating overlapping trainer jobs.
+
 ## 1.42.10 — 2026-11-13
 - **Training resources:** raised the protected continuous-trainer cap to 90% CPU and 90% RAM, with memory pressure handling at 85%.
 

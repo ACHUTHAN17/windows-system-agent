@@ -1,0 +1,21 @@
+[Unit]
+Description=AchLLM live public telemetry refresher
+After=winagent-neural-trainer.service
+Wants=winagent-neural-trainer.service
+
+[Service]
+Type=simple
+WorkingDirectory=%h/winagent
+ExecStart=/bin/sh -c 'while :; do node scripts/write-achllm-status.mjs >/dev/null 2>&1 || true; sleep 3; done'
+Restart=always
+RestartSec=3
+Nice=10
+CPUQuota=10%
+MemoryMax=10%
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ReadWritePaths=%h/winagent/docs
+
+[Install]
+WantedBy=default.target

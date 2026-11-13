@@ -30,11 +30,14 @@ test('AchLLM does not auto-promote a neural checkpoint without an evaluation dec
 test('AchLLM continuous trainer uses serial micro-cycles with CPU limits', () => {
   const daemon = fs.readFileSync(path.join(root, 'neural', 'daemon.py'), 'utf8');
   const service = fs.readFileSync(path.join(root, 'deploy', 'seed-lm', 'winagent-neural-trainer.service'), 'utf8');
+  const telemetry = fs.readFileSync(path.join(root, 'deploy', 'seed-lm', 'winagent-achllm-telemetry.service'), 'utf8');
   assert.match(daemon, /ACHLLM_NEURAL_CYCLE_SECONDS/);
   assert.match(daemon, /ACHLLM_NEURAL_MICRO_STEPS/);
   assert.match(daemon, /cycle_number % EVALUATE_EVERY/);
   assert.match(daemon, /"continuous"/);
   assert.match(service, /CPUQuota=90%/);
   assert.match(service, /MemoryMax=90%/);
+  assert.match(telemetry, /write-achllm-status\.mjs/);
+  assert.match(telemetry, /sleep 3/);
   assert.match(service, /Nice=10/);
 });
