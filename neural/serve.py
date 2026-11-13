@@ -9,7 +9,7 @@ from pathlib import Path
 
 import torch
 
-from train import CHECKPOINT, Config, TinyDecoder, VOCAB_SIZE, ByteTokenizer
+from train import BOS, EOS, CHECKPOINT, Config, TinyDecoder, VOCAB_SIZE, ByteTokenizer
 
 PORT = int(os.environ.get("ACHLLM_NEURAL_PORT", "8092"))
 MAX_BODY = 65_536
@@ -31,16 +31,19 @@ MODEL, CONFIG, TOKENIZER = load_model()
 
 @torch.no_grad()
 def complete(prompt: str, max_tokens: int) -> str:
-    tokens = TOKENIZER.encode(prompt)[-CONFIG.context:]
+    # Do not seed decoding with an end-of-document marker. The continuation
+    # starts immediately after the user's final byte, not after EOS.
+    prompt_tokens = TOKENIZER.encode(prompt)[:-1]
+    tokens = prompt_tokens[-CONFIG.context:]
     for _ in range(min(max(1, max_tokens), 128)):
         input_ids = torch.tensor([tokens[-CONFIG.context:]], dtype=torch.long)
         logits = MODEL(input_ids)[0, -1]
         # Greedy decoding remains reproducible during evaluation.
         next_token = int(torch.argmax(logits).item())
-        if next_token == 1:
+        if next_token == EOS:
             break
         tokens.append(next_token)
-    return TOKENIZER.decode(tokens[len(TOKENIZER.encode(prompt)[-CONFIG.context:]):])
+    return TOKENIZER.decode(tokens[len(prompt_tokens[-CONFIG.context:]):])
 
 
 class Handler(BaseHTTPRequestHandler):

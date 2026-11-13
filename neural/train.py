@@ -34,8 +34,12 @@ MODEL_DIR = ROOT / "models" / "achllm-neural"
 CHECKPOINT = MODEL_DIR / "achllm-neural.pt"
 METADATA = MODEL_DIR / "metadata.json"
 FORMAT = "achllm-neural"
-VERSION = 1
-VOCAB_SIZE = 258  # padding=0, BOS=1, raw UTF-8 bytes are offset by 2
+VERSION = 2
+PAD = 0
+BOS = 1
+EOS = 2
+BYTE_OFFSET = 3
+VOCAB_SIZE = 259  # padding, BOS, EOS, then raw UTF-8 bytes
 
 
 @dataclass(frozen=True)
@@ -54,10 +58,10 @@ class Config:
 
 class ByteTokenizer:
     def encode(self, text: str) -> list[int]:
-        return [1, *[byte + 2 for byte in text.encode("utf-8", errors="replace")], 1]
+        return [BOS, *[byte + BYTE_OFFSET for byte in text.encode("utf-8", errors="replace")], EOS]
 
     def decode(self, ids: Iterable[int]) -> str:
-        return bytes(token - 2 for token in ids if token >= 2).decode("utf-8", errors="replace")
+        return bytes(token - BYTE_OFFSET for token in ids if token >= BYTE_OFFSET).decode("utf-8", errors="replace")
 
 
 class TinyDecoder(nn.Module):
@@ -167,7 +171,7 @@ def parameter_count(model: nn.Module) -> int:
 
 def compatible_checkpoint(checkpoint: object, config: Config) -> bool:
     """Only resume weights when the tensor shape contract is unchanged."""
-    if not isinstance(checkpoint, dict) or checkpoint.get("format") != FORMAT:
+    if not isinstance(checkpoint, dict) or checkpoint.get("format") != FORMAT or checkpoint.get("version") != VERSION:
         return False
     saved = checkpoint.get("config")
     if not isinstance(saved, dict):
@@ -244,7 +248,7 @@ def train(config: Config, max_checkpoint_mb: int) -> dict[str, object]:
         "version": VERSION,
         "createdAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "config": asdict(config),
-        "vocab": {"kind": "utf8-byte", "size": VOCAB_SIZE, "bos": 1, "byteOffset": 2},
+        "vocab": {"kind": "utf8-byte", "size": VOCAB_SIZE, "pad": PAD, "bos": BOS, "eos": EOS, "byteOffset": BYTE_OFFSET},
         "state_dict": model.state_dict(),
         "metrics": {"lastTrainLoss": losses[-1], "meanTrainLoss": sum(losses) / len(losses), "validationLoss": validation_loss, "heldoutLoss": heldout_loss},
         "training": {"resumedFrom": resumed_from, "cycleSteps": config.steps, "cumulativeSteps": cumulative_steps + config.steps},

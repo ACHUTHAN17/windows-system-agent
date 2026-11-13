@@ -1,6 +1,6 @@
 # AchLLM-Neural: CPU-first training pipeline
 
-AchLLM-Neural is an optional decoder-only byte transformer that starts from random weights. It is separate from the current n-gram baseline and never replaces it automatically. A neural checkpoint is eligible for testing only after it records validation and held-out loss from a document-level split.
+AchLLM-Neural is an optional decoder-only byte transformer that starts from random weights. It is separate from the current n-gram baseline and never replaces it automatically. It uses distinct begin/end byte tokens so a response does not immediately terminate at a document boundary. A neural checkpoint is eligible for testing only after it records validation and held-out loss from a document-level split.
 
 ## Data boundary
 
