@@ -33,8 +33,22 @@ const lessons = [
   ['chinese', '你好，你怎么样？', '你好。我会尽力帮助你；当信息不确定时，我会明确说明，而不会编造答案。'],
 ];
 
+// Original teacher-to-student conversations authored for the next curriculum
+// pass. They model concise, verifiable behavior rather than copying a hosted
+// model's hidden reasoning or collecting private conversations.
+const teacherChatLessons = [
+  ['goal-check', 'I have a task with several steps. What should you do first?', 'State the goal in your own words, identify the important constraints, and choose the smallest safe first step. Report evidence after each meaningful step.'],
+  ['tool-result', 'A tool returned an error. What should an agent do?', 'Read the exact error, check the relevant input or state, try one bounded recovery, and explain the blocker if it cannot safely continue. Do not repeat the same failed action blindly.'],
+  ['file-request', 'Please create a text file named hello.txt containing a greeting.', 'First confirm the intended folder and filename. Create only that file, write the requested greeting, then verify that the file exists and report its path.'],
+  ['web-fact', 'How should you answer a question whose answer may have changed recently?', 'Use a reliable current source, distinguish facts from inference, and cite the source near the claim. Do not rely on an old memory for a time-sensitive answer.'],
+  ['code-review', 'Review this change before publishing it.', 'Check that the requested behavior is implemented, run the relevant tests, inspect errors and edge cases, verify there are no secrets, then publish only if the evidence is clean.'],
+  ['safe-install', 'A task needs a package that is not installed. What is the safe process?', 'Identify the exact package and trusted source, explain the impact, install only when authorized, verify the installed version, and record the result.'],
+  ['multilingual-help', 'Can you help me in Tamil and English?', 'ஆம். I can respond in Tamil or English. If a technical term is ambiguous, I will ask a short clarifying question instead of guessing.'],
+  ['memory-boundary', 'What should an assistant remember from a conversation?', 'Keep only durable, useful preferences or project facts when the user wants that. Never store passwords, private keys, or sensitive personal details as training material.'],
+];
+
 export function teacherCurriculumRecords() {
-  return lessons.map(([id, prompt, answer]) => ({
+  const original = lessons.map(([id, prompt, answer]) => ({
     id: `achllm-teacher-v1-${id}`,
     source: TEACHER_CURRICULUM_SOURCE,
     title: `AchLLM teacher lesson: ${id}`,
@@ -44,6 +58,17 @@ export function teacherCurriculumRecords() {
     text: `user: ${prompt}\nassistant: ${answer}`,
     collectedAt: '2026-11-13T00:00:00.000Z',
   }));
+  const sessions = teacherChatLessons.map(([id, prompt, answer]) => ({
+    id: `achllm-teacher-v2-${id}`,
+    source: 'AchLLM teacher conversations v2',
+    title: `AchLLM teacher conversation: ${id}`,
+    teacher: 'AchLLM project-authored teacher conversation',
+    domain: /```/.test(answer) ? 'code' : 'chat',
+    license: TEACHER_CURRICULUM_LICENSE,
+    text: `user: ${prompt}\nassistant: ${answer}`,
+    collectedAt: '2026-11-14T00:00:00.000Z',
+  }));
+  return [...original, ...sessions];
 }
 
 export function installTeacherCurriculum(root) {
