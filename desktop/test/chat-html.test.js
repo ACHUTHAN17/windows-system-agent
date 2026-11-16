@@ -4,7 +4,14 @@
 const test = require('node:test');
 const assert = require('node:assert');
 const path = require('node:path');
-const { JSDOM } = require('jsdom');
+const { JSDOM, ResourceLoader, VirtualConsole } = require('jsdom');
+
+class LocalFixtureLoader extends ResourceLoader {
+  fetch(url) {
+    if (String(url).endsWith('/router.js')) return Promise.resolve(Buffer.from(''));
+    return null;
+  }
+}
 
 function fakeFile(name, content, type) {
   const buf = Buffer.from(content);
@@ -13,7 +20,12 @@ function fakeFile(name, content, type) {
 
 async function load() {
   const file = path.join(__dirname, '..', '..', 'docs', 'chat.html');
-  const dom = await JSDOM.fromFile(file, { runScripts: 'dangerously', resources: 'usable', url: 'https://example.com/chat.html' });
+  const virtualConsole = new VirtualConsole();
+  virtualConsole.on('jsdomError', (error) => { throw error; });
+  const dom = await JSDOM.fromFile(file, {
+    runScripts: 'dangerously', resources: new LocalFixtureLoader(), url: 'https://example.com/chat.html', virtualConsole,
+    beforeParse(window) { window.scrollTo = () => {}; },
+  });
   await new Promise(r => setTimeout(r, 100));
   return dom;
 }

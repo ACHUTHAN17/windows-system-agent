@@ -28,7 +28,10 @@ function startServer(env) {
       rawStdoutLines.push(line);
       const msg = JSON.parse(line); // throws (failing the test) if the protocol stream is corrupted
       lines.push(msg);
-      if (msg.id !== undefined && waiters.has(msg.id)) { waiters.get(msg.id)(msg); waiters.delete(msg.id); }
+      if (msg.id !== undefined && waiters.has(msg.id)) {
+        const waiter = waiters.get(msg.id); waiters.delete(msg.id); clearTimeout(waiter.timer);
+        msg.error ? waiter.reject(new Error(msg.error.message)) : waiter.resolve(msg.result);
+      }
     }
   });
   let stderr = '';
@@ -37,14 +40,16 @@ function startServer(env) {
   function rpc(method, params) {
     return new Promise((resolve, reject) => {
       const id = nextId++;
-      waiters.set(id, (m) => (m.error ? reject(new Error(m.error.message)) : resolve(m.result)));
+      const timer = setTimeout(() => {
+        if (waiters.has(id)) { waiters.delete(id); reject(new Error('rpc timeout: ' + method)); }
+      }, 45000);
+      waiters.set(id, { resolve, reject, timer });
       child.stdin.write(JSON.stringify({ jsonrpc: '2.0', id, method, params }) + '\n');
       // Generous on purpose: this file spawns a real subprocess per test, and when the whole
       // desktop suite runs its test FILES in parallel (node's default), several subprocess-
       // heavy files starting at once can push a single engine startup well past what it takes
       // in isolation. This is scheduling noise, not a protocol concern — tighten it back down
       // if these ever run serially.
-      setTimeout(() => { if (waiters.has(id)) { waiters.delete(id); reject(new Error('rpc timeout: ' + method)); } }, 45000);
     });
   }
   function notify(method, params) { child.stdin.write(JSON.stringify({ jsonrpc: '2.0', method, params }) + '\n'); }

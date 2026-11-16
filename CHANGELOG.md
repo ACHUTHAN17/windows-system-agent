@@ -1,4 +1,9 @@
 # Changelog
+## 1.42.18 — 2026-11-16
+- **Gateway hardening:** the public AchLLM proxy now requires a salted scrypt password hash, compares credentials in constant time, accepts only its four documented model endpoints, caps streamed request bodies before forwarding, and bounds rate-limit memory. The service is intentionally skipped until a mode-600 credential file is configured.
+- **Release security:** upgraded Electron to 45.3.3 and electron-builder to 26.18.0, and made the macOS packaging command explicitly produce both Intel and Apple Silicon artifacts.
+- **Reliable verification:** browser-chat tests now load their local router fixture and stub browser-only scrolling, eliminating misleading network and jsdom warnings.
+
 ## 1.42.17 — 2026-11-16
 - **Integrity checks:** corpus text is now rejected unless it round-trips losslessly through UTF-8. RAG inputs, chunks, and persisted indexes carry SHA-256 fingerprints; an index with a failed integrity check is not used for retrieval.
 - **Tokenizer verification:** neural training reads declared corpus files as strict UTF-8 and verifies every training document survives byte-token encoding and strict decoding unchanged.
