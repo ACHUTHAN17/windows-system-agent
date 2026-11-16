@@ -2,6 +2,7 @@
 // Creates server-only public-gateway configuration without persisting a raw
 // password. Run on the Linux host: node scripts/configure-public-proxy.mjs
 import crypto from 'node:crypto';
+import { spawn } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -12,6 +13,19 @@ if (!/^[A-Za-z0-9._-]{1,64}$/.test(username || '')) throw new Error('Usage: WINA
 if (!process.stdin.isTTY) throw new Error('Run this command in an interactive terminal so the password is not stored in shell history.');
 
 function readSecret(prompt) {
+  // Hosted web terminals often do not forward Node's raw keypress events.
+  // Use the POSIX terminal's own hidden-input mode on Linux; keep the Node
+  // fallback for development machines where it is supported.
+  if (process.platform === 'linux') {
+    return new Promise((resolve, reject) => {
+      process.stdout.write(prompt);
+      const child = spawn('/bin/sh', ['-c', 'stty -echo; trap "stty echo" EXIT; IFS= read -r value; status=$?; printf "\\n" >&2; printf "%s" "$value"; exit "$status"'], { stdio: ['inherit', 'pipe', 'inherit'] });
+      let value = '';
+      child.stdout.on('data', (chunk) => { value += String(chunk); });
+      child.on('error', reject);
+      child.on('close', (code) => code === 0 ? resolve(value) : reject(new Error('Password entry cancelled')));
+    });
+  }
   return new Promise((resolve, reject) => {
     let value = '';
     process.stdout.write(prompt);

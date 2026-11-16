@@ -1,4 +1,7 @@
 # Changelog
+## 1.42.20 — 2026-11-16
+- **Hosted-terminal setup:** gateway setup now uses Linux's native hidden password entry instead of Node raw key events, so secure password configuration works in the hosted server terminal.
+
 ## 1.42.19 — 2026-11-16
 - **Gateway sandbox:** tightened the authenticated public gateway to a strict read-only system view, blocked kernel-module and namespace access, isolated IPC, and limited execution to the native system-call architecture. The service still permits only the local model loopback and its explicitly authenticated public listener.
 
