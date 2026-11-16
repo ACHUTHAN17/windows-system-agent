@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { trainSeedLm } from './seed-lm.js';
 import { languageProfile } from './language-profile.js';
+import { canonicalUtf8Text } from './achllm-rag.js';
 
 export const WIKIMEDIA_LICENSE = 'CC BY-SA 4.0 and GFDL (see source page)';
 export const ULTRACHAT_LICENSE = 'MIT';
@@ -112,7 +113,11 @@ export function appendRecords(root, records, { corpusName = 'chat-code-corpus.tx
   const manifest = path.join(dir, 'manifest.jsonl');
   const existing = new Set();
   try { for (const line of fs.readFileSync(manifest, 'utf8').split(/\r?\n/)) if (line) existing.add(JSON.parse(line).id); } catch {}
-  const accepted = records.filter((record) => !existing.has(record.id));
+  const accepted = records.filter((record) => !existing.has(record.id)).map((record) => {
+    const title = canonicalUtf8Text(record.title || 'Untitled');
+    const text = canonicalUtf8Text(record.text);
+    return { ...record, title: title.text, text: text.text, contentSha256: text.sha256 };
+  });
   if (!accepted.length) return 0;
   const corpus = accepted.map((record) => `${record.title}\n${record.text}\n`).join('\n');
   fs.appendFileSync(path.join(dir, corpusName), corpus);
@@ -120,7 +125,10 @@ export function appendRecords(root, records, { corpusName = 'chat-code-corpus.tx
   // Keep attributed source text in a separate, bounded RAG input. The manifest
   // deliberately excludes text, so retrieval cannot be reconstructed from it.
   const rag = path.join(dir, 'rag-records.jsonl');
-  fs.appendFileSync(rag, accepted.map((record) => JSON.stringify({ id: record.id, source: record.source, title: record.title, license: record.license, domain: record.domain || 'chat', text: String(record.text || '').slice(0, 16_000) })).join('\n') + '\n');
+  fs.appendFileSync(rag, accepted.map((record) => {
+    const text = canonicalUtf8Text(record.text.slice(0, 16_000));
+    return JSON.stringify({ id: record.id, source: record.source, title: record.title, license: record.license, domain: record.domain || 'chat', contentSha256: text.sha256, text: text.text });
+  }).join('\n') + '\n');
   return accepted.length;
 }
 
@@ -142,7 +150,8 @@ export function recordFromDonatedChat(payload) {
   const text = normalized.map((message) => `${message.role}: ${message.content}`).join('\n');
   if (text.length < 20) throw new Error('feedback is too short to train');
   if (SECRET_PATTERN.test(text)) throw new Error('feedback appears to contain a credential and was not stored');
-  const hash = crypto.createHash('sha256').update(text).digest('hex').slice(0, 24);
+  const content = canonicalUtf8Text(text);
+  const hash = content.sha256.slice(0, 24);
   const rawReward = payload?.reward;
   const reinforcementReward = rawReward === undefined || rawReward === null || rawReward === '' ? null : Number(rawReward);
   if (reinforcementReward !== null && (!Number.isFinite(reinforcementReward) || reinforcementReward < -1 || reinforcementReward > 1)) throw new Error('feedback reward must be between -1 and 1');
@@ -150,7 +159,8 @@ export function recordFromDonatedChat(payload) {
     id: `donated-chat-${hash}`,
     source: 'AchLLM opt-in chat donation',
     title: 'User-donated AchLLM chat feedback',
-    text,
+    text: content.text,
+    contentSha256: content.sha256,
     license: CHAT_FEEDBACK_LICENSE,
     language: languageProfile(text),
     domain: CODE_REQUEST.test(text) ? 'code' : 'chat',

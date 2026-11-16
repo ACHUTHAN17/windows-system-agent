@@ -62,10 +62,13 @@ class Config:
 
 class ByteTokenizer:
     def encode(self, text: str) -> list[int]:
-        return [BOS, *[byte + BYTE_OFFSET for byte in text.encode("utf-8", errors="replace")], EOS]
+        return [BOS, *[byte + BYTE_OFFSET for byte in text.encode("utf-8", errors="strict")], EOS]
 
-    def decode(self, ids: Iterable[int]) -> str:
-        return bytes(token - BYTE_OFFSET for token in ids if token >= BYTE_OFFSET).decode("utf-8", errors="replace")
+    def decode(self, ids: Iterable[int], *, errors: str = "replace") -> str:
+        # Training documents use strict round-trip decoding below. Generation
+        # may emit incomplete byte sequences, so serving can explicitly render
+        # those safely with replacement rather than crashing the endpoint.
+        return bytes(token - BYTE_OFFSET for token in ids if token >= BYTE_OFFSET).decode("utf-8", errors=errors)
 
 
 SYSTEM_PROMPT = "You are AchLLM, a helpful chat and code assistant. Answer accurately, briefly, and say when you are uncertain."
@@ -144,7 +147,7 @@ def corpus_documents(files: Iterable[Path]) -> tuple[list[str], list[dict[str, s
     for file in files:
         if not file.exists():
             continue
-        source = file.read_text(encoding="utf-8", errors="replace")
+        source = file.read_text(encoding="utf-8", errors="strict")
         for chunk in source.split("\n\n"):
             text = chunk.strip()
             if len(text.encode("utf-8")) < 80:
@@ -177,7 +180,13 @@ def deterministic_split(documents: list[str]) -> tuple[list[str], list[str], lis
 
 
 def encoded_documents(documents: Iterable[str], tokenizer: ByteTokenizer) -> list[Tensor]:
-    return [torch.tensor(tokenizer.encode(document), dtype=torch.long) for document in documents]
+    encoded: list[Tensor] = []
+    for document in documents:
+        tokens = tokenizer.encode(document)
+        if tokenizer.decode(tokens, errors="strict") != document:
+            raise ValueError("UTF-8 tokenizer round-trip check failed")
+        encoded.append(torch.tensor(tokens, dtype=torch.long))
+    return encoded
 
 
 def batch_from(documents: list[Tensor], config: Config, generator: random.Random) -> tuple[Tensor, Tensor]:

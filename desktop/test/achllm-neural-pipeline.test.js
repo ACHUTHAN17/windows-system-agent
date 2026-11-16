@@ -13,6 +13,8 @@ test('AchLLM neural pipeline trains and serves the same explicit chat template',
   assert.match(trainer, /<\|user\|>/);
   assert.match(trainer, /<\|assistant\|>/);
   assert.match(trainer, /def as_chat_document/);
+  assert.match(trainer, /errors="strict"/);
+  assert.match(trainer, /UTF-8 tokenizer round-trip check failed/);
   assert.match(server, /def chat_prompt/);
   assert.match(server, /\/healthz/);
   assert.match(server, /ASSISTANT_MARKER/);

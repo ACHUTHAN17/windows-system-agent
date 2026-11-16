@@ -1,4 +1,8 @@
 # Changelog
+## 1.42.17 — 2026-11-16
+- **Integrity checks:** corpus text is now rejected unless it round-trips losslessly through UTF-8. RAG inputs, chunks, and persisted indexes carry SHA-256 fingerprints; an index with a failed integrity check is not used for retrieval.
+- **Tokenizer verification:** neural training reads declared corpus files as strict UTF-8 and verifies every training document survives byte-token encoding and strict decoding unchanged.
+
 ## 1.42.16 — 2026-11-16
 - **Wikipedia-first learning:** the first seed cycle now fetches attributable Wikimedia records before later bounded chat/code batches, then rebuilds a local vector-retrieval index.
 - **NLP and vector RAG:** added Unicode NFKC word tokenization and a dependency-free sparse hash-vector index that admits only records with both a Wikipedia source and CC BY-SA/GFDL attribution.

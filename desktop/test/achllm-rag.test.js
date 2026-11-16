@@ -16,6 +16,8 @@ test('CPU vector RAG indexes only attributable Wikipedia records with Unicode to
   assert.equal(index.records, 1);
   assert.ok(index.chunks >= 1);
   assert.equal(index.tokenizer.kind, 'unicode-word-feature-hash');
+  assert.equal(index.tokenizer.encoding, 'UTF-8');
+  assert.equal(rag.verifyRagIndex(index), true);
   assert.match(index.entries[0].source, /wikipedia/);
 });
 
@@ -31,5 +33,8 @@ test('RAG search reads only the persisted Wikipedia index', async () => {
     const search = rag.searchRag(root, 'Which software manages processes and memory?');
     assert.equal(search.results.length, 1);
     assert.match(search.results[0].title, /Operating system/);
+    const corrupted = { ...rag.buildRagIndex([{ id: 'wiki-2', source: 'https://en.wikipedia.org/wiki/Memory', title: 'Memory', license: 'CC BY-SA 4.0 and GFDL', text: 'Computer memory stores data and program instructions while a system executes tasks.' }]) };
+    corrupted.entries[0].text = 'tampered text';
+    assert.equal(rag.verifyRagIndex(corrupted), false);
   } finally { fs.rmSync(root, { recursive: true, force: true }); }
 });

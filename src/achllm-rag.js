@@ -3,10 +3,39 @@
 // small server and avoids pretending a local embedding model is available.
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 
 export const RAG_FORMAT = 'achllm-hash-vector-rag-v1';
 export const RAG_DIMENSIONS = 2048;
 const CACHE = new Map();
+
+export function canonicalUtf8Text(value) {
+  const text = String(value ?? '');
+  const bytes = Buffer.from(text, 'utf8');
+  // JavaScript permits unpaired surrogates but UTF-8 does not. Refuse them
+  // instead of silently replacing a character during corpus ingestion.
+  if (bytes.toString('utf8') !== text) throw new Error('text is not losslessly encodable as UTF-8');
+  return { text, bytes, sha256: crypto.createHash('sha256').update(bytes).digest('hex') };
+}
+
+function utf8FileText(file) {
+  return new TextDecoder('utf-8', { fatal: true }).decode(fs.readFileSync(file));
+}
+
+function indexPayload(index) {
+  return JSON.stringify({ format: index.format, tokenizer: index.tokenizer, sourcePolicy: index.sourcePolicy, records: index.records, chunks: index.chunks, entries: index.entries });
+}
+
+export function ragIndexSha256(index) {
+  return canonicalUtf8Text(indexPayload(index)).sha256;
+}
+
+export function verifyRagIndex(index) {
+  const expected = String(index?.integrity?.contentSha256 || '');
+  if (index?.format !== RAG_FORMAT || !/^[a-f0-9]{64}$/i.test(expected) || !Array.isArray(index?.entries)) return false;
+  const actual = ragIndexSha256(index);
+  return crypto.timingSafeEqual(Buffer.from(expected, 'hex'), Buffer.from(actual, 'hex'));
+}
 
 export function tokenizeNlp(value, { limit = 4096 } = {}) {
   // Combining marks are part of a word in scripts such as Tamil, Arabic, and
@@ -48,7 +77,8 @@ function chunksFor(record, maxChars = 800) {
 }
 
 function readJsonl(file) {
-  try { return fs.readFileSync(file, 'utf8').split(/\r?\n/).filter(Boolean).map((line) => JSON.parse(line)); } catch { return []; }
+  try { return utf8FileText(file).split(/\r?\n/).filter(Boolean).map((line) => JSON.parse(line)); }
+  catch (error) { if (error?.code === 'ENOENT') return []; throw new Error(`RAG source is not valid UTF-8 JSONL: ${error.message}`); }
 }
 
 function isWikipedia(record) {
@@ -67,14 +97,19 @@ export function buildRagIndex(records, { dimensions = RAG_DIMENSIONS } = {}) {
   const entries = [];
   const vocabulary = new Set();
   for (const record of selected) {
-    for (const text of chunksFor(record)) {
+    const sourceText = canonicalUtf8Text(record.text);
+    if (record.contentSha256 && record.contentSha256 !== sourceText.sha256) throw new Error(`RAG source hash mismatch for ${record.id}`);
+    for (const text of chunksFor({ ...record, text: sourceText.text })) {
+      const chunk = canonicalUtf8Text(text);
       const tokens = tokenizeNlp(text);
       if (tokens.length < 4) continue;
       tokens.forEach((token) => vocabulary.add(token));
-      entries.push({ id: record.id, title: String(record.title || '').slice(0, 180), source: record.source, license: record.license, text: text.slice(0, 1000), tokens: tokens.length, vector: sparseVector(tokens, dimensions) });
+      entries.push({ id: record.id, title: String(record.title || '').slice(0, 180), source: record.source, license: record.license, text: chunk.text.slice(0, 1000), contentSha256: chunk.sha256, tokens: tokens.length, vector: sparseVector(tokens, dimensions) });
     }
   }
-  return { format: RAG_FORMAT, createdAt: new Date().toISOString(), tokenizer: { kind: 'unicode-word-feature-hash', normalization: 'NFKC', dimensions, vocabularyEntries: vocabulary.size }, sourcePolicy: 'Wikipedia records with explicit CC BY-SA 4.0/GFDL provenance only', records: selected.length, chunks: entries.length, entries };
+  const index = { format: RAG_FORMAT, createdAt: new Date().toISOString(), tokenizer: { kind: 'unicode-word-feature-hash', normalization: 'NFKC', encoding: 'UTF-8', dimensions, vocabularyEntries: vocabulary.size }, sourcePolicy: 'Wikipedia records with explicit CC BY-SA 4.0/GFDL provenance only', records: selected.length, chunks: entries.length, entries };
+  index.integrity = { algorithm: 'SHA-256', encoding: 'UTF-8', contentSha256: ragIndexSha256(index) };
+  return index;
 }
 
 export function buildAndWriteRagIndex(root) {
@@ -95,7 +130,8 @@ function currentIndex(root) {
     const mtime = fs.statSync(file).mtimeMs;
     const prior = CACHE.get(file);
     if (prior?.mtime === mtime) return prior.index;
-    const index = JSON.parse(fs.readFileSync(file, 'utf8'));
+    const index = JSON.parse(utf8FileText(file));
+    if (!verifyRagIndex(index)) throw new Error('RAG index integrity check failed');
     CACHE.set(file, { mtime, index });
     return index;
   } catch { return null; }
