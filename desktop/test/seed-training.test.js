@@ -46,6 +46,10 @@ test('donated chat requires explicit consent and rejects likely credentials', ()
   assert.match(accepted.id, /^donated-chat-/);
   assert.match(accepted.license, /explicit consent/);
   assert.equal(accepted.language.code, 'latin');
+  assert.equal(accepted.reinforcementReward, null);
+  const rewarded = recordFromDonatedChat({ consent: true, reward: 1, messages: [{ role: 'user', content: 'How do I write a test?' }, { role: 'assistant', content: 'Start with one behaviour and an assertion.' }] });
+  assert.equal(rewarded.reinforcementReward, 1);
+  assert.throws(() => recordFromDonatedChat({ consent: true, reward: 2, messages: [{ role: 'user', content: 'hello' }, { role: 'assistant', content: 'world' }] }), /reward/);
   assert.throws(() => recordFromDonatedChat({ messages: [{ role: 'user', content: 'hello' }, { role: 'assistant', content: 'world' }] }), /consent/);
   assert.throws(() => recordFromDonatedChat({ consent: true, messages: [{ role: 'user', content: 'password: super-secret' }, { role: 'assistant', content: 'do not save it' }] }), /credential/);
 });

@@ -4,6 +4,7 @@
 // presenting unstable neural completions as facts.
 import fs from 'node:fs';
 import path from 'node:path';
+import { searchRag } from './achllm-rag.js';
 
 const STOP = new Set('about after again also among and are because been before being between both but can cannot could did does each for from had has have how into its just like more most not only other our out over should some such than that the their then there these this those through too use used using want was were what when where which who why will with would you your'.split(' '));
 const cache = new Map();
@@ -63,6 +64,11 @@ export function answerAchllmChat(root, prompt) {
   }
   const foundation = FOUNDATION.find((item) => item.match.test(question));
   if (foundation) return { mode: 'foundation', content: foundation.content };
+  const rag = searchRag(root, question, { limit: 2 });
+  if (rag.results.length) {
+    const evidence = rag.results.map((item) => `- ${item.text}\n  Source: ${item.source} (${item.license})`).join('\n\n');
+    return { mode: 'vector-rag', content: `Based on retrieved licensed Wikimedia reference material:\n\n${evidence}\n\nI am using local vector retrieval because the neural generator has not passed its chat-quality gate yet.` };
+  }
   const queryTerms = terms(question);
   const chunks = corpusAt(root);
   let best = '', bestScore = 0;

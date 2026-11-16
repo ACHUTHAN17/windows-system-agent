@@ -29,6 +29,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CORPORA = (
     ROOT / "models" / "achllm.foundation.txt",
     ROOT / "models" / "seed-data" / "chat-code-corpus.txt",
+    ROOT / "models" / "seed-data" / "reinforcement-corpus.txt",
 )
 MODEL_DIR = ROOT / "models" / "achllm-neural"
 CHECKPOINT = MODEL_DIR / "achllm-neural.pt"
@@ -247,7 +248,9 @@ def atomic_json(value: object, target: Path) -> None:
 def train(config: Config, max_checkpoint_mb: int) -> dict[str, object]:
     if config.width % config.heads:
         raise ValueError("width must be divisible by heads")
-    torch.set_num_threads(max(1, min(4, os.cpu_count() or 1)))
+    # Use the available server cores without exceeding an explicit thread cap.
+    # The systemd CPU quota remains the outer safety boundary.
+    torch.set_num_threads(max(1, min(int(os.environ.get("ACHLLM_NEURAL_THREADS", "4")), os.cpu_count() or 1)))
     torch.manual_seed(config.seed)
     generator = random.Random(config.seed)
     tokenizer = ByteTokenizer()
@@ -289,7 +292,7 @@ def train(config: Config, max_checkpoint_mb: int) -> dict[str, object]:
         "version": VERSION,
         "createdAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "config": asdict(config),
-        "vocab": {"kind": "utf8-byte", "size": VOCAB_SIZE, "pad": PAD, "bos": BOS, "eos": EOS, "byteOffset": BYTE_OFFSET},
+        "vocab": {"kind": "utf8-byte", "size": VOCAB_SIZE, "pad": PAD, "bos": BOS, "eos": EOS, "byteOffset": BYTE_OFFSET, "normalization": "raw UTF-8 bytes; preserves every Unicode code point without unknown tokens"},
         "state_dict": model.state_dict(),
         "metrics": {"lastTrainLoss": losses[-1], "meanTrainLoss": sum(losses) / len(losses), "validationLoss": validation_loss, "heldoutLoss": heldout_loss},
         "training": {"resumedFrom": resumed_from, "cycleSteps": config.steps, "cumulativeSteps": cumulative_steps + config.steps},

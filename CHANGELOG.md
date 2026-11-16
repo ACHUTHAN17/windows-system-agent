@@ -1,4 +1,10 @@
 # Changelog
+## 1.42.16 — 2026-11-16
+- **Wikipedia-first learning:** the first seed cycle now fetches attributable Wikimedia records before later bounded chat/code batches, then rebuilds a local vector-retrieval index.
+- **NLP and vector RAG:** added Unicode NFKC word tokenization and a dependency-free sparse hash-vector index that admits only records with both a Wikipedia source and CC BY-SA/GFDL attribution.
+- **Feedback reinforcement:** explicit donated-chat rewards in the range -1 to 1 now provide transparent bounded replay; negative examples are never trained as answers.
+- **CPU training:** four bounded compute threads are available under a 360% systemd quota, equivalent to 90% across the server's four vCPUs; the trainer remains memory capped and lower priority.
+
 ## 1.42.13 — 2026-11-13
 - **Owner donation default:** the private owner dashboard now enables its visible training donation control by default; a per-send opt-out remains available and consent is still stored with every donated record.
 - **Multilingual lane:** added offline script detection, language provenance for donations, and original seed lessons in Spanish, Tamil, Hindi, Arabic, Japanese, and Chinese.

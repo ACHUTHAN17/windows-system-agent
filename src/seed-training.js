@@ -117,6 +117,10 @@ export function appendRecords(root, records, { corpusName = 'chat-code-corpus.tx
   const corpus = accepted.map((record) => `${record.title}\n${record.text}\n`).join('\n');
   fs.appendFileSync(path.join(dir, corpusName), corpus);
   fs.appendFileSync(manifest, accepted.map((record) => JSON.stringify({ ...record, text: undefined })).join('\n') + '\n');
+  // Keep attributed source text in a separate, bounded RAG input. The manifest
+  // deliberately excludes text, so retrieval cannot be reconstructed from it.
+  const rag = path.join(dir, 'rag-records.jsonl');
+  fs.appendFileSync(rag, accepted.map((record) => JSON.stringify({ id: record.id, source: record.source, title: record.title, license: record.license, domain: record.domain || 'chat', text: String(record.text || '').slice(0, 16_000) })).join('\n') + '\n');
   return accepted.length;
 }
 
@@ -139,6 +143,9 @@ export function recordFromDonatedChat(payload) {
   if (text.length < 20) throw new Error('feedback is too short to train');
   if (SECRET_PATTERN.test(text)) throw new Error('feedback appears to contain a credential and was not stored');
   const hash = crypto.createHash('sha256').update(text).digest('hex').slice(0, 24);
+  const rawReward = payload?.reward;
+  const reinforcementReward = rawReward === undefined || rawReward === null || rawReward === '' ? null : Number(rawReward);
+  if (reinforcementReward !== null && (!Number.isFinite(reinforcementReward) || reinforcementReward < -1 || reinforcementReward > 1)) throw new Error('feedback reward must be between -1 and 1');
   return {
     id: `donated-chat-${hash}`,
     source: 'AchLLM opt-in chat donation',
@@ -147,6 +154,7 @@ export function recordFromDonatedChat(payload) {
     license: CHAT_FEEDBACK_LICENSE,
     language: languageProfile(text),
     domain: CODE_REQUEST.test(text) ? 'code' : 'chat',
+    reinforcementReward,
     collectedAt: new Date().toISOString(),
   };
 }
@@ -169,19 +177,29 @@ export function promoteDonatedChats(root) {
   const pending = path.join(root, 'models', 'seed-data', 'donated-chat.pending.jsonl');
   const records = safeJsonLines(pending);
   if (!records.length) return { promoted: 0, queued: 0 };
-  const promoted = appendRecords(root, records);
+  // Negative feedback is retained only as a counted event; it never becomes a
+  // target completion. Positive, explicit feedback gets limited replay weight.
+  const trainable = records.filter((record) => record.reinforcementReward === null || record.reinforcementReward >= 0);
+  const promoted = appendRecords(root, trainable);
+  const replay = records.filter((record) => Number(record.reinforcementReward) > 0);
+  if (replay.length) {
+    const file = path.join(root, 'models', 'seed-data', 'reinforcement-corpus.txt');
+    const material = replay.map((record) => `${record.text}\n`.repeat(Math.min(3, 1 + Math.round(Number(record.reinforcementReward) * 2)))).join('\n');
+    fs.appendFileSync(file, material);
+  }
   fs.writeFileSync(pending, '');
-  return { promoted, queued: records.length };
+  return { promoted, queued: records.length, rewardReplays: replay.length, negativeSkipped: records.length - trainable.length };
 }
 
 export function trainLiveSeed(root, { maxBytes = 4_000_000 } = {}) {
   const base = path.join(root, 'models', 'achllm.corpus.txt');
   const chatCodeCorpus = path.join(root, 'models', 'seed-data', 'chat-code-corpus.txt');
+  const reinforcementCorpus = path.join(root, 'models', 'seed-data', 'reinforcement-corpus.txt');
   const chunks = [];
   // Do not reuse legacy general-web or mixed public corpora in the live
   // checkpoint.  The new model scope is conversational and code-oriented.
   const foundation = path.join(root, 'models', 'achllm.foundation.txt');
-  for (const file of [foundation, base, chatCodeCorpus]) {
+  for (const file of [foundation, base, chatCodeCorpus, reinforcementCorpus]) {
     try { chunks.push(fs.readFileSync(file, 'utf8')); } catch {}
   }
   const corpus = chunks.join('\n').slice(-maxBytes);

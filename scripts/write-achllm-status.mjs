@@ -12,6 +12,7 @@ const modelFile = path.join(root, 'models', 'achllm.live.model.json');
 const neuralMetadataFile = path.join(root, 'models', 'achllm-neural', 'metadata.json');
 const neuralEvaluationFile = path.join(root, 'models', 'achllm-neural', 'chat-evaluation.json');
 const neuralRuntimeFile = path.join(root, 'models', 'achllm-neural', 'training-state.json');
+const ragIndexFile = path.join(root, 'models', 'achllm-rag', 'wikipedia-index.json');
 const manifestFile = path.join(seedDir, 'manifest.jsonl');
 const safeRead = (file, fallback) => { try { return fs.readFileSync(file, 'utf8'); } catch { return fallback; } };
 let model = {};
@@ -22,6 +23,8 @@ let neuralEvaluation = null;
 try { neuralEvaluation = JSON.parse(safeRead(neuralEvaluationFile, 'null')); } catch {}
 let neuralRuntime = null;
 try { neuralRuntime = JSON.parse(safeRead(neuralRuntimeFile, 'null')); } catch {}
+let rag = null;
+try { rag = JSON.parse(safeRead(ragIndexFile, 'null')); } catch {}
 const transitionRows = Object.values(model.transitions || {});
 const learnedWeights = transitionRows.reduce((total, row) => total + (Array.isArray(row) ? row.length : 0), 0);
 const averageCandidatesPerLookup = transitionRows.length ? learnedWeights / transitionRows.length : 0;
@@ -74,6 +77,7 @@ const status = {
     evaluation: 'Optional neural pipeline is installed in the repository but has not produced a checkpoint.',
   },
   training: { records: domains.chat + domains.code + domains.browser, chatRecords: domains.chat, codeRecords: domains.code, browserRecords: domains.browser, legacyRecordsExcluded: domains.legacy, source: 'HuggingFaceH4/ultrachat_200k + Wikimedia allow-list', license: 'MIT + CC BY-SA 4.0/GFDL' },
+  rag: rag?.format ? { format: rag.format, records: Number(rag.records || 0), chunks: Number(rag.chunks || 0), tokenizer: rag.tokenizer || null, sourcePolicy: rag.sourcePolicy || null } : { status: 'awaiting first Wikimedia batch' },
   publication: {
     status: 'published',
     scope: 'Live telemetry only',

@@ -11,11 +11,17 @@ Environment=ACHLLM_NEURAL_MICRO_STEPS=1
 Environment=ACHLLM_NEURAL_EVALUATE_EVERY=20
 Environment=ACHLLM_NEURAL_BATCH=1
 Environment=ACHLLM_NEURAL_MAX_MB=512
+Environment=ACHLLM_NEURAL_THREADS=4
+Environment=OMP_NUM_THREADS=4
+Environment=MKL_NUM_THREADS=4
+Environment=OPENBLAS_NUM_THREADS=4
 ExecStart=%h/.local/share/achllm-neural/bin/python %h/winagent/neural/daemon.py
 Restart=always
 RestartSec=60
 Nice=10
-CPUQuota=90%
+# Four vCPUs × 90%: preserve the requested aggregate 90% cap while allowing
+# CPU kernels to use more than one core for a short micro-training step.
+CPUQuota=360%
 MemoryHigh=85%
 MemoryMax=90%
 NoNewPrivileges=true
