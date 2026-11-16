@@ -2,6 +2,7 @@
 const test = require('node:test');
 const assert = require('node:assert');
 const path = require('node:path');
+const fs = require('node:fs');
 const { authorized, configFromEnvironment, createPublicProxy, hashPassword, verifyPassword } = require(path.join(__dirname, '..', '..', 'deploy', 'seed-lm', 'public-proxy.cjs'));
 
 const password = 'a secure test password';
@@ -30,4 +31,9 @@ test('public proxy exposes only documented model routes and rejects oversized st
     response = await fetch(`${base}/v1/chat/completions`, { method: 'POST', headers: { Authorization: auth(), 'Content-Type': 'application/json' }, body: 'x'.repeat(65_537) });
     assert.equal(response.status, 413);
   } finally { await new Promise((resolve) => server.close(resolve)); }
+});
+
+test('public gateway service applies the restrictive sandbox while retaining network support', () => {
+  const unit = fs.readFileSync(path.join(__dirname, '..', '..', 'deploy', 'seed-lm', 'winagent-public-proxy.service'), 'utf8');
+  for (const setting of ['ConditionPathExists=', 'ProtectSystem=strict', 'ProtectHome=read-only', 'PrivateDevices=true', 'ProtectKernelModules=true', 'RestrictNamespaces=true', 'RemoveIPC=true', 'RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6', 'CapabilityBoundingSet=']) assert.ok(unit.includes(setting), `missing ${setting}`);
 });

@@ -1,4 +1,7 @@
 # Changelog
+## 1.42.19 — 2026-11-16
+- **Gateway sandbox:** tightened the authenticated public gateway to a strict read-only system view, blocked kernel-module and namespace access, isolated IPC, and limited execution to the native system-call architecture. The service still permits only the local model loopback and its explicitly authenticated public listener.
+
 ## 1.42.18 — 2026-11-16
 - **Gateway hardening:** the public AchLLM proxy now requires a salted scrypt password hash, compares credentials in constant time, accepts only its four documented model endpoints, caps streamed request bodies before forwarding, and bounds rate-limit memory. The service is intentionally skipped until a mode-600 credential file is configured.
 - **Release security:** upgraded Electron to 45.3.3 and electron-builder to 26.18.0, and made the macOS packaging command explicitly produce both Intel and Apple Silicon artifacts.
