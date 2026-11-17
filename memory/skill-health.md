@@ -1,4 +1,4 @@
-# Skill health — 2026-11-16
+# Skill health — 2026-11-17
 
 568 skills audited, 25 links probed, 1 dead.
 10 need attention:
