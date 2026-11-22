@@ -1,7 +1,10 @@
 # Skill health — 2026-11-22
 
-563 skills audited, 25 links probed, 2 dead.
-13 need attention:
+563 skills audited, 25 links probed, 3 dead.
+14 need attention:
+
+## 123456-password-used-in-danish-cpr-data-.md (935 chars)
+- dead link (500): https://www.thelocal.dk/20261009/cybercriminal-claims-to-have-used-sim
 
 ## 123456-password-used-in-danish-cpr-data.md (234971 chars)
 - dead link (404): https://hackerfeeds.com/news/123456-password-used-in-danish-cpr-data-b
