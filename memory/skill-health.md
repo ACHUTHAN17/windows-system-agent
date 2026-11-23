@@ -1,10 +1,13 @@
 # Skill health — 2026-11-23
 
-568 skills audited, 25 links probed, 1 dead.
-10 need attention:
+568 skills audited, 25 links probed, 2 dead.
+11 need attention:
 
 ## a-brief-history-of-the-bloomberg-termina.md (102189 chars)
 - dead link (403): https://agihunt.info/en/p/1a0f31a25f2bdfec108aaac392c
+
+## a-minimal-rust-tui-for-managing-github-r.md (642 chars)
+- dead link (404): https://rustutils.com/tools/gitui/
 
 ## claude-api.md (8208 chars)
 - unknown tool refs: langchain_openai, fetch, claude-opus-5, max_tokens, budget_tokens, web_search_20250305
