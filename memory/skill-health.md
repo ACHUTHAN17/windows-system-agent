@@ -1,16 +1,13 @@
 # Skill health — 2026-11-26
 
-563 skills audited, 25 links probed, 3 dead.
-14 need attention:
+563 skills audited, 25 links probed, 2 dead.
+13 need attention:
 
 ## 123456-password-used-in-danish-cpr-data.md (234971 chars)
 - dead link (404): https://hackerfeeds.com/news/123456-password-used-in-danish-cpr-data-b
 
 ## a-brief-history-of-windows-scroll-bar-sh.md (62856 chars)
 - dead link (525): https://outspeaker.com/post/14780
-
-## a-browser-native-classic-visual-basic-vb.md (1684 chars)
-- dead link (ERR:This operation was aborted): https://www.webvbstudio.com/visual-basic
 
 ## agent-overlay.md (3676 chars)
 - unknown tool refs: active, click, drag, type, file
